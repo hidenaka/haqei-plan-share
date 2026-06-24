@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>ep30 / ep31 企画候補 — どの名作×卦を差し込むか</title>
+<style>
+  :root {
+    --ink: #1a1a1a;
+    --ink-2: #4a4a4a;
+    --bg: #f7f5ee;
+    --paper: #fbf9f1;
+    --line: #d8d2bf;
+    --accent: #2e5a86;            /* 藍 */
+    --accent-soft: #dbe6f1;
+    --gold: #b8893a;
+    --warn: #c83a2c;
+    --warn-soft: #f6dcd6;
+    --yellow: #f4d35e;
+    --shadow: 0 1px 0 rgba(0,0,0,.04), 0 8px 24px rgba(0,0,0,.06);
+    --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+    --sans: -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN",
+            "Hiragino Sans", "Noto Sans JP", "Yu Gothic", "Meiryo", sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { font-family: var(--sans); background: var(--bg); color: var(--ink); line-height: 1.7; -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 56px 28px 96px; }
+
+  .hero { margin-bottom: 48px; }
+  .hero .kicker { display: inline-block; background: var(--accent); color: #fff; font-size: 12px; font-weight: 700; letter-spacing: .12em; padding: 6px 12px; border-radius: 999px; margin-bottom: 18px; }
+  .hero h1 { font-size: 38px; line-height: 1.3; margin: 0 0 14px; letter-spacing: -.01em; }
+  .hero h1 b { color: var(--accent); }
+  .hero p.lede { font-size: 18px; color: var(--ink-2); margin: 0; max-width: 820px; }
+  .tldr { margin-top: 28px; padding: 22px 24px; background: var(--paper); border: 1px solid var(--line); border-radius: 12px; box-shadow: var(--shadow); }
+  .tldr h2 { font-size: 13px; letter-spacing: .15em; color: var(--accent); margin: 0 0 10px; }
+  .tldr ol { margin: 0; padding-left: 20px; }
+  .tldr li { margin: 4px 0; }
+
+  section { margin: 56px 0 0; }
+  section > h2 { font-size: 26px; line-height: 1.4; margin: 0 0 6px; border-left: 6px solid var(--accent); padding-left: 12px; }
+  section > h2 .num { color: var(--accent); font-variant-numeric: tabular-nums; margin-right: 10px; }
+  section > p.sub { color: var(--ink-2); margin: 0 0 22px; }
+
+  .table { width: 100%; border-collapse: collapse; margin: 12px 0 6px; background: var(--paper); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; box-shadow: var(--shadow); }
+  .table th, .table td { text-align: left; padding: 11px 13px; border-bottom: 1px solid var(--line); vertical-align: top; font-size: 14px; }
+  .table th { background: #e7ecf2; font-weight: 700; }
+  .table tr:last-child td { border-bottom: 0; }
+  .table .pick { background: var(--accent-soft); }
+  .table .pick td:first-child { font-weight: 700; color: var(--accent); }
+  .table td.sc { text-align: center; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .table td.tot { text-align: center; font-weight: 800; font-variant-numeric: tabular-nums; }
+
+  .callout { margin: 18px 0; padding: 16px 18px; border-left: 4px solid var(--accent); background: var(--accent-soft); border-radius: 0 10px 10px 0; }
+  .callout.warn { border-color: var(--warn); background: var(--warn-soft); }
+  .callout.gold { border-color: var(--gold); background: #f3e9d4; }
+  .callout p { margin: 0; }
+  .callout strong { color: var(--accent); }
+  .callout.warn strong { color: var(--warn); }
+
+  /* candidate cards */
+  .cards { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px; }
+  .card { background: var(--paper); border: 1px solid var(--line); border-radius: 12px; padding: 16px 18px; box-shadow: var(--shadow); }
+  .card.best { border: 2px solid var(--accent); }
+  .card .tag { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: .04em; padding: 2px 8px; border-radius: 999px; background: var(--accent); color: #fff; margin-bottom: 8px; }
+  .card .tag.alt { background: var(--gold); }
+  .card .tag.core { background: #6a6a6a; }
+  .card h3 { margin: 0 0 4px; font-size: 18px; }
+  .card .hex { font-size: 13px; color: var(--gold); font-weight: 700; margin: 0 0 8px; }
+  .card .lm { margin: 0 0 8px; font-size: 14.5px; }
+  .card .lm b { color: var(--accent); }
+  .card .why { margin: 0; font-size: 13px; color: var(--ink-2); }
+  .card .pts { margin: 8px 0 0; font-size: 12px; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+
+  .conclusion { margin-top: 56px; padding: 28px 28px 24px; background: var(--ink); color: #f6f3e8; border-radius: 16px; }
+  .conclusion h2 { color: var(--yellow); border: 0; padding: 0; margin: 0 0 12px; }
+  .conclusion ol { margin: 0; padding-left: 20px; }
+  .conclusion li { margin: 6px 0; }
+  .conclusion code.inline { background: #2c2f33; color: #f6f3e8; font-family: var(--mono); padding: 1px 6px; border-radius: 4px; }
+  footer { margin-top: 36px; color: var(--ink-2); font-size: 13px; }
+
+  @media (max-width: 720px) { .wrap { padding: 32px 18px 64px; } .hero h1 { font-size: 28px; } section > h2 { font-size: 21px; } .cards { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <span class="kicker">HaQei / アニメと易経 — EP30 / EP31 企画候補</span>
+    <h1>欠番 <b>ep30・ep31</b> に、どの名作 × 卦を差し込むか</h1>
+    <p class="lede">全64話コレクションの谷間に空いた2枠。前後が超大型IP連打なので「谷間でも格負けしない知名度」が必須。8案を採点し、本命2本まで絞りました。最終決定はあなたです。</p>
+    <div class="tldr">
+      <h2>TL;DR</h2>
+      <ol>
+        <li>欠番は <b>ep30（7/9・dir050）</b> と <b>ep31（7/10・dir051）</b> の2枠。公開枠は未claim＝真空。</li>
+        <li>本命＝<b>ep30：ドラゴンボール(悟空)×大有</b>（私と独立エージェントが別々に最上位へ収束）／<b>ep31：トトロ×需</b>（静の卦で編成に緩急）。</li>
+        <li>情緒で振るなら ヴァイオレット×中孚 / もののけ姫×同人、グローバルで揃えるなら ポケモン×旅 も有力。<b>あなたが2本を選べば essay-episode で着手</b>します。</li>
+      </ol>
+    </div>
+  </header>
+
+  <section>
+    <h2><span class="num">01</span>接地 — 何が空いていて、周りに何が並ぶか</h2>
+    <p class="sub">推測でなく essay-registry / coord slots / db を一次情報で確認した事実。</p>
+    <div class="callout"><p><strong>欠番は2枠だけ。</strong> ep29=ONE PIECE(師) と ep32=魔女の宅急便(否) の谷間に、<strong>ep30・ep31</strong> が真空で残っています。連番dir 050/051 も空き、long公開枠も未claim。差し込みに最適。</p></div>
+    <table class="table">
+      <thead><tr><th>ep</th><th>公開</th><th>作品</th><th>卦</th><th>状態</th></tr></thead>
+      <tbody>
+        <tr><td>ep28</td><td>7/07</td><td>暗殺教室</td><td>益</td><td>予約済</td></tr>
+        <tr><td>ep29</td><td>7/08</td><td>ONE PIECE(ルフィ)</td><td>師</td><td>予約済</td></tr>
+        <tr class="pick"><td>ep30</td><td>7/09</td><td>★ 空き（今回ここ）</td><td>—</td><td>未制作</td></tr>
+        <tr class="pick"><td>ep31</td><td>7/10</td><td>★ 空き（今回ここ）</td><td>—</td><td>未制作</td></tr>
+        <tr><td>ep32</td><td>7/11</td><td>魔女の宅急便</td><td>否</td><td>予約済</td></tr>
+      </tbody>
+    </table>
+    <div class="callout gold"><p><strong>制約：</strong> 既使用30作品・使用済み30卦は重複不可。<strong>未使用34卦</strong>からのみ選定し、卦の当てはめは db/hexagrams.json の卦辞で裏取り済み（捏造なし）。現行方針＝<strong>卦を選別せず全卦を「人生の機微アングル」で切る</strong>。</p></div>
+  </section>
+
+  <section>
+    <h2><span class="num">02</span>候補スレート — 8案を採点</h2>
+    <p class="sub">採点 100点＝知名度/検索分母 40 ＋ life_momentアングルの鋭さ 30 ＋ 卦の適合 30。藍色の行が本命2本。</p>
+    <table class="table">
+      <thead><tr><th>作品（キャラ）</th><th>卦</th><th>人生の機微アングル</th><th class="sc">知名</th><th class="sc">角度</th><th class="sc">卦適</th><th class="sc">計</th></tr></thead>
+      <tbody>
+        <tr class="pick"><td>A ドラゴンボール(悟空)</td><td>大有</td><td>最強を手にした時こそ、戦う理由を見失う</td><td class="sc">40</td><td class="sc">26</td><td class="sc">27</td><td class="tot">93</td></tr>
+        <tr class="pick"><td>B となりのトトロ(サツキ&メイ)</td><td>需</td><td>不安な時、動くより“待って信じる”ほうが進む</td><td class="sc">38</td><td class="sc">27</td><td class="sc">28</td><td class="tot">93</td></tr>
+        <tr><td>C ポケモン(サトシ)</td><td>旅</td><td>定住しないから自由でいられる、大人になれぬ祝福</td><td class="sc">39</td><td class="sc">24</td><td class="sc">28</td><td class="tot">91</td></tr>
+        <tr><td>D STEINS;GATE(岡部)</td><td>未済</td><td>取り返しのつかない選択を、何度でもやり直したい</td><td class="sc">31</td><td class="sc">29</td><td class="sc">30</td><td class="tot">90</td></tr>
+        <tr><td>E ヴァイオレット・エヴァーガーデン</td><td>中孚</td><td>言葉にできない想いを、どう伝えればいいのか</td><td class="sc">33</td><td class="sc">29</td><td class="sc">27</td><td class="tot">89</td></tr>
+        <tr><td>F もののけ姫(アシタカ)</td><td>同人</td><td>どちらの味方にもなれない時、分断の間にどう立つか</td><td class="sc">36</td><td class="sc">26</td><td class="sc">27</td><td class="tot">89</td></tr>
+        <tr><td>G 名探偵コナン(工藤新一)</td><td>屯</td><td>力を奪われ動けない状況で、それでも粘る</td><td class="sc">38</td><td class="sc">22</td><td class="sc">25</td><td class="tot">85</td></tr>
+        <tr><td>H コードギアス(ルルーシュ)</td><td>蠱</td><td>正しさのために、嘘と汚れ役と孤独を引き受ける</td><td class="sc">32</td><td class="sc">26</td><td class="sc">26</td><td class="tot">84</td></tr>
+      </tbody>
+    </table>
+    <div class="callout"><p><strong>確証バイアス対策：</strong> 私の案と、文脈ゼロの独立エージェントの案を別々に生成。<strong>両者が独立に「A ドラゴンボール×大有」を最上位へ収束</strong>＝ep30本命の確度が高いと判断しました。</p></div>
+  </section>
+
+  <section>
+    <h2><span class="num">03</span>各候補の中身</h2>
+    <p class="sub">卦の読みと卦辞は db で裏取り済み（需=じゅ / 旅=りょ / 屯=ちゅん は標準読み・制作時に辞書追記）。</p>
+    <div class="cards">
+      <div class="card best"><span class="tag">ep30 本命</span><h3>A ドラゴンボール（孫悟空）</h3><p class="hex">大有（たいゆう）／大いに有つ・最高の到達</p><p class="lm"><b>「一番強くなった時こそ、戦う理由を見失う」</b>——頂点の空虚と、戦いそのものを楽しむ純粋さ。</p><p class="why">国内外で最大級の検索分母。悟空が未使用なのは大穴で、谷間どころか柱になる。点火戦略の中核・動の一本。</p><p class="pts">知名40 / 角度26 / 卦適27 ＝ 93</p></div>
+
+      <div class="card best"><span class="tag">ep31 本命</span><h3>B となりのトトロ（サツキ&メイ）</h3><p class="hex">需（じゅ）／待つ・誠実に待てば光と成功</p><p class="lm"><b>「不安な時、動くより“待って信じる”ほうが事態は進む」</b></p><p class="why">ジブリ本丸が未使用。バトル偏重のラインに静の卦で緩急を入れる編成効果。卦適合が高い。</p><p class="pts">知名38 / 角度27 / 卦適28 ＝ 93</p></div>
+
+      <div class="card"><span class="tag alt">グローバル次点</span><h3>C ポケモン（サトシ）</h3><p class="hex">旅（りょ）／旅人・小なるを以て成功</p><p class="lm"><b>「どこにも定住しないから自由でいられる」</b>——大人になりきれない者の祝福と寂しさ。</p><p class="why">海外分母が悟空級。Bの代わりにグローバルで揃えたい時の差し替え候補。</p><p class="pts">知名39 / 角度24 / 卦適28 ＝ 91</p></div>
+
+      <div class="card"><span class="tag core">卦の白眉</span><h3>D STEINS;GATE（岡部倫太郎）</h3><p class="hex">未済（びせい）／未だ済まず・完成の手前＝64番目</p><p class="lm"><b>「取り返しのつかない選択を、何度でもやり直したい」</b>——後悔と運命に抗う者。</p><p class="why">卦適合は全候補で随一（未済＝永遠に完成しない最終卦）。知名度は海外コア層に厚い。</p><p class="pts">知名31 / 角度29 / 卦適30 ＝ 90</p></div>
+
+      <div class="card"><span class="tag alt">情緒・涙の一本</span><h3>E ヴァイオレット・エヴァーガーデン</h3><p class="hex">中孚（ちゅうふ）／真心・内なる誠が通じる</p><p class="lm"><b>「言葉にできない想いを、どう伝えればいいのか」</b>——“愛してる”の意味を知る。</p><p class="why">情緒で深く刺さる京アニ作品。海外人気も高い。ep31を静・情緒で振るならBより踏み込める。</p><p class="pts">知名33 / 角度29 / 卦適27 ＝ 89</p></div>
+
+      <div class="card"><span class="tag alt">社会風刺と好相性</span><h3>F もののけ姫（アシタカ）</h3><p class="hex">同人（どうじん）／異なる者が手を組む</p><p class="lm"><b>「どちらの味方にもなれない時、分断の間にどう立つか」</b>——曇りなき眼で見定める。</p><p class="why">ジブリ最大級。本シリーズの“社会風刺の刃”と最も噛み合う題材。</p><p class="pts">知名36 / 角度26 / 卦適27 ＝ 89</p></div>
+
+      <div class="card"><span class="tag core">国民的IP</span><h3>G 名探偵コナン（工藤新一）</h3><p class="hex">屯（ちゅん）／産みの悩み・動けぬ始まりの粘り</p><p class="lm"><b>「力を奪われ動けない状況で、それでも粘る」</b></p><p class="why">国民的で検索分母は厚い。ただしアングルがやや当たり前で、台本で磨きが要る。</p><p class="pts">知名38 / 角度22 / 卦適25 ＝ 85</p></div>
+
+      <div class="card"><span class="tag core">radar最上位の未使用作</span><h3>H コードギアス（ルルーシュ）</h3><p class="hex">蠱（こ）／腐敗を建て直す</p><p class="lm"><b>「正しさのために、嘘と汚れ役と孤独を引き受ける」</b></p><p class="why">topic-radar上位で未使用。コア人気が厚い。DEATH NOTE回と頭脳/正義で響くが主語はルルーシュ個人で別物。</p><p class="pts">知名32 / 角度26 / 卦適26 ＝ 84</p></div>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="num">04</span>編成の論理 — なぜ「動×静」で2枠を立てるか</h2>
+    <p class="sub">既存ラインがバトル/競争系に偏る。2本まとめて入れるなら振れ幅を作るのが効く。</p>
+    <div class="callout"><p><strong>推し：ep30＝A 悟空×大有（動・グローバル最大IP・両頭収束）／ ep31＝B トトロ×需（静・ジブリ本丸）。</strong> 知名度・卦の振れ幅・編成の緩急が同時に立ちます。</p></div>
+    <div class="callout gold"><p><strong>振り替えるなら：</strong> ep31を「涙の一本」にするなら <strong>E ヴァイオレット×中孚</strong>、社会風刺寄りなら <strong>F もののけ姫×同人</strong>、グローバルで揃えるなら <strong>C ポケモン×旅</strong>。卦のテーマ性を最優先するなら <strong>D STEINS;GATE×未済</strong>（最終卦64番）も唯一無二。</p></div>
+  </section>
+
+  <div class="conclusion">
+    <h2>あなたに選んでほしいこと</h2>
+    <ol>
+      <li>ep30 を <code class="inline">A ドラゴンボール(悟空)×大有</code> で確定してよいか（私の本命）。</li>
+      <li>ep31 を <code class="inline">B / C / D / E / F / G / H</code> のどれにするか。</li>
+      <li>決まり次第 <code class="inline">essay-episode</code> スキルで企画→台本へ着手（台本提示で再度あなたの承認ゲートに止まります）。</li>
+    </ol>
+  </div>
+
+  <footer>題材: content/essay-registry.json ・ analytics/topic-radar.json ・ db/hexagrams.json（卦辞裏取り）／ 採点は私＋文脈ゼロ独立エージェントの二系統。最終決定は本人。</footer>
+
+</div>
+</body>
+</html>
