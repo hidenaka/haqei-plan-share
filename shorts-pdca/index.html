@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow,noarchive">
+<title>ショート切り抜きPDCA — 維持率で見た勝ち筋</title>
+<style>
+:root{--ink:#1a1a1a;--ink-2:#4a4a4a;--bg:#f7f5ee;--paper:#fbf9f1;--line:#d8d2bf;--accent:#1f6f54;--accent-soft:#d8ece4;--gold:#b8893a;--warn:#c83a2c;--warn-soft:#f6dcd6;--yellow:#f4d35e;--shadow:0 1px 0 rgba(0,0,0,.04),0 8px 24px rgba(0,0,0,.06);--sans:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP","Yu Gothic",sans-serif;}
+*{box-sizing:border-box}body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1.7;margin:0}
+.wrap{max-width:920px;margin:0 auto;padding:48px 24px 90px}
+.kicker{display:inline-block;background:var(--accent);color:#fff;font-size:12px;font-weight:700;letter-spacing:.1em;padding:6px 12px;border-radius:999px;margin-bottom:16px}
+h1{font-size:32px;line-height:1.3;margin:0 0 12px}h1 b{color:var(--accent)}
+.lede{font-size:18px;color:var(--ink-2);margin:0;max-width:820px}
+.tldr{margin-top:24px;padding:20px 22px;background:var(--paper);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow)}
+.tldr h2{font-size:13px;letter-spacing:.14em;color:var(--accent);margin:0 0 10px}.tldr ol{margin:0;padding-left:20px}.tldr li{margin:5px 0}
+section{margin:48px 0 0}section>h2{font-size:24px;margin:0 0 6px;border-left:6px solid var(--accent);padding-left:12px}
+section>h2 .num{color:var(--accent);margin-right:10px}p.sub{color:var(--ink-2);margin:0 0 18px}
+table{width:100%;border-collapse:collapse;margin:12px 0;background:var(--paper);border:1px solid var(--line);border-radius:12px;overflow:hidden;box-shadow:var(--shadow);font-size:14px}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}th{background:#e3efe9;font-weight:700}tr:last-child td{border-bottom:0}
+td.n{text-align:center;font-variant-numeric:tabular-nums;white-space:nowrap}.hi{background:var(--accent-soft)}.hi td:first-child{font-weight:700;color:var(--accent)}
+.callout{margin:18px 0;padding:16px 18px;border-left:4px solid var(--accent);background:var(--accent-soft);border-radius:0 10px 10px 0}
+.callout.warn{border-color:var(--warn);background:var(--warn-soft)}.callout.gold{border-color:var(--gold);background:#f3e9d4}.callout p{margin:0}.callout strong{color:var(--accent)}.callout.warn strong{color:var(--warn)}
+.concl{margin-top:48px;padding:26px;background:var(--ink);color:#f6f3e8;border-radius:16px}.concl h2{color:var(--yellow);margin:0 0 12px}.concl ol{margin:0;padding-left:20px}.concl li{margin:6px 0}
+footer{margin-top:32px;color:var(--ink-2);font-size:13px}
+@media(max-width:720px){.wrap{padding:30px 16px 60px}h1{font-size:25px}section>h2{font-size:20px}}
+</style></head><body><div class="wrap">
+<span class="kicker">ショート切り抜き PDCA — 維持率実データ</span>
+<h1>ショートの再生数は、<b>冒頭5〜7秒の維持率</b>でほぼ決まる</h1>
+<p class="lede">公開ショート26本（重複除去・views=0除外）をYouTube Analytics APIの維持率カーブで分析。「どの切り抜き型が効くか」より先に、<b>冒頭で何秒粘らせたか</b>が再生数を支配していました。確証バイアス対策に独立エージェント分析→私が交絡を検算して補正。</p>
+<div class="tldr"><h2>結論（先に）</h2><ol>
+<li><b>冒頭維持率(intro)が再生数の最強ドライバ</b>：intro高位(≥124)=中央<b>1509再生/APV62%</b> vs 低位(≤110)=<b>320/32%</b>＝<b>4.7倍</b>。intro↔APV r=0.94＝最初の数秒で全部決まる。</li>
+<li><b>離脱は5〜7秒に集中</b>（26本中 5秒13・6秒7・7秒5）。勝負はこの窓。勝ち筋の冒頭＝<b>有名な要素＋直感に反する断定の一文</b>。</li>
+<li><b>ニッチ/旧作IPは型不問で全滅</b>（中央211・n4）。<b>崖を作らない・尺は短め</b>も効く。</li>
+<li>⚠️<b>「刃type が弱い」は交絡だった</b>（下記§4）。型より冒頭の掴みが本質。</li>
+</ol></div>
+
+<section><h2><span class="num">01</span>冒頭維持率が再生数を支配する</h2>
+<p class="sub">intro=冒頭0-10%の維持率。APVは平均視聴%（年齢非依存＝新旧で公平）。</p>
+<table><thead><tr><th>冒頭維持率の層</th><th class="n">本数</th><th class="n">views中央</th><th class="n">APV中央</th></tr></thead><tbody>
+<tr class="hi"><td>intro 高位（≥124）</td><td class="n">8</td><td class="n">1509</td><td class="n">62%</td></tr>
+<tr><td>intro 中位</td><td class="n">10</td><td class="n">1190</td><td class="n">48%</td></tr>
+<tr><td>intro 低位（≤110）</td><td class="n">8</td><td class="n">320</td><td class="n">32%</td></tr>
+</tbody></table>
+<div class="callout"><p><strong>相関：</strong> intro vs views <strong>r=+0.60</strong>（単一指標で最強）／ intro↔avgViewPct <strong>r=+0.94</strong>／ 最大離脱の落差(dropPct) vs views <strong>r=−0.47</strong>（急な崖は伸びを殺す）。再生数＝配信量はAPVがほぼ決め、APVは冒頭で決まる。</p></div>
+</section>
+
+<section><h2><span class="num">02</span>離脱は5〜7秒に集中 — そこが勝負</h2>
+<p class="sub">最大離脱ポイント(atSec)の分布（n=26）。</p>
+<table><thead><tr><th>最大離脱が起きた秒</th><th class="n">5秒</th><th class="n">6秒</th><th class="n">7秒</th><th class="n">9秒</th></tr></thead>
+<tbody><tr><td>本数</td><td class="n">13</td><td class="n">7</td><td class="n">5</td><td class="n">1</td></tr></tbody></table>
+<div class="callout"><p>離脱の「<strong>秒</strong>」自体は再生数と無相関(r=−0.03)＝みんな5-7秒で一度試される。効くのは<strong>その崖の深さ</strong>。だから施策は「<strong>5-7秒の崖の手前で、もう一度引き込む一文</strong>」を必ず置くこと。</p></div>
+</section>
+
+<section><h2><span class="num">03</span>勝ち筋の冒頭 ＝ 有名要素 ＋ 前提を裏切る断定</h2>
+<p class="sub">intro上位（粘った冒頭）の実例。型(刃/ドラマ)はバラバラだが、冒頭の作りが共通。</p>
+<table><thead><tr><th>冒頭(タイトル)</th><th class="n">intro</th><th class="n">views</th></tr></thead><tbody>
+<tr><td>月を破滅させたのは、ノートではない（デスノート）</td><td class="n">150</td><td class="n">1902</td></tr>
+<tr><td>強く愛するほど、相手を追い詰める（るろうに剣心）</td><td class="n">132</td><td class="n">1917</td></tr>
+<tr><td>秒速5センチの二人は、喧嘩をしていない</td><td class="n">129</td><td class="n">1554</td></tr>
+<tr><td>フリーレンが葬式で泣いた、本当の理由</td><td class="n">124</td><td class="n">1604</td></tr>
+</tbody></table>
+<div class="callout gold"><p><strong>共通項：</strong>「みんなが知っている結末/関係」を<strong>否定形・逆説</strong>でひっくり返す（〜ではない／〜していない／本当の理由）。固有名詞を“先頭に置くだけ”は無相関(r≈0)。効くのは<strong>位置でなく、断定とのセット</strong>。</p></div>
+</section>
+
+<section><h2><span class="num">04</span>正直な補正 ＝ 「刃type が弱い」は交絡だった</h2>
+<p class="sub">独立エージェントは「風刺の刃type=中央320で最弱・ドラマ=1540」と出したが、私が検算して退けた。</p>
+<div class="callout warn"><p><strong>なぜ退けたか：</strong>①刃type のショートはep20以降で<strong>新しすぎて再生数が育っていない</strong>（views累積の不利）②刃tagに<strong>ニッチIP(アンパンマン等)が混入</strong>。実データでは刃tagの<strong>るろ剣ショートが1917・1509と上位</strong>。年齢非依存のAPVで見ても刃が一律に低いわけではない。→ <strong>「刃を捨てろ」は誤り</strong>。型(刃/ドラマ)より<strong>冒頭の掴み</strong>が本質、が正しい読み。</p></div>
+</section>
+
+<section><h2><span class="num">05</span>切り抜き選定ハーネスへの改善提案</h2>
+<table><thead><tr><th>変更</th><th>根拠の数字</th></tr></thead><tbody>
+<tr><td><b>①キュレーターの第一基準を「冒頭の掴み」に</b>。刃でもドラマでも、<b>5秒以内に“有名要素＋前提を裏切る断定”</b>を置ける瞬間を本編から選ぶ。型ラベルでなく冒頭強度で選定</td><td class="n">intro r=0.60 / 高位1509 vs 低位320</td></tr>
+<tr><td><b>②5-7秒の崖チェックをQAに追加</b>。切り出し冒頭の dropPct が深い候補は自動降格。冒頭7秒に引き(否定/逆説)が無ければ却下</td><td class="n">dropPct r=−0.47 / 離脱5-7s集中</td></tr>
+<tr><td><b>③IP規模ゲート</b>：ニッチ/旧作は切り抜き生成前に除外（大型枯渇時のみ）</td><td class="n">ニッチ中央211 vs 他1450</td></tr>
+<tr><td><b>④尺は約30-39秒に寄せる・崖を作る誘導切りはしない</b></td><td class="n">dur r=−0.20</td></tr>
+<tr><td><b>⑤タイトル採点軸を「固有名詞の位置」→「前提を裏切る断定文か」に</b></td><td class="n">位置単独 r≈0</td></tr>
+</tbody></table>
+</section>
+
+<div class="concl"><h2>本人に確認したいこと</h2><ol>
+<li>この読み（<b>型より冒頭の掴み・刃は捨てない・冒頭5秒に“有名×逆説の断定”</b>）でハーネスを更新してよいか。</li>
+<li>更新先：clip-build のキュレーター指針 ＋ essay-episode SKILL Step10 ＋ docs/pdca.md（仮説として登録し次コホートで検証）。</li>
+<li>「刃 vs ドラマ」はサンプルが育てば再判定（刃ショートの多くがまだviews未成熟）。今は型を捨てず冒頭強度で選ぶ。</li>
+</ol></div>
+<footer>データ: analytics/retention-summary.json（Analytics API・26本/重複除去・views0除外） ／ 分析: 独立エージェント＋本人側の交絡検算 ／ 相関は因果でない・各群n小は弱い示唆。</footer>
+</div></body></html>
