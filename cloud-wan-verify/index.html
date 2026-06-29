@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>クラウドGPUで浮世絵を動かす — Wan2.2 実機検証</title>
+<style>
+  :root{
+    --ink:#1c1a17; --ink2:#5c554c; --bg:#f4efe6; --paper:#fffdf8;
+    --line:#e3dccd; --accent:#b8860b; --accent-soft:#f0e4c4;
+    --ok:#2e7d4f; --ok-soft:#d8efe0; --warn:#b5530a; --warn-soft:#f6e3d0;
+    --navy:#1f3a5f;
+    --sans:-apple-system,"Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,sans-serif;
+    --mono:"SF Mono",Menlo,Consolas,monospace;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.75;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:880px;margin:0 auto;padding:32px 20px 80px}
+  header.hero{padding:28px 0 16px;border-bottom:2px solid var(--accent)}
+  .kicker{font-size:13px;letter-spacing:.14em;color:var(--accent);font-weight:700}
+  h1{font-size:30px;line-height:1.35;margin:.3em 0 .2em}
+  .lede{color:var(--ink2);font-size:16px}
+  .tldr{background:var(--paper);border:1px solid var(--line);border-left:4px solid var(--ok);border-radius:10px;padding:16px 20px;margin:22px 0}
+  .tldr b{color:var(--ok)}
+  section{margin:34px 0}
+  h2{font-size:21px;border-left:5px solid var(--accent);padding-left:12px;margin:0 0 14px}
+  h3{font-size:16px;margin:20px 0 8px;color:var(--navy)}
+  p{margin:.5em 0}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  @media(max-width:640px){.grid2{grid-template-columns:1fr}}
+  figure{margin:0;background:var(--paper);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+  figure video,figure img{width:100%;display:block;background:#000}
+  figcaption{padding:8px 12px;font-size:13px;color:var(--ink2)}
+  .badge{display:inline-block;font-size:12px;font-weight:700;padding:2px 9px;border-radius:999px;margin-right:6px}
+  .b-ok{background:var(--ok-soft);color:var(--ok)}
+  .b-warn{background:var(--warn-soft);color:var(--warn)}
+  table{width:100%;border-collapse:collapse;background:var(--paper);border:1px solid var(--line);border-radius:10px;overflow:hidden;font-size:14px;margin:12px 0}
+  th,td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--line)}
+  th{background:var(--accent-soft);font-weight:700}
+  tr:last-child td{border-bottom:none}
+  .pick{background:var(--ok-soft)}
+  .callout{background:var(--paper);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:10px;padding:14px 18px;margin:16px 0}
+  .callout.warn{border-left-color:var(--warn);background:var(--warn-soft)}
+  .num{font-family:var(--mono);font-weight:700;color:var(--navy)}
+  .opt{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin:10px 0}
+  .opt.rec{border:2px solid var(--ok)}
+  .opt h4{margin:0 0 6px;font-size:15px}
+  small{color:var(--ink2)}
+  .pal{font-size:13px;color:var(--ink2)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <div class="kicker">実機検証レポート ／ 2026-06-29</div>
+  <h1>クラウドGPUで浮世絵を「本当に動かせるか」＋「本当に月¥4,000–6,000で済むか」</h1>
+  <p class="lede">RunPodでRTX 3090を借り、ComfyUI + Wan2.2 14B（4-step LoRA）を自前で立てて、ep31の浮世絵を実際にi2v動画化。前提＝<b>全シーンを動かす</b>。falの代替を自作できるか、コストと品質を実物で確かめた。</p>
+</header>
+
+<div class="tldr">
+  <p>🎯 <b>結論：両方とも「YES」。</b></p>
+  <p>① <b>品質</b>：木版画の質感を一切崩さず動いた（写実化ドリフトゼロ・人物シルエットは静止・雲/光/水だけ動く）。これは<b>DomoAIが27カット中21カット写実化して解けなかった問題</b>の解決。</p>
+  <p>② <b>コスト</b>：1カット約<span class="num">157秒</span>（3090・$0.22/hr）。全シーン毎日（≒850カット/月）でも<b>GPU代は月 約¥1,300–3,000</b>。当初見積り¥4,000–6,000より<b>むしろ安い</b>（Podを使う時だけ起動する前提）。</p>
+  <p>③ 今回の検証で実際に使ったお金：<b>約¥130</b>（失敗Pod・モデルDL・本番テスト全部込み）。</p>
+</div>
+
+<section>
+  <h2>1. 実物 — 動かした2カット（再生して動きを確認）</h2>
+  <p>ep31「となりのトトロ × 需」の素材から2枚。<b>左=入力した静止画／右=Wan2.2が生成した5秒動画</b>。スタイルが崩れていないか、変な動き（写実化・人物の崩れ）が無いかを見てほしい。</p>
+
+  <h3>A11：湖畔に立つ人物・夜（「待つ」の象徴カット）</h3>
+  <div class="grid2">
+    <figure><img src="media/A11_before.jpg" alt="A11 input still"><figcaption>入力（静止画）</figcaption></figure>
+    <figure><video src="media/A11_anim.mp4" autoplay loop muted playsinline controls></video><figcaption>生成（5秒・自動再生）<span class="badge b-ok">木版維持</span><span class="badge b-ok">人物静止</span></figcaption></figure>
+  </div>
+  <p class="pal">動き＝雲が流れ、月明かりと水面がゆらめく。人物のシルエットは動かない。0フレーム目は入力と完全一致（構図保持の指標 drift=2／40超で「別物に再構築」）。</p>
+
+  <h3>A05：大樹と家・光芒（観察パートの叙情カット）</h3>
+  <div class="grid2">
+    <figure><img src="media/A05_before.jpg" alt="A05 input still"><figcaption>入力（静止画）</figcaption></figure>
+    <figure><video src="media/A05_anim.mp4" autoplay loop muted playsinline controls></video><figcaption>生成（5秒・自動再生）<span class="badge b-ok">木版維持</span><span class="badge b-ok">光芒・霧が動く</span></figcaption></figure>
+  </div>
+  <p class="pal">こちらは動きが分かりやすい：枝越しの光芒（god ray）と霧がゆっくり流れる。藍と金の木版調・和紙質感は完全に保持。</p>
+</section>
+
+<section>
+  <h2>2. なぜこれが効くのか — 過去の失敗との違い</h2>
+  <table>
+    <thead><tr><th>手段</th><th>動き</th><th>木版画の保持</th><th>制御（人物固定など）</th><th>コスト</th></tr></thead>
+    <tbody>
+      <tr><td>DepthFlow（現行・$0）</td><td>偽パララックス（実際は動かない）</td><td>◎崩れない</td><td>—</td><td>$0</td></tr>
+      <tr><td>DomoAI 標準（無料無制限）</td><td>動く</td><td class="b-warn">✗ 21/27カット写実化</td><td>✗ 負プロンプト/マスク無し</td><td>$0</td></tr>
+      <tr><td>fal Kling/Seedance（従量）</td><td>◎動く</td><td>○</td><td>◎マスク等あり</td><td class="b-warn">月$300超で論外</td></tr>
+      <tr class="pick"><td><b>クラウド自作 Wan2.2＋4step</b></td><td>○ 環境モーション</td><td><b>◎崩れない（実証）</b></td><td>○ 弱CFG＋反写実ネガ＋画風アンカーが効く</td><td><b>月¥1,300–3,000</b></td></tr>
+    </tbody>
+  </table>
+  <div class="callout">
+    <p>DomoAI標準には負プロンプト欄もマスクもCFGも無いので、いくら「no realistic」と書いても写実化が止まらなかった。今回の自作ComfyUIは <b>negative_prompt（写実語を殺す）＋ 画風アンカー（木版と明記）＋ 低CFG ＋ 4-step LoRA（再想像を抑える）</b> の制御端子を全部握れる。だから木版画のまま動く。</p>
+  </div>
+</section>
+
+<section>
+  <h2>3. コストの実測と内訳</h2>
+  <table>
+    <thead><tr><th>項目</th><th>実測値</th></tr></thead>
+    <tbody>
+      <tr><td>GPU</td><td>RTX 3090 24GB（RunPod SECURE） <span class="num">$0.22/hr</span></td></tr>
+      <tr><td>1カット生成（832×480・5秒・4step・ウォーム）</td><td class="num">157秒</td></tr>
+      <tr><td>初回のみコールド（モデル読込）</td><td class="num">281秒（1回だけ）</td></tr>
+      <tr><td>1話28カット</td><td>約75分 ≒ <span class="num">1.26 GPU時 ≒ $0.28（¥43）</span></td></tr>
+      <tr class="pick"><td>全シーン毎日（≒850カット/月）</td><td><b>約37 GPU時 × $0.22 ≒ $8 ≒ ¥1,300/月</b></td></tr>
+      <tr><td>余裕を見て（再生成・起動オーバーヘッド・保存）</td><td>実運用 <span class="num">¥2,000–3,000/月</span></td></tr>
+    </tbody>
+  </table>
+  <div class="callout warn">
+    <p><b>最重要の前提</b>：この安さは「<b>生成する時だけPodを起動し、終わったら止める</b>」運用が条件。Podを24時間つけっぱなしにすると $0.22×24×30 ≒ <b>$158/月（¥24,000）</b>になる。→ 自走バッチ（起動→全カット生成→停止）を組むのが必須。今日の検証ハーネスはまさにそれ（起動・DL・生成・停止を自動化済み）。</p>
+  </div>
+</section>
+
+<section>
+  <h2>4. 正直な留保（過大評価しないために）</h2>
+  <ul>
+    <li><span class="badge b-warn">解像度</span> 生成は <b>832×480（Wanの480pティア）</b>。本編は1080p配信なので<b>アップスケール工程が要る</b>（追加時間 or 軽い画質劣化）。720pティアで直接生成も可能だが時間は1.5–2倍に増える＝コスト再計算が必要。</li>
+    <li><span class="badge b-warn">動きの量</span> 4-step LoRAは「ゆるい環境モーション」寄り（雲・光・水）。<b>人物が大きく動く・カメラが大胆に動く</b>ような演出は、ステップ数を増やす/設定を変える必要があり、その分①遅くなる②写実化リスクが上がる、というトレードオフ。見せ場だけ別設定にする運用が現実的。</li>
+    <li><span class="badge b-warn">サンプル数</span> 今回は2カットでの判定。全28カット・他の卦の絵柄でも崩れないかは、本番バッチで全数の0フレーム照合（既存の汚染検出ハーネス流用）で担保する。</li>
+  </ul>
+</section>
+
+<section>
+  <h2>5. あなたが決めること</h2>
+  <div class="opt rec">
+    <h4>A（推奨）：クラウド自作Wan2.2を本番ハーネス化して、ep31を全カット動かしてみる</h4>
+    <p><small>今日立てた基盤をスクリプト化（起動→全カットi2v→1080pアップスケール→停止→0フレーム照合）。ep31一本を実際に全カット動かして、通しで品質と実コストを確定する。月¥2–3千で「全シーン毎日動く本編」が現実になるかを1本で見極める。</small></p>
+  </div>
+  <div class="opt">
+    <h4>B：まず解像度・動き量の詰めを先にやる</h4>
+    <p><small>720p直接生成・動き量を上げた版・アップスケール画質を数カットで比較してから全体へ。品質の上限を見てから本番化したい場合。</small></p>
+  </div>
+  <div class="opt">
+    <h4>C：折衷（コスト最小）— 大半DepthFlow＋見せ場だけ自作Wan2.2</h4>
+    <p><small>「実際に動いてほしい見せ場」だけクラウドWan2.2、その他はDepthFlow($0)据え置き。月¥数百レベル。ただし「全シーン動かす」当初要望からは後退。</small></p>
+  </div>
+</section>
+
+<footer style="border-top:1px solid var(--line);padding-top:16px;margin-top:30px;color:var(--ink2);font-size:13px">
+  検証環境: RunPod RTX 3090 / ComfyUI + Wan2.2-I2V-A14B GGUF Q4_K_M(high+low) + LightX2V 4-step LoRA + umt5 GGUF + wan2.1 VAE。素材: content/051（ep31 トトロ×需）。Pod は停止済み（モデル温存・再開可）。検証実費 約¥130。
+</footer>
+
+</div>
+</body>
+</html>
