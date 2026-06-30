@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>語尾下降DSP 聴き比べ</title>
+<style>
+  :root{--bg:#faf7f0;--ink:#1f2430;--sub:#5b6472;--line:#e4ddcd;--card:#fff;--accent:#e8662a;--ok:#e3f3e6;}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif;line-height:1.7}
+  .wrap{max-width:680px;margin:0 auto;padding:20px 15px 70px}
+  .kicker{font-size:12px;letter-spacing:.15em;color:var(--accent);font-weight:700}
+  h1{font-size:21px;margin:.25em 0 .12em;line-height:1.35}
+  .lede{color:var(--sub);font-size:14.5px;margin:0 0 16px}
+  .player{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:15px 16px;margin:12px 0}
+  .player.dsp{border:2px solid var(--accent);background:#fffaf4}
+  .player h3{margin:0 0 8px;font-size:16px}
+  audio{width:100%}
+  .txt{font-size:13px;color:var(--sub);margin-top:6px}
+  .box{background:var(--ok);border:1px solid #bfe0c6;border-radius:12px;padding:13px 15px;margin:16px 0;font-size:14px}
+  table{width:100%;border-collapse:collapse;font-size:13px;margin:8px 0}
+  th,td{border:1px solid var(--line);padding:6px 9px;text-align:left}
+  th{background:#f3ecdd}
+  .decide{background:#fff;border:2px dashed var(--accent);border-radius:14px;padding:15px 17px;margin:20px 0}
+  .decide h2{border:none;margin:0 0 8px;color:var(--accent);font-size:16px}
+  .opt{padding:6px 0;border-bottom:1px dashed var(--line);font-size:14.5px}
+  .opt:last-child{border-bottom:none}.opt .k{color:var(--accent);font-weight:800;margin-right:7px}
+  .small{font-size:12px;color:var(--sub)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="kicker">語尾下降DSPハーネス ・ 自然さ確認（実音）</div>
+  <h1>聴き比べ：V_08_01 の語尾（補正前 vs 後）</h1>
+  <p class="lede">約束どおり実音で確認してください。文末「…それだけです。」の語尾が、補正前は上がり、補正後は平坦に落ち着きます。<b>イヤホン推奨・語尾だけ注目</b>。</p>
+
+  <div class="player">
+    <h3>① 補正前（原音）</h3>
+    <audio controls preload="metadata"><source src="orig.m4a" type="audio/mp4"></audio>
+    <div class="txt">末尾f0 229Hz（全体中央210の1.09倍）＝語尾上がり</div>
+  </div>
+  <div class="player dsp">
+    <h3>② 補正後（DSP語尾下降）★</h3>
+    <audio controls preload="metadata"><source src="dsp.m4a" type="audio/mp4"></audio>
+    <div class="txt">末尾f0 205Hz（中央の0.98倍）＝平坦に。音声の98.6%は原音のまま（語尾だけ補正）</div>
+  </div>
+
+  <div class="box">
+    <b>検証で分かったこと：</b>
+    <ul style="margin:.4em 0;padding-left:1.2em">
+      <li>intonationScale等の<b>数値レバーはAivisSpeechで無効</b>（実証済み）→ 合成後にf0を直接補正する方式に。</li>
+      <li>真の語尾上がりは<b>32シーン中V_08_01の1件だけ</b>（音域ゲートWORLDで判定。比1.088 vs 次点1.013＝明確に分離→誤発火ゼロ）。</li>
+      <li>補正はWORLDで<b>語尾の窓だけ再合成→原波形へ貼り戻し</b>（音色保持・上げない・潰さない）。</li>
+    </ul>
+  </div>
+
+  <table>
+    <tr><th>項目</th><th>結果</th></tr>
+    <tr><td>発火（誤検出）</td><td>1/32（真の上がりのみ・誤発火0）</td></tr>
+    <tr><td>語尾</td><td>229Hz↑ → 205Hz→平坦</td></tr>
+    <tr><td>変化サンプル</td><td>1.4%（語尾だけ・他は原音保持）</td></tr>
+    <tr><td>音色/長さ</td><td>保持（クリップ/NaN無し）</td></tr>
+  </table>
+
+  <div class="decide">
+    <h2>👉 ②の語尾、自然ですか？</h2>
+    <div class="opt"><span class="k">A</span>自然 → <b>ハーネスに組込み（既定ON）＋ドキュメントの「intonationScaleで平坦化」の誤りを訂正＋ep054に反映</b></div>
+    <div class="opt"><span class="k">B</span>やや不自然 → 下げ量/カーブを微調整して再試聴</div>
+    <div class="opt"><span class="k">C</span>不要 → 採用しない（出力は元々97%平坦・この1件は許容）。ドキュメントの訂正だけ行う</div>
+  </div>
+  <p class="small">Aなら全話の音声生成後に自動で語尾補正が走る形にします（morioki音質はそのまま）。Cでも「数値レバーは効かない」事実はドキュメントに残します。</p>
+</div>
+</body>
+</html>
