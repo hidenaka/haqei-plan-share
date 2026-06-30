@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Harness — おまかせ係（4段ループ）スマホ早見</title>
+<style>
+  :root{
+    --ink:#1a1a1a; --sub:#555; --bg:#f7f5ee; --card:#fff;
+    --line:#e3ddd0; --accent:#2e5a86; --warn:#a4471f; --ok:#2f6d40;
+  }
+  *{box-sizing:border-box}
+  body{
+    font-family:-apple-system,"Hiragino Sans","Hiragino Kaku Gothic ProN",sans-serif;
+    background:var(--bg); color:var(--ink); margin:0;
+    line-height:1.85; -webkit-text-size-adjust:100%;
+  }
+  .wrap{max-width:720px; margin:0 auto; padding:32px 20px 64px}
+  header{margin-bottom:24px}
+  .kicker{font-size:13px; color:var(--accent); letter-spacing:.08em; font-weight:700; margin:0 0 6px}
+  h1{font-size:26px; margin:0 0 8px; line-height:1.35}
+  .lede{font-size:15px; color:var(--sub); margin:0}
+  h2{
+    font-size:19px; margin:34px 0 10px; padding-bottom:6px;
+    border-bottom:2px solid var(--line);
+  }
+  h3{font-size:15px; margin:18px 0 6px; color:var(--accent)}
+  p{margin:8px 0}
+  ul{margin:8px 0 8px 0; padding-left:1.25em}
+  li{margin:5px 0}
+  .card{
+    background:var(--card); border:1px solid var(--line); border-radius:12px;
+    padding:14px 16px; margin:12px 0;
+  }
+  .step{display:flex; gap:10px; align-items:flex-start}
+  .num{
+    flex:0 0 auto; width:28px; height:28px; border-radius:50%;
+    background:var(--accent); color:#fff; font-weight:700; font-size:14px;
+    display:flex; align-items:center; justify-content:center; margin-top:2px;
+  }
+  .tag{
+    display:inline-block; font-size:12px; font-weight:700; padding:2px 8px;
+    border-radius:6px; background:#eef3f7; color:var(--accent); margin-right:6px;
+  }
+  .warn{color:var(--warn); font-weight:600}
+  .ok{color:var(--ok); font-weight:600}
+  code,.mono{
+    font-family:ui-monospace,Menlo,Consolas,monospace; font-size:13px;
+    background:#efece2; padding:1px 5px; border-radius:4px;
+  }
+  pre{
+    background:#1f242b; color:#e6e6e6; padding:12px 14px; border-radius:10px;
+    overflow-x:auto; font-size:13px; line-height:1.6;
+  }
+  table{border-collapse:collapse; width:100%; margin:10px 0; font-size:14px}
+  th,td{border:1px solid var(--line); padding:7px 9px; text-align:left; vertical-align:top}
+  th{background:#efe9dc}
+  .callout{
+    border-left:4px solid var(--accent); background:#eef3f7;
+    padding:10px 14px; border-radius:0 8px 8px 0; margin:12px 0; font-size:14px;
+  }
+  .callout.warn{border-left-color:var(--warn); background:#f7ede8}
+  footer{margin-top:40px; font-size:12px; color:var(--sub); text-align:center}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <p class="kicker">SKILL ／ スマホ早見版</p>
+  <h1>Harness — おまかせ係（4段ループ）</h1>
+  <p class="lede">雑な依頼を〔見極め→ゴール提示→自律実行→検証〕に変換する司令塔。合言葉「ハーネス」で明示起動。内面・感情の相談には使わない。</p>
+</header>
+
+<h2>最重要（4原則）</h2>
+<div class="card">
+  <ul>
+    <li><b>合言葉「ハーネス」で明示起動</b>：文中に「ハーネス」が入ったときだけ。自動発火しない＝勝手に投げ出さない。</li>
+    <li><b>内面/感情の相談には使わない</b>：「モヤモヤ」「やる気」「怖い」や <code>/run-day</code> が主旨なら、たとえ「ハーネス」語があっても Macro/Micro/Coaching へ委譲。</li>
+    <li><b>目標だけ即提示→走る</b>：ゴールを数行見せたら承認を待たず実行へ。止まるのは「停止ゲート」だけ。</li>
+    <li><b>接地してから動く（推測で動かない）</b>：実際の内容と戦略を<b>一次情報で調べてから</b> Frame/Run へ。入力＝前提が間違っていれば自信を持って間違える。</li>
+  </ul>
+</div>
+
+<h2>4段ループ</h2>
+
+<div class="card">
+  <div class="step"><div class="num">1</div><div>
+    <h3 style="margin-top:0">Sense（見極め）</h3>
+    <ul>
+      <li>依頼を分類：即タスク／構築／調査／デバッグ／設計／曖昧。</li>
+      <li><b>沈黙パス判定</b>：些末・内面相談なら即終了。</li>
+      <li><b>収束タスク判定</b>：質を「合格まで詰める」価値がある成果物（コード・構造化文書・データ処理）なら内側ループへ。1発・些末は1パス/沈黙。</li>
+      <li>曖昧で前提が分かれるなら核心を1〜2問だけ確認。</li>
+    </ul>
+  </div></div>
+</div>
+
+<div class="card">
+  <div class="step"><div class="num">1.5</div><div>
+    <h3 style="margin-top:0">接地（Ground）— ★今回の事故の急所</h3>
+    <p>推測で Frame/Run に入らない。<span class="warn">採点表すら、間違った前提で作った成果物を「合格」にしてしまう。</span></p>
+    <ul>
+      <li><b>① 実際の内容を一次情報で</b>：API・実ファイル・実データ・実画面から現状を取る。読めない要素は「要実査」と明示して実物を開く。</li>
+      <li><b>② やり方・戦略も調べる</b>：方針を自分の知識だけで決めない。最適手が不明なら deep-research / Web / codex でやり方自体を調査。</li>
+      <li><b>③ 前提のラベル分け</b>：「検証済み／仮定」に仕分け。未検証の仮定が結論を支えるうちは Run に入らない。</li>
+      <li><b>④ 再接地ループ</b>：状況が変わった／反論された／データと食い違ったら、弁護せず一次情報に戻ってやり直す。可能なら着手前ゲートをスクリプト化し drift を自動フラグ。</li>
+    </ul>
+  </div></div>
+</div>
+
+<div class="card">
+  <div class="step"><div class="num">2</div><div>
+    <h3 style="margin-top:0">Frame（ゴール提示・≤6行）</h3>
+    <pre>🎯 ゴール: &lt;1行&gt;
+✅ 合格条件（採点表）: &lt;観測可能な条件。収束タスクなら threshold/max も&gt;
+🛠 進め方: &lt;直実行 / 計画 / ループ / Workflow / 並列エージェント&gt;＋使うスキル</pre>
+    <p><b>依頼文を書くこと＝採点表を書くこと。</b>採点設計の精度がループ品質のほぼ全てを決める。</p>
+    <h3>採点軸の作り方（3手順）</h3>
+    <ul>
+      <li>① あいまいな形容詞を書き出す（良い／速い／読みやすい）</li>
+      <li>② <b>数えられる事実に翻訳</b>（読みやすい→「1文平均60字以下」）。「平均」か「各文上限」かを明確に。</li>
+      <li>③ 各項目に配点（例：4項目×25点＝100点）。</li>
+    </ul>
+    <div class="callout">翻訳できない質（構成が結論先行か・訴求が刺さるか）は捨てずLLM採点者へ観点として渡す。<br><b>収束タスクは <code>threshold 90 / max 3</code> を1行で宣言。100点は求めない</b>（粗探しが止まらず収束しない・Opusは90-92が落としどころ）。</div>
+  </div></div>
+</div>
+
+<div class="card">
+  <div class="step"><div class="num">3</div><div>
+    <h3 style="margin-top:0">Run（自律実行）</h3>
+    <ul>
+      <li>既存スキルを「手」として選ぶ。実行形態を依頼規模で選ぶ。</li>
+      <li><b class="warn">停止ゲート（ここだけ必ずユーザー確認）</b>：消す/元に戻せない操作、本番反映、秘密・認証操作、cwd外の編集、大きな設計分岐。</li>
+      <li><b>上限</b>：ツール呼び出しや時間が嵩んだら、突き進まず報告して指示を仰ぐ。</li>
+      <li><b>ドリフト対策</b>：内側ループは毎回もとの依頼文を先頭に再注入。指標を満たすだけの抜け穴に最適化していないか警戒。</li>
+      <li>ユーザー規約を尊重：判断材料はHTML、デプロイ規約、質問前ログ確認、「やる気管理しない」等。</li>
+    </ul>
+  </div></div>
+</div>
+
+<div class="card">
+  <div class="step"><div class="num">4</div><div>
+    <h3 style="margin-top:0">Verify（検証）</h3>
+    <ul>
+      <li>「完了」と言う前にテスト実行や実物確認で証拠を取る。</li>
+      <li><b class="warn">自己採点しない（最重要）</b>。採点は作った頭と別の頭にやらせる。AIの3クセ：①自己申告は完了の証拠でない ②期待に迎合し逆算で正当化 ③会話が長いほど判断が鈍る。</li>
+    </ul>
+    <h3>採点する係の4契約</h3>
+    <ul>
+      <li>① <b>まっさらな別の頭(fork)</b>で採点（作る係の会話・言い訳を見せない）</li>
+      <li>② 採点基準を書き換えさせない（裏口を塞ぐ）</li>
+      <li>③ 絶対評価（前回比でなく依頼と採点軸への適合）</li>
+      <li>④ 報告でなく実物を自分で開いて確かめる（<code>wc -m</code> で実測等）</li>
+    </ul>
+    <p><b>採点は構造化して返す</b>：<code>score</code> ／ <code>quality.breakdown</code>（軸ごとの点・キーは周回固定）／ <code>feedback</code>（次周の直し方）／ <code>passed</code>。overall は単純平均でない。</p>
+  </div></div>
+</div>
+
+<h2>内側ループ（収束タスクの反復）</h2>
+<div class="card">
+  <ul>
+    <li>① もとの依頼文＋採点表を先頭に置く（ドリフト対策）</li>
+    <li>② 作る／直す（前回の指摘箇所だけ）</li>
+    <li>③ 別の頭(fork)で独立採点し、score＋breakdown＋直し方を受け取る</li>
+    <li>④ <code>score ≧ threshold</code> で抜ける。未達なら③の直し方を握って②へ</li>
+  </ul>
+  <div class="callout warn">止め方のダイヤルは <b>threshold と max の2つだけ</b>。<code>max</code> 到達／3周連続同点（堂々巡り）で打ち切り。点が出るのに良くならない時は、ダイヤルでなく<b>採点軸を直す</b>。<br><b>最良版を採用</b>：出力は確率的。各周の最良版を別に記録し、最後は最新でなく最良版を採る。<br>コストは「1周＝AI2回課金」（作る係＋採点する係）。</div>
+</div>
+
+<h2>スキル選択 早見表（手）</h2>
+<table>
+  <tr><th>依頼</th><th>起動スキル</th></tr>
+  <tr><td>何か作る・機能追加</td><td>superpowers:brainstorming → writing-plans</td></tr>
+  <tr><td>バグ・不具合</td><td>superpowers:systematic-debugging</td></tr>
+  <tr><td>深い調査・裏取り</td><td>deep-research</td></tr>
+  <tr><td>判断材料を共有</td><td>run-explainer-page / run-confirm-html（HTML 1枚）</td></tr>
+  <tr><td>差分レビュー</td><td>code-review</td></tr>
+  <tr><td>大量並列・段階処理</td><td>Workflow / dispatching-parallel-agents</td></tr>
+  <tr><td>画像</td><td>run-ai-images / wrap-ai-image-edit</td></tr>
+</table>
+
+<h2>禁止</h2>
+<div class="card">
+  <ul>
+    <li>些末な依頼でこの手順を仰々しく回さない（沈黙パス優先）。</li>
+    <li>毎回 codex を呼ばない（軽快さを殺す）。</li>
+    <li>内面・感情の相談に踏み込まない。</li>
+  </ul>
+</div>
+
+<footer>HaQei 限定共有（noindex）／ harness SKILL.md スマホ早見版</footer>
+</div>
+</body>
+</html>
