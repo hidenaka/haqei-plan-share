@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>語尾上がりハーネス 診断</title>
+<style>
+  :root{--bg:#faf7f0;--ink:#1f2430;--sub:#5b6472;--line:#e4ddcd;--card:#fff;--accent:#e8662a;--ok:#e3f3e6;--no:#fde2e0;}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif;line-height:1.7}
+  .wrap{max-width:760px;margin:0 auto;padding:20px 14px 70px}
+  .kicker{font-size:12px;letter-spacing:.15em;color:var(--accent);font-weight:700}
+  h1{font-size:21px;margin:.25em 0 .12em;line-height:1.35}
+  .lede{color:var(--sub);font-size:14.5px;margin:0 0 14px}
+  .verdict{background:var(--no);border:1px solid #f3c4bf;border-radius:12px;padding:13px 15px;margin:14px 0;font-size:14.5px}
+  .verdict b{color:#b5402f}
+  h2{font-size:17px;margin:24px 0 8px;border-left:4px solid var(--accent);padding-left:9px}
+  table{width:100%;border-collapse:collapse;font-size:13px;margin:8px 0}
+  th,td{border:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top}
+  th{background:#f3ecdd}
+  .opt{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:13px 15px;margin:11px 0}
+  .opt.rec{border:2px solid var(--accent);background:#fffaf4}
+  .opt h3{margin:.1em 0 .4em;font-size:15.5px}
+  .opt .k{color:var(--accent);font-weight:800;margin-right:6px}
+  .pro{color:#2f7a4a;font-size:13.5px}.con{color:#b5402f;font-size:13.5px}
+  .decide{background:#fff;border:2px dashed var(--accent);border-radius:14px;padding:15px 17px;margin:22px 0}
+  .decide h2{border:none;padding:0;margin:0 0 8px;color:var(--accent)}
+  .small{font-size:12px;color:var(--sub)}
+  code{background:#f0ece0;padding:1px 5px;border-radius:4px;font-size:12.5px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="kicker">音声ハーネス 診断 ・ 語尾上がり</div>
+  <h1>あなたの指摘は正しい：ハーネスの数値レバーは「効きようがない」</h1>
+  <p class="lede">語尾上がり防止ハーネス（<code>intonationScale=0.30</code>＋per-mora pitch）が守られていない件、実機で原因を確定しました。コードのバグではなく、<b>AivisSpeech（morioki）が数値制御を無視する</b>のが根因です。</p>
+
+  <div class="verdict">
+    <b>結論：</b>AivisSpeech＝Style-Bert-VITS2系の神経モデルで、プロソディは<b>テキストだけ</b>で決まる。AudioQueryの<code>intonationScale</code>も<code>per-mora pitch</code>も<code>tempoDynamicsScale</code>も語尾にほぼ作用しない。だから「<code>intonationScale=0.30</code>で平坦化」は<b>設定はされているが音には反映されない</b>。
+  </div>
+
+  <h2>実証（末尾f0・実機測定）</h2>
+  <table>
+    <tr><th>検証</th><th>結果</th><th>意味</th></tr>
+    <tr><td>FLATTEN ON(0.30) vs OFF(1.0)</td><td>末尾 233 vs 231Hz</td><td><b>ほぼ同一</b>＝intonationScale無効</td></tr>
+    <tr><td>末尾mora pitch=3.0 強制</td><td>末尾 176→176Hz</td><td><b>変化なし</b>＝per-mora pitch無視</td></tr>
+    <tr><td>intonationScale=0.0 / tempoDynamics 0↔2</td><td>末尾 ほぼ不変</td><td>どの数値も効かない</td></tr>
+    <tr><td>実音声32シーン スキャン</td><td>語尾上がり 1/32・読点前 24/265</td><td>出力は<b>大半すでに平坦</b>（モデル任せ）</td></tr>
+    <tr><td>morioki の style</td><td>「ノーマル」1種のみ</td><td>落ち着きstyleへの切替も不可</td></tr>
+  </table>
+  <p class="small">＝ハーネスは「設定上ON」でも、AivisSpeechがその数値を捨てるため、語尾の制御は実質モデル任せ。残る上がりは個別テキストの読み方依存。</p>
+
+  <h2>効く直し方（トレードオフ）</h2>
+
+  <div class="opt rec">
+    <h3><span class="k">A</span>DSP語尾補正をハーネス化【推奨】</h3>
+    <div>合成後の波形で「上がっている語尾」を検出し、末尾だけ下げる後処理を挟む。エンジン非依存で<b>確実に効く</b>。</div>
+    <div class="pro">👍 morioki音質のまま・全話に効く・数値が嘘をつかない</div>
+    <div class="con">⚠️ ピッチ補正の音質を要検証（librosa導入＋自然さQA）。私が試作→実音で確認してから採用</div>
+  </div>
+  <div class="opt">
+    <h3><span class="k">B</span>テキスト側で個別対処</h3>
+    <div>上がる箇所だけ言い回し・句読点・文分割を調整（プロソディはテキスト駆動なので効く）。</div>
+    <div class="pro">👍 低リスク・追加実装ほぼ不要</div>
+    <div class="con">⚠️ 話ごとの個別作業＝ハーネス化できない・取りこぼし</div>
+  </div>
+  <div class="opt">
+    <h3><span class="k">C</span>エンジン併用（語尾だけVOICEVOX等）</h3>
+    <div>f0制御が効くエンジンを語りの一部に使う／全面切替。</div>
+    <div class="con">⚠️ morioki音質を一部/全部捨てる・大改修</div>
+  </div>
+  <div class="opt">
+    <h3><span class="k">D</span>現状許容＋ハーネス記述だけ正す</h3>
+    <div>実測で出力は97%平坦。残り1〜数箇所だけ私が手直しし、「intonationScaleは効かない」と正直にドキュメント修正。</div>
+    <div class="pro">👍 今すぐ・追加コストゼロ</div>
+    <div class="con">⚠️ 「ゼロにする」保証はできない</div>
+  </div>
+
+  <div class="decide">
+    <h2>👉 どの方針で直しますか？</h2>
+    <div>私の推し＝<b>A（DSP語尾補正をハーネス化）</b>。「効いていると思ったのに効いていない」を根絶できる唯一の手で、morioki音質も保てます。まず私が試作して実音で自然さを確認し、ダメなら採用しません。</div>
+  </div>
+  <p class="small">どれを選んでも、第34話の現音声は大半平坦なので、必要なら該当箇所だけ先に直せます。方針をA/B/C/Dで教えてください。</p>
+</div>
+</body>
+</html>
