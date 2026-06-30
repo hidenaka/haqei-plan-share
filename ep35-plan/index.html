@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第35話 企画承認ゲート — 題材えらび</title>
+<style>
+  :root{
+    --ink:#1a1c22; --sub:#5b6270; --line:#e6e3da; --paper:#faf8f2;
+    --accent:#c0392b; --gold:#b8860b; --good:#2e7d52; --warn:#b9770e;
+    --card:#ffffff; --hl:#fff8e6;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);
+    font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",system-ui,sans-serif;
+    line-height:1.75;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:980px;margin:0 auto;padding:32px 22px 80px}
+  .kicker{font-size:13px;letter-spacing:.14em;color:var(--accent);font-weight:700}
+  h1{font-size:30px;line-height:1.3;margin:.3em 0 .2em}
+  .lede{color:var(--sub);font-size:15px;margin:0 0 18px}
+  .tldr{background:var(--hl);border:1px solid #f0e2b8;border-radius:12px;padding:14px 18px;margin:18px 0 26px}
+  .tldr b{color:var(--gold)}
+  .tldr ul{margin:.4em 0 0;padding-left:1.2em}
+  figure{margin:24px 0;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:#fff}
+  figure img{display:block;width:100%}
+  figcaption{font-size:12px;color:var(--sub);padding:8px 14px;background:#fbfbf8}
+  h2{font-size:20px;margin:38px 0 10px;padding-bottom:6px;border-bottom:2px solid var(--line)}
+  h3{font-size:16px;margin:22px 0 6px}
+  table{width:100%;border-collapse:collapse;font-size:13.5px;margin:14px 0}
+  th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+  th{background:#f4f2ea;font-weight:700}
+  tr.rec td{background:var(--hl)}
+  .badge{display:inline-block;font-size:11px;font-weight:700;border-radius:999px;padding:2px 9px;margin-right:4px}
+  .b-rec{background:#fdecea;color:var(--accent)}
+  .b-gua{background:#eef4ff;color:#2456b8}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px 20px;margin:16px 0}
+  .card.rec{border-color:var(--gold);box-shadow:0 1px 0 #f0e2b8}
+  .acts{counter-reset:act;margin:10px 0 0;padding:0;list-style:none}
+  .acts li{position:relative;padding:7px 0 7px 40px;border-bottom:1px dashed var(--line)}
+  .acts li:before{counter-increment:act;content:counter(act);position:absolute;left:0;top:7px;
+    width:26px;height:26px;border-radius:50%;background:var(--ink);color:#fff;
+    font-size:13px;font-weight:700;text-align:center;line-height:26px}
+  .acts li:last-child{border-bottom:none}
+  .acts b{color:var(--accent)}
+  .decision{margin-top:14px;background:#0f1320;color:#f3f1ea;border-radius:16px;padding:24px 26px}
+  .decision h2{color:#fff;border-color:#33384a}
+  .opt{border:1px solid #333a4d;border-radius:12px;padding:12px 16px;margin:12px 0;background:#171c2c}
+  .opt .k{font-weight:800;color:#ffd479;font-size:15px}
+  .opt.primary{border-color:#ffd479;background:#1d2336}
+  .opt small{color:#aab2c5}
+  .quote{font-size:13px;color:var(--sub);border-left:3px solid var(--gold);padding:4px 0 4px 12px;margin:8px 0;background:#fcfbf6}
+  .foot{color:var(--sub);font-size:12.5px;margin-top:30px;border-top:1px solid var(--line);padding-top:14px}
+  .gate{display:inline-block;background:#fdecea;color:var(--accent);font-weight:700;font-size:12px;border-radius:8px;padding:4px 10px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="kicker">アニメ×易経・全64話 ／ 制作承認ゲート</div>
+  <h1>第35話 企画 — どの題材×卦で作る？</h1>
+  <p class="lede">content/055・公開枠 2026-07-14 予定。<span class="gate">人間承認ゲート</span> ここで止まって、あなたの「これで作って」を待ちます。</p>
+
+  <div class="tldr">
+    <b>TL;DR（3行）</b>
+    <ul>
+      <li>全34話で使った卦・作品を除外 → topic-radarの<b>未使用卦×未使用大型IP</b>だけに絞った6候補。</li>
+      <li>新IPは過去実績データが無い（channelPerf/themeEff＝全0.50）。現状の律速＝<b>SHORTSフィード初速＝認知度</b>が効く。</li>
+      <li>推薦＝<b>名探偵コナン × 蠱（こ）</b>。認知度トップ0.92 ＆ 卦「腐敗を建て直す」が探偵という物語と構造一致。</li>
+    </ul>
+  </div>
+
+  <figure>
+    <img src="images/overview-01.png" alt="第35話 題材6候補の比較ボード">
+    <figcaption>6候補の俯瞰ボード（左上★＝推薦のコナン×蠱）。数字は topic-radar / growth-state の実測由来。</figcaption>
+  </figure>
+
+  <h2>候補6つ（すべて未使用卦×未使用大型IP）</h2>
+  <table>
+    <tr><th>題材</th><th>卦</th><th>認知度</th><th>radar総合</th><th>飽和<br><small>低い=競合少</small></th><th>人生の機微（自分ごと転移）</th></tr>
+    <tr class="rec"><td><b>名探偵コナン</b> 🔍<br><span class="badge b-rec">★推薦</span></td><td><span class="badge b-gua">蠱 こ</span><br>#18 建て直し</td><td><b>0.92</b><br>最高</td><td>53</td><td>0.55</td><td>見て見ぬふりした澱みは、正されるまで腐り続ける</td></tr>
+    <tr><td>BLEACH 🗡️<br><small>対抗</small></td><td><span class="badge b-gua">震 しん</span><br>#51 衝撃</td><td>0.90</td><td><b>58</b></td><td>0.45</td><td>突然すべて崩れた時、最初に動けた人が後を分ける</td></tr>
+    <tr><td>ジョジョ ⭐</td><td><span class="badge b-gua">同人</span></td><td>0.85</td><td>55</td><td>0.50</td><td>本当の仲間は、得でなく志でつながる</td></tr>
+    <tr><td>風の谷のナウシカ 🌱</td><td><span class="badge b-gua">坤 こん</span></td><td>0.82</td><td><b>59</b></td><td><b>0.35</b>最小</td><td>抗うより受け止める人が、いちばん遠くまで進む</td></tr>
+    <tr><td>Re:ゼロ 🔁</td><td><span class="badge b-gua">小過</span></td><td>0.78</td><td>54</td><td>0.45</td><td>一発逆転より、小さくやり直す方が確かに進む</td></tr>
+    <tr><td>五等分の花嫁 💍</td><td><span class="badge b-gua">帰妹</span></td><td>0.72</td><td>52</td><td>0.40</td><td>惹かれる順番と、結ばれる順番は違う</td></tr>
+  </table>
+  <p style="font-size:12.5px;color:var(--sub)">※ channelPerf/themeEff は新IPのため全0.50（実データ無し）。差がつくのは<b>認知度</b>＝ショートのコールドスタート初速の律速。現状 growth-state＝再生95.2%がSHORTSフィード依存・シェアほぼ0。</p>
+
+  <h2>推薦の理由 — 名探偵コナン × 蠱</h2>
+  <div class="card rec">
+    <h3>なぜこの組み合わせか</h3>
+    <ul>
+      <li><b>認知度0.92（候補最高）</b> — いま伸びの律速はSHORTSフィード初速。誰もが知っている入口が一番効く。</li>
+      <li><b>卦と物語が構造一致</b>：蠱＝山(止まって動かない)の下で風(本来動くべきもの)が淀む形＝「見て見ぬふりされた澱みの堆積」。探偵＝その澱みを暴いて建て直す者。事件は突然起きていない、ずっと前から腐っていた。</li>
+      <li><b>処方箋（動画の本体）が作りやすい</b>：蠱は爻辞が「親の澱みをどう建て直すか（幹父之蠱）」を段階で語る稀有な卦。「どうすればいいか」に具体で答えられる。</li>
+      <li><b>registry効率</b>：蠱は意味が特殊（腐敗・相続・建て直し）で他作品に当てにくい卦。コナンで使うのが噛み合う。</li>
+    </ul>
+    <div class="quote">卦辞「WORK ON WHAT HAS BEEN SPOILED／蠱は元いに亨る。大川を渉るに利ろし。甲に先だつ三日、甲に後るる三日。」（db/hexagrams.json #18）</div>
+
+    <h3>6幕アウトライン（v2.2・タイトルは台本確定後）</h3>
+    <ul class="acts">
+      <li><b>違和感（30秒）</b>：コナンは「事件を解く」話だと思われてる。でも毎回やってるのは、放置された澱みの掘り起こし。</li>
+      <li><b>観察（3-5分）</b>：事件の構造＝恨み・隠蔽・先延ばしが何年も熟成して、ある日"事件"として噴き出す。作中実例2-3件（fact_checkで一次確認してから使用）。</li>
+      <li><b>種明かし（2-3分）</b>：これが蠱という卦。六爻図(GUA6)で構造を提示＋卦辞。</li>
+      <li><b>風刺の刃（30秒-1分）</b>：刃は作品でなく社会と自分へ。「まだ大丈夫」の先延ばしは"何もしてない"のでなく、腐敗を進めている。</li>
+      <li><b>処方箋（1.5-3分・本体）</b>：蠱の爻辞で建て直しを段階に：①原因を遡る ②責めずに引き継ぐ ③建て直しは渡河に値する大事。先延ばしを今日どう一段だけ動かすか。</li>
+      <li><b>余韻（30秒）</b>：コナンが去った後、関係者は澱みと向き合い直す。解決は終わりでなく、建て直しの始まり。</li>
+    </ul>
+    <p style="font-size:13px;color:var(--sub);margin-top:10px"><b>比較作品</b>（同じ蠱の入口で違う出口）：相続・家業の澱みを建て直す／放置する物語を1-2本（台本段階で確定）。</p>
+  </div>
+
+  <h2>対抗 — BLEACH × 震（しん）</h2>
+  <div class="card">
+    <p>認知度0.90・radar総合は候補最高の58・浮世絵映え最高（雷／刀／喪失の夜）。卦＝雷の上に雷＝衝撃。<b>一護が家族を失った突然の夜に刀を取った</b>＝「突然すべて崩れた時、最初に動けた人が後を分ける」。</p>
+    <div class="quote">卦辞「SHOCK brings success／震は亨る。震来たりて虩虩たり、笑言啞啞たり。震、百里を驚かすも、匕鬯を喪わず。」（db #51）＝衝撃に動じず祭器を取り落とさぬ者が後を分ける。</div>
+    <p style="font-size:13px;color:var(--sub)">コナンとの違い：物語の力強さ・絵の映えはBLEACHが上。卦と物語の"構造の噛み合い"と処方箋の作りやすさはコナン×蠱が上。</p>
+  </div>
+
+  <div class="decision">
+    <h2>あなたに決めてほしいこと</h2>
+    <p style="color:#cfd5e4;font-size:14px;margin-top:0">第35話を「どの題材×卦」で作るか。選んだらこの企画で<b>台本制作（Step2）</b>へ進みます。タイトルは台本が固まってから別途3案出します（今は決めません）。</p>
+    <div class="opt primary">
+      <div class="k">A. 名探偵コナン × 蠱（推薦）</div>
+      <small>認知度トップ＋卦と物語が構造一致＋処方箋が強い。「これで作って」でStep2着手・07-14枠をclaim。</small>
+    </div>
+    <div class="opt">
+      <div class="k">B. BLEACH × 震</div>
+      <small>映え・物語の力で行くなら。卦辞も衝撃→再起で綺麗に立つ。</small>
+    </div>
+    <div class="opt">
+      <div class="k">C. 他の候補にする</div>
+      <small>ジョジョ×同人 ／ ナウシカ×坤（飽和最小） ／ Re:ゼロ×小過 ／ 五等分×帰妹 から指定。</small>
+    </div>
+    <div class="opt">
+      <div class="k">D. 6幕の中身を直してから決める</div>
+      <small>狙い・比較作品・刃の向きなどを調整したい点を指示。</small>
+    </div>
+  </div>
+
+  <p class="foot">
+    出典：候補スコア＝<code>analytics/topic-radar.json</code>（2026-06-29更新）／ 現状＝<code>growth-state.mjs</code> 実測（登録64・再生95.2%がSHORTSフィード）／ 卦辞＝<code>db/hexagrams.json</code>。
+    話数・卦は <code>essay.sh</code> で全34話の使用済みを除外して確定。確度：認知度・飽和はradarの推定値（実IP配信データはまだ無し）。
+  </p>
+
+</div>
+</body>
+</html>
