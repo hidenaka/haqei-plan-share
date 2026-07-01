@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>成長ループを2階建てに — growth-tick 再構築レビュー</title>
+<style>
+  :root {
+    --ink: #1a1a1a;
+    --ink-2: #4a4a4a;
+    --bg: #f7f5ee;
+    --paper: #fbf9f1;
+    --line: #d8d2bf;
+    --accent: #cc785c;
+    --accent-soft: #f5e0d6;
+    --warn: #c83a2c;
+    --warn-soft: #f6dcd6;
+    --yellow: #f4d35e;
+    --shadow: 0 1px 0 rgba(0,0,0,.04), 0 8px 24px rgba(0,0,0,.06);
+    --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+    --sans: -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN",
+            "Hiragino Sans", "Noto Sans JP", "Yu Gothic", "Meiryo", sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 56px 28px 96px; }
+  .hero { margin-bottom: 56px; }
+  .hero .kicker {
+    display: inline-block;
+    background: var(--accent); color: #fff;
+    font-size: 12px; font-weight: 700; letter-spacing: .12em;
+    padding: 6px 12px; border-radius: 999px;
+    margin-bottom: 18px;
+  }
+  .hero h1 { font-size: 40px; line-height: 1.3; margin: 0 0 14px; letter-spacing: -.01em; }
+  .hero h1 b { color: var(--accent); }
+  .hero p.lede { font-size: 18px; color: var(--ink-2); margin: 0; max-width: 780px; }
+  .tldr {
+    margin-top: 28px; padding: 22px 24px;
+    background: var(--paper); border: 1px solid var(--line); border-radius: 12px;
+    box-shadow: var(--shadow);
+  }
+  .tldr h2 { font-size: 13px; letter-spacing: .15em; color: var(--accent); margin: 0 0 10px; }
+  .tldr ol { margin: 0; padding-left: 20px; }
+  .tldr li { margin: 4px 0; }
+  section { margin: 64px 0 0; }
+  section > h2 {
+    font-size: 28px; line-height: 1.4; margin: 0 0 6px;
+    border-left: 6px solid var(--accent); padding-left: 12px;
+  }
+  section > h2 .num { color: var(--accent); font-variant-numeric: tabular-nums; margin-right: 10px; }
+  section > p.sub { color: var(--ink-2); margin: 0 0 22px; }
+  figure {
+    margin: 0 0 24px; padding: 12px;
+    background: var(--paper); border: 1px solid var(--line); border-radius: 14px;
+    box-shadow: var(--shadow);
+  }
+  figure img { display: block; width: 100%; height: auto; border-radius: 8px; }
+  figcaption { font-size: 13px; color: var(--ink-2); margin-top: 10px; text-align: center; }
+  .table {
+    width: 100%; border-collapse: collapse; margin: 12px 0 6px;
+    background: var(--paper); border: 1px solid var(--line); border-radius: 12px; overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+  .table th, .table td {
+    text-align: left; padding: 12px 14px; border-bottom: 1px solid var(--line);
+    vertical-align: top; font-size: 14.5px;
+  }
+  .table th { background: #efeadb; font-weight: 700; }
+  .table tr:last-child td { border-bottom: 0; }
+  .table .pick { background: var(--accent-soft); }
+  .table .pick td:first-child { font-weight: 700; color: var(--accent); }
+  pre {
+    margin: 0; padding: 16px 18px;
+    background: #1f2226; color: #e8e6df; border-radius: 10px;
+    font-family: var(--mono); font-size: 13px; line-height: 1.65;
+    overflow-x: auto;
+  }
+  pre .c { color: #8a8f78; }
+  pre .k { color: #6ec5a8; }
+  pre .s { color: #f4d35e; }
+  code.inline {
+    font-family: var(--mono); font-size: .92em;
+    background: #efeadb; padding: 1px 6px; border-radius: 4px;
+  }
+  .callout {
+    margin: 18px 0; padding: 16px 18px;
+    border-left: 4px solid var(--accent); background: var(--accent-soft);
+    border-radius: 0 10px 10px 0;
+  }
+  .callout.warn { border-color: var(--warn); background: var(--warn-soft); }
+  .callout p { margin: 0; }
+  .callout strong { color: var(--accent); }
+  .callout.warn strong { color: var(--warn); }
+  .conclusion {
+    margin-top: 56px; padding: 28px 28px 24px;
+    background: var(--ink); color: #f6f3e8; border-radius: 16px;
+  }
+  .conclusion h2 { color: var(--yellow); border: 0; padding: 0; margin: 0 0 12px; }
+  .conclusion ol { margin: 0; padding-left: 20px; }
+  .conclusion li { margin: 6px 0; }
+  .conclusion code.inline { background: #2c2f33; color: #f6f3e8; }
+  footer { margin-top: 36px; color: var(--ink-2); font-size: 13px; }
+  @media (max-width: 720px) {
+    .wrap { padding: 32px 18px 64px; }
+    .hero h1 { font-size: 30px; }
+    section > h2 { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <span class="kicker">GROWTH LOOP 再構築レビュー</span>
+    <h1>成長ループを<b>2階建て</b>に — 期日駆動の外側ループ × fork独立採点の内側ループ</h1>
+    <p class="lede">登録1000人ハーネス（growth-state / growth-loop / pdca）の上に、<b>判定漏れ・停滞・自己採点</b>の3穴を機械的に塞ぐ層を実装しました。初回実行で判定負債4件を即検出しています。</p>
+    <div class="tldr">
+      <h2>TL;DR</h2>
+      <ol>
+        <li>外側: <code class="inline">node scripts/growth-tick.mjs</code> が毎日「今日やるべき判定・制作」を機械列挙（judge_due走査＋律速台帳照合＋登録ペース）</li>
+        <li>内側: サムネ/タイトル/フック/ショート台本は<b>固定採点表（threshold 90 / max 3）のfork独立採点合格</b>が人間ゲート前の必須条件に</li>
+        <li>初回実行の実検出: H-CTR-1判定<b>9日漏れ</b>・計測<b>16日停止</b>・coordタスク<b>28件超過</b>・登録ペース0.56/日（このままだと1000まで約4.5年）</li>
+      </ol>
+    </div>
+  </header>
+
+  <section>
+    <h2><span class="num">01</span>何を作ったか — 2階建てループの全体像</h2>
+    <p class="sub">既存ハーネスは「計測→診断→提案→判定」の部品は揃っていたが、部品をつなぐ<b>時計</b>と<b>審査員</b>がいなかった。</p>
+    <figure>
+      <img src="images/concept-01-01.png" alt="外側ループ(期日駆動)と内側ループ(独立採点)の2階建て構造">
+      <figcaption>外側=期日駆動で回り続ける水車 / 内側=クリエイティブを合格まで研ぐ職人</figcaption>
+    </figure>
+    <p>今回の再接地で見つかった既存ループの本当の弱点は、診断の質ではなく<b>「ループが止まっても誰も気づかない」</b>ことでした。判定期日が自由記述（<code class="inline">check_after: "2026-07-15（最長2週間…）"</code>）で人間の記憶頼み。実際に H-CTR-1 は判定期日6/23を9日過ぎ、metrics-snapshot は16日止まっていました。</p>
+    <table class="table">
+      <thead><tr><th>層</th><th>新設物</th><th>塞ぐ穴</th></tr></thead>
+      <tbody>
+        <tr class="pick"><td>外側ループ</td><td>scripts/growth-tick.mjs ＋ lib/tick.mjs（テスト12本）</td><td>判定漏れ・停滞・律速の放置</td></tr>
+        <tr><td>律速台帳</td><td>analytics/bottleneck.json（SSOT）</td><td>「第一律速に実験が張られていない」状態と診断の鮮度切れ（30日で再接地強制）</td></tr>
+        <tr><td>内側ループ</td><td>analytics/eval-schemas/ 4種（サムネ/タイトル/フック/ショート台本）</td><td>作った頭の自己採点</td></tr>
+        <tr><td>規律</td><td>judge_due 事前登録ルール（runbook＋CLAUDE.md焼き込み）</td><td>「公開+7日」のような機械が読めない期日</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2><span class="num">02</span>外側ループ growth-tick — 判定漏れ・停滞・律速放置を毎日検出</h2>
+    <p class="sub">成長セッションの入口が growth-state 単体から growth-tick（growth-state内包）へ。「推測で動かない」に「<b>忘れずに動く</b>」が加わった。</p>
+    <figure>
+      <img src="images/concept-02-01.png" alt="growth-tickが検出する3つの穴: 判定漏れ・停滞・律速の放置">
+      <figcaption>1コマンドで「今日のフォーカス・アクション・停滞フラグ」が出る</figcaption>
+    </figure>
+    <p>2026-07-02 の実出力（実データ・脚色なし）:</p>
+    <pre><span class="c">━━━ 🔄 growth-tick @ 2026-07-02 ━━━</span>
+🎯 第一律速: 本編CTR（中央値0.9%・健全4-6%の1/4） — サムネ視認性
+📈 登録 66/1000（残り934） / 直近16日 +9（0.56/日） / 到達まで約1661日
+
+<span class="k">--- 📌 今日のアクション 33件 ---</span>
+🔔 H-CTR-1: 判定期日超過9日 → yt-ctr取得後 growth-loop judge
+⏳ H42: 判定まで残り13日（2026-07-15）
+🎬 H35/H37: コホート未成立(0/3) → 仮説適用ショートの制作が次アクション
+📋 coordタスク期日超過 28件（5件表示+集約）
+
+<span class="k">--- 🚩 停滞・規律フラグ ---</span>
+[WARN] judge-overdue / coord-tasks-overdue / measurement-stale</pre>
+    <div class="callout">
+      <p><strong>設計の要点:</strong> 期日は <code class="inline">judge_due</code>（ISO日付・実験claim時に必須）を第一に読み、無ければ check_after の自由記述から日付抽出にフォールバック。律速台帳と実験台帳を突き合わせ、<b>第一律速に実験ゼロ</b>や<b>診断が30日超え（再接地せよ）</b>も警告します。</p>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="num">03</span>内側ループ — 作った頭に合格を出させない</h2>
+    <p class="sub">律速はCTR 0.9%と冒頭離脱＝クリエイティブの質そのもの。外側を何周回しても、1周で出すクリエイティブが弱ければ不合格が並ぶだけ。</p>
+    <figure>
+      <img src="images/concept-03-01.png" alt="作る→fork採点→直すの円環と90点ゲート">
+      <figcaption>まっさらなforkが固定採点表で絶対評価。合格版だけが人間ゲートへ</figcaption>
+    </figure>
+    <p>採点表は4種、各6軸・重み合計100点・<b>breakdownキーは周回をまたいで固定</b>。criteriaは実測データから「数えられる事実」に翻訳してあります（例: サムネ=360px実寸で1行7字以内×2行・明るい焦点1点、フック=1文目が損得の断定・最初の90字に前置きなし＝L11実測「冒頭7-18秒で40-45%離脱」への直接対応）。</p>
+    <table class="table">
+      <thead><tr><th>採点表</th><th>対応する律速</th><th>採点の骨子（抜粋）</th></tr></thead>
+      <tbody>
+        <tr class="pick"><td>thumbnail.json</td><td>第一律速: CTR 0.9%</td><td>360px可読30点・単一焦点20点・明るさ15点・好奇心ギャップ15点</td></tr>
+        <tr><td>long-hook.json</td><td>第二律速: 冒頭離脱40-45%</td><td>1文目断定30点・前置きなし20点・サムネ約束回収15点</td></tr>
+        <tr><td>short-script.json</td><td>第三律速: share/save≒0</td><td>1秒目断言25点・シェア装置25点（無ければ0点）・ループ設計15点</td></tr>
+        <tr><td>title.json</td><td>検索/ブラウズの分母</td><td>名前先出し25点・好奇心ギャップ25点・【第N話・卦】15点</td></tr>
+      </tbody>
+    </table>
+    <div class="callout warn">
+      <p><strong>採点者の4契約:</strong> ①まっさらなfork（制作会話を見せない）②採点基準の書き換え禁止 ③絶対評価 ④実物を自分で開いて実測。この仕組み自体も同じ方法で検証済み — 独立forkによる採点で <b>97/100（threshold 90合格）</b>、指摘2点は反映済み。</p>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="num">04</span>検証結果と今日の実検出（あなたの判断材料）</h2>
+    <p class="sub">仕組みの検証は完了。以下は初回tickが検出した「実在する負債」で、次のセッションの作業リストです。</p>
+    <table class="table">
+      <thead><tr><th>検出</th><th>意味</th><th>次アクション</th></tr></thead>
+      <tbody>
+        <tr class="pick"><td>H-CTR-1 判定9日超過</td><td>コピー変種A/B（ep1/5/7）が判定されないまま放置</td><td>yt-ctr取得 → growth-loop judge（H42と結論を突き合わせ）</td></tr>
+        <tr><td>計測16日停止</td><td>timeseries最終snapshot 6/16</td><td>metrics-snapshot 再開（週次）</td></tr>
+        <tr><td>coordタスク28件期日超過</td><td>完了済みなのに未消化 or 実未着手が混在</td><td>棚卸し（実行 or task-done）</td></tr>
+        <tr><td>H35/H37 コホート0/3</td><td>登録CTA・シェア装置の検証が制作待ちで止まっている</td><td>仮説適用ショート3本の制作</td></tr>
+      </tbody>
+    </table>
+    <p>検証の証跡: 純関数テスト<b>12本PASS</b>（<code class="inline">node scripts/test-growth-tick.mjs</code>）・実データでexit 0・独立fork採点97/100。登録ペース0.56/日という現実も、ごまかさずダッシュに常時表示されます（ペースが変わらなければ戦略を疑う、が次の再接地トリガー）。</p>
+    <div class="callout">
+      <p><strong>報酬ハッキング対策:</strong> 数字は全て一次情報（videos.list / timeseries / 実験台帳）から機械算出。tick自身は何も公開・変更しない読み取り専用で、実行系（judge・publish）は既存の人間ゲート付きコマンドに委譲します。</p>
+    </div>
+  </section>
+
+  <div class="conclusion">
+    <h2>結論</h2>
+    <ol>
+      <li>ループの価値は回数でなく<b>「止め方」と「1周の質」</b>。止め方＝judge_dueの機械比較、1周の質＝fork独立採点に翻訳した</li>
+      <li>初回tickが判定負債4件を可視化＝初日から仕事をしている。テスト12本PASS＋独立採点97/100で検証済み</li>
+      <li>次アクション: H-CTR-1判定（9日超過）→ metrics-snapshot再開 → coordタスク棚卸し → H35/H37コホート制作</li>
+    </ol>
+  </div>
+
+  <footer>題材: scripts/growth-tick.mjs / scripts/lib/tick.mjs / analytics/bottleneck.json / analytics/eval-schemas/ / docs/growth-harness-runbook.md — 2026-07-02</footer>
+
+</div>
+</body>
+</html>
