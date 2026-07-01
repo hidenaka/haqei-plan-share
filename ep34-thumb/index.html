@@ -4,64 +4,62 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex">
-<title>第34話 サムネ（Tier A）</title>
+<title>第34話 サムネ（新方式・洞察型）</title>
 <style>
   :root{--bg:#faf7f0;--ink:#1f2430;--sub:#5b6472;--line:#e4ddcd;--card:#fff;--accent:#e8662a;--ok:#e3f3e6;}
   *{box-sizing:border-box}
   body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif;line-height:1.7}
-  .wrap{max-width:640px;margin:0 auto;padding:20px 15px 70px}
+  .wrap{max-width:680px;margin:0 auto;padding:20px 15px 70px}
   .kicker{font-size:12px;letter-spacing:.15em;color:var(--accent);font-weight:700}
   h1{font-size:20px;margin:.25em 0 .12em;line-height:1.35}
   .lede{color:var(--sub);font-size:14px;margin:0 0 12px}
   figure{margin:12px 0;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#111}
   figure img{display:block;width:100%}
   figcaption{font-size:12px;color:var(--sub);padding:7px 12px;background:#fffdf7}
-  .mock{max-width:400px;margin:12px auto;display:block;border:1px solid var(--line);border-radius:10px}
   .box{background:var(--ok);border:1px solid #bfe0c6;border-radius:12px;padding:12px 14px;margin:14px 0;font-size:13.5px}
-  table{width:100%;border-collapse:collapse;font-size:13px;margin:8px 0}
-  th,td{border:1px solid var(--line);padding:6px 9px;text-align:left}
-  th{background:#f3ecdd}
   .decide{background:#fff;border:2px dashed var(--accent);border-radius:14px;padding:15px 17px;margin:18px 0}
   .decide h2{border:none;margin:0 0 8px;color:var(--accent);font-size:16px}
   .opt{padding:6px 0;border-bottom:1px dashed var(--line);font-size:14.5px}
   .opt:last-child{border-bottom:none}.opt .k{color:var(--accent);font-weight:800;margin-right:7px}
   .small{font-size:12px;color:var(--sub)}
+  .ref{max-width:340px;border-radius:8px;border:1px solid var(--line);display:block;margin:6px 0}
 </style>
 </head>
 <body>
 <div class="wrap">
-  <div class="kicker">essay-episode Step9 ・ Tier Aサムネ（CTRの律速）</div>
-  <h1>第34話 サムネ案</h1>
-  <p class="lede">確定タイトルから題字を起こしました。無名小chの律速＝サムネ＝入口。実寸で読めるかを最優先。</p>
-
-  <figure>
-    <img src="images/full.png" alt="第34話 サムネ フル">
-    <figcaption>フル（1280×720）。タグ「ハンターハンター」赤／問い「キルアが家を出て／連れてきたもの」／卦バッジ「旅」。</figcaption>
-  </figure>
-
-  <img class="mock" src="images/mock.png" alt="実寸モック 380/360/180px">
-  <div class="small" style="text-align:center">↑ フィード実寸（380 / 360 / 180px）。180pxでも問い文字が読めることを確認。</div>
+  <div class="kicker">第34話 サムネ ・ 新方式（三井寿ライブテスト型）</div>
+  <h1>洞察型サムネ A/B — 旧tierAは廃棄</h1>
+  <p class="lede">ご指摘の新ハーネス＝三井寿でライブテスト中の型（シネマ比喩背景＋読み替えステートメント＋卦バッジ・作品名タグなし）を特定し、<code>make-thumbnail-insight.py</code>としてハーネス化。ep34を同型で作りました。</p>
 
   <div class="box">
-    <b>設計（Tier A）：</b>①作品名タグ（赤・上部）②問い型コピー＝<b>「連れてきたもの」で余白を残す</b>（何を?＝針を視聴者に埋めさせる・タイトルと同じ"言い切らない"方針）③門＝家を出るキルア＋金の月アンカー ④卦バッジ「旅」。<br>
-    <b>ベース選定：</b>藍墨で暗い門の構図（A09）を採用＝コピーが地に埋もれず180pxで読める（金の陽が明るいA28や忙しいA12は文字が沈むため不採用）。
+    <b>参考＝三井寿ライブ（今テスト中の実物）：</b><br>
+    <img class="ref" src="images/ref_mitsui.jpg" alt="三井寿ライブサムネ">
+    小見出し「どん底から戻れる人の共通点」＋特大「復活は、地中で始まる」＋卦バッジ。この文法に合わせています。
   </div>
 
-  <table>
-    <tr><th>要素</th><th>内容</th></tr>
-    <tr><td>タグ</td><td>ハンターハンター（赤・検索の旗）</td></tr>
-    <tr><td>問い</td><td>キルアが家を出て／連れてきたもの（余白型）</td></tr>
-    <tr><td>卦バッジ</td><td>旅</td></tr>
-    <tr><td>可読性</td><td>180pxで問い読める ✅</td></tr>
-  </table>
+  <figure>
+    <img src="images/A.png" alt="A 好奇心ギャップ">
+    <figcaption><b>A（好奇心ギャップ）</b>：小見出し「環境を変えても、なぜか苦しい人へ」＋「<b>逃げた先に、先回りしているもの</b>」— 何が?の空白で引く</figcaption>
+  </figure>
+
+  <figure>
+    <img src="images/B.png" alt="B 損失フレーム">
+    <figcaption><b>B（損失フレーム）</b>：同じ小見出し＋「<b>場所を変えても、自分だけは連れて行く</b>」— 損失の言い切りで刺す</figcaption>
+  </figure>
+
+  <figure>
+    <img src="images/mock.png" alt="実寸モック">
+    <figcaption>実寸モック（240px / 180px）— どちらも読めることを確認済み。背景＝夜明けの一本道・リュックの旅人・<b>手前に伸びる人型の影（＝ついてくる自分）</b>を専用生成。</figcaption>
+  </figure>
 
   <div class="decide">
-    <h2>👉 このサムネでよいですか？</h2>
-    <div class="opt"><span class="k">A</span>承認 → 概要欄・ショート2本・TikTokへ進む</div>
-    <div class="opt"><span class="k">B</span>問いを変える（例「逃げたのに、消えないもの」等）</div>
-    <div class="opt"><span class="k">C</span>ベース画像/主役の大きさを変える（門でなく針の人影を大きく等）</div>
+    <h2>👉 どうしますか？</h2>
+    <div class="opt"><span class="k">1</span><b>AとBの両方でYouTube公式A/Bテスト</b>（三井寿と同じ運用・推奨）</div>
+    <div class="opt"><span class="k">2</span>Aのみ採用</div>
+    <div class="opt"><span class="k">3</span>Bのみ採用</div>
+    <div class="opt"><span class="k">4</span>コピー/背景を直す（指示ください）</div>
   </div>
-  <p class="small">承認後：概要欄→ショート2本（幕4刃＋冒頭Hook）→TikTok縦＋カバーを作り切ってから、まとめてご承認いただきます（アップはまだ）。</p>
+  <p class="small">選定後：TikTok縦カバーもこの勝ち版から生成し、概要欄→ショート2本→公開キットへ進みます。新ハーネス（insight型）は registry.thumb_insight 駆動で再現可能にしてあります。</p>
 </div>
 </body>
 </html>
