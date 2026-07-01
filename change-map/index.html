@@ -1,0 +1,1153 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>易経・変化の地図 — 64卦 序卦順 × 変爻の枝</title>
+<style>
+  :root{--bg:#0f1419;--ink:#e8e2d0;--gold:#d9c37a;--ai:#28405a;--line:#2a3340;--dim:#8b93a0}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:"Hiragino Mincho ProN","Yu Mincho",serif;line-height:1.6}
+  header{padding:28px 20px 10px;text-align:center;border-bottom:1px solid var(--line)}
+  header h1{margin:0;font-size:22px;letter-spacing:.08em}
+  header p{margin:6px 0 0;color:var(--dim);font-size:13px}
+  .legend{display:flex;gap:18px;justify-content:center;flex-wrap:wrap;
+    color:var(--dim);font-size:12px;margin:10px 0 2px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
+    gap:14px;padding:18px;max-width:1400px;margin:0 auto}
+  .card{background:#141a21;border:1px solid var(--line);border-radius:10px;overflow:hidden;
+    scroll-margin-top:16px;transition:box-shadow .2s,border-color .2s}
+  .card.hl{border-color:var(--gold);box-shadow:0 0 0 2px var(--gold)}
+  .img{position:relative;aspect-ratio:16/9;background:#0b0f14 center/cover no-repeat;
+    display:flex;align-items:center;justify-content:center}
+  .noimg{font-size:40px;color:#2a323d;font-weight:700}
+  .img[style*="url"] .noimg{display:none}
+  .seqno{position:absolute;top:8px;left:10px;font-size:11px;color:var(--gold);
+    background:rgba(0,0,0,.5);padding:2px 8px;border-radius:10px}
+  .body{padding:12px 14px 14px}
+  .head{display:flex;gap:12px;align-items:flex-start}
+  .yao{flex:0 0 auto}
+  .names .cn{font-size:19px;font-weight:700}
+  .names .cn small{font-size:12px;color:var(--gold);margin-left:6px;font-weight:400}
+  .names .en{font-size:12px;color:var(--dim)}
+  .names .tri{font-size:12px;color:var(--dim);margin-top:2px}
+  .branches{margin-top:12px}
+  .blabel{font-size:11px;color:var(--dim);margin-bottom:6px}
+  .br{display:inline-flex;flex-direction:column;text-decoration:none;color:var(--ink);
+    background:#0e141b;border:1px solid var(--line);border-radius:7px;
+    padding:5px 8px;margin:0 5px 5px 0;font-size:12px;min-width:70px}
+  .br:hover{border-color:var(--gold)}
+  .brl{font-size:10px;color:var(--dim)}
+  .brt{font-weight:700}
+  .brt small{font-weight:400;color:var(--gold);font-size:10px;margin-left:3px}
+  footer{text-align:center;color:var(--dim);font-size:12px;padding:20px}
+</style></head>
+<body>
+<header>
+  <h1>易経・変化の地図</h1>
+  <p>64卦を <b>序卦（じょか）の一本道</b> に並べ、各卦から <b>変爻（こうへん）の枝</b> を張った。並び順も枝も、すべて db/ の一次情報に一致。</p>
+  <div class="legend">
+    <span>■ 実線＝陽　┄ 破線＝陰（下＝初爻／上＝上爻）</span>
+    <span>「変爻で変わる先」をクリック＝その卦へ移動</span>
+    <span>全384枝が引ける</span>
+  </div>
+</header>
+<div class="grid">
+<article class="card" id="hex1" data-kw="1">
+  <div class="img" style="background-image:url(images/hex01.png)">
+    <span class="noimg">象</span>
+    <span class="seqno">序卦 1</span>
+  </div>
+  <div class="body">
+    <div class="head">
+      <svg viewBox="0 0 70 88" width="70" height="88" class="yao"><rect x="4" y="79.0" width="62" height="9" fill="#d9c37a"/><rect x="4" y="63.2" width="62" height="9" fill="#d9c37a"/><rect x="4" y="47.4" width="62" height="9" fill="#d9c37a"/><rect x="4" y="31.6" width="62" height="9" fill="#d9c37a"/><rect x="4" y="15.8" width="62" height="9" fill="#d9c37a"/><rect x="4" y="0.0" width="62" height="9" fill="#d9c37a"/></svg>
+      <div class="names">
+        <div class="cn">䷀ 乾<small>けん</small></div>
+        <div class="en">Initiating</div>
+        <div class="tri">上 天・下 天</div>
+      </div>
+    </div>
+    <div class="branches"><div class="blabel">変爻で変わる先 →</div><a class="br" href="#hex44" data-to="44"><span class="brl">1爻 陽→陰</span><span class="brt">姤<small>こう</small></span></a><a class="br" href="#hex13" data-to="13"><span class="brl">2爻 陽→陰</span><span class="brt">同人<small>どうじん</small></span></a><a class="br" href="#hex10" data-to="10"><span class="brl">3爻 陽→陰</span><span class="brt">履<small>り</small></span></a><a class="br" href="#hex9" data-to="9"><span class="brl">4爻 陽→陰</span><span class="brt">小畜<small>しょうちく</small></span></a><a class="br" href="#hex14" data-to="14"><span class="brl">5爻 陽→陰</span><span class="brt">大有<small>たいゆう</small></span></a><a class="br" href="#hex43" data-to="43"><span class="brl">6爻 陽→陰</span><span class="brt">夬<small>かい</small></span></a></div>
+  </div>
+</article>
+<article class="card" id="hex2" data-kw="2">
+  <div class="img" style="background-image:url(images/hex02.png)">
+    <span class="noimg">象</span>
+    <span class="seqno">序卦 2</span>
+  </div>
+  <div class="body">
+    <div class="head">
+      <svg viewBox="0 0 70 88" width="70" height="88" class="yao"><rect x="4" y="79.0" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="79.0" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="63.2" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="63.2" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="47.4" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="47.4" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="31.6" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="31.6" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="15.8" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="15.8" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="0.0" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="0.0" width="27.0" height="9" fill="#d9c37a"/></svg>
+      <div class="names">
+        <div class="cn">䷁ 坤<small>こん</small></div>
+        <div class="en">Responding</div>
+        <div class="tri">上 地・下 地</div>
+      </div>
+    </div>
+    <div class="branches"><div class="blabel">変爻で変わる先 →</div><a class="br" href="#hex24" data-to="24"><span class="brl">1爻 陰→陽</span><span class="brt">復<small>ふく</small></span></a><a class="br" href="#hex7" data-to="7"><span class="brl">2爻 陰→陽</span><span class="brt">師<small>し</small></span></a><a class="br" href="#hex15" data-to="15"><span class="brl">3爻 陰→陽</span><span class="brt">謙<small>けん</small></span></a><a class="br" href="#hex16" data-to="16"><span class="brl">4爻 陰→陽</span><span class="brt">豫<small>よ</small></span></a><a class="br" href="#hex8" data-to="8"><span class="brl">5爻 陰→陽</span><span class="brt">比<small>ひ</small></span></a><a class="br" href="#hex23" data-to="23"><span class="brl">6爻 陰→陽</span><span class="brt">剝<small>はく</small></span></a></div>
+  </div>
+</article>
+<article class="card" id="hex3" data-kw="3">
+  <div class="img" style="background-image:url(images/hex03.png)">
+    <span class="noimg">象</span>
+    <span class="seqno">序卦 3</span>
+  </div>
+  <div class="body">
+    <div class="head">
+      <svg viewBox="0 0 70 88" width="70" height="88" class="yao"><rect x="4" y="79.0" width="62" height="9" fill="#d9c37a"/><rect x="4" y="63.2" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="63.2" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="47.4" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="47.4" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="31.6" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="31.6" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="15.8" width="62" height="9" fill="#d9c37a"/><rect x="4" y="0.0" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="0.0" width="27.0" height="9" fill="#d9c37a"/></svg>
+      <div class="names">
+        <div class="cn">䷂ 屯<small>ちゅん</small></div>
+        <div class="en">Beginning</div>
+        <div class="tri">上 水・下 雷</div>
+      </div>
+    </div>
+    <div class="branches"><div class="blabel">変爻で変わる先 →</div><a class="br" href="#hex8" data-to="8"><span class="brl">1爻 陽→陰</span><span class="brt">比<small>ひ</small></span></a><a class="br" href="#hex60" data-to="60"><span class="brl">2爻 陰→陽</span><span class="brt">節<small>せつ</small></span></a><a class="br" href="#hex63" data-to="63"><span class="brl">3爻 陰→陽</span><span class="brt">既濟<small>きせい</small></span></a><a class="br" href="#hex17" data-to="17"><span class="brl">4爻 陰→陽</span><span class="brt">隨<small>ずい</small></span></a><a class="br" href="#hex24" data-to="24"><span class="brl">5爻 陽→陰</span><span class="brt">復<small>ふく</small></span></a><a class="br" href="#hex42" data-to="42"><span class="brl">6爻 陰→陽</span><span class="brt">益<small>えき</small></span></a></div>
+  </div>
+</article>
+<article class="card" id="hex4" data-kw="4">
+  <div class="img" style="background-image:url(images/hex04.png)">
+    <span class="noimg">象</span>
+    <span class="seqno">序卦 4</span>
+  </div>
+  <div class="body">
+    <div class="head">
+      <svg viewBox="0 0 70 88" width="70" height="88" class="yao"><rect x="4" y="79.0" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="79.0" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="63.2" width="62" height="9" fill="#d9c37a"/><rect x="4" y="47.4" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="47.4" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="31.6" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="31.6" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="15.8" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="15.8" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="0.0" width="62" height="9" fill="#d9c37a"/></svg>
+      <div class="names">
+        <div class="cn">䷃ 蒙<small>もう</small></div>
+        <div class="en">Childhood</div>
+        <div class="tri">上 山・下 水</div>
+      </div>
+    </div>
+    <div class="branches"><div class="blabel">変爻で変わる先 →</div><a class="br" href="#hex41" data-to="41"><span class="brl">1爻 陰→陽</span><span class="brt">損<small>そん</small></span></a><a class="br" href="#hex23" data-to="23"><span class="brl">2爻 陽→陰</span><span class="brt">剝<small>はく</small></span></a><a class="br" href="#hex18" data-to="18"><span class="brl">3爻 陰→陽</span><span class="brt">蠱<small>こ</small></span></a><a class="br" href="#hex64" data-to="64"><span class="brl">4爻 陰→陽</span><span class="brt">未濟<small>びせい</small></span></a><a class="br" href="#hex59" data-to="59"><span class="brl">5爻 陰→陽</span><span class="brt">渙<small>かん</small></span></a><a class="br" href="#hex7" data-to="7"><span class="brl">6爻 陽→陰</span><span class="brt">師<small>し</small></span></a></div>
+  </div>
+</article>
+<article class="card" id="hex5" data-kw="5">
+  <div class="img" style="background-image:url(images/hex05.png)">
+    <span class="noimg">象</span>
+    <span class="seqno">序卦 5</span>
+  </div>
+  <div class="body">
+    <div class="head">
+      <svg viewBox="0 0 70 88" width="70" height="88" class="yao"><rect x="4" y="79.0" width="62" height="9" fill="#d9c37a"/><rect x="4" y="63.2" width="62" height="9" fill="#d9c37a"/><rect x="4" y="47.4" width="62" height="9" fill="#d9c37a"/><rect x="4" y="31.6" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="31.6" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="15.8" width="62" height="9" fill="#d9c37a"/><rect x="4" y="0.0" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="0.0" width="27.0" height="9" fill="#d9c37a"/></svg>
+      <div class="names">
+        <div class="cn">䷄ 需<small>じゅ</small></div>
+        <div class="en">Needing</div>
+        <div class="tri">上 水・下 天</div>
+      </div>
+    </div>
+    <div class="branches"><div class="blabel">変爻で変わる先 →</div><a class="br" href="#hex48" data-to="48"><span class="brl">1爻 陽→陰</span><span class="brt">井<small>せい</small></span></a><a class="br" href="#hex63" data-to="63"><span class="brl">2爻 陽→陰</span><span class="brt">既濟<small>きせい</small></span></a><a class="br" href="#hex60" data-to="60"><span class="brl">3爻 陽→陰</span><span class="brt">節<small>せつ</small></span></a><a class="br" href="#hex43" data-to="43"><span class="brl">4爻 陰→陽</span><span class="brt">夬<small>かい</small></span></a><a class="br" href="#hex11" data-to="11"><span class="brl">5爻 陽→陰</span><span class="brt">泰<small>たい</small></span></a><a class="br" href="#hex9" data-to="9"><span class="brl">6爻 陰→陽</span><span class="brt">小畜<small>しょうちく</small></span></a></div>
+  </div>
+</article>
+<article class="card" id="hex6" data-kw="6">
+  <div class="img" style="background-image:url(images/hex06.png)">
+    <span class="noimg">象</span>
+    <span class="seqno">序卦 6</span>
+  </div>
+  <div class="body">
+    <div class="head">
+      <svg viewBox="0 0 70 88" width="70" height="88" class="yao"><rect x="4" y="79.0" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="79.0" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="63.2" width="62" height="9" fill="#d9c37a"/><rect x="4" y="47.4" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="47.4" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="31.6" width="62" height="9" fill="#d9c37a"/><rect x="4" y="15.8" width="62" height="9" fill="#d9c37a"/><rect x="4" y="0.0" width="62" height="9" fill="#d9c37a"/></svg>
+      <div class="names">
+        <div class="cn">䷅ 訟<small>しょう</small></div>
+        <div class="en">Contention</div>
+        <div class="tri">上 天・下 水</div>
+      </div>
+    </div>
+    <div class="branches"><div class="blabel">変爻で変わる先 →</div><a class="br" href="#hex10" data-to="10"><span class="brl">1爻 陰→陽</span><span class="brt">履<small>り</small></span></a><a class="br" href="#hex12" data-to="12"><span class="brl">2爻 陽→陰</span><span class="brt">否<small>ひ</small></span></a><a class="br" href="#hex44" data-to="44"><span class="brl">3爻 陰→陽</span><span class="brt">姤<small>こう</small></span></a><a class="br" href="#hex59" data-to="59"><span class="brl">4爻 陽→陰</span><span class="brt">渙<small>かん</small></span></a><a class="br" href="#hex64" data-to="64"><span class="brl">5爻 陽→陰</span><span class="brt">未濟<small>びせい</small></span></a><a class="br" href="#hex47" data-to="47"><span class="brl">6爻 陽→陰</span><span class="brt">困<small>こん</small></span></a></div>
+  </div>
+</article>
+<article class="card" id="hex7" data-kw="7">
+  <div class="img" style="background-image:url(images/hex07.png)">
+    <span class="noimg">象</span>
+    <span class="seqno">序卦 7</span>
+  </div>
+  <div class="body">
+    <div class="head">
+      <svg viewBox="0 0 70 88" width="70" height="88" class="yao"><rect x="4" y="79.0" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="79.0" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="63.2" width="62" height="9" fill="#d9c37a"/><rect x="4" y="47.4" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="47.4" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="31.6" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="31.6" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="15.8" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="15.8" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="0.0" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="0.0" width="27.0" height="9" fill="#d9c37a"/></svg>
+      <div class="names">
+        <div class="cn">䷆ 師<small>し</small></div>
+        <div class="en">Multitude</div>
+        <div class="tri">上 地・下 水</div>
+      </div>
+    </div>
+    <div class="branches"><div class="blabel">変爻で変わる先 →</div><a class="br" href="#hex19" data-to="19"><span class="brl">1爻 陰→陽</span><span class="brt">臨<small>りん</small></span></a><a class="br" href="#hex2" data-to="2"><span class="brl">2爻 陽→陰</span><span class="brt">坤<small>こん</small></span></a><a class="br" href="#hex46" data-to="46"><span class="brl">3爻 陰→陽</span><span class="brt">升<small>しょう</small></span></a><a class="br" href="#hex40" data-to="40"><span class="brl">4爻 陰→陽</span><span class="brt">解<small>かい</small></span></a><a class="br" href="#hex29" data-to="29"><span class="brl">5爻 陰→陽</span><span class="brt">坎<small>かん</small></span></a><a class="br" href="#hex4" data-to="4"><span class="brl">6爻 陰→陽</span><span class="brt">蒙<small>もう</small></span></a></div>
+  </div>
+</article>
+<article class="card" id="hex8" data-kw="8">
+  <div class="img" style="background-image:url(images/hex08.png)">
+    <span class="noimg">象</span>
+    <span class="seqno">序卦 8</span>
+  </div>
+  <div class="body">
+    <div class="head">
+      <svg viewBox="0 0 70 88" width="70" height="88" class="yao"><rect x="4" y="79.0" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="79.0" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="63.2" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="63.2" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="47.4" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="47.4" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="31.6" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="31.6" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="15.8" width="62" height="9" fill="#d9c37a"/><rect x="4" y="0.0" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="0.0" width="27.0" height="9" fill="#d9c37a"/></svg>
+      <div class="names">
+        <div class="cn">䷇ 比<small>ひ</small></div>
+        <div class="en">Union</div>
+        <div class="tri">上 水・下 地</div>
+      </div>
+    </div>
+    <div class="branches"><div class="blabel">変爻で変わる先 →</div><a class="br" href="#hex3" data-to="3"><span class="brl">1爻 陰→陽</span><span class="brt">屯<small>ちゅん</small></span></a><a class="br" href="#hex29" data-to="29"><span class="brl">2爻 陰→陽</span><span class="brt">坎<small>かん</small></span></a><a class="br" href="#hex39" data-to="39"><span class="brl">3爻 陰→陽</span><span class="brt">蹇<small>けん</small></span></a><a class="br" href="#hex45" data-to="45"><span class="brl">4爻 陰→陽</span><span class="brt">萃<small>すい</small></span></a><a class="br" href="#hex2" data-to="2"><span class="brl">5爻 陽→陰</span><span class="brt">坤<small>こん</small></span></a><a class="br" href="#hex20" data-to="20"><span class="brl">6爻 陰→陽</span><span class="brt">觀<small>かん</small></span></a></div>
+  </div>
+</article>
+<article class="card" id="hex9" data-kw="9">
+  <div class="img" style="background-image:url(images/hex09.png)">
+    <span class="noimg">象</span>
+    <span class="seqno">序卦 9</span>
+  </div>
+  <div class="body">
+    <div class="head">
+      <svg viewBox="0 0 70 88" width="70" height="88" class="yao"><rect x="4" y="79.0" width="62" height="9" fill="#d9c37a"/><rect x="4" y="63.2" width="62" height="9" fill="#d9c37a"/><rect x="4" y="47.4" width="62" height="9" fill="#d9c37a"/><rect x="4" y="31.6" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="31.6" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="15.8" width="62" height="9" fill="#d9c37a"/><rect x="4" y="0.0" width="62" height="9" fill="#d9c37a"/></svg>
+      <div class="names">
+        <div class="cn">䷈ 小畜<small>しょうちく</small></div>
+        <div class="en">LittleAccumulation</div>
+        <div class="tri">上 風・下 天</div>
+      </div>
+    </div>
+    <div class="branches"><div class="blabel">変爻で変わる先 →</div><a class="br" href="#hex57" data-to="57"><span class="brl">1爻 陽→陰</span><span class="brt">巽<small>そん</small></span></a><a class="br" href="#hex37" data-to="37"><span class="brl">2爻 陽→陰</span><span class="brt">家人<small>かじん</small></span></a><a class="br" href="#hex61" data-to="61"><span class="brl">3爻 陽→陰</span><span class="brt">中孚<small>ちゅうふ</small></span></a><a class="br" href="#hex1" data-to="1"><span class="brl">4爻 陰→陽</span><span class="brt">乾<small>けん</small></span></a><a class="br" href="#hex26" data-to="26"><span class="brl">5爻 陽→陰</span><span class="brt">大畜<small>たいちく</small></span></a><a class="br" href="#hex5" data-to="5"><span class="brl">6爻 陽→陰</span><span class="brt">需<small>じゅ</small></span></a></div>
+  </div>
+</article>
+<article class="card" id="hex10" data-kw="10">
+  <div class="img" style="background-image:url(images/hex10.png)">
+    <span class="noimg">象</span>
+    <span class="seqno">序卦 10</span>
+  </div>
+  <div class="body">
+    <div class="head">
+      <svg viewBox="0 0 70 88" width="70" height="88" class="yao"><rect x="4" y="79.0" width="62" height="9" fill="#d9c37a"/><rect x="4" y="63.2" width="62" height="9" fill="#d9c37a"/><rect x="4" y="47.4" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="47.4" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="31.6" width="62" height="9" fill="#d9c37a"/><rect x="4" y="15.8" width="62" height="9" fill="#d9c37a"/><rect x="4" y="0.0" width="62" height="9" fill="#d9c37a"/></svg>
+      <div class="names">
+        <div class="cn">䷉ 履<small>り</small></div>
+        <div class="en">Fulfillment</div>
+        <div class="tri">上 天・下 沢</div>
+      </div>
+    </div>
+    <div class="branches"><div class="blabel">変爻で変わる先 →</div><a class="br" href="#hex6" data-to="6"><span class="brl">1爻 陽→陰</span><span class="brt">訟<small>しょう</small></span></a><a class="br" href="#hex25" data-to="25"><span class="brl">2爻 陽→陰</span><span class="brt">無妄<small>むもう</small></span></a><a class="br" href="#hex1" data-to="1"><span class="brl">3爻 陰→陽</span><span class="brt">乾<small>けん</small></span></a><a class="br" href="#hex61" data-to="61"><span class="brl">4爻 陽→陰</span><span class="brt">中孚<small>ちゅうふ</small></span></a><a class="br" href="#hex38" data-to="38"><span class="brl">5爻 陽→陰</span><span class="brt">睽<small>けい</small></span></a><a class="br" href="#hex58" data-to="58"><span class="brl">6爻 陽→陰</span><span class="brt">兌<small>だ</small></span></a></div>
+  </div>
+</article>
+<article class="card" id="hex11" data-kw="11">
+  <div class="img" style="background-image:url(images/hex11.png)">
+    <span class="noimg">象</span>
+    <span class="seqno">序卦 11</span>
+  </div>
+  <div class="body">
+    <div class="head">
+      <svg viewBox="0 0 70 88" width="70" height="88" class="yao"><rect x="4" y="79.0" width="62" height="9" fill="#d9c37a"/><rect x="4" y="63.2" width="62" height="9" fill="#d9c37a"/><rect x="4" y="47.4" width="62" height="9" fill="#d9c37a"/><rect x="4" y="31.6" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="31.6" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="15.8" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="15.8" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="0.0" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="0.0" width="27.0" height="9" fill="#d9c37a"/></svg>
+      <div class="names">
+        <div class="cn">䷊ 泰<small>たい</small></div>
+        <div class="en">Advance</div>
+        <div class="tri">上 地・下 天</div>
+      </div>
+    </div>
+    <div class="branches"><div class="blabel">変爻で変わる先 →</div><a class="br" href="#hex46" data-to="46"><span class="brl">1爻 陽→陰</span><span class="brt">升<small>しょう</small></span></a><a class="br" href="#hex36" data-to="36"><span class="brl">2爻 陽→陰</span><span class="brt">明夷<small>めいい</small></span></a><a class="br" href="#hex19" data-to="19"><span class="brl">3爻 陽→陰</span><span class="brt">臨<small>りん</small></span></a><a class="br" href="#hex34" data-to="34"><span class="brl">4爻 陰→陽</span><span class="brt">大壯<small>たいそう</small></span></a><a class="br" href="#hex5" data-to="5"><span class="brl">5爻 陰→陽</span><span class="brt">需<small>じゅ</small></span></a><a class="br" href="#hex26" data-to="26"><span class="brl">6爻 陰→陽</span><span class="brt">大畜<small>たいちく</small></span></a></div>
+  </div>
+</article>
+<article class="card" id="hex12" data-kw="12">
+  <div class="img" style="background-image:url(images/hex12.png)">
+    <span class="noimg">象</span>
+    <span class="seqno">序卦 12</span>
+  </div>
+  <div class="body">
+    <div class="head">
+      <svg viewBox="0 0 70 88" width="70" height="88" class="yao"><rect x="4" y="79.0" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="79.0" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="63.2" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="63.2" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="47.4" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="47.4" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="31.6" width="62" height="9" fill="#d9c37a"/><rect x="4" y="15.8" width="62" height="9" fill="#d9c37a"/><rect x="4" y="0.0" width="62" height="9" fill="#d9c37a"/></svg>
+      <div class="names">
+        <div class="cn">䷋ 否<small>ひ</small></div>
+        <div class="en">Hindrance</div>
+        <div class="tri">上 天・下 地</div>
+      </div>
+    </div>
+    <div class="branches"><div class="blabel">変爻で変わる先 →</div><a class="br" href="#hex25" data-to="25"><span class="brl">1爻 陰→陽</span><span class="brt">無妄<small>むもう</small></span></a><a class="br" href="#hex6" data-to="6"><span class="brl">2爻 陰→陽</span><span class="brt">訟<small>しょう</small></span></a><a class="br" href="#hex33" data-to="33"><span class="brl">3爻 陰→陽</span><span class="brt">遯<small>とん</small></span></a><a class="br" href="#hex20" data-to="20"><span class="brl">4爻 陽→陰</span><span class="brt">觀<small>かん</small></span></a><a class="br" href="#hex35" data-to="35"><span class="brl">5爻 陽→陰</span><span class="brt">晉<small>しん</small></span></a><a class="br" href="#hex45" data-to="45"><span class="brl">6爻 陽→陰</span><span class="brt">萃<small>すい</small></span></a></div>
+  </div>
+</article>
+<article class="card" id="hex13" data-kw="13">
+  <div class="img" style="background-image:url(images/hex13.png)">
+    <span class="noimg">象</span>
+    <span class="seqno">序卦 13</span>
+  </div>
+  <div class="body">
+    <div class="head">
+      <svg viewBox="0 0 70 88" width="70" height="88" class="yao"><rect x="4" y="79.0" width="62" height="9" fill="#d9c37a"/><rect x="4" y="63.2" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="63.2" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="47.4" width="62" height="9" fill="#d9c37a"/><rect x="4" y="31.6" width="62" height="9" fill="#d9c37a"/><rect x="4" y="15.8" width="62" height="9" fill="#d9c37a"/><rect x="4" y="0.0" width="62" height="9" fill="#d9c37a"/></svg>
+      <div class="names">
+        <div class="cn">䷌ 同人<small>どうじん</small></div>
+        <div class="en">SeekingHarmony</div>
+        <div class="tri">上 天・下 火</div>
+      </div>
+    </div>
+    <div class="branches"><div class="blabel">変爻で変わる先 →</div><a class="br" href="#hex33" data-to="33"><span class="brl">1爻 陽→陰</span><span class="brt">遯<small>とん</small></span></a><a class="br" href="#hex1" data-to="1"><span class="brl">2爻 陰→陽</span><span class="brt">乾<small>けん</small></span></a><a class="br" href="#hex25" data-to="25"><span class="brl">3爻 陽→陰</span><span class="brt">無妄<small>むもう</small></span></a><a class="br" href="#hex37" data-to="37"><span class="brl">4爻 陽→陰</span><span class="brt">家人<small>かじん</small></span></a><a class="br" href="#hex30" data-to="30"><span class="brl">5爻 陽→陰</span><span class="brt">離<small>り</small></span></a><a class="br" href="#hex49" data-to="49"><span class="brl">6爻 陽→陰</span><span class="brt">革<small>かく</small></span></a></div>
+  </div>
+</article>
+<article class="card" id="hex14" data-kw="14">
+  <div class="img" style="background-image:url(images/hex14.png)">
+    <span class="noimg">象</span>
+    <span class="seqno">序卦 14</span>
+  </div>
+  <div class="body">
+    <div class="head">
+      <svg viewBox="0 0 70 88" width="70" height="88" class="yao"><rect x="4" y="79.0" width="62" height="9" fill="#d9c37a"/><rect x="4" y="63.2" width="62" height="9" fill="#d9c37a"/><rect x="4" y="47.4" width="62" height="9" fill="#d9c37a"/><rect x="4" y="31.6" width="62" height="9" fill="#d9c37a"/><rect x="4" y="15.8" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="15.8" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="0.0" width="62" height="9" fill="#d9c37a"/></svg>
+      <div class="names">
+        <div class="cn">䷍ 大有<small>たいゆう</small></div>
+        <div class="en">GreatHarvest</div>
+        <div class="tri">上 火・下 天</div>
+      </div>
+    </div>
+    <div class="branches"><div class="blabel">変爻で変わる先 →</div><a class="br" href="#hex50" data-to="50"><span class="brl">1爻 陽→陰</span><span class="brt">鼎<small>てい</small></span></a><a class="br" href="#hex30" data-to="30"><span class="brl">2爻 陽→陰</span><span class="brt">離<small>り</small></span></a><a class="br" href="#hex38" data-to="38"><span class="brl">3爻 陽→陰</span><span class="brt">睽<small>けい</small></span></a><a class="br" href="#hex26" data-to="26"><span class="brl">4爻 陽→陰</span><span class="brt">大畜<small>たいちく</small></span></a><a class="br" href="#hex1" data-to="1"><span class="brl">5爻 陰→陽</span><span class="brt">乾<small>けん</small></span></a><a class="br" href="#hex34" data-to="34"><span class="brl">6爻 陽→陰</span><span class="brt">大壯<small>たいそう</small></span></a></div>
+  </div>
+</article>
+<article class="card" id="hex15" data-kw="15">
+  <div class="img" style="background-image:url(images/hex15.png)">
+    <span class="noimg">象</span>
+    <span class="seqno">序卦 15</span>
+  </div>
+  <div class="body">
+    <div class="head">
+      <svg viewBox="0 0 70 88" width="70" height="88" class="yao"><rect x="4" y="79.0" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="79.0" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="63.2" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="63.2" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="47.4" width="62" height="9" fill="#d9c37a"/><rect x="4" y="31.6" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="31.6" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="15.8" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="15.8" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="0.0" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="0.0" width="27.0" height="9" fill="#d9c37a"/></svg>
+      <div class="names">
+        <div class="cn">䷎ 謙<small>けん</small></div>
+        <div class="en">Humbleness</div>
+        <div class="tri">上 地・下 山</div>
+      </div>
+    </div>
+    <div class="branches"><div class="blabel">変爻で変わる先 →</div><a class="br" href="#hex36" data-to="36"><span class="brl">1爻 陰→陽</span><span class="brt">明夷<small>めいい</small></span></a><a class="br" href="#hex46" data-to="46"><span class="brl">2爻 陰→陽</span><span class="brt">升<small>しょう</small></span></a><a class="br" href="#hex2" data-to="2"><span class="brl">3爻 陽→陰</span><span class="brt">坤<small>こん</small></span></a><a class="br" href="#hex62" data-to="62"><span class="brl">4爻 陰→陽</span><span class="brt">小過<small>しょうか</small></span></a><a class="br" href="#hex39" data-to="39"><span class="brl">5爻 陰→陽</span><span class="brt">蹇<small>けん</small></span></a><a class="br" href="#hex52" data-to="52"><span class="brl">6爻 陰→陽</span><span class="brt">艮<small>ごん</small></span></a></div>
+  </div>
+</article>
+<article class="card" id="hex16" data-kw="16">
+  <div class="img" style="background-image:url(images/hex16.png)">
+    <span class="noimg">象</span>
+    <span class="seqno">序卦 16</span>
+  </div>
+  <div class="body">
+    <div class="head">
+      <svg viewBox="0 0 70 88" width="70" height="88" class="yao"><rect x="4" y="79.0" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="79.0" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="63.2" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="63.2" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="47.4" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="47.4" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="31.6" width="62" height="9" fill="#d9c37a"/><rect x="4" y="15.8" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="15.8" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="0.0" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="0.0" width="27.0" height="9" fill="#d9c37a"/></svg>
+      <div class="names">
+        <div class="cn">䷏ 豫<small>よ</small></div>
+        <div class="en">Delight</div>
+        <div class="tri">上 雷・下 地</div>
+      </div>
+    </div>
+    <div class="branches"><div class="blabel">変爻で変わる先 →</div><a class="br" href="#hex51" data-to="51"><span class="brl">1爻 陰→陽</span><span class="brt">震<small>しん</small></span></a><a class="br" href="#hex40" data-to="40"><span class="brl">2爻 陰→陽</span><span class="brt">解<small>かい</small></span></a><a class="br" href="#hex62" data-to="62"><span class="brl">3爻 陰→陽</span><span class="brt">小過<small>しょうか</small></span></a><a class="br" href="#hex2" data-to="2"><span class="brl">4爻 陽→陰</span><span class="brt">坤<small>こん</small></span></a><a class="br" href="#hex45" data-to="45"><span class="brl">5爻 陰→陽</span><span class="brt">萃<small>すい</small></span></a><a class="br" href="#hex35" data-to="35"><span class="brl">6爻 陰→陽</span><span class="brt">晉<small>しん</small></span></a></div>
+  </div>
+</article>
+<article class="card" id="hex17" data-kw="17">
+  <div class="img" style="background-image:url(images/hex17.png)">
+    <span class="noimg">象</span>
+    <span class="seqno">序卦 17</span>
+  </div>
+  <div class="body">
+    <div class="head">
+      <svg viewBox="0 0 70 88" width="70" height="88" class="yao"><rect x="4" y="79.0" width="62" height="9" fill="#d9c37a"/><rect x="4" y="63.2" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="63.2" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="47.4" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="47.4" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="31.6" width="62" height="9" fill="#d9c37a"/><rect x="4" y="15.8" width="62" height="9" fill="#d9c37a"/><rect x="4" y="0.0" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="0.0" width="27.0" height="9" fill="#d9c37a"/></svg>
+      <div class="names">
+        <div class="cn">䷐ 隨<small>ずい</small></div>
+        <div class="en">Following</div>
+        <div class="tri">上 沢・下 雷</div>
+      </div>
+    </div>
+    <div class="branches"><div class="blabel">変爻で変わる先 →</div><a class="br" href="#hex45" data-to="45"><span class="brl">1爻 陽→陰</span><span class="brt">萃<small>すい</small></span></a><a class="br" href="#hex58" data-to="58"><span class="brl">2爻 陰→陽</span><span class="brt">兌<small>だ</small></span></a><a class="br" href="#hex49" data-to="49"><span class="brl">3爻 陰→陽</span><span class="brt">革<small>かく</small></span></a><a class="br" href="#hex3" data-to="3"><span class="brl">4爻 陽→陰</span><span class="brt">屯<small>ちゅん</small></span></a><a class="br" href="#hex51" data-to="51"><span class="brl">5爻 陽→陰</span><span class="brt">震<small>しん</small></span></a><a class="br" href="#hex25" data-to="25"><span class="brl">6爻 陰→陽</span><span class="brt">無妄<small>むもう</small></span></a></div>
+  </div>
+</article>
+<article class="card" id="hex18" data-kw="18">
+  <div class="img" style="background-image:url(images/hex18.png)">
+    <span class="noimg">象</span>
+    <span class="seqno">序卦 18</span>
+  </div>
+  <div class="body">
+    <div class="head">
+      <svg viewBox="0 0 70 88" width="70" height="88" class="yao"><rect x="4" y="79.0" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="79.0" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="63.2" width="62" height="9" fill="#d9c37a"/><rect x="4" y="47.4" width="62" height="9" fill="#d9c37a"/><rect x="4" y="31.6" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="31.6" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="15.8" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="15.8" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="0.0" width="62" height="9" fill="#d9c37a"/></svg>
+      <div class="names">
+        <div class="cn">䷑ 蠱<small>こ</small></div>
+        <div class="en">Remedying</div>
+        <div class="tri">上 山・下 風</div>
+      </div>
+    </div>
+    <div class="branches"><div class="blabel">変爻で変わる先 →</div><a class="br" href="#hex26" data-to="26"><span class="brl">1爻 陰→陽</span><span class="brt">大畜<small>たいちく</small></span></a><a class="br" href="#hex52" data-to="52"><span class="brl">2爻 陽→陰</span><span class="brt">艮<small>ごん</small></span></a><a class="br" href="#hex4" data-to="4"><span class="brl">3爻 陽→陰</span><span class="brt">蒙<small>もう</small></span></a><a class="br" href="#hex50" data-to="50"><span class="brl">4爻 陰→陽</span><span class="brt">鼎<small>てい</small></span></a><a class="br" href="#hex57" data-to="57"><span class="brl">5爻 陰→陽</span><span class="brt">巽<small>そん</small></span></a><a class="br" href="#hex46" data-to="46"><span class="brl">6爻 陽→陰</span><span class="brt">升<small>しょう</small></span></a></div>
+  </div>
+</article>
+<article class="card" id="hex19" data-kw="19">
+  <div class="img" style="background-image:url(images/hex19.png)">
+    <span class="noimg">象</span>
+    <span class="seqno">序卦 19</span>
+  </div>
+  <div class="body">
+    <div class="head">
+      <svg viewBox="0 0 70 88" width="70" height="88" class="yao"><rect x="4" y="79.0" width="62" height="9" fill="#d9c37a"/><rect x="4" y="63.2" width="62" height="9" fill="#d9c37a"/><rect x="4" y="47.4" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="47.4" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="31.6" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="31.6" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="15.8" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="15.8" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="0.0" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="0.0" width="27.0" height="9" fill="#d9c37a"/></svg>
+      <div class="names">
+        <div class="cn">䷒ 臨<small>りん</small></div>
+        <div class="en">Approaching</div>
+        <div class="tri">上 地・下 沢</div>
+      </div>
+    </div>
+    <div class="branches"><div class="blabel">変爻で変わる先 →</div><a class="br" href="#hex7" data-to="7"><span class="brl">1爻 陽→陰</span><span class="brt">師<small>し</small></span></a><a class="br" href="#hex24" data-to="24"><span class="brl">2爻 陽→陰</span><span class="brt">復<small>ふく</small></span></a><a class="br" href="#hex11" data-to="11"><span class="brl">3爻 陰→陽</span><span class="brt">泰<small>たい</small></span></a><a class="br" href="#hex54" data-to="54"><span class="brl">4爻 陰→陽</span><span class="brt">歸妹<small>きまい</small></span></a><a class="br" href="#hex60" data-to="60"><span class="brl">5爻 陰→陽</span><span class="brt">節<small>せつ</small></span></a><a class="br" href="#hex41" data-to="41"><span class="brl">6爻 陰→陽</span><span class="brt">損<small>そん</small></span></a></div>
+  </div>
+</article>
+<article class="card" id="hex20" data-kw="20">
+  <div class="img" style="background-image:url(images/hex20.png)">
+    <span class="noimg">象</span>
+    <span class="seqno">序卦 20</span>
+  </div>
+  <div class="body">
+    <div class="head">
+      <svg viewBox="0 0 70 88" width="70" height="88" class="yao"><rect x="4" y="79.0" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="79.0" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="63.2" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="63.2" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="47.4" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="47.4" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="31.6" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="31.6" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="15.8" width="62" height="9" fill="#d9c37a"/><rect x="4" y="0.0" width="62" height="9" fill="#d9c37a"/></svg>
+      <div class="names">
+        <div class="cn">䷓ 觀<small>かん</small></div>
+        <div class="en">Watching</div>
+        <div class="tri">上 風・下 地</div>
+      </div>
+    </div>
+    <div class="branches"><div class="blabel">変爻で変わる先 →</div><a class="br" href="#hex42" data-to="42"><span class="brl">1爻 陰→陽</span><span class="brt">益<small>えき</small></span></a><a class="br" href="#hex59" data-to="59"><span class="brl">2爻 陰→陽</span><span class="brt">渙<small>かん</small></span></a><a class="br" href="#hex53" data-to="53"><span class="brl">3爻 陰→陽</span><span class="brt">漸<small>ぜん</small></span></a><a class="br" href="#hex12" data-to="12"><span class="brl">4爻 陰→陽</span><span class="brt">否<small>ひ</small></span></a><a class="br" href="#hex23" data-to="23"><span class="brl">5爻 陽→陰</span><span class="brt">剝<small>はく</small></span></a><a class="br" href="#hex8" data-to="8"><span class="brl">6爻 陽→陰</span><span class="brt">比<small>ひ</small></span></a></div>
+  </div>
+</article>
+<article class="card" id="hex21" data-kw="21">
+  <div class="img" style="background-image:url(images/hex21.png)">
+    <span class="noimg">象</span>
+    <span class="seqno">序卦 21</span>
+  </div>
+  <div class="body">
+    <div class="head">
+      <svg viewBox="0 0 70 88" width="70" height="88" class="yao"><rect x="4" y="79.0" width="62" height="9" fill="#d9c37a"/><rect x="4" y="63.2" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="63.2" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="47.4" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="47.4" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="31.6" width="62" height="9" fill="#d9c37a"/><rect x="4" y="15.8" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="15.8" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="0.0" width="62" height="9" fill="#d9c37a"/></svg>
+      <div class="names">
+        <div class="cn">䷔ 噬嗑<small>ぜいごう</small></div>
+        <div class="en">Eradicating</div>
+        <div class="tri">上 火・下 雷</div>
+      </div>
+    </div>
+    <div class="branches"><div class="blabel">変爻で変わる先 →</div><a class="br" href="#hex35" data-to="35"><span class="brl">1爻 陽→陰</span><span class="brt">晉<small>しん</small></span></a><a class="br" href="#hex38" data-to="38"><span class="brl">2爻 陰→陽</span><span class="brt">睽<small>けい</small></span></a><a class="br" href="#hex30" data-to="30"><span class="brl">3爻 陰→陽</span><span class="brt">離<small>り</small></span></a><a class="br" href="#hex27" data-to="27"><span class="brl">4爻 陽→陰</span><span class="brt">頤<small>い</small></span></a><a class="br" href="#hex25" data-to="25"><span class="brl">5爻 陰→陽</span><span class="brt">無妄<small>むもう</small></span></a><a class="br" href="#hex51" data-to="51"><span class="brl">6爻 陽→陰</span><span class="brt">震<small>しん</small></span></a></div>
+  </div>
+</article>
+<article class="card" id="hex22" data-kw="22">
+  <div class="img" style="background-image:url(images/hex22.png)">
+    <span class="noimg">象</span>
+    <span class="seqno">序卦 22</span>
+  </div>
+  <div class="body">
+    <div class="head">
+      <svg viewBox="0 0 70 88" width="70" height="88" class="yao"><rect x="4" y="79.0" width="62" height="9" fill="#d9c37a"/><rect x="4" y="63.2" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="63.2" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="47.4" width="62" height="9" fill="#d9c37a"/><rect x="4" y="31.6" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="31.6" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="15.8" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="15.8" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="0.0" width="62" height="9" fill="#d9c37a"/></svg>
+      <div class="names">
+        <div class="cn">䷕ 賁<small>ひ</small></div>
+        <div class="en">Adorning</div>
+        <div class="tri">上 山・下 火</div>
+      </div>
+    </div>
+    <div class="branches"><div class="blabel">変爻で変わる先 →</div><a class="br" href="#hex52" data-to="52"><span class="brl">1爻 陽→陰</span><span class="brt">艮<small>ごん</small></span></a><a class="br" href="#hex26" data-to="26"><span class="brl">2爻 陰→陽</span><span class="brt">大畜<small>たいちく</small></span></a><a class="br" href="#hex27" data-to="27"><span class="brl">3爻 陽→陰</span><span class="brt">頤<small>い</small></span></a><a class="br" href="#hex30" data-to="30"><span class="brl">4爻 陰→陽</span><span class="brt">離<small>り</small></span></a><a class="br" href="#hex37" data-to="37"><span class="brl">5爻 陰→陽</span><span class="brt">家人<small>かじん</small></span></a><a class="br" href="#hex36" data-to="36"><span class="brl">6爻 陽→陰</span><span class="brt">明夷<small>めいい</small></span></a></div>
+  </div>
+</article>
+<article class="card" id="hex23" data-kw="23">
+  <div class="img" style="background-image:url(images/hex23.png)">
+    <span class="noimg">象</span>
+    <span class="seqno">序卦 23</span>
+  </div>
+  <div class="body">
+    <div class="head">
+      <svg viewBox="0 0 70 88" width="70" height="88" class="yao"><rect x="4" y="79.0" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="79.0" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="63.2" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="63.2" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="47.4" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="47.4" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="31.6" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="31.6" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="15.8" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="15.8" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="0.0" width="62" height="9" fill="#d9c37a"/></svg>
+      <div class="names">
+        <div class="cn">䷖ 剝<small>はく</small></div>
+        <div class="en">FallingAway</div>
+        <div class="tri">上 山・下 地</div>
+      </div>
+    </div>
+    <div class="branches"><div class="blabel">変爻で変わる先 →</div><a class="br" href="#hex27" data-to="27"><span class="brl">1爻 陰→陽</span><span class="brt">頤<small>い</small></span></a><a class="br" href="#hex4" data-to="4"><span class="brl">2爻 陰→陽</span><span class="brt">蒙<small>もう</small></span></a><a class="br" href="#hex52" data-to="52"><span class="brl">3爻 陰→陽</span><span class="brt">艮<small>ごん</small></span></a><a class="br" href="#hex35" data-to="35"><span class="brl">4爻 陰→陽</span><span class="brt">晉<small>しん</small></span></a><a class="br" href="#hex20" data-to="20"><span class="brl">5爻 陰→陽</span><span class="brt">觀<small>かん</small></span></a><a class="br" href="#hex2" data-to="2"><span class="brl">6爻 陽→陰</span><span class="brt">坤<small>こん</small></span></a></div>
+  </div>
+</article>
+<article class="card" id="hex24" data-kw="24">
+  <div class="img" style="background-image:url(images/hex24.png)">
+    <span class="noimg">象</span>
+    <span class="seqno">序卦 24</span>
+  </div>
+  <div class="body">
+    <div class="head">
+      <svg viewBox="0 0 70 88" width="70" height="88" class="yao"><rect x="4" y="79.0" width="62" height="9" fill="#d9c37a"/><rect x="4" y="63.2" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="63.2" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="47.4" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="47.4" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="31.6" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="31.6" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="15.8" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="15.8" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="0.0" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="0.0" width="27.0" height="9" fill="#d9c37a"/></svg>
+      <div class="names">
+        <div class="cn">䷗ 復<small>ふく</small></div>
+        <div class="en">TurningBack</div>
+        <div class="tri">上 地・下 雷</div>
+      </div>
+    </div>
+    <div class="branches"><div class="blabel">変爻で変わる先 →</div><a class="br" href="#hex2" data-to="2"><span class="brl">1爻 陽→陰</span><span class="brt">坤<small>こん</small></span></a><a class="br" href="#hex19" data-to="19"><span class="brl">2爻 陰→陽</span><span class="brt">臨<small>りん</small></span></a><a class="br" href="#hex36" data-to="36"><span class="brl">3爻 陰→陽</span><span class="brt">明夷<small>めいい</small></span></a><a class="br" href="#hex51" data-to="51"><span class="brl">4爻 陰→陽</span><span class="brt">震<small>しん</small></span></a><a class="br" href="#hex3" data-to="3"><span class="brl">5爻 陰→陽</span><span class="brt">屯<small>ちゅん</small></span></a><a class="br" href="#hex27" data-to="27"><span class="brl">6爻 陰→陽</span><span class="brt">頤<small>い</small></span></a></div>
+  </div>
+</article>
+<article class="card" id="hex25" data-kw="25">
+  <div class="img" style="background-image:url(images/hex25.png)">
+    <span class="noimg">象</span>
+    <span class="seqno">序卦 25</span>
+  </div>
+  <div class="body">
+    <div class="head">
+      <svg viewBox="0 0 70 88" width="70" height="88" class="yao"><rect x="4" y="79.0" width="62" height="9" fill="#d9c37a"/><rect x="4" y="63.2" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="63.2" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="47.4" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="47.4" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="31.6" width="62" height="9" fill="#d9c37a"/><rect x="4" y="15.8" width="62" height="9" fill="#d9c37a"/><rect x="4" y="0.0" width="62" height="9" fill="#d9c37a"/></svg>
+      <div class="names">
+        <div class="cn">䷘ 無妄<small>むもう</small></div>
+        <div class="en">WithoutFalsehood</div>
+        <div class="tri">上 天・下 雷</div>
+      </div>
+    </div>
+    <div class="branches"><div class="blabel">変爻で変わる先 →</div><a class="br" href="#hex12" data-to="12"><span class="brl">1爻 陽→陰</span><span class="brt">否<small>ひ</small></span></a><a class="br" href="#hex10" data-to="10"><span class="brl">2爻 陰→陽</span><span class="brt">履<small>り</small></span></a><a class="br" href="#hex13" data-to="13"><span class="brl">3爻 陰→陽</span><span class="brt">同人<small>どうじん</small></span></a><a class="br" href="#hex42" data-to="42"><span class="brl">4爻 陽→陰</span><span class="brt">益<small>えき</small></span></a><a class="br" href="#hex21" data-to="21"><span class="brl">5爻 陽→陰</span><span class="brt">噬嗑<small>ぜいごう</small></span></a><a class="br" href="#hex17" data-to="17"><span class="brl">6爻 陽→陰</span><span class="brt">隨<small>ずい</small></span></a></div>
+  </div>
+</article>
+<article class="card" id="hex26" data-kw="26">
+  <div class="img" style="background-image:url(images/hex26.png)">
+    <span class="noimg">象</span>
+    <span class="seqno">序卦 26</span>
+  </div>
+  <div class="body">
+    <div class="head">
+      <svg viewBox="0 0 70 88" width="70" height="88" class="yao"><rect x="4" y="79.0" width="62" height="9" fill="#d9c37a"/><rect x="4" y="63.2" width="62" height="9" fill="#d9c37a"/><rect x="4" y="47.4" width="62" height="9" fill="#d9c37a"/><rect x="4" y="31.6" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="31.6" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="15.8" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="15.8" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="0.0" width="62" height="9" fill="#d9c37a"/></svg>
+      <div class="names">
+        <div class="cn">䷙ 大畜<small>たいちく</small></div>
+        <div class="en">GreatAccumulation</div>
+        <div class="tri">上 山・下 天</div>
+      </div>
+    </div>
+    <div class="branches"><div class="blabel">変爻で変わる先 →</div><a class="br" href="#hex18" data-to="18"><span class="brl">1爻 陽→陰</span><span class="brt">蠱<small>こ</small></span></a><a class="br" href="#hex22" data-to="22"><span class="brl">2爻 陽→陰</span><span class="brt">賁<small>ひ</small></span></a><a class="br" href="#hex41" data-to="41"><span class="brl">3爻 陽→陰</span><span class="brt">損<small>そん</small></span></a><a class="br" href="#hex14" data-to="14"><span class="brl">4爻 陰→陽</span><span class="brt">大有<small>たいゆう</small></span></a><a class="br" href="#hex9" data-to="9"><span class="brl">5爻 陰→陽</span><span class="brt">小畜<small>しょうちく</small></span></a><a class="br" href="#hex11" data-to="11"><span class="brl">6爻 陽→陰</span><span class="brt">泰<small>たい</small></span></a></div>
+  </div>
+</article>
+<article class="card" id="hex27" data-kw="27">
+  <div class="img" style="background-image:url(images/hex27.png)">
+    <span class="noimg">象</span>
+    <span class="seqno">序卦 27</span>
+  </div>
+  <div class="body">
+    <div class="head">
+      <svg viewBox="0 0 70 88" width="70" height="88" class="yao"><rect x="4" y="79.0" width="62" height="9" fill="#d9c37a"/><rect x="4" y="63.2" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="63.2" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="47.4" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="47.4" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="31.6" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="31.6" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="15.8" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="15.8" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="0.0" width="62" height="9" fill="#d9c37a"/></svg>
+      <div class="names">
+        <div class="cn">䷚ 頤<small>い</small></div>
+        <div class="en">Nourishing</div>
+        <div class="tri">上 山・下 雷</div>
+      </div>
+    </div>
+    <div class="branches"><div class="blabel">変爻で変わる先 →</div><a class="br" href="#hex23" data-to="23"><span class="brl">1爻 陽→陰</span><span class="brt">剝<small>はく</small></span></a><a class="br" href="#hex41" data-to="41"><span class="brl">2爻 陰→陽</span><span class="brt">損<small>そん</small></span></a><a class="br" href="#hex22" data-to="22"><span class="brl">3爻 陰→陽</span><span class="brt">賁<small>ひ</small></span></a><a class="br" href="#hex21" data-to="21"><span class="brl">4爻 陰→陽</span><span class="brt">噬嗑<small>ぜいごう</small></span></a><a class="br" href="#hex42" data-to="42"><span class="brl">5爻 陰→陽</span><span class="brt">益<small>えき</small></span></a><a class="br" href="#hex24" data-to="24"><span class="brl">6爻 陽→陰</span><span class="brt">復<small>ふく</small></span></a></div>
+  </div>
+</article>
+<article class="card" id="hex28" data-kw="28">
+  <div class="img" style="background-image:url(images/hex28.png)">
+    <span class="noimg">象</span>
+    <span class="seqno">序卦 28</span>
+  </div>
+  <div class="body">
+    <div class="head">
+      <svg viewBox="0 0 70 88" width="70" height="88" class="yao"><rect x="4" y="79.0" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="79.0" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="63.2" width="62" height="9" fill="#d9c37a"/><rect x="4" y="47.4" width="62" height="9" fill="#d9c37a"/><rect x="4" y="31.6" width="62" height="9" fill="#d9c37a"/><rect x="4" y="15.8" width="62" height="9" fill="#d9c37a"/><rect x="4" y="0.0" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="0.0" width="27.0" height="9" fill="#d9c37a"/></svg>
+      <div class="names">
+        <div class="cn">䷛ 大過<small>たいか</small></div>
+        <div class="en">GreatExceeding</div>
+        <div class="tri">上 沢・下 風</div>
+      </div>
+    </div>
+    <div class="branches"><div class="blabel">変爻で変わる先 →</div><a class="br" href="#hex43" data-to="43"><span class="brl">1爻 陰→陽</span><span class="brt">夬<small>かい</small></span></a><a class="br" href="#hex31" data-to="31"><span class="brl">2爻 陽→陰</span><span class="brt">咸<small>かん</small></span></a><a class="br" href="#hex47" data-to="47"><span class="brl">3爻 陽→陰</span><span class="brt">困<small>こん</small></span></a><a class="br" href="#hex48" data-to="48"><span class="brl">4爻 陽→陰</span><span class="brt">井<small>せい</small></span></a><a class="br" href="#hex32" data-to="32"><span class="brl">5爻 陽→陰</span><span class="brt">恆<small>こう</small></span></a><a class="br" href="#hex44" data-to="44"><span class="brl">6爻 陰→陽</span><span class="brt">姤<small>こう</small></span></a></div>
+  </div>
+</article>
+<article class="card" id="hex29" data-kw="29">
+  <div class="img" style="background-image:url(images/hex29.png)">
+    <span class="noimg">象</span>
+    <span class="seqno">序卦 29</span>
+  </div>
+  <div class="body">
+    <div class="head">
+      <svg viewBox="0 0 70 88" width="70" height="88" class="yao"><rect x="4" y="79.0" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="79.0" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="63.2" width="62" height="9" fill="#d9c37a"/><rect x="4" y="47.4" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="47.4" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="31.6" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="31.6" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="15.8" width="62" height="9" fill="#d9c37a"/><rect x="4" y="0.0" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="0.0" width="27.0" height="9" fill="#d9c37a"/></svg>
+      <div class="names">
+        <div class="cn">䷜ 坎<small>かん</small></div>
+        <div class="en">Darkness</div>
+        <div class="tri">上 水・下 水</div>
+      </div>
+    </div>
+    <div class="branches"><div class="blabel">変爻で変わる先 →</div><a class="br" href="#hex60" data-to="60"><span class="brl">1爻 陰→陽</span><span class="brt">節<small>せつ</small></span></a><a class="br" href="#hex8" data-to="8"><span class="brl">2爻 陽→陰</span><span class="brt">比<small>ひ</small></span></a><a class="br" href="#hex48" data-to="48"><span class="brl">3爻 陰→陽</span><span class="brt">井<small>せい</small></span></a><a class="br" href="#hex47" data-to="47"><span class="brl">4爻 陰→陽</span><span class="brt">困<small>こん</small></span></a><a class="br" href="#hex7" data-to="7"><span class="brl">5爻 陽→陰</span><span class="brt">師<small>し</small></span></a><a class="br" href="#hex59" data-to="59"><span class="brl">6爻 陰→陽</span><span class="brt">渙<small>かん</small></span></a></div>
+  </div>
+</article>
+<article class="card" id="hex30" data-kw="30">
+  <div class="img" style="background-image:url(images/hex30.png)">
+    <span class="noimg">象</span>
+    <span class="seqno">序卦 30</span>
+  </div>
+  <div class="body">
+    <div class="head">
+      <svg viewBox="0 0 70 88" width="70" height="88" class="yao"><rect x="4" y="79.0" width="62" height="9" fill="#d9c37a"/><rect x="4" y="63.2" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="63.2" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="47.4" width="62" height="9" fill="#d9c37a"/><rect x="4" y="31.6" width="62" height="9" fill="#d9c37a"/><rect x="4" y="15.8" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="15.8" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="0.0" width="62" height="9" fill="#d9c37a"/></svg>
+      <div class="names">
+        <div class="cn">䷝ 離<small>り</small></div>
+        <div class="en">Brightness</div>
+        <div class="tri">上 火・下 火</div>
+      </div>
+    </div>
+    <div class="branches"><div class="blabel">変爻で変わる先 →</div><a class="br" href="#hex56" data-to="56"><span class="brl">1爻 陽→陰</span><span class="brt">旅<small>りょ</small></span></a><a class="br" href="#hex14" data-to="14"><span class="brl">2爻 陰→陽</span><span class="brt">大有<small>たいゆう</small></span></a><a class="br" href="#hex21" data-to="21"><span class="brl">3爻 陽→陰</span><span class="brt">噬嗑<small>ぜいごう</small></span></a><a class="br" href="#hex22" data-to="22"><span class="brl">4爻 陽→陰</span><span class="brt">賁<small>ひ</small></span></a><a class="br" href="#hex13" data-to="13"><span class="brl">5爻 陰→陽</span><span class="brt">同人<small>どうじん</small></span></a><a class="br" href="#hex55" data-to="55"><span class="brl">6爻 陽→陰</span><span class="brt">豐<small>ほう</small></span></a></div>
+  </div>
+</article>
+<article class="card" id="hex31" data-kw="31">
+  <div class="img" style="background-image:url(images/hex31.png)">
+    <span class="noimg">象</span>
+    <span class="seqno">序卦 31</span>
+  </div>
+  <div class="body">
+    <div class="head">
+      <svg viewBox="0 0 70 88" width="70" height="88" class="yao"><rect x="4" y="79.0" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="79.0" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="63.2" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="63.2" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="47.4" width="62" height="9" fill="#d9c37a"/><rect x="4" y="31.6" width="62" height="9" fill="#d9c37a"/><rect x="4" y="15.8" width="62" height="9" fill="#d9c37a"/><rect x="4" y="0.0" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="0.0" width="27.0" height="9" fill="#d9c37a"/></svg>
+      <div class="names">
+        <div class="cn">䷞ 咸<small>かん</small></div>
+        <div class="en">MutualInfluence</div>
+        <div class="tri">上 沢・下 山</div>
+      </div>
+    </div>
+    <div class="branches"><div class="blabel">変爻で変わる先 →</div><a class="br" href="#hex49" data-to="49"><span class="brl">1爻 陰→陽</span><span class="brt">革<small>かく</small></span></a><a class="br" href="#hex28" data-to="28"><span class="brl">2爻 陰→陽</span><span class="brt">大過<small>たいか</small></span></a><a class="br" href="#hex45" data-to="45"><span class="brl">3爻 陽→陰</span><span class="brt">萃<small>すい</small></span></a><a class="br" href="#hex39" data-to="39"><span class="brl">4爻 陽→陰</span><span class="brt">蹇<small>けん</small></span></a><a class="br" href="#hex62" data-to="62"><span class="brl">5爻 陽→陰</span><span class="brt">小過<small>しょうか</small></span></a><a class="br" href="#hex33" data-to="33"><span class="brl">6爻 陰→陽</span><span class="brt">遯<small>とん</small></span></a></div>
+  </div>
+</article>
+<article class="card" id="hex32" data-kw="32">
+  <div class="img" style="background-image:url(images/hex32.png)">
+    <span class="noimg">象</span>
+    <span class="seqno">序卦 32</span>
+  </div>
+  <div class="body">
+    <div class="head">
+      <svg viewBox="0 0 70 88" width="70" height="88" class="yao"><rect x="4" y="79.0" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="79.0" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="63.2" width="62" height="9" fill="#d9c37a"/><rect x="4" y="47.4" width="62" height="9" fill="#d9c37a"/><rect x="4" y="31.6" width="62" height="9" fill="#d9c37a"/><rect x="4" y="15.8" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="15.8" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="0.0" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="0.0" width="27.0" height="9" fill="#d9c37a"/></svg>
+      <div class="names">
+        <div class="cn">䷟ 恆<small>こう</small></div>
+        <div class="en">LongLasting</div>
+        <div class="tri">上 雷・下 風</div>
+      </div>
+    </div>
+    <div class="branches"><div class="blabel">変爻で変わる先 →</div><a class="br" href="#hex34" data-to="34"><span class="brl">1爻 陰→陽</span><span class="brt">大壯<small>たいそう</small></span></a><a class="br" href="#hex62" data-to="62"><span class="brl">2爻 陽→陰</span><span class="brt">小過<small>しょうか</small></span></a><a class="br" href="#hex40" data-to="40"><span class="brl">3爻 陽→陰</span><span class="brt">解<small>かい</small></span></a><a class="br" href="#hex46" data-to="46"><span class="brl">4爻 陽→陰</span><span class="brt">升<small>しょう</small></span></a><a class="br" href="#hex28" data-to="28"><span class="brl">5爻 陰→陽</span><span class="brt">大過<small>たいか</small></span></a><a class="br" href="#hex50" data-to="50"><span class="brl">6爻 陰→陽</span><span class="brt">鼎<small>てい</small></span></a></div>
+  </div>
+</article>
+<article class="card" id="hex33" data-kw="33">
+  <div class="img" style="background-image:url(images/hex33.png)">
+    <span class="noimg">象</span>
+    <span class="seqno">序卦 33</span>
+  </div>
+  <div class="body">
+    <div class="head">
+      <svg viewBox="0 0 70 88" width="70" height="88" class="yao"><rect x="4" y="79.0" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="79.0" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="63.2" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="63.2" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="47.4" width="62" height="9" fill="#d9c37a"/><rect x="4" y="31.6" width="62" height="9" fill="#d9c37a"/><rect x="4" y="15.8" width="62" height="9" fill="#d9c37a"/><rect x="4" y="0.0" width="62" height="9" fill="#d9c37a"/></svg>
+      <div class="names">
+        <div class="cn">䷠ 遯<small>とん</small></div>
+        <div class="en">Retreat</div>
+        <div class="tri">上 天・下 山</div>
+      </div>
+    </div>
+    <div class="branches"><div class="blabel">変爻で変わる先 →</div><a class="br" href="#hex13" data-to="13"><span class="brl">1爻 陰→陽</span><span class="brt">同人<small>どうじん</small></span></a><a class="br" href="#hex44" data-to="44"><span class="brl">2爻 陰→陽</span><span class="brt">姤<small>こう</small></span></a><a class="br" href="#hex12" data-to="12"><span class="brl">3爻 陽→陰</span><span class="brt">否<small>ひ</small></span></a><a class="br" href="#hex53" data-to="53"><span class="brl">4爻 陽→陰</span><span class="brt">漸<small>ぜん</small></span></a><a class="br" href="#hex56" data-to="56"><span class="brl">5爻 陽→陰</span><span class="brt">旅<small>りょ</small></span></a><a class="br" href="#hex31" data-to="31"><span class="brl">6爻 陽→陰</span><span class="brt">咸<small>かん</small></span></a></div>
+  </div>
+</article>
+<article class="card" id="hex34" data-kw="34">
+  <div class="img" style="background-image:url(images/hex34.png)">
+    <span class="noimg">象</span>
+    <span class="seqno">序卦 34</span>
+  </div>
+  <div class="body">
+    <div class="head">
+      <svg viewBox="0 0 70 88" width="70" height="88" class="yao"><rect x="4" y="79.0" width="62" height="9" fill="#d9c37a"/><rect x="4" y="63.2" width="62" height="9" fill="#d9c37a"/><rect x="4" y="47.4" width="62" height="9" fill="#d9c37a"/><rect x="4" y="31.6" width="62" height="9" fill="#d9c37a"/><rect x="4" y="15.8" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="15.8" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="0.0" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="0.0" width="27.0" height="9" fill="#d9c37a"/></svg>
+      <div class="names">
+        <div class="cn">䷡ 大壯<small>たいそう</small></div>
+        <div class="en">GreatStrength</div>
+        <div class="tri">上 雷・下 天</div>
+      </div>
+    </div>
+    <div class="branches"><div class="blabel">変爻で変わる先 →</div><a class="br" href="#hex32" data-to="32"><span class="brl">1爻 陽→陰</span><span class="brt">恆<small>こう</small></span></a><a class="br" href="#hex55" data-to="55"><span class="brl">2爻 陽→陰</span><span class="brt">豐<small>ほう</small></span></a><a class="br" href="#hex54" data-to="54"><span class="brl">3爻 陽→陰</span><span class="brt">歸妹<small>きまい</small></span></a><a class="br" href="#hex11" data-to="11"><span class="brl">4爻 陽→陰</span><span class="brt">泰<small>たい</small></span></a><a class="br" href="#hex43" data-to="43"><span class="brl">5爻 陰→陽</span><span class="brt">夬<small>かい</small></span></a><a class="br" href="#hex14" data-to="14"><span class="brl">6爻 陰→陽</span><span class="brt">大有<small>たいゆう</small></span></a></div>
+  </div>
+</article>
+<article class="card" id="hex35" data-kw="35">
+  <div class="img" style="background-image:url(images/hex35.png)">
+    <span class="noimg">象</span>
+    <span class="seqno">序卦 35</span>
+  </div>
+  <div class="body">
+    <div class="head">
+      <svg viewBox="0 0 70 88" width="70" height="88" class="yao"><rect x="4" y="79.0" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="79.0" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="63.2" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="63.2" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="47.4" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="47.4" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="31.6" width="62" height="9" fill="#d9c37a"/><rect x="4" y="15.8" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="15.8" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="0.0" width="62" height="9" fill="#d9c37a"/></svg>
+      <div class="names">
+        <div class="cn">䷢ 晉<small>しん</small></div>
+        <div class="en">ProceedingForward</div>
+        <div class="tri">上 火・下 地</div>
+      </div>
+    </div>
+    <div class="branches"><div class="blabel">変爻で変わる先 →</div><a class="br" href="#hex21" data-to="21"><span class="brl">1爻 陰→陽</span><span class="brt">噬嗑<small>ぜいごう</small></span></a><a class="br" href="#hex64" data-to="64"><span class="brl">2爻 陰→陽</span><span class="brt">未濟<small>びせい</small></span></a><a class="br" href="#hex56" data-to="56"><span class="brl">3爻 陰→陽</span><span class="brt">旅<small>りょ</small></span></a><a class="br" href="#hex23" data-to="23"><span class="brl">4爻 陽→陰</span><span class="brt">剝<small>はく</small></span></a><a class="br" href="#hex12" data-to="12"><span class="brl">5爻 陰→陽</span><span class="brt">否<small>ひ</small></span></a><a class="br" href="#hex16" data-to="16"><span class="brl">6爻 陽→陰</span><span class="brt">豫<small>よ</small></span></a></div>
+  </div>
+</article>
+<article class="card" id="hex36" data-kw="36">
+  <div class="img" style="background-image:url(images/hex36.png)">
+    <span class="noimg">象</span>
+    <span class="seqno">序卦 36</span>
+  </div>
+  <div class="body">
+    <div class="head">
+      <svg viewBox="0 0 70 88" width="70" height="88" class="yao"><rect x="4" y="79.0" width="62" height="9" fill="#d9c37a"/><rect x="4" y="63.2" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="63.2" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="47.4" width="62" height="9" fill="#d9c37a"/><rect x="4" y="31.6" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="31.6" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="15.8" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="15.8" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="0.0" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="0.0" width="27.0" height="9" fill="#d9c37a"/></svg>
+      <div class="names">
+        <div class="cn">䷣ 明夷<small>めいい</small></div>
+        <div class="en">BrillianceInjured</div>
+        <div class="tri">上 地・下 火</div>
+      </div>
+    </div>
+    <div class="branches"><div class="blabel">変爻で変わる先 →</div><a class="br" href="#hex15" data-to="15"><span class="brl">1爻 陽→陰</span><span class="brt">謙<small>けん</small></span></a><a class="br" href="#hex11" data-to="11"><span class="brl">2爻 陰→陽</span><span class="brt">泰<small>たい</small></span></a><a class="br" href="#hex24" data-to="24"><span class="brl">3爻 陽→陰</span><span class="brt">復<small>ふく</small></span></a><a class="br" href="#hex55" data-to="55"><span class="brl">4爻 陰→陽</span><span class="brt">豐<small>ほう</small></span></a><a class="br" href="#hex63" data-to="63"><span class="brl">5爻 陰→陽</span><span class="brt">既濟<small>きせい</small></span></a><a class="br" href="#hex22" data-to="22"><span class="brl">6爻 陰→陽</span><span class="brt">賁<small>ひ</small></span></a></div>
+  </div>
+</article>
+<article class="card" id="hex37" data-kw="37">
+  <div class="img" style="background-image:url(images/hex37.png)">
+    <span class="noimg">象</span>
+    <span class="seqno">序卦 37</span>
+  </div>
+  <div class="body">
+    <div class="head">
+      <svg viewBox="0 0 70 88" width="70" height="88" class="yao"><rect x="4" y="79.0" width="62" height="9" fill="#d9c37a"/><rect x="4" y="63.2" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="63.2" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="47.4" width="62" height="9" fill="#d9c37a"/><rect x="4" y="31.6" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="31.6" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="15.8" width="62" height="9" fill="#d9c37a"/><rect x="4" y="0.0" width="62" height="9" fill="#d9c37a"/></svg>
+      <div class="names">
+        <div class="cn">䷤ 家人<small>かじん</small></div>
+        <div class="en">Household</div>
+        <div class="tri">上 風・下 火</div>
+      </div>
+    </div>
+    <div class="branches"><div class="blabel">変爻で変わる先 →</div><a class="br" href="#hex53" data-to="53"><span class="brl">1爻 陽→陰</span><span class="brt">漸<small>ぜん</small></span></a><a class="br" href="#hex9" data-to="9"><span class="brl">2爻 陰→陽</span><span class="brt">小畜<small>しょうちく</small></span></a><a class="br" href="#hex42" data-to="42"><span class="brl">3爻 陽→陰</span><span class="brt">益<small>えき</small></span></a><a class="br" href="#hex13" data-to="13"><span class="brl">4爻 陰→陽</span><span class="brt">同人<small>どうじん</small></span></a><a class="br" href="#hex22" data-to="22"><span class="brl">5爻 陽→陰</span><span class="brt">賁<small>ひ</small></span></a><a class="br" href="#hex63" data-to="63"><span class="brl">6爻 陽→陰</span><span class="brt">既濟<small>きせい</small></span></a></div>
+  </div>
+</article>
+<article class="card" id="hex38" data-kw="38">
+  <div class="img" style="background-image:url(images/hex38.png)">
+    <span class="noimg">象</span>
+    <span class="seqno">序卦 38</span>
+  </div>
+  <div class="body">
+    <div class="head">
+      <svg viewBox="0 0 70 88" width="70" height="88" class="yao"><rect x="4" y="79.0" width="62" height="9" fill="#d9c37a"/><rect x="4" y="63.2" width="62" height="9" fill="#d9c37a"/><rect x="4" y="47.4" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="47.4" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="31.6" width="62" height="9" fill="#d9c37a"/><rect x="4" y="15.8" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="15.8" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="0.0" width="62" height="9" fill="#d9c37a"/></svg>
+      <div class="names">
+        <div class="cn">䷥ 睽<small>けい</small></div>
+        <div class="en">Diversity</div>
+        <div class="tri">上 火・下 沢</div>
+      </div>
+    </div>
+    <div class="branches"><div class="blabel">変爻で変わる先 →</div><a class="br" href="#hex64" data-to="64"><span class="brl">1爻 陽→陰</span><span class="brt">未濟<small>びせい</small></span></a><a class="br" href="#hex21" data-to="21"><span class="brl">2爻 陽→陰</span><span class="brt">噬嗑<small>ぜいごう</small></span></a><a class="br" href="#hex14" data-to="14"><span class="brl">3爻 陰→陽</span><span class="brt">大有<small>たいゆう</small></span></a><a class="br" href="#hex41" data-to="41"><span class="brl">4爻 陽→陰</span><span class="brt">損<small>そん</small></span></a><a class="br" href="#hex10" data-to="10"><span class="brl">5爻 陰→陽</span><span class="brt">履<small>り</small></span></a><a class="br" href="#hex54" data-to="54"><span class="brl">6爻 陽→陰</span><span class="brt">歸妹<small>きまい</small></span></a></div>
+  </div>
+</article>
+<article class="card" id="hex39" data-kw="39">
+  <div class="img" style="background-image:url(images/hex39.png)">
+    <span class="noimg">象</span>
+    <span class="seqno">序卦 39</span>
+  </div>
+  <div class="body">
+    <div class="head">
+      <svg viewBox="0 0 70 88" width="70" height="88" class="yao"><rect x="4" y="79.0" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="79.0" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="63.2" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="63.2" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="47.4" width="62" height="9" fill="#d9c37a"/><rect x="4" y="31.6" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="31.6" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="15.8" width="62" height="9" fill="#d9c37a"/><rect x="4" y="0.0" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="0.0" width="27.0" height="9" fill="#d9c37a"/></svg>
+      <div class="names">
+        <div class="cn">䷦ 蹇<small>けん</small></div>
+        <div class="en">Hardship</div>
+        <div class="tri">上 水・下 山</div>
+      </div>
+    </div>
+    <div class="branches"><div class="blabel">変爻で変わる先 →</div><a class="br" href="#hex63" data-to="63"><span class="brl">1爻 陰→陽</span><span class="brt">既濟<small>きせい</small></span></a><a class="br" href="#hex48" data-to="48"><span class="brl">2爻 陰→陽</span><span class="brt">井<small>せい</small></span></a><a class="br" href="#hex8" data-to="8"><span class="brl">3爻 陽→陰</span><span class="brt">比<small>ひ</small></span></a><a class="br" href="#hex31" data-to="31"><span class="brl">4爻 陰→陽</span><span class="brt">咸<small>かん</small></span></a><a class="br" href="#hex15" data-to="15"><span class="brl">5爻 陽→陰</span><span class="brt">謙<small>けん</small></span></a><a class="br" href="#hex53" data-to="53"><span class="brl">6爻 陰→陽</span><span class="brt">漸<small>ぜん</small></span></a></div>
+  </div>
+</article>
+<article class="card" id="hex40" data-kw="40">
+  <div class="img" style="background-image:url(images/hex40.png)">
+    <span class="noimg">象</span>
+    <span class="seqno">序卦 40</span>
+  </div>
+  <div class="body">
+    <div class="head">
+      <svg viewBox="0 0 70 88" width="70" height="88" class="yao"><rect x="4" y="79.0" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="79.0" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="63.2" width="62" height="9" fill="#d9c37a"/><rect x="4" y="47.4" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="47.4" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="31.6" width="62" height="9" fill="#d9c37a"/><rect x="4" y="15.8" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="15.8" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="0.0" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="0.0" width="27.0" height="9" fill="#d9c37a"/></svg>
+      <div class="names">
+        <div class="cn">䷧ 解<small>かい</small></div>
+        <div class="en">Relief</div>
+        <div class="tri">上 雷・下 水</div>
+      </div>
+    </div>
+    <div class="branches"><div class="blabel">変爻で変わる先 →</div><a class="br" href="#hex54" data-to="54"><span class="brl">1爻 陰→陽</span><span class="brt">歸妹<small>きまい</small></span></a><a class="br" href="#hex16" data-to="16"><span class="brl">2爻 陽→陰</span><span class="brt">豫<small>よ</small></span></a><a class="br" href="#hex32" data-to="32"><span class="brl">3爻 陰→陽</span><span class="brt">恆<small>こう</small></span></a><a class="br" href="#hex7" data-to="7"><span class="brl">4爻 陽→陰</span><span class="brt">師<small>し</small></span></a><a class="br" href="#hex47" data-to="47"><span class="brl">5爻 陰→陽</span><span class="brt">困<small>こん</small></span></a><a class="br" href="#hex64" data-to="64"><span class="brl">6爻 陰→陽</span><span class="brt">未濟<small>びせい</small></span></a></div>
+  </div>
+</article>
+<article class="card" id="hex41" data-kw="41">
+  <div class="img" style="background-image:url(images/hex41.png)">
+    <span class="noimg">象</span>
+    <span class="seqno">序卦 41</span>
+  </div>
+  <div class="body">
+    <div class="head">
+      <svg viewBox="0 0 70 88" width="70" height="88" class="yao"><rect x="4" y="79.0" width="62" height="9" fill="#d9c37a"/><rect x="4" y="63.2" width="62" height="9" fill="#d9c37a"/><rect x="4" y="47.4" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="47.4" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="31.6" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="31.6" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="15.8" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="15.8" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="0.0" width="62" height="9" fill="#d9c37a"/></svg>
+      <div class="names">
+        <div class="cn">䷨ 損<small>そん</small></div>
+        <div class="en">Decreasing</div>
+        <div class="tri">上 山・下 沢</div>
+      </div>
+    </div>
+    <div class="branches"><div class="blabel">変爻で変わる先 →</div><a class="br" href="#hex4" data-to="4"><span class="brl">1爻 陽→陰</span><span class="brt">蒙<small>もう</small></span></a><a class="br" href="#hex27" data-to="27"><span class="brl">2爻 陽→陰</span><span class="brt">頤<small>い</small></span></a><a class="br" href="#hex26" data-to="26"><span class="brl">3爻 陰→陽</span><span class="brt">大畜<small>たいちく</small></span></a><a class="br" href="#hex38" data-to="38"><span class="brl">4爻 陰→陽</span><span class="brt">睽<small>けい</small></span></a><a class="br" href="#hex61" data-to="61"><span class="brl">5爻 陰→陽</span><span class="brt">中孚<small>ちゅうふ</small></span></a><a class="br" href="#hex19" data-to="19"><span class="brl">6爻 陽→陰</span><span class="brt">臨<small>りん</small></span></a></div>
+  </div>
+</article>
+<article class="card" id="hex42" data-kw="42">
+  <div class="img" style="background-image:url(images/hex42.png)">
+    <span class="noimg">象</span>
+    <span class="seqno">序卦 42</span>
+  </div>
+  <div class="body">
+    <div class="head">
+      <svg viewBox="0 0 70 88" width="70" height="88" class="yao"><rect x="4" y="79.0" width="62" height="9" fill="#d9c37a"/><rect x="4" y="63.2" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="63.2" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="47.4" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="47.4" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="31.6" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="31.6" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="15.8" width="62" height="9" fill="#d9c37a"/><rect x="4" y="0.0" width="62" height="9" fill="#d9c37a"/></svg>
+      <div class="names">
+        <div class="cn">䷩ 益<small>えき</small></div>
+        <div class="en">Increasing</div>
+        <div class="tri">上 風・下 雷</div>
+      </div>
+    </div>
+    <div class="branches"><div class="blabel">変爻で変わる先 →</div><a class="br" href="#hex20" data-to="20"><span class="brl">1爻 陽→陰</span><span class="brt">觀<small>かん</small></span></a><a class="br" href="#hex61" data-to="61"><span class="brl">2爻 陰→陽</span><span class="brt">中孚<small>ちゅうふ</small></span></a><a class="br" href="#hex37" data-to="37"><span class="brl">3爻 陰→陽</span><span class="brt">家人<small>かじん</small></span></a><a class="br" href="#hex25" data-to="25"><span class="brl">4爻 陰→陽</span><span class="brt">無妄<small>むもう</small></span></a><a class="br" href="#hex27" data-to="27"><span class="brl">5爻 陽→陰</span><span class="brt">頤<small>い</small></span></a><a class="br" href="#hex3" data-to="3"><span class="brl">6爻 陽→陰</span><span class="brt">屯<small>ちゅん</small></span></a></div>
+  </div>
+</article>
+<article class="card" id="hex43" data-kw="43">
+  <div class="img" style="background-image:url(images/hex43.png)">
+    <span class="noimg">象</span>
+    <span class="seqno">序卦 43</span>
+  </div>
+  <div class="body">
+    <div class="head">
+      <svg viewBox="0 0 70 88" width="70" height="88" class="yao"><rect x="4" y="79.0" width="62" height="9" fill="#d9c37a"/><rect x="4" y="63.2" width="62" height="9" fill="#d9c37a"/><rect x="4" y="47.4" width="62" height="9" fill="#d9c37a"/><rect x="4" y="31.6" width="62" height="9" fill="#d9c37a"/><rect x="4" y="15.8" width="62" height="9" fill="#d9c37a"/><rect x="4" y="0.0" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="0.0" width="27.0" height="9" fill="#d9c37a"/></svg>
+      <div class="names">
+        <div class="cn">䷪ 夬<small>かい</small></div>
+        <div class="en">Eliminating</div>
+        <div class="tri">上 沢・下 天</div>
+      </div>
+    </div>
+    <div class="branches"><div class="blabel">変爻で変わる先 →</div><a class="br" href="#hex28" data-to="28"><span class="brl">1爻 陽→陰</span><span class="brt">大過<small>たいか</small></span></a><a class="br" href="#hex49" data-to="49"><span class="brl">2爻 陽→陰</span><span class="brt">革<small>かく</small></span></a><a class="br" href="#hex58" data-to="58"><span class="brl">3爻 陽→陰</span><span class="brt">兌<small>だ</small></span></a><a class="br" href="#hex5" data-to="5"><span class="brl">4爻 陽→陰</span><span class="brt">需<small>じゅ</small></span></a><a class="br" href="#hex34" data-to="34"><span class="brl">5爻 陽→陰</span><span class="brt">大壯<small>たいそう</small></span></a><a class="br" href="#hex1" data-to="1"><span class="brl">6爻 陰→陽</span><span class="brt">乾<small>けん</small></span></a></div>
+  </div>
+</article>
+<article class="card" id="hex44" data-kw="44">
+  <div class="img" style="background-image:url(images/hex44.png)">
+    <span class="noimg">象</span>
+    <span class="seqno">序卦 44</span>
+  </div>
+  <div class="body">
+    <div class="head">
+      <svg viewBox="0 0 70 88" width="70" height="88" class="yao"><rect x="4" y="79.0" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="79.0" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="63.2" width="62" height="9" fill="#d9c37a"/><rect x="4" y="47.4" width="62" height="9" fill="#d9c37a"/><rect x="4" y="31.6" width="62" height="9" fill="#d9c37a"/><rect x="4" y="15.8" width="62" height="9" fill="#d9c37a"/><rect x="4" y="0.0" width="62" height="9" fill="#d9c37a"/></svg>
+      <div class="names">
+        <div class="cn">䷫ 姤<small>こう</small></div>
+        <div class="en">Encountering</div>
+        <div class="tri">上 天・下 風</div>
+      </div>
+    </div>
+    <div class="branches"><div class="blabel">変爻で変わる先 →</div><a class="br" href="#hex1" data-to="1"><span class="brl">1爻 陰→陽</span><span class="brt">乾<small>けん</small></span></a><a class="br" href="#hex33" data-to="33"><span class="brl">2爻 陽→陰</span><span class="brt">遯<small>とん</small></span></a><a class="br" href="#hex6" data-to="6"><span class="brl">3爻 陽→陰</span><span class="brt">訟<small>しょう</small></span></a><a class="br" href="#hex57" data-to="57"><span class="brl">4爻 陽→陰</span><span class="brt">巽<small>そん</small></span></a><a class="br" href="#hex50" data-to="50"><span class="brl">5爻 陽→陰</span><span class="brt">鼎<small>てい</small></span></a><a class="br" href="#hex28" data-to="28"><span class="brl">6爻 陽→陰</span><span class="brt">大過<small>たいか</small></span></a></div>
+  </div>
+</article>
+<article class="card" id="hex45" data-kw="45">
+  <div class="img" style="background-image:url(images/hex45.png)">
+    <span class="noimg">象</span>
+    <span class="seqno">序卦 45</span>
+  </div>
+  <div class="body">
+    <div class="head">
+      <svg viewBox="0 0 70 88" width="70" height="88" class="yao"><rect x="4" y="79.0" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="79.0" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="63.2" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="63.2" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="47.4" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="47.4" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="31.6" width="62" height="9" fill="#d9c37a"/><rect x="4" y="15.8" width="62" height="9" fill="#d9c37a"/><rect x="4" y="0.0" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="0.0" width="27.0" height="9" fill="#d9c37a"/></svg>
+      <div class="names">
+        <div class="cn">䷬ 萃<small>すい</small></div>
+        <div class="en">BringingTogether</div>
+        <div class="tri">上 沢・下 地</div>
+      </div>
+    </div>
+    <div class="branches"><div class="blabel">変爻で変わる先 →</div><a class="br" href="#hex17" data-to="17"><span class="brl">1爻 陰→陽</span><span class="brt">隨<small>ずい</small></span></a><a class="br" href="#hex47" data-to="47"><span class="brl">2爻 陰→陽</span><span class="brt">困<small>こん</small></span></a><a class="br" href="#hex31" data-to="31"><span class="brl">3爻 陰→陽</span><span class="brt">咸<small>かん</small></span></a><a class="br" href="#hex8" data-to="8"><span class="brl">4爻 陽→陰</span><span class="brt">比<small>ひ</small></span></a><a class="br" href="#hex16" data-to="16"><span class="brl">5爻 陽→陰</span><span class="brt">豫<small>よ</small></span></a><a class="br" href="#hex12" data-to="12"><span class="brl">6爻 陰→陽</span><span class="brt">否<small>ひ</small></span></a></div>
+  </div>
+</article>
+<article class="card" id="hex46" data-kw="46">
+  <div class="img" style="background-image:url(images/hex46.png)">
+    <span class="noimg">象</span>
+    <span class="seqno">序卦 46</span>
+  </div>
+  <div class="body">
+    <div class="head">
+      <svg viewBox="0 0 70 88" width="70" height="88" class="yao"><rect x="4" y="79.0" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="79.0" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="63.2" width="62" height="9" fill="#d9c37a"/><rect x="4" y="47.4" width="62" height="9" fill="#d9c37a"/><rect x="4" y="31.6" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="31.6" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="15.8" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="15.8" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="0.0" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="0.0" width="27.0" height="9" fill="#d9c37a"/></svg>
+      <div class="names">
+        <div class="cn">䷭ 升<small>しょう</small></div>
+        <div class="en">GrowingUpward</div>
+        <div class="tri">上 地・下 風</div>
+      </div>
+    </div>
+    <div class="branches"><div class="blabel">変爻で変わる先 →</div><a class="br" href="#hex11" data-to="11"><span class="brl">1爻 陰→陽</span><span class="brt">泰<small>たい</small></span></a><a class="br" href="#hex15" data-to="15"><span class="brl">2爻 陽→陰</span><span class="brt">謙<small>けん</small></span></a><a class="br" href="#hex7" data-to="7"><span class="brl">3爻 陽→陰</span><span class="brt">師<small>し</small></span></a><a class="br" href="#hex32" data-to="32"><span class="brl">4爻 陰→陽</span><span class="brt">恆<small>こう</small></span></a><a class="br" href="#hex48" data-to="48"><span class="brl">5爻 陰→陽</span><span class="brt">井<small>せい</small></span></a><a class="br" href="#hex18" data-to="18"><span class="brl">6爻 陰→陽</span><span class="brt">蠱<small>こ</small></span></a></div>
+  </div>
+</article>
+<article class="card" id="hex47" data-kw="47">
+  <div class="img" style="background-image:url(images/hex47.png)">
+    <span class="noimg">象</span>
+    <span class="seqno">序卦 47</span>
+  </div>
+  <div class="body">
+    <div class="head">
+      <svg viewBox="0 0 70 88" width="70" height="88" class="yao"><rect x="4" y="79.0" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="79.0" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="63.2" width="62" height="9" fill="#d9c37a"/><rect x="4" y="47.4" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="47.4" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="31.6" width="62" height="9" fill="#d9c37a"/><rect x="4" y="15.8" width="62" height="9" fill="#d9c37a"/><rect x="4" y="0.0" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="0.0" width="27.0" height="9" fill="#d9c37a"/></svg>
+      <div class="names">
+        <div class="cn">䷮ 困<small>こん</small></div>
+        <div class="en">Exhausting</div>
+        <div class="tri">上 沢・下 水</div>
+      </div>
+    </div>
+    <div class="branches"><div class="blabel">変爻で変わる先 →</div><a class="br" href="#hex58" data-to="58"><span class="brl">1爻 陰→陽</span><span class="brt">兌<small>だ</small></span></a><a class="br" href="#hex45" data-to="45"><span class="brl">2爻 陽→陰</span><span class="brt">萃<small>すい</small></span></a><a class="br" href="#hex28" data-to="28"><span class="brl">3爻 陰→陽</span><span class="brt">大過<small>たいか</small></span></a><a class="br" href="#hex29" data-to="29"><span class="brl">4爻 陽→陰</span><span class="brt">坎<small>かん</small></span></a><a class="br" href="#hex40" data-to="40"><span class="brl">5爻 陽→陰</span><span class="brt">解<small>かい</small></span></a><a class="br" href="#hex6" data-to="6"><span class="brl">6爻 陰→陽</span><span class="brt">訟<small>しょう</small></span></a></div>
+  </div>
+</article>
+<article class="card" id="hex48" data-kw="48">
+  <div class="img" style="background-image:url(images/hex48.png)">
+    <span class="noimg">象</span>
+    <span class="seqno">序卦 48</span>
+  </div>
+  <div class="body">
+    <div class="head">
+      <svg viewBox="0 0 70 88" width="70" height="88" class="yao"><rect x="4" y="79.0" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="79.0" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="63.2" width="62" height="9" fill="#d9c37a"/><rect x="4" y="47.4" width="62" height="9" fill="#d9c37a"/><rect x="4" y="31.6" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="31.6" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="15.8" width="62" height="9" fill="#d9c37a"/><rect x="4" y="0.0" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="0.0" width="27.0" height="9" fill="#d9c37a"/></svg>
+      <div class="names">
+        <div class="cn">䷯ 井<small>せい</small></div>
+        <div class="en">Replenishing</div>
+        <div class="tri">上 水・下 風</div>
+      </div>
+    </div>
+    <div class="branches"><div class="blabel">変爻で変わる先 →</div><a class="br" href="#hex5" data-to="5"><span class="brl">1爻 陰→陽</span><span class="brt">需<small>じゅ</small></span></a><a class="br" href="#hex39" data-to="39"><span class="brl">2爻 陽→陰</span><span class="brt">蹇<small>けん</small></span></a><a class="br" href="#hex29" data-to="29"><span class="brl">3爻 陽→陰</span><span class="brt">坎<small>かん</small></span></a><a class="br" href="#hex28" data-to="28"><span class="brl">4爻 陰→陽</span><span class="brt">大過<small>たいか</small></span></a><a class="br" href="#hex46" data-to="46"><span class="brl">5爻 陽→陰</span><span class="brt">升<small>しょう</small></span></a><a class="br" href="#hex57" data-to="57"><span class="brl">6爻 陰→陽</span><span class="brt">巽<small>そん</small></span></a></div>
+  </div>
+</article>
+<article class="card" id="hex49" data-kw="49">
+  <div class="img" style="background-image:url(images/hex49.png)">
+    <span class="noimg">象</span>
+    <span class="seqno">序卦 49</span>
+  </div>
+  <div class="body">
+    <div class="head">
+      <svg viewBox="0 0 70 88" width="70" height="88" class="yao"><rect x="4" y="79.0" width="62" height="9" fill="#d9c37a"/><rect x="4" y="63.2" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="63.2" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="47.4" width="62" height="9" fill="#d9c37a"/><rect x="4" y="31.6" width="62" height="9" fill="#d9c37a"/><rect x="4" y="15.8" width="62" height="9" fill="#d9c37a"/><rect x="4" y="0.0" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="0.0" width="27.0" height="9" fill="#d9c37a"/></svg>
+      <div class="names">
+        <div class="cn">䷰ 革<small>かく</small></div>
+        <div class="en">AbolishingTheOld</div>
+        <div class="tri">上 沢・下 火</div>
+      </div>
+    </div>
+    <div class="branches"><div class="blabel">変爻で変わる先 →</div><a class="br" href="#hex31" data-to="31"><span class="brl">1爻 陽→陰</span><span class="brt">咸<small>かん</small></span></a><a class="br" href="#hex43" data-to="43"><span class="brl">2爻 陰→陽</span><span class="brt">夬<small>かい</small></span></a><a class="br" href="#hex17" data-to="17"><span class="brl">3爻 陽→陰</span><span class="brt">隨<small>ずい</small></span></a><a class="br" href="#hex63" data-to="63"><span class="brl">4爻 陽→陰</span><span class="brt">既濟<small>きせい</small></span></a><a class="br" href="#hex55" data-to="55"><span class="brl">5爻 陽→陰</span><span class="brt">豐<small>ほう</small></span></a><a class="br" href="#hex13" data-to="13"><span class="brl">6爻 陰→陽</span><span class="brt">同人<small>どうじん</small></span></a></div>
+  </div>
+</article>
+<article class="card" id="hex50" data-kw="50">
+  <div class="img" style="background-image:url(images/hex50.png)">
+    <span class="noimg">象</span>
+    <span class="seqno">序卦 50</span>
+  </div>
+  <div class="body">
+    <div class="head">
+      <svg viewBox="0 0 70 88" width="70" height="88" class="yao"><rect x="4" y="79.0" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="79.0" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="63.2" width="62" height="9" fill="#d9c37a"/><rect x="4" y="47.4" width="62" height="9" fill="#d9c37a"/><rect x="4" y="31.6" width="62" height="9" fill="#d9c37a"/><rect x="4" y="15.8" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="15.8" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="0.0" width="62" height="9" fill="#d9c37a"/></svg>
+      <div class="names">
+        <div class="cn">䷱ 鼎<small>てい</small></div>
+        <div class="en">EstablishingTheNew</div>
+        <div class="tri">上 火・下 風</div>
+      </div>
+    </div>
+    <div class="branches"><div class="blabel">変爻で変わる先 →</div><a class="br" href="#hex14" data-to="14"><span class="brl">1爻 陰→陽</span><span class="brt">大有<small>たいゆう</small></span></a><a class="br" href="#hex56" data-to="56"><span class="brl">2爻 陽→陰</span><span class="brt">旅<small>りょ</small></span></a><a class="br" href="#hex64" data-to="64"><span class="brl">3爻 陽→陰</span><span class="brt">未濟<small>びせい</small></span></a><a class="br" href="#hex18" data-to="18"><span class="brl">4爻 陽→陰</span><span class="brt">蠱<small>こ</small></span></a><a class="br" href="#hex44" data-to="44"><span class="brl">5爻 陰→陽</span><span class="brt">姤<small>こう</small></span></a><a class="br" href="#hex32" data-to="32"><span class="brl">6爻 陽→陰</span><span class="brt">恆<small>こう</small></span></a></div>
+  </div>
+</article>
+<article class="card" id="hex51" data-kw="51">
+  <div class="img" style="background-image:url(images/hex51.png)">
+    <span class="noimg">象</span>
+    <span class="seqno">序卦 51</span>
+  </div>
+  <div class="body">
+    <div class="head">
+      <svg viewBox="0 0 70 88" width="70" height="88" class="yao"><rect x="4" y="79.0" width="62" height="9" fill="#d9c37a"/><rect x="4" y="63.2" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="63.2" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="47.4" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="47.4" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="31.6" width="62" height="9" fill="#d9c37a"/><rect x="4" y="15.8" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="15.8" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="0.0" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="0.0" width="27.0" height="9" fill="#d9c37a"/></svg>
+      <div class="names">
+        <div class="cn">䷲ 震<small>しん</small></div>
+        <div class="en">TakingAction</div>
+        <div class="tri">上 雷・下 雷</div>
+      </div>
+    </div>
+    <div class="branches"><div class="blabel">変爻で変わる先 →</div><a class="br" href="#hex16" data-to="16"><span class="brl">1爻 陽→陰</span><span class="brt">豫<small>よ</small></span></a><a class="br" href="#hex54" data-to="54"><span class="brl">2爻 陰→陽</span><span class="brt">歸妹<small>きまい</small></span></a><a class="br" href="#hex55" data-to="55"><span class="brl">3爻 陰→陽</span><span class="brt">豐<small>ほう</small></span></a><a class="br" href="#hex24" data-to="24"><span class="brl">4爻 陽→陰</span><span class="brt">復<small>ふく</small></span></a><a class="br" href="#hex17" data-to="17"><span class="brl">5爻 陰→陽</span><span class="brt">隨<small>ずい</small></span></a><a class="br" href="#hex21" data-to="21"><span class="brl">6爻 陰→陽</span><span class="brt">噬嗑<small>ぜいごう</small></span></a></div>
+  </div>
+</article>
+<article class="card" id="hex52" data-kw="52">
+  <div class="img" style="background-image:url(images/hex52.png)">
+    <span class="noimg">象</span>
+    <span class="seqno">序卦 52</span>
+  </div>
+  <div class="body">
+    <div class="head">
+      <svg viewBox="0 0 70 88" width="70" height="88" class="yao"><rect x="4" y="79.0" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="79.0" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="63.2" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="63.2" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="47.4" width="62" height="9" fill="#d9c37a"/><rect x="4" y="31.6" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="31.6" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="15.8" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="15.8" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="0.0" width="62" height="9" fill="#d9c37a"/></svg>
+      <div class="names">
+        <div class="cn">䷳ 艮<small>ごん</small></div>
+        <div class="en">KeepingStill</div>
+        <div class="tri">上 山・下 山</div>
+      </div>
+    </div>
+    <div class="branches"><div class="blabel">変爻で変わる先 →</div><a class="br" href="#hex22" data-to="22"><span class="brl">1爻 陰→陽</span><span class="brt">賁<small>ひ</small></span></a><a class="br" href="#hex18" data-to="18"><span class="brl">2爻 陰→陽</span><span class="brt">蠱<small>こ</small></span></a><a class="br" href="#hex23" data-to="23"><span class="brl">3爻 陽→陰</span><span class="brt">剝<small>はく</small></span></a><a class="br" href="#hex56" data-to="56"><span class="brl">4爻 陰→陽</span><span class="brt">旅<small>りょ</small></span></a><a class="br" href="#hex53" data-to="53"><span class="brl">5爻 陰→陽</span><span class="brt">漸<small>ぜん</small></span></a><a class="br" href="#hex15" data-to="15"><span class="brl">6爻 陽→陰</span><span class="brt">謙<small>けん</small></span></a></div>
+  </div>
+</article>
+<article class="card" id="hex53" data-kw="53">
+  <div class="img" style="background-image:url(images/hex53.png)">
+    <span class="noimg">象</span>
+    <span class="seqno">序卦 53</span>
+  </div>
+  <div class="body">
+    <div class="head">
+      <svg viewBox="0 0 70 88" width="70" height="88" class="yao"><rect x="4" y="79.0" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="79.0" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="63.2" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="63.2" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="47.4" width="62" height="9" fill="#d9c37a"/><rect x="4" y="31.6" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="31.6" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="15.8" width="62" height="9" fill="#d9c37a"/><rect x="4" y="0.0" width="62" height="9" fill="#d9c37a"/></svg>
+      <div class="names">
+        <div class="cn">䷴ 漸<small>ぜん</small></div>
+        <div class="en">DevelopingGradually</div>
+        <div class="tri">上 風・下 山</div>
+      </div>
+    </div>
+    <div class="branches"><div class="blabel">変爻で変わる先 →</div><a class="br" href="#hex37" data-to="37"><span class="brl">1爻 陰→陽</span><span class="brt">家人<small>かじん</small></span></a><a class="br" href="#hex57" data-to="57"><span class="brl">2爻 陰→陽</span><span class="brt">巽<small>そん</small></span></a><a class="br" href="#hex20" data-to="20"><span class="brl">3爻 陽→陰</span><span class="brt">觀<small>かん</small></span></a><a class="br" href="#hex33" data-to="33"><span class="brl">4爻 陰→陽</span><span class="brt">遯<small>とん</small></span></a><a class="br" href="#hex52" data-to="52"><span class="brl">5爻 陽→陰</span><span class="brt">艮<small>ごん</small></span></a><a class="br" href="#hex39" data-to="39"><span class="brl">6爻 陽→陰</span><span class="brt">蹇<small>けん</small></span></a></div>
+  </div>
+</article>
+<article class="card" id="hex54" data-kw="54">
+  <div class="img" style="background-image:url(images/hex54.png)">
+    <span class="noimg">象</span>
+    <span class="seqno">序卦 54</span>
+  </div>
+  <div class="body">
+    <div class="head">
+      <svg viewBox="0 0 70 88" width="70" height="88" class="yao"><rect x="4" y="79.0" width="62" height="9" fill="#d9c37a"/><rect x="4" y="63.2" width="62" height="9" fill="#d9c37a"/><rect x="4" y="47.4" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="47.4" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="31.6" width="62" height="9" fill="#d9c37a"/><rect x="4" y="15.8" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="15.8" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="0.0" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="0.0" width="27.0" height="9" fill="#d9c37a"/></svg>
+      <div class="names">
+        <div class="cn">䷵ 歸妹<small>きまい</small></div>
+        <div class="en">MarryingMaiden</div>
+        <div class="tri">上 雷・下 沢</div>
+      </div>
+    </div>
+    <div class="branches"><div class="blabel">変爻で変わる先 →</div><a class="br" href="#hex40" data-to="40"><span class="brl">1爻 陽→陰</span><span class="brt">解<small>かい</small></span></a><a class="br" href="#hex51" data-to="51"><span class="brl">2爻 陽→陰</span><span class="brt">震<small>しん</small></span></a><a class="br" href="#hex34" data-to="34"><span class="brl">3爻 陰→陽</span><span class="brt">大壯<small>たいそう</small></span></a><a class="br" href="#hex19" data-to="19"><span class="brl">4爻 陽→陰</span><span class="brt">臨<small>りん</small></span></a><a class="br" href="#hex58" data-to="58"><span class="brl">5爻 陰→陽</span><span class="brt">兌<small>だ</small></span></a><a class="br" href="#hex38" data-to="38"><span class="brl">6爻 陰→陽</span><span class="brt">睽<small>けい</small></span></a></div>
+  </div>
+</article>
+<article class="card" id="hex55" data-kw="55">
+  <div class="img" style="background-image:url(images/hex55.png)">
+    <span class="noimg">象</span>
+    <span class="seqno">序卦 55</span>
+  </div>
+  <div class="body">
+    <div class="head">
+      <svg viewBox="0 0 70 88" width="70" height="88" class="yao"><rect x="4" y="79.0" width="62" height="9" fill="#d9c37a"/><rect x="4" y="63.2" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="63.2" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="47.4" width="62" height="9" fill="#d9c37a"/><rect x="4" y="31.6" width="62" height="9" fill="#d9c37a"/><rect x="4" y="15.8" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="15.8" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="0.0" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="0.0" width="27.0" height="9" fill="#d9c37a"/></svg>
+      <div class="names">
+        <div class="cn">䷶ 豐<small>ほう</small></div>
+        <div class="en">Abundance</div>
+        <div class="tri">上 雷・下 火</div>
+      </div>
+    </div>
+    <div class="branches"><div class="blabel">変爻で変わる先 →</div><a class="br" href="#hex62" data-to="62"><span class="brl">1爻 陽→陰</span><span class="brt">小過<small>しょうか</small></span></a><a class="br" href="#hex34" data-to="34"><span class="brl">2爻 陰→陽</span><span class="brt">大壯<small>たいそう</small></span></a><a class="br" href="#hex51" data-to="51"><span class="brl">3爻 陽→陰</span><span class="brt">震<small>しん</small></span></a><a class="br" href="#hex36" data-to="36"><span class="brl">4爻 陽→陰</span><span class="brt">明夷<small>めいい</small></span></a><a class="br" href="#hex49" data-to="49"><span class="brl">5爻 陰→陽</span><span class="brt">革<small>かく</small></span></a><a class="br" href="#hex30" data-to="30"><span class="brl">6爻 陰→陽</span><span class="brt">離<small>り</small></span></a></div>
+  </div>
+</article>
+<article class="card" id="hex56" data-kw="56">
+  <div class="img" style="background-image:url(images/hex56.png)">
+    <span class="noimg">象</span>
+    <span class="seqno">序卦 56</span>
+  </div>
+  <div class="body">
+    <div class="head">
+      <svg viewBox="0 0 70 88" width="70" height="88" class="yao"><rect x="4" y="79.0" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="79.0" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="63.2" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="63.2" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="47.4" width="62" height="9" fill="#d9c37a"/><rect x="4" y="31.6" width="62" height="9" fill="#d9c37a"/><rect x="4" y="15.8" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="15.8" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="0.0" width="62" height="9" fill="#d9c37a"/></svg>
+      <div class="names">
+        <div class="cn">䷷ 旅<small>りょ</small></div>
+        <div class="en">Travelling</div>
+        <div class="tri">上 火・下 山</div>
+      </div>
+    </div>
+    <div class="branches"><div class="blabel">変爻で変わる先 →</div><a class="br" href="#hex30" data-to="30"><span class="brl">1爻 陰→陽</span><span class="brt">離<small>り</small></span></a><a class="br" href="#hex50" data-to="50"><span class="brl">2爻 陰→陽</span><span class="brt">鼎<small>てい</small></span></a><a class="br" href="#hex35" data-to="35"><span class="brl">3爻 陽→陰</span><span class="brt">晉<small>しん</small></span></a><a class="br" href="#hex52" data-to="52"><span class="brl">4爻 陽→陰</span><span class="brt">艮<small>ごん</small></span></a><a class="br" href="#hex33" data-to="33"><span class="brl">5爻 陰→陽</span><span class="brt">遯<small>とん</small></span></a><a class="br" href="#hex62" data-to="62"><span class="brl">6爻 陽→陰</span><span class="brt">小過<small>しょうか</small></span></a></div>
+  </div>
+</article>
+<article class="card" id="hex57" data-kw="57">
+  <div class="img" style="background-image:url(images/hex57.png)">
+    <span class="noimg">象</span>
+    <span class="seqno">序卦 57</span>
+  </div>
+  <div class="body">
+    <div class="head">
+      <svg viewBox="0 0 70 88" width="70" height="88" class="yao"><rect x="4" y="79.0" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="79.0" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="63.2" width="62" height="9" fill="#d9c37a"/><rect x="4" y="47.4" width="62" height="9" fill="#d9c37a"/><rect x="4" y="31.6" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="31.6" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="15.8" width="62" height="9" fill="#d9c37a"/><rect x="4" y="0.0" width="62" height="9" fill="#d9c37a"/></svg>
+      <div class="names">
+        <div class="cn">䷸ 巽<small>そん</small></div>
+        <div class="en">ProceedingHumbly</div>
+        <div class="tri">上 風・下 風</div>
+      </div>
+    </div>
+    <div class="branches"><div class="blabel">変爻で変わる先 →</div><a class="br" href="#hex9" data-to="9"><span class="brl">1爻 陰→陽</span><span class="brt">小畜<small>しょうちく</small></span></a><a class="br" href="#hex53" data-to="53"><span class="brl">2爻 陽→陰</span><span class="brt">漸<small>ぜん</small></span></a><a class="br" href="#hex59" data-to="59"><span class="brl">3爻 陽→陰</span><span class="brt">渙<small>かん</small></span></a><a class="br" href="#hex44" data-to="44"><span class="brl">4爻 陰→陽</span><span class="brt">姤<small>こう</small></span></a><a class="br" href="#hex18" data-to="18"><span class="brl">5爻 陽→陰</span><span class="brt">蠱<small>こ</small></span></a><a class="br" href="#hex48" data-to="48"><span class="brl">6爻 陽→陰</span><span class="brt">井<small>せい</small></span></a></div>
+  </div>
+</article>
+<article class="card" id="hex58" data-kw="58">
+  <div class="img" style="background-image:url(images/hex58.png)">
+    <span class="noimg">象</span>
+    <span class="seqno">序卦 58</span>
+  </div>
+  <div class="body">
+    <div class="head">
+      <svg viewBox="0 0 70 88" width="70" height="88" class="yao"><rect x="4" y="79.0" width="62" height="9" fill="#d9c37a"/><rect x="4" y="63.2" width="62" height="9" fill="#d9c37a"/><rect x="4" y="47.4" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="47.4" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="31.6" width="62" height="9" fill="#d9c37a"/><rect x="4" y="15.8" width="62" height="9" fill="#d9c37a"/><rect x="4" y="0.0" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="0.0" width="27.0" height="9" fill="#d9c37a"/></svg>
+      <div class="names">
+        <div class="cn">䷹ 兌<small>だ</small></div>
+        <div class="en">Joyful</div>
+        <div class="tri">上 沢・下 沢</div>
+      </div>
+    </div>
+    <div class="branches"><div class="blabel">変爻で変わる先 →</div><a class="br" href="#hex47" data-to="47"><span class="brl">1爻 陽→陰</span><span class="brt">困<small>こん</small></span></a><a class="br" href="#hex17" data-to="17"><span class="brl">2爻 陽→陰</span><span class="brt">隨<small>ずい</small></span></a><a class="br" href="#hex43" data-to="43"><span class="brl">3爻 陰→陽</span><span class="brt">夬<small>かい</small></span></a><a class="br" href="#hex60" data-to="60"><span class="brl">4爻 陽→陰</span><span class="brt">節<small>せつ</small></span></a><a class="br" href="#hex54" data-to="54"><span class="brl">5爻 陽→陰</span><span class="brt">歸妹<small>きまい</small></span></a><a class="br" href="#hex10" data-to="10"><span class="brl">6爻 陰→陽</span><span class="brt">履<small>り</small></span></a></div>
+  </div>
+</article>
+<article class="card" id="hex59" data-kw="59">
+  <div class="img" style="background-image:url(images/hex59.png)">
+    <span class="noimg">象</span>
+    <span class="seqno">序卦 59</span>
+  </div>
+  <div class="body">
+    <div class="head">
+      <svg viewBox="0 0 70 88" width="70" height="88" class="yao"><rect x="4" y="79.0" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="79.0" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="63.2" width="62" height="9" fill="#d9c37a"/><rect x="4" y="47.4" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="47.4" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="31.6" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="31.6" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="15.8" width="62" height="9" fill="#d9c37a"/><rect x="4" y="0.0" width="62" height="9" fill="#d9c37a"/></svg>
+      <div class="names">
+        <div class="cn">䷺ 渙<small>かん</small></div>
+        <div class="en">Dispersing</div>
+        <div class="tri">上 風・下 水</div>
+      </div>
+    </div>
+    <div class="branches"><div class="blabel">変爻で変わる先 →</div><a class="br" href="#hex61" data-to="61"><span class="brl">1爻 陰→陽</span><span class="brt">中孚<small>ちゅうふ</small></span></a><a class="br" href="#hex20" data-to="20"><span class="brl">2爻 陽→陰</span><span class="brt">觀<small>かん</small></span></a><a class="br" href="#hex57" data-to="57"><span class="brl">3爻 陰→陽</span><span class="brt">巽<small>そん</small></span></a><a class="br" href="#hex6" data-to="6"><span class="brl">4爻 陰→陽</span><span class="brt">訟<small>しょう</small></span></a><a class="br" href="#hex4" data-to="4"><span class="brl">5爻 陽→陰</span><span class="brt">蒙<small>もう</small></span></a><a class="br" href="#hex29" data-to="29"><span class="brl">6爻 陽→陰</span><span class="brt">坎<small>かん</small></span></a></div>
+  </div>
+</article>
+<article class="card" id="hex60" data-kw="60">
+  <div class="img" style="background-image:url(images/hex60.png)">
+    <span class="noimg">象</span>
+    <span class="seqno">序卦 60</span>
+  </div>
+  <div class="body">
+    <div class="head">
+      <svg viewBox="0 0 70 88" width="70" height="88" class="yao"><rect x="4" y="79.0" width="62" height="9" fill="#d9c37a"/><rect x="4" y="63.2" width="62" height="9" fill="#d9c37a"/><rect x="4" y="47.4" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="47.4" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="31.6" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="31.6" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="15.8" width="62" height="9" fill="#d9c37a"/><rect x="4" y="0.0" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="0.0" width="27.0" height="9" fill="#d9c37a"/></svg>
+      <div class="names">
+        <div class="cn">䷻ 節<small>せつ</small></div>
+        <div class="en">Restricting</div>
+        <div class="tri">上 水・下 沢</div>
+      </div>
+    </div>
+    <div class="branches"><div class="blabel">変爻で変わる先 →</div><a class="br" href="#hex29" data-to="29"><span class="brl">1爻 陽→陰</span><span class="brt">坎<small>かん</small></span></a><a class="br" href="#hex3" data-to="3"><span class="brl">2爻 陽→陰</span><span class="brt">屯<small>ちゅん</small></span></a><a class="br" href="#hex5" data-to="5"><span class="brl">3爻 陰→陽</span><span class="brt">需<small>じゅ</small></span></a><a class="br" href="#hex58" data-to="58"><span class="brl">4爻 陰→陽</span><span class="brt">兌<small>だ</small></span></a><a class="br" href="#hex19" data-to="19"><span class="brl">5爻 陽→陰</span><span class="brt">臨<small>りん</small></span></a><a class="br" href="#hex61" data-to="61"><span class="brl">6爻 陰→陽</span><span class="brt">中孚<small>ちゅうふ</small></span></a></div>
+  </div>
+</article>
+<article class="card" id="hex61" data-kw="61">
+  <div class="img" style="background-image:url(images/hex61.png)">
+    <span class="noimg">象</span>
+    <span class="seqno">序卦 61</span>
+  </div>
+  <div class="body">
+    <div class="head">
+      <svg viewBox="0 0 70 88" width="70" height="88" class="yao"><rect x="4" y="79.0" width="62" height="9" fill="#d9c37a"/><rect x="4" y="63.2" width="62" height="9" fill="#d9c37a"/><rect x="4" y="47.4" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="47.4" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="31.6" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="31.6" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="15.8" width="62" height="9" fill="#d9c37a"/><rect x="4" y="0.0" width="62" height="9" fill="#d9c37a"/></svg>
+      <div class="names">
+        <div class="cn">䷼ 中孚<small>ちゅうふ</small></div>
+        <div class="en">InnermostSincerity</div>
+        <div class="tri">上 風・下 沢</div>
+      </div>
+    </div>
+    <div class="branches"><div class="blabel">変爻で変わる先 →</div><a class="br" href="#hex59" data-to="59"><span class="brl">1爻 陽→陰</span><span class="brt">渙<small>かん</small></span></a><a class="br" href="#hex42" data-to="42"><span class="brl">2爻 陽→陰</span><span class="brt">益<small>えき</small></span></a><a class="br" href="#hex9" data-to="9"><span class="brl">3爻 陰→陽</span><span class="brt">小畜<small>しょうちく</small></span></a><a class="br" href="#hex10" data-to="10"><span class="brl">4爻 陰→陽</span><span class="brt">履<small>り</small></span></a><a class="br" href="#hex41" data-to="41"><span class="brl">5爻 陽→陰</span><span class="brt">損<small>そん</small></span></a><a class="br" href="#hex60" data-to="60"><span class="brl">6爻 陽→陰</span><span class="brt">節<small>せつ</small></span></a></div>
+  </div>
+</article>
+<article class="card" id="hex62" data-kw="62">
+  <div class="img" style="background-image:url(images/hex62.png)">
+    <span class="noimg">象</span>
+    <span class="seqno">序卦 62</span>
+  </div>
+  <div class="body">
+    <div class="head">
+      <svg viewBox="0 0 70 88" width="70" height="88" class="yao"><rect x="4" y="79.0" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="79.0" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="63.2" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="63.2" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="47.4" width="62" height="9" fill="#d9c37a"/><rect x="4" y="31.6" width="62" height="9" fill="#d9c37a"/><rect x="4" y="15.8" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="15.8" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="0.0" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="0.0" width="27.0" height="9" fill="#d9c37a"/></svg>
+      <div class="names">
+        <div class="cn">䷽ 小過<small>しょうか</small></div>
+        <div class="en">LittleExceeding</div>
+        <div class="tri">上 雷・下 山</div>
+      </div>
+    </div>
+    <div class="branches"><div class="blabel">変爻で変わる先 →</div><a class="br" href="#hex55" data-to="55"><span class="brl">1爻 陰→陽</span><span class="brt">豐<small>ほう</small></span></a><a class="br" href="#hex32" data-to="32"><span class="brl">2爻 陰→陽</span><span class="brt">恆<small>こう</small></span></a><a class="br" href="#hex16" data-to="16"><span class="brl">3爻 陽→陰</span><span class="brt">豫<small>よ</small></span></a><a class="br" href="#hex15" data-to="15"><span class="brl">4爻 陽→陰</span><span class="brt">謙<small>けん</small></span></a><a class="br" href="#hex31" data-to="31"><span class="brl">5爻 陰→陽</span><span class="brt">咸<small>かん</small></span></a><a class="br" href="#hex56" data-to="56"><span class="brl">6爻 陰→陽</span><span class="brt">旅<small>りょ</small></span></a></div>
+  </div>
+</article>
+<article class="card" id="hex63" data-kw="63">
+  <div class="img" style="background-image:url(images/hex63.png)">
+    <span class="noimg">象</span>
+    <span class="seqno">序卦 63</span>
+  </div>
+  <div class="body">
+    <div class="head">
+      <svg viewBox="0 0 70 88" width="70" height="88" class="yao"><rect x="4" y="79.0" width="62" height="9" fill="#d9c37a"/><rect x="4" y="63.2" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="63.2" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="47.4" width="62" height="9" fill="#d9c37a"/><rect x="4" y="31.6" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="31.6" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="15.8" width="62" height="9" fill="#d9c37a"/><rect x="4" y="0.0" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="0.0" width="27.0" height="9" fill="#d9c37a"/></svg>
+      <div class="names">
+        <div class="cn">䷾ 既濟<small>きせい</small></div>
+        <div class="en">AlreadyFulfilled</div>
+        <div class="tri">上 水・下 火</div>
+      </div>
+    </div>
+    <div class="branches"><div class="blabel">変爻で変わる先 →</div><a class="br" href="#hex39" data-to="39"><span class="brl">1爻 陽→陰</span><span class="brt">蹇<small>けん</small></span></a><a class="br" href="#hex5" data-to="5"><span class="brl">2爻 陰→陽</span><span class="brt">需<small>じゅ</small></span></a><a class="br" href="#hex3" data-to="3"><span class="brl">3爻 陽→陰</span><span class="brt">屯<small>ちゅん</small></span></a><a class="br" href="#hex49" data-to="49"><span class="brl">4爻 陰→陽</span><span class="brt">革<small>かく</small></span></a><a class="br" href="#hex36" data-to="36"><span class="brl">5爻 陽→陰</span><span class="brt">明夷<small>めいい</small></span></a><a class="br" href="#hex37" data-to="37"><span class="brl">6爻 陰→陽</span><span class="brt">家人<small>かじん</small></span></a></div>
+  </div>
+</article>
+<article class="card" id="hex64" data-kw="64">
+  <div class="img" style="background-image:url(images/hex64.png)">
+    <span class="noimg">象</span>
+    <span class="seqno">序卦 64</span>
+  </div>
+  <div class="body">
+    <div class="head">
+      <svg viewBox="0 0 70 88" width="70" height="88" class="yao"><rect x="4" y="79.0" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="79.0" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="63.2" width="62" height="9" fill="#d9c37a"/><rect x="4" y="47.4" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="47.4" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="31.6" width="62" height="9" fill="#d9c37a"/><rect x="4" y="15.8" width="27.0" height="9" fill="#d9c37a"/><rect x="39.0" y="15.8" width="27.0" height="9" fill="#d9c37a"/><rect x="4" y="0.0" width="62" height="9" fill="#d9c37a"/></svg>
+      <div class="names">
+        <div class="cn">䷿ 未濟<small>びせい</small></div>
+        <div class="en">NotYetFulfilled</div>
+        <div class="tri">上 火・下 水</div>
+      </div>
+    </div>
+    <div class="branches"><div class="blabel">変爻で変わる先 →</div><a class="br" href="#hex38" data-to="38"><span class="brl">1爻 陰→陽</span><span class="brt">睽<small>けい</small></span></a><a class="br" href="#hex35" data-to="35"><span class="brl">2爻 陽→陰</span><span class="brt">晉<small>しん</small></span></a><a class="br" href="#hex50" data-to="50"><span class="brl">3爻 陰→陽</span><span class="brt">鼎<small>てい</small></span></a><a class="br" href="#hex4" data-to="4"><span class="brl">4爻 陽→陰</span><span class="brt">蒙<small>もう</small></span></a><a class="br" href="#hex6" data-to="6"><span class="brl">5爻 陰→陽</span><span class="brt">訟<small>しょう</small></span></a><a class="br" href="#hex40" data-to="40"><span class="brl">6爻 陽→陰</span><span class="brt">解<small>かい</small></span></a></div>
+  </div>
+</article></div>
+<footer>序卦順×変爻＝易経の「変化」を2つの意味で可視化。画像=現代浮世絵（生成後に反映）。</footer>
+<script>
+  // 変爻リンク: クリック先の卦をハイライト
+  document.querySelectorAll('.br').forEach(a=>a.addEventListener('click',()=>{
+    document.querySelectorAll('.card.hl').forEach(c=>c.classList.remove('hl'));
+    const t=document.getElementById('hex'+a.dataset.to);
+    if(t){t.classList.add('hl');setTimeout(()=>t.classList.remove('hl'),2200);}
+  }));
+</script>
+</body></html>
