@@ -1,0 +1,26 @@
+{
+  "slug": "growth-tick-loop",
+  "accent": "#cc785c",
+  "hero": {
+    "kicker": "GROWTH LOOP 再構築レビュー",
+    "h1": "成長ループを2階建てに — 期日駆動の外側ループ × fork独立採点の内側ループ",
+    "lede": "登録1000人ハーネス(growth-state/growth-loop/pdca)の上に、判定漏れ・停滞・自己採点の3穴を機械的に塞ぐ層を実装した。初回実行で判定負債4件を即検出。",
+    "tldr": [
+      "外側: node scripts/growth-tick.mjs が毎日「今日やるべき判定・制作」を機械列挙(judge_due走査+律速台帳照合+登録ペース)",
+      "内側: サムネ/タイトル/フック/ショート台本は固定採点表(threshold90/max3)のfork独立採点合格が人間ゲート前の必須条件",
+      "初回実行の実検出: H-CTR-1判定9日漏れ・計測16日停止・coordタスク28件超過・登録ペース0.56/日=このままだと1000まで約4.5年"
+    ]
+  },
+  "sections": [
+    { "num": "01", "title": "何を作ったか — 2階建てループの全体像", "figure": true },
+    { "num": "02", "title": "外側ループ growth-tick — 判定漏れ・停滞・律速放置を毎日検出", "figure": true },
+    { "num": "03", "title": "内側ループ — 作った頭に合格を出させない", "figure": true },
+    { "num": "04", "title": "検証結果と今日の実検出（あなたの判断材料）", "figure": false }
+  ],
+  "conclusion": [
+    "ループの価値は回数でなく「止め方(judge_dueの機械比較)」と「1周の質(fork独立採点)」— 記事ループエンジニアリングの原則をこのリポジトリの実データに翻訳した",
+    "初回tickが判定負債4件を可視化=初日から仕事をしている。仕組みはテスト12本PASS+独立採点97/100で検証済み",
+    "次アクション: H-CTR-1判定(9日超過)・metrics-snapshot再開・coordタスク28件棚卸し・H35/H37コホート3本制作"
+  ],
+  "footer": "題材: scripts/growth-tick.mjs / scripts/lib/tick.mjs / analytics/bottleneck.json / analytics/eval-schemas/ / docs/growth-harness-runbook.md — 2026-07-02"
+}
