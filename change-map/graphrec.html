@@ -1,0 +1,413 @@
+<!doctype html><html lang="ja"><head><meta charset="utf-8">
+<meta name="robots" content="noindex">
+<title>易経・変化の道 — グラレコ 1枚</title>
+<style>
+  @font-face{font-family:hand;src:local("游教科書体"),local("YuKyokasho"),local("ヒラギノ丸ゴ ProN")}
+  :root{--paper:#f5edd8;--ink:#33302a;--sub:#6b6455}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);
+    font-family:"游教科書体",YuKyokasho,"ヒラギノ丸ゴ ProN","Hiragino Maru Gothic ProN",sans-serif;
+    color:var(--ink)}
+  .sheet{width:1680px;margin:0 auto;padding:44px 50px 56px;position:relative;
+    background:
+      radial-gradient(circle at 20% 12%,rgba(200,180,120,.10),transparent 40%),
+      radial-gradient(circle at 82% 78%,rgba(150,170,180,.10),transparent 40%),
+      var(--paper);}
+  /* ラフな手描き枠フィルタ */
+  svg.deco{position:absolute;pointer-events:none}
+  /* ヘッダ */
+  .hdr{text-align:center;margin-bottom:8px}
+  .banner{display:inline-block;position:relative;padding:10px 34px;
+    border:3px solid var(--ink);border-radius:255px 12px 245px 14px/14px 245px 12px 255px;
+    background:#fffbe8;transform:rotate(-.5deg)}
+  .banner h1{margin:0;font-size:46px;letter-spacing:.06em}
+  .banner .sub{font-size:16px;color:var(--sub);margin-top:2px}
+  .lead{text-align:center;font-size:16px;color:var(--sub);margin:12px 0 6px}
+  .lead b{color:#c0453b}
+  /* 凡例 */
+  .legend{display:flex;gap:26px;justify-content:center;flex-wrap:wrap;font-size:14px;
+    color:var(--sub);margin:8px 0 20px}
+  .legend .k{display:inline-flex;align-items:center;gap:7px}
+  .yang,.yin{display:inline-block;width:30px;height:8px;background:var(--ink);border-radius:2px}
+  .yin{background:
+    linear-gradient(90deg,var(--ink) 0 40%,transparent 40% 60%,var(--ink) 60% 100%)}
+  /* エポック帯 */
+  .era{display:flex;align-items:center;gap:12px;margin:6px 0 10px;color:#8a5a2a}
+  .era b{font-size:22px}
+  .era .line{flex:1;height:0;border-top:3px dashed #cbb37e}
+  /* 蛇行 */
+  .row{display:flex;align-items:stretch;gap:6px;margin:4px 0;position:relative;justify-content:flex-start}
+  .row.rev{flex-direction:row-reverse;justify-content:flex-start}
+  .node{flex:1;min-width:0;background:var(--tint);
+    border:2.5px solid var(--ink);border-radius:14px 10px 16px 9px/9px 16px 10px 14px;
+    padding:8px 6px 7px;display:flex;flex-direction:column;align-items:center;gap:2px;
+    transform:rotate(var(--rot));box-shadow:2px 3px 0 rgba(51,48,42,.14);position:relative}
+  .node .num{position:absolute;top:-11px;left:-9px;width:24px;height:24px;border-radius:50%;
+    background:var(--ac);color:#fff;font-size:13px;display:flex;align-items:center;justify-content:center;
+    border:2px solid var(--ink)}
+  .node .fig{margin-top:3px}
+  .node .nm{font-size:19px;font-weight:700;line-height:1.1;text-align:center}
+  .node .nm b{font-size:11px;color:var(--ac);font-weight:400;margin-left:3px}
+  .node .tri{font-size:11px;color:var(--sub);display:flex;align-items:center;gap:2px}
+  .arw{align-self:center;font-size:22px;color:#b58a3a;flex:0 0 auto;font-weight:700}
+  .turn{position:absolute;bottom:-26px;font-size:26px;color:#b58a3a;z-index:2}
+  .turn.right{right:6px} .turn.left{left:6px}
+  /* 変爻インセット */
+  .inset{margin-top:34px;background:#fffbe8;border:2.5px dashed #c0453b;
+    border-radius:16px;padding:16px 22px;transform:rotate(.3deg)}
+  .inset h3{margin:0 0 8px;font-size:20px;color:#c0453b}
+  .inset p{margin:0 0 10px;font-size:14px;color:var(--sub)}
+  .chgs{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+  .chg{display:inline-flex;align-items:baseline;gap:4px;background:#fff;border:2px solid var(--ink);
+    border-radius:10px;padding:5px 10px;font-size:17px;font-weight:700}
+  .chg i{font-style:normal;font-size:11px;color:#2f5c8f;font-weight:400}
+  .chg u{text-decoration:none;font-size:10px;color:#6b6455;font-weight:400}
+  .foot{text-align:center;font-size:12px;color:#9a9280;margin-top:26px}
+  .star{position:absolute;font-size:22px;color:#d9b84a;opacity:.7}
+</style></head>
+<body><div class="sheet">
+  <span class="star" style="top:60px;left:40px">✦</span>
+  <span class="star" style="top:120px;right:60px">✧</span>
+  <div class="hdr"><div class="banner">
+    <h1>易経 ・ 変化の道</h1>
+    <div class="sub">64卦をたどる「変化の順番」— 序卦じょかの一本道</div>
+  </div></div>
+  <div class="lead">乾からはじまり、状況は次の状況へ移りつづける。<b>矢印の道</b>を初爻の卦①からたどると、易経64卦がひとつづきの物語になる。</div>
+  <div class="legend">
+    <span class="k"><span class="yang"></span>実線＝陽</span>
+    <span class="k"><span class="yin"></span>破線＝陰</span>
+    <span class="k">六爻図は 下＝初爻／上＝上爻</span>
+    <span class="k">☁︎天 ▦地 〜水 🔥火 ⚡︎雷 🍃風 ⛰山 💧沢</span>
+    <span class="k">◯番号＝序卦の順</span>
+  </div>
+  <div class="era"><b>上経</b><span class="line"></span><span>天地のはたらき（1〜30）</span></div>
+  <div class="row "><div class="node" style="--ac:#2f5c8f;--rot:-0.5deg;--tint:#fbf4e2" data-era="上経">
+      <div class="num">1</div>
+      <div class="fig"><svg viewBox="0 0 34 44" width="34" height="44"><rect x="2" y="39.6" width="30" height="4.4" rx="1" fill="#2f5c8f"/><rect x="2" y="31.7" width="30" height="4.4" rx="1" fill="#2f5c8f"/><rect x="2" y="23.8" width="30" height="4.4" rx="1" fill="#2f5c8f"/><rect x="2" y="15.8" width="30" height="4.4" rx="1" fill="#2f5c8f"/><rect x="2" y="7.9" width="30" height="4.4" rx="1" fill="#2f5c8f"/><rect x="2" y="0.0" width="30" height="4.4" rx="1" fill="#2f5c8f"/></svg></div>
+      <div class="nm">乾<b>けん</b></div>
+      <div class="tri">☁︎<span>天</span>／<span>天</span>☁︎</div>
+    </div><div class="arw">→</div><div class="node" style="--ac:#c0453b;--rot:0.5deg;--tint:#fbf4e2" data-era="上経">
+      <div class="num">2</div>
+      <div class="fig"><svg viewBox="0 0 34 44" width="34" height="44"><rect x="2" y="39.6" width="12.5" height="4.4" rx="1" fill="#c0453b"/><rect x="19.5" y="39.6" width="12.5" height="4.4" rx="1" fill="#c0453b"/><rect x="2" y="31.7" width="12.5" height="4.4" rx="1" fill="#c0453b"/><rect x="19.5" y="31.7" width="12.5" height="4.4" rx="1" fill="#c0453b"/><rect x="2" y="23.8" width="12.5" height="4.4" rx="1" fill="#c0453b"/><rect x="19.5" y="23.8" width="12.5" height="4.4" rx="1" fill="#c0453b"/><rect x="2" y="15.8" width="12.5" height="4.4" rx="1" fill="#c0453b"/><rect x="19.5" y="15.8" width="12.5" height="4.4" rx="1" fill="#c0453b"/><rect x="2" y="7.9" width="12.5" height="4.4" rx="1" fill="#c0453b"/><rect x="19.5" y="7.9" width="12.5" height="4.4" rx="1" fill="#c0453b"/><rect x="2" y="0.0" width="12.5" height="4.4" rx="1" fill="#c0453b"/><rect x="19.5" y="0.0" width="12.5" height="4.4" rx="1" fill="#c0453b"/></svg></div>
+      <div class="nm">坤<b>こん</b></div>
+      <div class="tri">▦<span>地</span>／<span>地</span>▦</div>
+    </div><div class="arw">→</div><div class="node" style="--ac:#3f7d55;--rot:1.5deg;--tint:#fbf4e2" data-era="上経">
+      <div class="num">3</div>
+      <div class="fig"><svg viewBox="0 0 34 44" width="34" height="44"><rect x="2" y="39.6" width="30" height="4.4" rx="1" fill="#3f7d55"/><rect x="2" y="31.7" width="12.5" height="4.4" rx="1" fill="#3f7d55"/><rect x="19.5" y="31.7" width="12.5" height="4.4" rx="1" fill="#3f7d55"/><rect x="2" y="23.8" width="12.5" height="4.4" rx="1" fill="#3f7d55"/><rect x="19.5" y="23.8" width="12.5" height="4.4" rx="1" fill="#3f7d55"/><rect x="2" y="15.8" width="12.5" height="4.4" rx="1" fill="#3f7d55"/><rect x="19.5" y="15.8" width="12.5" height="4.4" rx="1" fill="#3f7d55"/><rect x="2" y="7.9" width="30" height="4.4" rx="1" fill="#3f7d55"/><rect x="2" y="0.0" width="12.5" height="4.4" rx="1" fill="#3f7d55"/><rect x="19.5" y="0.0" width="12.5" height="4.4" rx="1" fill="#3f7d55"/></svg></div>
+      <div class="nm">屯<b>ちゅん</b></div>
+      <div class="tri">〜<span>水</span>／<span>雷</span>⚡︎</div>
+    </div><div class="arw">→</div><div class="node" style="--ac:#cc7a2e;--rot:-1.0deg;--tint:#fbf4e2" data-era="上経">
+      <div class="num">4</div>
+      <div class="fig"><svg viewBox="0 0 34 44" width="34" height="44"><rect x="2" y="39.6" width="12.5" height="4.4" rx="1" fill="#cc7a2e"/><rect x="19.5" y="39.6" width="12.5" height="4.4" rx="1" fill="#cc7a2e"/><rect x="2" y="31.7" width="30" height="4.4" rx="1" fill="#cc7a2e"/><rect x="2" y="23.8" width="12.5" height="4.4" rx="1" fill="#cc7a2e"/><rect x="19.5" y="23.8" width="12.5" height="4.4" rx="1" fill="#cc7a2e"/><rect x="2" y="15.8" width="12.5" height="4.4" rx="1" fill="#cc7a2e"/><rect x="19.5" y="15.8" width="12.5" height="4.4" rx="1" fill="#cc7a2e"/><rect x="2" y="7.9" width="12.5" height="4.4" rx="1" fill="#cc7a2e"/><rect x="19.5" y="7.9" width="12.5" height="4.4" rx="1" fill="#cc7a2e"/><rect x="2" y="0.0" width="30" height="4.4" rx="1" fill="#cc7a2e"/></svg></div>
+      <div class="nm">蒙<b>もう</b></div>
+      <div class="tri">⛰<span>山</span>／<span>水</span>〜</div>
+    </div><div class="arw">→</div><div class="node" style="--ac:#c99a2e;--rot:0.0deg;--tint:#fbf4e2" data-era="上経">
+      <div class="num">5</div>
+      <div class="fig"><svg viewBox="0 0 34 44" width="34" height="44"><rect x="2" y="39.6" width="30" height="4.4" rx="1" fill="#c99a2e"/><rect x="2" y="31.7" width="30" height="4.4" rx="1" fill="#c99a2e"/><rect x="2" y="23.8" width="30" height="4.4" rx="1" fill="#c99a2e"/><rect x="2" y="15.8" width="12.5" height="4.4" rx="1" fill="#c99a2e"/><rect x="19.5" y="15.8" width="12.5" height="4.4" rx="1" fill="#c99a2e"/><rect x="2" y="7.9" width="30" height="4.4" rx="1" fill="#c99a2e"/><rect x="2" y="0.0" width="12.5" height="4.4" rx="1" fill="#c99a2e"/><rect x="19.5" y="0.0" width="12.5" height="4.4" rx="1" fill="#c99a2e"/></svg></div>
+      <div class="nm">需<b>じゅ</b></div>
+      <div class="tri">〜<span>水</span>／<span>天</span>☁︎</div>
+    </div><div class="arw">→</div><div class="node" style="--ac:#6f5591;--rot:1.0deg;--tint:#fbf4e2" data-era="上経">
+      <div class="num">6</div>
+      <div class="fig"><svg viewBox="0 0 34 44" width="34" height="44"><rect x="2" y="39.6" width="12.5" height="4.4" rx="1" fill="#6f5591"/><rect x="19.5" y="39.6" width="12.5" height="4.4" rx="1" fill="#6f5591"/><rect x="2" y="31.7" width="30" height="4.4" rx="1" fill="#6f5591"/><rect x="2" y="23.8" width="12.5" height="4.4" rx="1" fill="#6f5591"/><rect x="19.5" y="23.8" width="12.5" height="4.4" rx="1" fill="#6f5591"/><rect x="2" y="15.8" width="30" height="4.4" rx="1" fill="#6f5591"/><rect x="2" y="7.9" width="30" height="4.4" rx="1" fill="#6f5591"/><rect x="2" y="0.0" width="30" height="4.4" rx="1" fill="#6f5591"/></svg></div>
+      <div class="nm">訟<b>しょう</b></div>
+      <div class="tri">☁︎<span>天</span>／<span>水</span>〜</div>
+    </div><div class="arw">→</div><div class="node" style="--ac:#2f5c8f;--rot:-1.5deg;--tint:#fbf4e2" data-era="上経">
+      <div class="num">7</div>
+      <div class="fig"><svg viewBox="0 0 34 44" width="34" height="44"><rect x="2" y="39.6" width="12.5" height="4.4" rx="1" fill="#2f5c8f"/><rect x="19.5" y="39.6" width="12.5" height="4.4" rx="1" fill="#2f5c8f"/><rect x="2" y="31.7" width="30" height="4.4" rx="1" fill="#2f5c8f"/><rect x="2" y="23.8" width="12.5" height="4.4" rx="1" fill="#2f5c8f"/><rect x="19.5" y="23.8" width="12.5" height="4.4" rx="1" fill="#2f5c8f"/><rect x="2" y="15.8" width="12.5" height="4.4" rx="1" fill="#2f5c8f"/><rect x="19.5" y="15.8" width="12.5" height="4.4" rx="1" fill="#2f5c8f"/><rect x="2" y="7.9" width="12.5" height="4.4" rx="1" fill="#2f5c8f"/><rect x="19.5" y="7.9" width="12.5" height="4.4" rx="1" fill="#2f5c8f"/><rect x="2" y="0.0" width="12.5" height="4.4" rx="1" fill="#2f5c8f"/><rect x="19.5" y="0.0" width="12.5" height="4.4" rx="1" fill="#2f5c8f"/></svg></div>
+      <div class="nm">師<b>し</b></div>
+      <div class="tri">▦<span>地</span>／<span>水</span>〜</div>
+    </div><div class="arw">→</div><div class="node" style="--ac:#c0453b;--rot:-0.5deg;--tint:#fbf4e2" data-era="上経">
+      <div class="num">8</div>
+      <div class="fig"><svg viewBox="0 0 34 44" width="34" height="44"><rect x="2" y="39.6" width="12.5" height="4.4" rx="1" fill="#c0453b"/><rect x="19.5" y="39.6" width="12.5" height="4.4" rx="1" fill="#c0453b"/><rect x="2" y="31.7" width="12.5" height="4.4" rx="1" fill="#c0453b"/><rect x="19.5" y="31.7" width="12.5" height="4.4" rx="1" fill="#c0453b"/><rect x="2" y="23.8" width="12.5" height="4.4" rx="1" fill="#c0453b"/><rect x="19.5" y="23.8" width="12.5" height="4.4" rx="1" fill="#c0453b"/><rect x="2" y="15.8" width="12.5" height="4.4" rx="1" fill="#c0453b"/><rect x="19.5" y="15.8" width="12.5" height="4.4" rx="1" fill="#c0453b"/><rect x="2" y="7.9" width="30" height="4.4" rx="1" fill="#c0453b"/><rect x="2" y="0.0" width="12.5" height="4.4" rx="1" fill="#c0453b"/><rect x="19.5" y="0.0" width="12.5" height="4.4" rx="1" fill="#c0453b"/></svg></div>
+      <div class="nm">比<b>ひ</b></div>
+      <div class="tri">〜<span>水</span>／<span>地</span>▦</div>
+    </div><div class="turn right">⤵</div></div><div class="row rev"><div class="node" style="--ac:#cc7a2e;--rot:0.5deg;--tint:#fbf4e2" data-era="上経">
+      <div class="num">16</div>
+      <div class="fig"><svg viewBox="0 0 34 44" width="34" height="44"><rect x="2" y="39.6" width="12.5" height="4.4" rx="1" fill="#cc7a2e"/><rect x="19.5" y="39.6" width="12.5" height="4.4" rx="1" fill="#cc7a2e"/><rect x="2" y="31.7" width="12.5" height="4.4" rx="1" fill="#cc7a2e"/><rect x="19.5" y="31.7" width="12.5" height="4.4" rx="1" fill="#cc7a2e"/><rect x="2" y="23.8" width="12.5" height="4.4" rx="1" fill="#cc7a2e"/><rect x="19.5" y="23.8" width="12.5" height="4.4" rx="1" fill="#cc7a2e"/><rect x="2" y="15.8" width="30" height="4.4" rx="1" fill="#cc7a2e"/><rect x="2" y="7.9" width="12.5" height="4.4" rx="1" fill="#cc7a2e"/><rect x="19.5" y="7.9" width="12.5" height="4.4" rx="1" fill="#cc7a2e"/><rect x="2" y="0.0" width="12.5" height="4.4" rx="1" fill="#cc7a2e"/><rect x="19.5" y="0.0" width="12.5" height="4.4" rx="1" fill="#cc7a2e"/></svg></div>
+      <div class="nm">豫<b>よ</b></div>
+      <div class="tri">⚡︎<span>雷</span>／<span>地</span>▦</div>
+    </div><div class="arw">←</div><div class="node" style="--ac:#3f7d55;--rot:-0.5deg;--tint:#fbf4e2" data-era="上経">
+      <div class="num">15</div>
+      <div class="fig"><svg viewBox="0 0 34 44" width="34" height="44"><rect x="2" y="39.6" width="12.5" height="4.4" rx="1" fill="#3f7d55"/><rect x="19.5" y="39.6" width="12.5" height="4.4" rx="1" fill="#3f7d55"/><rect x="2" y="31.7" width="12.5" height="4.4" rx="1" fill="#3f7d55"/><rect x="19.5" y="31.7" width="12.5" height="4.4" rx="1" fill="#3f7d55"/><rect x="2" y="23.8" width="30" height="4.4" rx="1" fill="#3f7d55"/><rect x="2" y="15.8" width="12.5" height="4.4" rx="1" fill="#3f7d55"/><rect x="19.5" y="15.8" width="12.5" height="4.4" rx="1" fill="#3f7d55"/><rect x="2" y="7.9" width="12.5" height="4.4" rx="1" fill="#3f7d55"/><rect x="19.5" y="7.9" width="12.5" height="4.4" rx="1" fill="#3f7d55"/><rect x="2" y="0.0" width="12.5" height="4.4" rx="1" fill="#3f7d55"/><rect x="19.5" y="0.0" width="12.5" height="4.4" rx="1" fill="#3f7d55"/></svg></div>
+      <div class="nm">謙<b>けん</b></div>
+      <div class="tri">▦<span>地</span>／<span>山</span>⛰</div>
+    </div><div class="arw">←</div><div class="node" style="--ac:#c0453b;--rot:-1.5deg;--tint:#fbf4e2" data-era="上経">
+      <div class="num">14</div>
+      <div class="fig"><svg viewBox="0 0 34 44" width="34" height="44"><rect x="2" y="39.6" width="30" height="4.4" rx="1" fill="#c0453b"/><rect x="2" y="31.7" width="30" height="4.4" rx="1" fill="#c0453b"/><rect x="2" y="23.8" width="30" height="4.4" rx="1" fill="#c0453b"/><rect x="2" y="15.8" width="30" height="4.4" rx="1" fill="#c0453b"/><rect x="2" y="7.9" width="12.5" height="4.4" rx="1" fill="#c0453b"/><rect x="19.5" y="7.9" width="12.5" height="4.4" rx="1" fill="#c0453b"/><rect x="2" y="0.0" width="30" height="4.4" rx="1" fill="#c0453b"/></svg></div>
+      <div class="nm">大有<b>たいゆう</b></div>
+      <div class="tri">🔥<span>火</span>／<span>天</span>☁︎</div>
+    </div><div class="arw">←</div><div class="node" style="--ac:#2f5c8f;--rot:1.0deg;--tint:#fbf4e2" data-era="上経">
+      <div class="num">13</div>
+      <div class="fig"><svg viewBox="0 0 34 44" width="34" height="44"><rect x="2" y="39.6" width="30" height="4.4" rx="1" fill="#2f5c8f"/><rect x="2" y="31.7" width="12.5" height="4.4" rx="1" fill="#2f5c8f"/><rect x="19.5" y="31.7" width="12.5" height="4.4" rx="1" fill="#2f5c8f"/><rect x="2" y="23.8" width="30" height="4.4" rx="1" fill="#2f5c8f"/><rect x="2" y="15.8" width="30" height="4.4" rx="1" fill="#2f5c8f"/><rect x="2" y="7.9" width="30" height="4.4" rx="1" fill="#2f5c8f"/><rect x="2" y="0.0" width="30" height="4.4" rx="1" fill="#2f5c8f"/></svg></div>
+      <div class="nm">同人<b>どうじん</b></div>
+      <div class="tri">☁︎<span>天</span>／<span>火</span>🔥</div>
+    </div><div class="arw">←</div><div class="node" style="--ac:#6f5591;--rot:0.0deg;--tint:#fbf4e2" data-era="上経">
+      <div class="num">12</div>
+      <div class="fig"><svg viewBox="0 0 34 44" width="34" height="44"><rect x="2" y="39.6" width="12.5" height="4.4" rx="1" fill="#6f5591"/><rect x="19.5" y="39.6" width="12.5" height="4.4" rx="1" fill="#6f5591"/><rect x="2" y="31.7" width="12.5" height="4.4" rx="1" fill="#6f5591"/><rect x="19.5" y="31.7" width="12.5" height="4.4" rx="1" fill="#6f5591"/><rect x="2" y="23.8" width="12.5" height="4.4" rx="1" fill="#6f5591"/><rect x="19.5" y="23.8" width="12.5" height="4.4" rx="1" fill="#6f5591"/><rect x="2" y="15.8" width="30" height="4.4" rx="1" fill="#6f5591"/><rect x="2" y="7.9" width="30" height="4.4" rx="1" fill="#6f5591"/><rect x="2" y="0.0" width="30" height="4.4" rx="1" fill="#6f5591"/></svg></div>
+      <div class="nm">否<b>ひ</b></div>
+      <div class="tri">☁︎<span>天</span>／<span>地</span>▦</div>
+    </div><div class="arw">←</div><div class="node" style="--ac:#c99a2e;--rot:-1.0deg;--tint:#fbf4e2" data-era="上経">
+      <div class="num">11</div>
+      <div class="fig"><svg viewBox="0 0 34 44" width="34" height="44"><rect x="2" y="39.6" width="30" height="4.4" rx="1" fill="#c99a2e"/><rect x="2" y="31.7" width="30" height="4.4" rx="1" fill="#c99a2e"/><rect x="2" y="23.8" width="30" height="4.4" rx="1" fill="#c99a2e"/><rect x="2" y="15.8" width="12.5" height="4.4" rx="1" fill="#c99a2e"/><rect x="19.5" y="15.8" width="12.5" height="4.4" rx="1" fill="#c99a2e"/><rect x="2" y="7.9" width="12.5" height="4.4" rx="1" fill="#c99a2e"/><rect x="19.5" y="7.9" width="12.5" height="4.4" rx="1" fill="#c99a2e"/><rect x="2" y="0.0" width="12.5" height="4.4" rx="1" fill="#c99a2e"/><rect x="19.5" y="0.0" width="12.5" height="4.4" rx="1" fill="#c99a2e"/></svg></div>
+      <div class="nm">泰<b>たい</b></div>
+      <div class="tri">▦<span>地</span>／<span>天</span>☁︎</div>
+    </div><div class="arw">←</div><div class="node" style="--ac:#cc7a2e;--rot:1.5deg;--tint:#fbf4e2" data-era="上経">
+      <div class="num">10</div>
+      <div class="fig"><svg viewBox="0 0 34 44" width="34" height="44"><rect x="2" y="39.6" width="30" height="4.4" rx="1" fill="#cc7a2e"/><rect x="2" y="31.7" width="30" height="4.4" rx="1" fill="#cc7a2e"/><rect x="2" y="23.8" width="12.5" height="4.4" rx="1" fill="#cc7a2e"/><rect x="19.5" y="23.8" width="12.5" height="4.4" rx="1" fill="#cc7a2e"/><rect x="2" y="15.8" width="30" height="4.4" rx="1" fill="#cc7a2e"/><rect x="2" y="7.9" width="30" height="4.4" rx="1" fill="#cc7a2e"/><rect x="2" y="0.0" width="30" height="4.4" rx="1" fill="#cc7a2e"/></svg></div>
+      <div class="nm">履<b>り</b></div>
+      <div class="tri">☁︎<span>天</span>／<span>沢</span>💧</div>
+    </div><div class="arw">←</div><div class="node" style="--ac:#3f7d55;--rot:0.5deg;--tint:#fbf4e2" data-era="上経">
+      <div class="num">9</div>
+      <div class="fig"><svg viewBox="0 0 34 44" width="34" height="44"><rect x="2" y="39.6" width="30" height="4.4" rx="1" fill="#3f7d55"/><rect x="2" y="31.7" width="30" height="4.4" rx="1" fill="#3f7d55"/><rect x="2" y="23.8" width="30" height="4.4" rx="1" fill="#3f7d55"/><rect x="2" y="15.8" width="12.5" height="4.4" rx="1" fill="#3f7d55"/><rect x="19.5" y="15.8" width="12.5" height="4.4" rx="1" fill="#3f7d55"/><rect x="2" y="7.9" width="30" height="4.4" rx="1" fill="#3f7d55"/><rect x="2" y="0.0" width="30" height="4.4" rx="1" fill="#3f7d55"/></svg></div>
+      <div class="nm">小畜<b>しょうちく</b></div>
+      <div class="tri">🍃<span>風</span>／<span>天</span>☁︎</div>
+    </div><div class="turn left">⤵</div></div><div class="row "><div class="node" style="--ac:#c99a2e;--rot:1.5deg;--tint:#fbf4e2" data-era="上経">
+      <div class="num">17</div>
+      <div class="fig"><svg viewBox="0 0 34 44" width="34" height="44"><rect x="2" y="39.6" width="30" height="4.4" rx="1" fill="#c99a2e"/><rect x="2" y="31.7" width="12.5" height="4.4" rx="1" fill="#c99a2e"/><rect x="19.5" y="31.7" width="12.5" height="4.4" rx="1" fill="#c99a2e"/><rect x="2" y="23.8" width="12.5" height="4.4" rx="1" fill="#c99a2e"/><rect x="19.5" y="23.8" width="12.5" height="4.4" rx="1" fill="#c99a2e"/><rect x="2" y="15.8" width="30" height="4.4" rx="1" fill="#c99a2e"/><rect x="2" y="7.9" width="30" height="4.4" rx="1" fill="#c99a2e"/><rect x="2" y="0.0" width="12.5" height="4.4" rx="1" fill="#c99a2e"/><rect x="19.5" y="0.0" width="12.5" height="4.4" rx="1" fill="#c99a2e"/></svg></div>
+      <div class="nm">隨<b>ずい</b></div>
+      <div class="tri">💧<span>沢</span>／<span>雷</span>⚡︎</div>
+    </div><div class="arw">→</div><div class="node" style="--ac:#6f5591;--rot:-1.0deg;--tint:#fbf4e2" data-era="上経">
+      <div class="num">18</div>
+      <div class="fig"><svg viewBox="0 0 34 44" width="34" height="44"><rect x="2" y="39.6" width="12.5" height="4.4" rx="1" fill="#6f5591"/><rect x="19.5" y="39.6" width="12.5" height="4.4" rx="1" fill="#6f5591"/><rect x="2" y="31.7" width="30" height="4.4" rx="1" fill="#6f5591"/><rect x="2" y="23.8" width="30" height="4.4" rx="1" fill="#6f5591"/><rect x="2" y="15.8" width="12.5" height="4.4" rx="1" fill="#6f5591"/><rect x="19.5" y="15.8" width="12.5" height="4.4" rx="1" fill="#6f5591"/><rect x="2" y="7.9" width="12.5" height="4.4" rx="1" fill="#6f5591"/><rect x="19.5" y="7.9" width="12.5" height="4.4" rx="1" fill="#6f5591"/><rect x="2" y="0.0" width="30" height="4.4" rx="1" fill="#6f5591"/></svg></div>
+      <div class="nm">蠱<b>こ</b></div>
+      <div class="tri">⛰<span>山</span>／<span>風</span>🍃</div>
+    </div><div class="arw">→</div><div class="node" style="--ac:#2f5c8f;--rot:0.0deg;--tint:#fbf4e2" data-era="上経">
+      <div class="num">19</div>
+      <div class="fig"><svg viewBox="0 0 34 44" width="34" height="44"><rect x="2" y="39.6" width="30" height="4.4" rx="1" fill="#2f5c8f"/><rect x="2" y="31.7" width="30" height="4.4" rx="1" fill="#2f5c8f"/><rect x="2" y="23.8" width="12.5" height="4.4" rx="1" fill="#2f5c8f"/><rect x="19.5" y="23.8" width="12.5" height="4.4" rx="1" fill="#2f5c8f"/><rect x="2" y="15.8" width="12.5" height="4.4" rx="1" fill="#2f5c8f"/><rect x="19.5" y="15.8" width="12.5" height="4.4" rx="1" fill="#2f5c8f"/><rect x="2" y="7.9" width="12.5" height="4.4" rx="1" fill="#2f5c8f"/><rect x="19.5" y="7.9" width="12.5" height="4.4" rx="1" fill="#2f5c8f"/><rect x="2" y="0.0" width="12.5" height="4.4" rx="1" fill="#2f5c8f"/><rect x="19.5" y="0.0" width="12.5" height="4.4" rx="1" fill="#2f5c8f"/></svg></div>
+      <div class="nm">臨<b>りん</b></div>
+      <div class="tri">▦<span>地</span>／<span>沢</span>💧</div>
+    </div><div class="arw">→</div><div class="node" style="--ac:#c0453b;--rot:1.0deg;--tint:#fbf4e2" data-era="上経">
+      <div class="num">20</div>
+      <div class="fig"><svg viewBox="0 0 34 44" width="34" height="44"><rect x="2" y="39.6" width="12.5" height="4.4" rx="1" fill="#c0453b"/><rect x="19.5" y="39.6" width="12.5" height="4.4" rx="1" fill="#c0453b"/><rect x="2" y="31.7" width="12.5" height="4.4" rx="1" fill="#c0453b"/><rect x="19.5" y="31.7" width="12.5" height="4.4" rx="1" fill="#c0453b"/><rect x="2" y="23.8" width="12.5" height="4.4" rx="1" fill="#c0453b"/><rect x="19.5" y="23.8" width="12.5" height="4.4" rx="1" fill="#c0453b"/><rect x="2" y="15.8" width="12.5" height="4.4" rx="1" fill="#c0453b"/><rect x="19.5" y="15.8" width="12.5" height="4.4" rx="1" fill="#c0453b"/><rect x="2" y="7.9" width="30" height="4.4" rx="1" fill="#c0453b"/><rect x="2" y="0.0" width="30" height="4.4" rx="1" fill="#c0453b"/></svg></div>
+      <div class="nm">觀<b>かん</b></div>
+      <div class="tri">🍃<span>風</span>／<span>地</span>▦</div>
+    </div><div class="arw">→</div><div class="node" style="--ac:#3f7d55;--rot:-1.5deg;--tint:#fbf4e2" data-era="上経">
+      <div class="num">21</div>
+      <div class="fig"><svg viewBox="0 0 34 44" width="34" height="44"><rect x="2" y="39.6" width="30" height="4.4" rx="1" fill="#3f7d55"/><rect x="2" y="31.7" width="12.5" height="4.4" rx="1" fill="#3f7d55"/><rect x="19.5" y="31.7" width="12.5" height="4.4" rx="1" fill="#3f7d55"/><rect x="2" y="23.8" width="12.5" height="4.4" rx="1" fill="#3f7d55"/><rect x="19.5" y="23.8" width="12.5" height="4.4" rx="1" fill="#3f7d55"/><rect x="2" y="15.8" width="30" height="4.4" rx="1" fill="#3f7d55"/><rect x="2" y="7.9" width="12.5" height="4.4" rx="1" fill="#3f7d55"/><rect x="19.5" y="7.9" width="12.5" height="4.4" rx="1" fill="#3f7d55"/><rect x="2" y="0.0" width="30" height="4.4" rx="1" fill="#3f7d55"/></svg></div>
+      <div class="nm">噬嗑<b>ぜいごう</b></div>
+      <div class="tri">🔥<span>火</span>／<span>雷</span>⚡︎</div>
+    </div><div class="arw">→</div><div class="node" style="--ac:#cc7a2e;--rot:-0.5deg;--tint:#fbf4e2" data-era="上経">
+      <div class="num">22</div>
+      <div class="fig"><svg viewBox="0 0 34 44" width="34" height="44"><rect x="2" y="39.6" width="30" height="4.4" rx="1" fill="#cc7a2e"/><rect x="2" y="31.7" width="12.5" height="4.4" rx="1" fill="#cc7a2e"/><rect x="19.5" y="31.7" width="12.5" height="4.4" rx="1" fill="#cc7a2e"/><rect x="2" y="23.8" width="30" height="4.4" rx="1" fill="#cc7a2e"/><rect x="2" y="15.8" width="12.5" height="4.4" rx="1" fill="#cc7a2e"/><rect x="19.5" y="15.8" width="12.5" height="4.4" rx="1" fill="#cc7a2e"/><rect x="2" y="7.9" width="12.5" height="4.4" rx="1" fill="#cc7a2e"/><rect x="19.5" y="7.9" width="12.5" height="4.4" rx="1" fill="#cc7a2e"/><rect x="2" y="0.0" width="30" height="4.4" rx="1" fill="#cc7a2e"/></svg></div>
+      <div class="nm">賁<b>ひ</b></div>
+      <div class="tri">⛰<span>山</span>／<span>火</span>🔥</div>
+    </div><div class="arw">→</div><div class="node" style="--ac:#c99a2e;--rot:0.5deg;--tint:#fbf4e2" data-era="上経">
+      <div class="num">23</div>
+      <div class="fig"><svg viewBox="0 0 34 44" width="34" height="44"><rect x="2" y="39.6" width="12.5" height="4.4" rx="1" fill="#c99a2e"/><rect x="19.5" y="39.6" width="12.5" height="4.4" rx="1" fill="#c99a2e"/><rect x="2" y="31.7" width="12.5" height="4.4" rx="1" fill="#c99a2e"/><rect x="19.5" y="31.7" width="12.5" height="4.4" rx="1" fill="#c99a2e"/><rect x="2" y="23.8" width="12.5" height="4.4" rx="1" fill="#c99a2e"/><rect x="19.5" y="23.8" width="12.5" height="4.4" rx="1" fill="#c99a2e"/><rect x="2" y="15.8" width="12.5" height="4.4" rx="1" fill="#c99a2e"/><rect x="19.5" y="15.8" width="12.5" height="4.4" rx="1" fill="#c99a2e"/><rect x="2" y="7.9" width="12.5" height="4.4" rx="1" fill="#c99a2e"/><rect x="19.5" y="7.9" width="12.5" height="4.4" rx="1" fill="#c99a2e"/><rect x="2" y="0.0" width="30" height="4.4" rx="1" fill="#c99a2e"/></svg></div>
+      <div class="nm">剝<b>はく</b></div>
+      <div class="tri">⛰<span>山</span>／<span>地</span>▦</div>
+    </div><div class="arw">→</div><div class="node" style="--ac:#6f5591;--rot:1.5deg;--tint:#fbf4e2" data-era="上経">
+      <div class="num">24</div>
+      <div class="fig"><svg viewBox="0 0 34 44" width="34" height="44"><rect x="2" y="39.6" width="30" height="4.4" rx="1" fill="#6f5591"/><rect x="2" y="31.7" width="12.5" height="4.4" rx="1" fill="#6f5591"/><rect x="19.5" y="31.7" width="12.5" height="4.4" rx="1" fill="#6f5591"/><rect x="2" y="23.8" width="12.5" height="4.4" rx="1" fill="#6f5591"/><rect x="19.5" y="23.8" width="12.5" height="4.4" rx="1" fill="#6f5591"/><rect x="2" y="15.8" width="12.5" height="4.4" rx="1" fill="#6f5591"/><rect x="19.5" y="15.8" width="12.5" height="4.4" rx="1" fill="#6f5591"/><rect x="2" y="7.9" width="12.5" height="4.4" rx="1" fill="#6f5591"/><rect x="19.5" y="7.9" width="12.5" height="4.4" rx="1" fill="#6f5591"/><rect x="2" y="0.0" width="12.5" height="4.4" rx="1" fill="#6f5591"/><rect x="19.5" y="0.0" width="12.5" height="4.4" rx="1" fill="#6f5591"/></svg></div>
+      <div class="nm">復<b>ふく</b></div>
+      <div class="tri">▦<span>地</span>／<span>雷</span>⚡︎</div>
+    </div><div class="turn right">⤵</div></div><div class="row rev"><div class="node" style="--ac:#c0453b;--rot:-1.0deg;--tint:#f6eede" data-era="下経">
+      <div class="num">32</div>
+      <div class="fig"><svg viewBox="0 0 34 44" width="34" height="44"><rect x="2" y="39.6" width="12.5" height="4.4" rx="1" fill="#c0453b"/><rect x="19.5" y="39.6" width="12.5" height="4.4" rx="1" fill="#c0453b"/><rect x="2" y="31.7" width="30" height="4.4" rx="1" fill="#c0453b"/><rect x="2" y="23.8" width="30" height="4.4" rx="1" fill="#c0453b"/><rect x="2" y="15.8" width="30" height="4.4" rx="1" fill="#c0453b"/><rect x="2" y="7.9" width="12.5" height="4.4" rx="1" fill="#c0453b"/><rect x="19.5" y="7.9" width="12.5" height="4.4" rx="1" fill="#c0453b"/><rect x="2" y="0.0" width="12.5" height="4.4" rx="1" fill="#c0453b"/><rect x="19.5" y="0.0" width="12.5" height="4.4" rx="1" fill="#c0453b"/></svg></div>
+      <div class="nm">恆<b>こう</b></div>
+      <div class="tri">⚡︎<span>雷</span>／<span>風</span>🍃</div>
+    </div><div class="arw">←</div><div class="node" style="--ac:#2f5c8f;--rot:1.5deg;--tint:#f6eede" data-era="下経">
+      <div class="num">31</div>
+      <div class="fig"><svg viewBox="0 0 34 44" width="34" height="44"><rect x="2" y="39.6" width="12.5" height="4.4" rx="1" fill="#2f5c8f"/><rect x="19.5" y="39.6" width="12.5" height="4.4" rx="1" fill="#2f5c8f"/><rect x="2" y="31.7" width="12.5" height="4.4" rx="1" fill="#2f5c8f"/><rect x="19.5" y="31.7" width="12.5" height="4.4" rx="1" fill="#2f5c8f"/><rect x="2" y="23.8" width="30" height="4.4" rx="1" fill="#2f5c8f"/><rect x="2" y="15.8" width="30" height="4.4" rx="1" fill="#2f5c8f"/><rect x="2" y="7.9" width="30" height="4.4" rx="1" fill="#2f5c8f"/><rect x="2" y="0.0" width="12.5" height="4.4" rx="1" fill="#2f5c8f"/><rect x="19.5" y="0.0" width="12.5" height="4.4" rx="1" fill="#2f5c8f"/></svg></div>
+      <div class="nm">咸<b>かん</b></div>
+      <div class="tri">💧<span>沢</span>／<span>山</span>⛰</div>
+    </div><div class="arw">←</div><div class="node" style="--ac:#6f5591;--rot:0.5deg;--tint:#fbf4e2" data-era="上経">
+      <div class="num">30</div>
+      <div class="fig"><svg viewBox="0 0 34 44" width="34" height="44"><rect x="2" y="39.6" width="30" height="4.4" rx="1" fill="#6f5591"/><rect x="2" y="31.7" width="12.5" height="4.4" rx="1" fill="#6f5591"/><rect x="19.5" y="31.7" width="12.5" height="4.4" rx="1" fill="#6f5591"/><rect x="2" y="23.8" width="30" height="4.4" rx="1" fill="#6f5591"/><rect x="2" y="15.8" width="30" height="4.4" rx="1" fill="#6f5591"/><rect x="2" y="7.9" width="12.5" height="4.4" rx="1" fill="#6f5591"/><rect x="19.5" y="7.9" width="12.5" height="4.4" rx="1" fill="#6f5591"/><rect x="2" y="0.0" width="30" height="4.4" rx="1" fill="#6f5591"/></svg></div>
+      <div class="nm">離<b>り</b></div>
+      <div class="tri">🔥<span>火</span>／<span>火</span>🔥</div>
+    </div><div class="arw">←</div><div class="node" style="--ac:#c99a2e;--rot:-0.5deg;--tint:#fbf4e2" data-era="上経">
+      <div class="num">29</div>
+      <div class="fig"><svg viewBox="0 0 34 44" width="34" height="44"><rect x="2" y="39.6" width="12.5" height="4.4" rx="1" fill="#c99a2e"/><rect x="19.5" y="39.6" width="12.5" height="4.4" rx="1" fill="#c99a2e"/><rect x="2" y="31.7" width="30" height="4.4" rx="1" fill="#c99a2e"/><rect x="2" y="23.8" width="12.5" height="4.4" rx="1" fill="#c99a2e"/><rect x="19.5" y="23.8" width="12.5" height="4.4" rx="1" fill="#c99a2e"/><rect x="2" y="15.8" width="12.5" height="4.4" rx="1" fill="#c99a2e"/><rect x="19.5" y="15.8" width="12.5" height="4.4" rx="1" fill="#c99a2e"/><rect x="2" y="7.9" width="30" height="4.4" rx="1" fill="#c99a2e"/><rect x="2" y="0.0" width="12.5" height="4.4" rx="1" fill="#c99a2e"/><rect x="19.5" y="0.0" width="12.5" height="4.4" rx="1" fill="#c99a2e"/></svg></div>
+      <div class="nm">坎<b>かん</b></div>
+      <div class="tri">〜<span>水</span>／<span>水</span>〜</div>
+    </div><div class="arw">←</div><div class="node" style="--ac:#cc7a2e;--rot:-1.5deg;--tint:#fbf4e2" data-era="上経">
+      <div class="num">28</div>
+      <div class="fig"><svg viewBox="0 0 34 44" width="34" height="44"><rect x="2" y="39.6" width="12.5" height="4.4" rx="1" fill="#cc7a2e"/><rect x="19.5" y="39.6" width="12.5" height="4.4" rx="1" fill="#cc7a2e"/><rect x="2" y="31.7" width="30" height="4.4" rx="1" fill="#cc7a2e"/><rect x="2" y="23.8" width="30" height="4.4" rx="1" fill="#cc7a2e"/><rect x="2" y="15.8" width="30" height="4.4" rx="1" fill="#cc7a2e"/><rect x="2" y="7.9" width="30" height="4.4" rx="1" fill="#cc7a2e"/><rect x="2" y="0.0" width="12.5" height="4.4" rx="1" fill="#cc7a2e"/><rect x="19.5" y="0.0" width="12.5" height="4.4" rx="1" fill="#cc7a2e"/></svg></div>
+      <div class="nm">大過<b>たいか</b></div>
+      <div class="tri">💧<span>沢</span>／<span>風</span>🍃</div>
+    </div><div class="arw">←</div><div class="node" style="--ac:#3f7d55;--rot:1.0deg;--tint:#fbf4e2" data-era="上経">
+      <div class="num">27</div>
+      <div class="fig"><svg viewBox="0 0 34 44" width="34" height="44"><rect x="2" y="39.6" width="30" height="4.4" rx="1" fill="#3f7d55"/><rect x="2" y="31.7" width="12.5" height="4.4" rx="1" fill="#3f7d55"/><rect x="19.5" y="31.7" width="12.5" height="4.4" rx="1" fill="#3f7d55"/><rect x="2" y="23.8" width="12.5" height="4.4" rx="1" fill="#3f7d55"/><rect x="19.5" y="23.8" width="12.5" height="4.4" rx="1" fill="#3f7d55"/><rect x="2" y="15.8" width="12.5" height="4.4" rx="1" fill="#3f7d55"/><rect x="19.5" y="15.8" width="12.5" height="4.4" rx="1" fill="#3f7d55"/><rect x="2" y="7.9" width="12.5" height="4.4" rx="1" fill="#3f7d55"/><rect x="19.5" y="7.9" width="12.5" height="4.4" rx="1" fill="#3f7d55"/><rect x="2" y="0.0" width="30" height="4.4" rx="1" fill="#3f7d55"/></svg></div>
+      <div class="nm">頤<b>い</b></div>
+      <div class="tri">⛰<span>山</span>／<span>雷</span>⚡︎</div>
+    </div><div class="arw">←</div><div class="node" style="--ac:#c0453b;--rot:0.0deg;--tint:#fbf4e2" data-era="上経">
+      <div class="num">26</div>
+      <div class="fig"><svg viewBox="0 0 34 44" width="34" height="44"><rect x="2" y="39.6" width="30" height="4.4" rx="1" fill="#c0453b"/><rect x="2" y="31.7" width="30" height="4.4" rx="1" fill="#c0453b"/><rect x="2" y="23.8" width="30" height="4.4" rx="1" fill="#c0453b"/><rect x="2" y="15.8" width="12.5" height="4.4" rx="1" fill="#c0453b"/><rect x="19.5" y="15.8" width="12.5" height="4.4" rx="1" fill="#c0453b"/><rect x="2" y="7.9" width="12.5" height="4.4" rx="1" fill="#c0453b"/><rect x="19.5" y="7.9" width="12.5" height="4.4" rx="1" fill="#c0453b"/><rect x="2" y="0.0" width="30" height="4.4" rx="1" fill="#c0453b"/></svg></div>
+      <div class="nm">大畜<b>たいちく</b></div>
+      <div class="tri">⛰<span>山</span>／<span>天</span>☁︎</div>
+    </div><div class="arw">←</div><div class="node" style="--ac:#2f5c8f;--rot:-1.0deg;--tint:#fbf4e2" data-era="上経">
+      <div class="num">25</div>
+      <div class="fig"><svg viewBox="0 0 34 44" width="34" height="44"><rect x="2" y="39.6" width="30" height="4.4" rx="1" fill="#2f5c8f"/><rect x="2" y="31.7" width="12.5" height="4.4" rx="1" fill="#2f5c8f"/><rect x="19.5" y="31.7" width="12.5" height="4.4" rx="1" fill="#2f5c8f"/><rect x="2" y="23.8" width="12.5" height="4.4" rx="1" fill="#2f5c8f"/><rect x="19.5" y="23.8" width="12.5" height="4.4" rx="1" fill="#2f5c8f"/><rect x="2" y="15.8" width="30" height="4.4" rx="1" fill="#2f5c8f"/><rect x="2" y="7.9" width="30" height="4.4" rx="1" fill="#2f5c8f"/><rect x="2" y="0.0" width="30" height="4.4" rx="1" fill="#2f5c8f"/></svg></div>
+      <div class="nm">無妄<b>むもう</b></div>
+      <div class="tri">☁︎<span>天</span>／<span>雷</span>⚡︎</div>
+    </div><div class="turn left">⤵</div></div>
+  <div class="era" style="margin-top:30px"><b>下経</b><span class="line"></span><span>人の世のかかわり（31〜64）</span></div>
+  <div class="row "><div class="node" style="--ac:#3f7d55;--rot:0.0deg;--tint:#f6eede" data-era="下経">
+      <div class="num">33</div>
+      <div class="fig"><svg viewBox="0 0 34 44" width="34" height="44"><rect x="2" y="39.6" width="12.5" height="4.4" rx="1" fill="#3f7d55"/><rect x="19.5" y="39.6" width="12.5" height="4.4" rx="1" fill="#3f7d55"/><rect x="2" y="31.7" width="12.5" height="4.4" rx="1" fill="#3f7d55"/><rect x="19.5" y="31.7" width="12.5" height="4.4" rx="1" fill="#3f7d55"/><rect x="2" y="23.8" width="30" height="4.4" rx="1" fill="#3f7d55"/><rect x="2" y="15.8" width="30" height="4.4" rx="1" fill="#3f7d55"/><rect x="2" y="7.9" width="30" height="4.4" rx="1" fill="#3f7d55"/><rect x="2" y="0.0" width="30" height="4.4" rx="1" fill="#3f7d55"/></svg></div>
+      <div class="nm">遯<b>とん</b></div>
+      <div class="tri">☁︎<span>天</span>／<span>山</span>⛰</div>
+    </div><div class="arw">→</div><div class="node" style="--ac:#cc7a2e;--rot:1.0deg;--tint:#f6eede" data-era="下経">
+      <div class="num">34</div>
+      <div class="fig"><svg viewBox="0 0 34 44" width="34" height="44"><rect x="2" y="39.6" width="30" height="4.4" rx="1" fill="#cc7a2e"/><rect x="2" y="31.7" width="30" height="4.4" rx="1" fill="#cc7a2e"/><rect x="2" y="23.8" width="30" height="4.4" rx="1" fill="#cc7a2e"/><rect x="2" y="15.8" width="30" height="4.4" rx="1" fill="#cc7a2e"/><rect x="2" y="7.9" width="12.5" height="4.4" rx="1" fill="#cc7a2e"/><rect x="19.5" y="7.9" width="12.5" height="4.4" rx="1" fill="#cc7a2e"/><rect x="2" y="0.0" width="12.5" height="4.4" rx="1" fill="#cc7a2e"/><rect x="19.5" y="0.0" width="12.5" height="4.4" rx="1" fill="#cc7a2e"/></svg></div>
+      <div class="nm">大壯<b>たいそう</b></div>
+      <div class="tri">⚡︎<span>雷</span>／<span>天</span>☁︎</div>
+    </div><div class="arw">→</div><div class="node" style="--ac:#c99a2e;--rot:-1.5deg;--tint:#f6eede" data-era="下経">
+      <div class="num">35</div>
+      <div class="fig"><svg viewBox="0 0 34 44" width="34" height="44"><rect x="2" y="39.6" width="12.5" height="4.4" rx="1" fill="#c99a2e"/><rect x="19.5" y="39.6" width="12.5" height="4.4" rx="1" fill="#c99a2e"/><rect x="2" y="31.7" width="12.5" height="4.4" rx="1" fill="#c99a2e"/><rect x="19.5" y="31.7" width="12.5" height="4.4" rx="1" fill="#c99a2e"/><rect x="2" y="23.8" width="12.5" height="4.4" rx="1" fill="#c99a2e"/><rect x="19.5" y="23.8" width="12.5" height="4.4" rx="1" fill="#c99a2e"/><rect x="2" y="15.8" width="30" height="4.4" rx="1" fill="#c99a2e"/><rect x="2" y="7.9" width="12.5" height="4.4" rx="1" fill="#c99a2e"/><rect x="19.5" y="7.9" width="12.5" height="4.4" rx="1" fill="#c99a2e"/><rect x="2" y="0.0" width="30" height="4.4" rx="1" fill="#c99a2e"/></svg></div>
+      <div class="nm">晉<b>しん</b></div>
+      <div class="tri">🔥<span>火</span>／<span>地</span>▦</div>
+    </div><div class="arw">→</div><div class="node" style="--ac:#6f5591;--rot:-0.5deg;--tint:#f6eede" data-era="下経">
+      <div class="num">36</div>
+      <div class="fig"><svg viewBox="0 0 34 44" width="34" height="44"><rect x="2" y="39.6" width="30" height="4.4" rx="1" fill="#6f5591"/><rect x="2" y="31.7" width="12.5" height="4.4" rx="1" fill="#6f5591"/><rect x="19.5" y="31.7" width="12.5" height="4.4" rx="1" fill="#6f5591"/><rect x="2" y="23.8" width="30" height="4.4" rx="1" fill="#6f5591"/><rect x="2" y="15.8" width="12.5" height="4.4" rx="1" fill="#6f5591"/><rect x="19.5" y="15.8" width="12.5" height="4.4" rx="1" fill="#6f5591"/><rect x="2" y="7.9" width="12.5" height="4.4" rx="1" fill="#6f5591"/><rect x="19.5" y="7.9" width="12.5" height="4.4" rx="1" fill="#6f5591"/><rect x="2" y="0.0" width="12.5" height="4.4" rx="1" fill="#6f5591"/><rect x="19.5" y="0.0" width="12.5" height="4.4" rx="1" fill="#6f5591"/></svg></div>
+      <div class="nm">明夷<b>めいい</b></div>
+      <div class="tri">▦<span>地</span>／<span>火</span>🔥</div>
+    </div><div class="arw">→</div><div class="node" style="--ac:#2f5c8f;--rot:0.5deg;--tint:#f6eede" data-era="下経">
+      <div class="num">37</div>
+      <div class="fig"><svg viewBox="0 0 34 44" width="34" height="44"><rect x="2" y="39.6" width="30" height="4.4" rx="1" fill="#2f5c8f"/><rect x="2" y="31.7" width="12.5" height="4.4" rx="1" fill="#2f5c8f"/><rect x="19.5" y="31.7" width="12.5" height="4.4" rx="1" fill="#2f5c8f"/><rect x="2" y="23.8" width="30" height="4.4" rx="1" fill="#2f5c8f"/><rect x="2" y="15.8" width="12.5" height="4.4" rx="1" fill="#2f5c8f"/><rect x="19.5" y="15.8" width="12.5" height="4.4" rx="1" fill="#2f5c8f"/><rect x="2" y="7.9" width="30" height="4.4" rx="1" fill="#2f5c8f"/><rect x="2" y="0.0" width="30" height="4.4" rx="1" fill="#2f5c8f"/></svg></div>
+      <div class="nm">家人<b>かじん</b></div>
+      <div class="tri">🍃<span>風</span>／<span>火</span>🔥</div>
+    </div><div class="arw">→</div><div class="node" style="--ac:#c0453b;--rot:1.5deg;--tint:#f6eede" data-era="下経">
+      <div class="num">38</div>
+      <div class="fig"><svg viewBox="0 0 34 44" width="34" height="44"><rect x="2" y="39.6" width="30" height="4.4" rx="1" fill="#c0453b"/><rect x="2" y="31.7" width="30" height="4.4" rx="1" fill="#c0453b"/><rect x="2" y="23.8" width="12.5" height="4.4" rx="1" fill="#c0453b"/><rect x="19.5" y="23.8" width="12.5" height="4.4" rx="1" fill="#c0453b"/><rect x="2" y="15.8" width="30" height="4.4" rx="1" fill="#c0453b"/><rect x="2" y="7.9" width="12.5" height="4.4" rx="1" fill="#c0453b"/><rect x="19.5" y="7.9" width="12.5" height="4.4" rx="1" fill="#c0453b"/><rect x="2" y="0.0" width="30" height="4.4" rx="1" fill="#c0453b"/></svg></div>
+      <div class="nm">睽<b>けい</b></div>
+      <div class="tri">🔥<span>火</span>／<span>沢</span>💧</div>
+    </div><div class="arw">→</div><div class="node" style="--ac:#3f7d55;--rot:-1.0deg;--tint:#f6eede" data-era="下経">
+      <div class="num">39</div>
+      <div class="fig"><svg viewBox="0 0 34 44" width="34" height="44"><rect x="2" y="39.6" width="12.5" height="4.4" rx="1" fill="#3f7d55"/><rect x="19.5" y="39.6" width="12.5" height="4.4" rx="1" fill="#3f7d55"/><rect x="2" y="31.7" width="12.5" height="4.4" rx="1" fill="#3f7d55"/><rect x="19.5" y="31.7" width="12.5" height="4.4" rx="1" fill="#3f7d55"/><rect x="2" y="23.8" width="30" height="4.4" rx="1" fill="#3f7d55"/><rect x="2" y="15.8" width="12.5" height="4.4" rx="1" fill="#3f7d55"/><rect x="19.5" y="15.8" width="12.5" height="4.4" rx="1" fill="#3f7d55"/><rect x="2" y="7.9" width="30" height="4.4" rx="1" fill="#3f7d55"/><rect x="2" y="0.0" width="12.5" height="4.4" rx="1" fill="#3f7d55"/><rect x="19.5" y="0.0" width="12.5" height="4.4" rx="1" fill="#3f7d55"/></svg></div>
+      <div class="nm">蹇<b>けん</b></div>
+      <div class="tri">〜<span>水</span>／<span>山</span>⛰</div>
+    </div><div class="arw">→</div><div class="node" style="--ac:#cc7a2e;--rot:0.0deg;--tint:#f6eede" data-era="下経">
+      <div class="num">40</div>
+      <div class="fig"><svg viewBox="0 0 34 44" width="34" height="44"><rect x="2" y="39.6" width="12.5" height="4.4" rx="1" fill="#cc7a2e"/><rect x="19.5" y="39.6" width="12.5" height="4.4" rx="1" fill="#cc7a2e"/><rect x="2" y="31.7" width="30" height="4.4" rx="1" fill="#cc7a2e"/><rect x="2" y="23.8" width="12.5" height="4.4" rx="1" fill="#cc7a2e"/><rect x="19.5" y="23.8" width="12.5" height="4.4" rx="1" fill="#cc7a2e"/><rect x="2" y="15.8" width="30" height="4.4" rx="1" fill="#cc7a2e"/><rect x="2" y="7.9" width="12.5" height="4.4" rx="1" fill="#cc7a2e"/><rect x="19.5" y="7.9" width="12.5" height="4.4" rx="1" fill="#cc7a2e"/><rect x="2" y="0.0" width="12.5" height="4.4" rx="1" fill="#cc7a2e"/><rect x="19.5" y="0.0" width="12.5" height="4.4" rx="1" fill="#cc7a2e"/></svg></div>
+      <div class="nm">解<b>かい</b></div>
+      <div class="tri">⚡︎<span>雷</span>／<span>水</span>〜</div>
+    </div><div class="turn right">⤵</div></div><div class="row rev"><div class="node" style="--ac:#6f5591;--rot:1.0deg;--tint:#f6eede" data-era="下経">
+      <div class="num">48</div>
+      <div class="fig"><svg viewBox="0 0 34 44" width="34" height="44"><rect x="2" y="39.6" width="12.5" height="4.4" rx="1" fill="#6f5591"/><rect x="19.5" y="39.6" width="12.5" height="4.4" rx="1" fill="#6f5591"/><rect x="2" y="31.7" width="30" height="4.4" rx="1" fill="#6f5591"/><rect x="2" y="23.8" width="30" height="4.4" rx="1" fill="#6f5591"/><rect x="2" y="15.8" width="12.5" height="4.4" rx="1" fill="#6f5591"/><rect x="19.5" y="15.8" width="12.5" height="4.4" rx="1" fill="#6f5591"/><rect x="2" y="7.9" width="30" height="4.4" rx="1" fill="#6f5591"/><rect x="2" y="0.0" width="12.5" height="4.4" rx="1" fill="#6f5591"/><rect x="19.5" y="0.0" width="12.5" height="4.4" rx="1" fill="#6f5591"/></svg></div>
+      <div class="nm">井<b>せい</b></div>
+      <div class="tri">〜<span>水</span>／<span>風</span>🍃</div>
+    </div><div class="arw">←</div><div class="node" style="--ac:#c99a2e;--rot:0.0deg;--tint:#f6eede" data-era="下経">
+      <div class="num">47</div>
+      <div class="fig"><svg viewBox="0 0 34 44" width="34" height="44"><rect x="2" y="39.6" width="12.5" height="4.4" rx="1" fill="#c99a2e"/><rect x="19.5" y="39.6" width="12.5" height="4.4" rx="1" fill="#c99a2e"/><rect x="2" y="31.7" width="30" height="4.4" rx="1" fill="#c99a2e"/><rect x="2" y="23.8" width="12.5" height="4.4" rx="1" fill="#c99a2e"/><rect x="19.5" y="23.8" width="12.5" height="4.4" rx="1" fill="#c99a2e"/><rect x="2" y="15.8" width="30" height="4.4" rx="1" fill="#c99a2e"/><rect x="2" y="7.9" width="30" height="4.4" rx="1" fill="#c99a2e"/><rect x="2" y="0.0" width="12.5" height="4.4" rx="1" fill="#c99a2e"/><rect x="19.5" y="0.0" width="12.5" height="4.4" rx="1" fill="#c99a2e"/></svg></div>
+      <div class="nm">困<b>こん</b></div>
+      <div class="tri">💧<span>沢</span>／<span>水</span>〜</div>
+    </div><div class="arw">←</div><div class="node" style="--ac:#cc7a2e;--rot:-1.0deg;--tint:#f6eede" data-era="下経">
+      <div class="num">46</div>
+      <div class="fig"><svg viewBox="0 0 34 44" width="34" height="44"><rect x="2" y="39.6" width="12.5" height="4.4" rx="1" fill="#cc7a2e"/><rect x="19.5" y="39.6" width="12.5" height="4.4" rx="1" fill="#cc7a2e"/><rect x="2" y="31.7" width="30" height="4.4" rx="1" fill="#cc7a2e"/><rect x="2" y="23.8" width="30" height="4.4" rx="1" fill="#cc7a2e"/><rect x="2" y="15.8" width="12.5" height="4.4" rx="1" fill="#cc7a2e"/><rect x="19.5" y="15.8" width="12.5" height="4.4" rx="1" fill="#cc7a2e"/><rect x="2" y="7.9" width="12.5" height="4.4" rx="1" fill="#cc7a2e"/><rect x="19.5" y="7.9" width="12.5" height="4.4" rx="1" fill="#cc7a2e"/><rect x="2" y="0.0" width="12.5" height="4.4" rx="1" fill="#cc7a2e"/><rect x="19.5" y="0.0" width="12.5" height="4.4" rx="1" fill="#cc7a2e"/></svg></div>
+      <div class="nm">升<b>しょう</b></div>
+      <div class="tri">▦<span>地</span>／<span>風</span>🍃</div>
+    </div><div class="arw">←</div><div class="node" style="--ac:#3f7d55;--rot:1.5deg;--tint:#f6eede" data-era="下経">
+      <div class="num">45</div>
+      <div class="fig"><svg viewBox="0 0 34 44" width="34" height="44"><rect x="2" y="39.6" width="12.5" height="4.4" rx="1" fill="#3f7d55"/><rect x="19.5" y="39.6" width="12.5" height="4.4" rx="1" fill="#3f7d55"/><rect x="2" y="31.7" width="12.5" height="4.4" rx="1" fill="#3f7d55"/><rect x="19.5" y="31.7" width="12.5" height="4.4" rx="1" fill="#3f7d55"/><rect x="2" y="23.8" width="12.5" height="4.4" rx="1" fill="#3f7d55"/><rect x="19.5" y="23.8" width="12.5" height="4.4" rx="1" fill="#3f7d55"/><rect x="2" y="15.8" width="30" height="4.4" rx="1" fill="#3f7d55"/><rect x="2" y="7.9" width="30" height="4.4" rx="1" fill="#3f7d55"/><rect x="2" y="0.0" width="12.5" height="4.4" rx="1" fill="#3f7d55"/><rect x="19.5" y="0.0" width="12.5" height="4.4" rx="1" fill="#3f7d55"/></svg></div>
+      <div class="nm">萃<b>すい</b></div>
+      <div class="tri">💧<span>沢</span>／<span>地</span>▦</div>
+    </div><div class="arw">←</div><div class="node" style="--ac:#c0453b;--rot:0.5deg;--tint:#f6eede" data-era="下経">
+      <div class="num">44</div>
+      <div class="fig"><svg viewBox="0 0 34 44" width="34" height="44"><rect x="2" y="39.6" width="12.5" height="4.4" rx="1" fill="#c0453b"/><rect x="19.5" y="39.6" width="12.5" height="4.4" rx="1" fill="#c0453b"/><rect x="2" y="31.7" width="30" height="4.4" rx="1" fill="#c0453b"/><rect x="2" y="23.8" width="30" height="4.4" rx="1" fill="#c0453b"/><rect x="2" y="15.8" width="30" height="4.4" rx="1" fill="#c0453b"/><rect x="2" y="7.9" width="30" height="4.4" rx="1" fill="#c0453b"/><rect x="2" y="0.0" width="30" height="4.4" rx="1" fill="#c0453b"/></svg></div>
+      <div class="nm">姤<b>こう</b></div>
+      <div class="tri">☁︎<span>天</span>／<span>風</span>🍃</div>
+    </div><div class="arw">←</div><div class="node" style="--ac:#2f5c8f;--rot:-0.5deg;--tint:#f6eede" data-era="下経">
+      <div class="num">43</div>
+      <div class="fig"><svg viewBox="0 0 34 44" width="34" height="44"><rect x="2" y="39.6" width="30" height="4.4" rx="1" fill="#2f5c8f"/><rect x="2" y="31.7" width="30" height="4.4" rx="1" fill="#2f5c8f"/><rect x="2" y="23.8" width="30" height="4.4" rx="1" fill="#2f5c8f"/><rect x="2" y="15.8" width="30" height="4.4" rx="1" fill="#2f5c8f"/><rect x="2" y="7.9" width="30" height="4.4" rx="1" fill="#2f5c8f"/><rect x="2" y="0.0" width="12.5" height="4.4" rx="1" fill="#2f5c8f"/><rect x="19.5" y="0.0" width="12.5" height="4.4" rx="1" fill="#2f5c8f"/></svg></div>
+      <div class="nm">夬<b>かい</b></div>
+      <div class="tri">💧<span>沢</span>／<span>天</span>☁︎</div>
+    </div><div class="arw">←</div><div class="node" style="--ac:#6f5591;--rot:-1.5deg;--tint:#f6eede" data-era="下経">
+      <div class="num">42</div>
+      <div class="fig"><svg viewBox="0 0 34 44" width="34" height="44"><rect x="2" y="39.6" width="30" height="4.4" rx="1" fill="#6f5591"/><rect x="2" y="31.7" width="12.5" height="4.4" rx="1" fill="#6f5591"/><rect x="19.5" y="31.7" width="12.5" height="4.4" rx="1" fill="#6f5591"/><rect x="2" y="23.8" width="12.5" height="4.4" rx="1" fill="#6f5591"/><rect x="19.5" y="23.8" width="12.5" height="4.4" rx="1" fill="#6f5591"/><rect x="2" y="15.8" width="12.5" height="4.4" rx="1" fill="#6f5591"/><rect x="19.5" y="15.8" width="12.5" height="4.4" rx="1" fill="#6f5591"/><rect x="2" y="7.9" width="30" height="4.4" rx="1" fill="#6f5591"/><rect x="2" y="0.0" width="30" height="4.4" rx="1" fill="#6f5591"/></svg></div>
+      <div class="nm">益<b>えき</b></div>
+      <div class="tri">🍃<span>風</span>／<span>雷</span>⚡︎</div>
+    </div><div class="arw">←</div><div class="node" style="--ac:#c99a2e;--rot:1.0deg;--tint:#f6eede" data-era="下経">
+      <div class="num">41</div>
+      <div class="fig"><svg viewBox="0 0 34 44" width="34" height="44"><rect x="2" y="39.6" width="30" height="4.4" rx="1" fill="#c99a2e"/><rect x="2" y="31.7" width="30" height="4.4" rx="1" fill="#c99a2e"/><rect x="2" y="23.8" width="12.5" height="4.4" rx="1" fill="#c99a2e"/><rect x="19.5" y="23.8" width="12.5" height="4.4" rx="1" fill="#c99a2e"/><rect x="2" y="15.8" width="12.5" height="4.4" rx="1" fill="#c99a2e"/><rect x="19.5" y="15.8" width="12.5" height="4.4" rx="1" fill="#c99a2e"/><rect x="2" y="7.9" width="12.5" height="4.4" rx="1" fill="#c99a2e"/><rect x="19.5" y="7.9" width="12.5" height="4.4" rx="1" fill="#c99a2e"/><rect x="2" y="0.0" width="30" height="4.4" rx="1" fill="#c99a2e"/></svg></div>
+      <div class="nm">損<b>そん</b></div>
+      <div class="tri">⛰<span>山</span>／<span>沢</span>💧</div>
+    </div><div class="turn left">⤵</div></div><div class="row "><div class="node" style="--ac:#2f5c8f;--rot:-1.5deg;--tint:#f6eede" data-era="下経">
+      <div class="num">49</div>
+      <div class="fig"><svg viewBox="0 0 34 44" width="34" height="44"><rect x="2" y="39.6" width="30" height="4.4" rx="1" fill="#2f5c8f"/><rect x="2" y="31.7" width="12.5" height="4.4" rx="1" fill="#2f5c8f"/><rect x="19.5" y="31.7" width="12.5" height="4.4" rx="1" fill="#2f5c8f"/><rect x="2" y="23.8" width="30" height="4.4" rx="1" fill="#2f5c8f"/><rect x="2" y="15.8" width="30" height="4.4" rx="1" fill="#2f5c8f"/><rect x="2" y="7.9" width="30" height="4.4" rx="1" fill="#2f5c8f"/><rect x="2" y="0.0" width="12.5" height="4.4" rx="1" fill="#2f5c8f"/><rect x="19.5" y="0.0" width="12.5" height="4.4" rx="1" fill="#2f5c8f"/></svg></div>
+      <div class="nm">革<b>かく</b></div>
+      <div class="tri">💧<span>沢</span>／<span>火</span>🔥</div>
+    </div><div class="arw">→</div><div class="node" style="--ac:#c0453b;--rot:-0.5deg;--tint:#f6eede" data-era="下経">
+      <div class="num">50</div>
+      <div class="fig"><svg viewBox="0 0 34 44" width="34" height="44"><rect x="2" y="39.6" width="12.5" height="4.4" rx="1" fill="#c0453b"/><rect x="19.5" y="39.6" width="12.5" height="4.4" rx="1" fill="#c0453b"/><rect x="2" y="31.7" width="30" height="4.4" rx="1" fill="#c0453b"/><rect x="2" y="23.8" width="30" height="4.4" rx="1" fill="#c0453b"/><rect x="2" y="15.8" width="30" height="4.4" rx="1" fill="#c0453b"/><rect x="2" y="7.9" width="12.5" height="4.4" rx="1" fill="#c0453b"/><rect x="19.5" y="7.9" width="12.5" height="4.4" rx="1" fill="#c0453b"/><rect x="2" y="0.0" width="30" height="4.4" rx="1" fill="#c0453b"/></svg></div>
+      <div class="nm">鼎<b>てい</b></div>
+      <div class="tri">🔥<span>火</span>／<span>風</span>🍃</div>
+    </div><div class="arw">→</div><div class="node" style="--ac:#3f7d55;--rot:0.5deg;--tint:#f6eede" data-era="下経">
+      <div class="num">51</div>
+      <div class="fig"><svg viewBox="0 0 34 44" width="34" height="44"><rect x="2" y="39.6" width="30" height="4.4" rx="1" fill="#3f7d55"/><rect x="2" y="31.7" width="12.5" height="4.4" rx="1" fill="#3f7d55"/><rect x="19.5" y="31.7" width="12.5" height="4.4" rx="1" fill="#3f7d55"/><rect x="2" y="23.8" width="12.5" height="4.4" rx="1" fill="#3f7d55"/><rect x="19.5" y="23.8" width="12.5" height="4.4" rx="1" fill="#3f7d55"/><rect x="2" y="15.8" width="30" height="4.4" rx="1" fill="#3f7d55"/><rect x="2" y="7.9" width="12.5" height="4.4" rx="1" fill="#3f7d55"/><rect x="19.5" y="7.9" width="12.5" height="4.4" rx="1" fill="#3f7d55"/><rect x="2" y="0.0" width="12.5" height="4.4" rx="1" fill="#3f7d55"/><rect x="19.5" y="0.0" width="12.5" height="4.4" rx="1" fill="#3f7d55"/></svg></div>
+      <div class="nm">震<b>しん</b></div>
+      <div class="tri">⚡︎<span>雷</span>／<span>雷</span>⚡︎</div>
+    </div><div class="arw">→</div><div class="node" style="--ac:#cc7a2e;--rot:1.5deg;--tint:#f6eede" data-era="下経">
+      <div class="num">52</div>
+      <div class="fig"><svg viewBox="0 0 34 44" width="34" height="44"><rect x="2" y="39.6" width="12.5" height="4.4" rx="1" fill="#cc7a2e"/><rect x="19.5" y="39.6" width="12.5" height="4.4" rx="1" fill="#cc7a2e"/><rect x="2" y="31.7" width="12.5" height="4.4" rx="1" fill="#cc7a2e"/><rect x="19.5" y="31.7" width="12.5" height="4.4" rx="1" fill="#cc7a2e"/><rect x="2" y="23.8" width="30" height="4.4" rx="1" fill="#cc7a2e"/><rect x="2" y="15.8" width="12.5" height="4.4" rx="1" fill="#cc7a2e"/><rect x="19.5" y="15.8" width="12.5" height="4.4" rx="1" fill="#cc7a2e"/><rect x="2" y="7.9" width="12.5" height="4.4" rx="1" fill="#cc7a2e"/><rect x="19.5" y="7.9" width="12.5" height="4.4" rx="1" fill="#cc7a2e"/><rect x="2" y="0.0" width="30" height="4.4" rx="1" fill="#cc7a2e"/></svg></div>
+      <div class="nm">艮<b>ごん</b></div>
+      <div class="tri">⛰<span>山</span>／<span>山</span>⛰</div>
+    </div><div class="arw">→</div><div class="node" style="--ac:#c99a2e;--rot:-1.0deg;--tint:#f6eede" data-era="下経">
+      <div class="num">53</div>
+      <div class="fig"><svg viewBox="0 0 34 44" width="34" height="44"><rect x="2" y="39.6" width="12.5" height="4.4" rx="1" fill="#c99a2e"/><rect x="19.5" y="39.6" width="12.5" height="4.4" rx="1" fill="#c99a2e"/><rect x="2" y="31.7" width="12.5" height="4.4" rx="1" fill="#c99a2e"/><rect x="19.5" y="31.7" width="12.5" height="4.4" rx="1" fill="#c99a2e"/><rect x="2" y="23.8" width="30" height="4.4" rx="1" fill="#c99a2e"/><rect x="2" y="15.8" width="12.5" height="4.4" rx="1" fill="#c99a2e"/><rect x="19.5" y="15.8" width="12.5" height="4.4" rx="1" fill="#c99a2e"/><rect x="2" y="7.9" width="30" height="4.4" rx="1" fill="#c99a2e"/><rect x="2" y="0.0" width="30" height="4.4" rx="1" fill="#c99a2e"/></svg></div>
+      <div class="nm">漸<b>ぜん</b></div>
+      <div class="tri">🍃<span>風</span>／<span>山</span>⛰</div>
+    </div><div class="arw">→</div><div class="node" style="--ac:#6f5591;--rot:0.0deg;--tint:#f6eede" data-era="下経">
+      <div class="num">54</div>
+      <div class="fig"><svg viewBox="0 0 34 44" width="34" height="44"><rect x="2" y="39.6" width="30" height="4.4" rx="1" fill="#6f5591"/><rect x="2" y="31.7" width="30" height="4.4" rx="1" fill="#6f5591"/><rect x="2" y="23.8" width="12.5" height="4.4" rx="1" fill="#6f5591"/><rect x="19.5" y="23.8" width="12.5" height="4.4" rx="1" fill="#6f5591"/><rect x="2" y="15.8" width="30" height="4.4" rx="1" fill="#6f5591"/><rect x="2" y="7.9" width="12.5" height="4.4" rx="1" fill="#6f5591"/><rect x="19.5" y="7.9" width="12.5" height="4.4" rx="1" fill="#6f5591"/><rect x="2" y="0.0" width="12.5" height="4.4" rx="1" fill="#6f5591"/><rect x="19.5" y="0.0" width="12.5" height="4.4" rx="1" fill="#6f5591"/></svg></div>
+      <div class="nm">帰妹<b>きまい</b></div>
+      <div class="tri">⚡︎<span>雷</span>／<span>沢</span>💧</div>
+    </div><div class="arw">→</div><div class="node" style="--ac:#2f5c8f;--rot:1.0deg;--tint:#f6eede" data-era="下経">
+      <div class="num">55</div>
+      <div class="fig"><svg viewBox="0 0 34 44" width="34" height="44"><rect x="2" y="39.6" width="30" height="4.4" rx="1" fill="#2f5c8f"/><rect x="2" y="31.7" width="12.5" height="4.4" rx="1" fill="#2f5c8f"/><rect x="19.5" y="31.7" width="12.5" height="4.4" rx="1" fill="#2f5c8f"/><rect x="2" y="23.8" width="30" height="4.4" rx="1" fill="#2f5c8f"/><rect x="2" y="15.8" width="30" height="4.4" rx="1" fill="#2f5c8f"/><rect x="2" y="7.9" width="12.5" height="4.4" rx="1" fill="#2f5c8f"/><rect x="19.5" y="7.9" width="12.5" height="4.4" rx="1" fill="#2f5c8f"/><rect x="2" y="0.0" width="12.5" height="4.4" rx="1" fill="#2f5c8f"/><rect x="19.5" y="0.0" width="12.5" height="4.4" rx="1" fill="#2f5c8f"/></svg></div>
+      <div class="nm">豐<b>ほう</b></div>
+      <div class="tri">⚡︎<span>雷</span>／<span>火</span>🔥</div>
+    </div><div class="arw">→</div><div class="node" style="--ac:#c0453b;--rot:-1.5deg;--tint:#f6eede" data-era="下経">
+      <div class="num">56</div>
+      <div class="fig"><svg viewBox="0 0 34 44" width="34" height="44"><rect x="2" y="39.6" width="12.5" height="4.4" rx="1" fill="#c0453b"/><rect x="19.5" y="39.6" width="12.5" height="4.4" rx="1" fill="#c0453b"/><rect x="2" y="31.7" width="12.5" height="4.4" rx="1" fill="#c0453b"/><rect x="19.5" y="31.7" width="12.5" height="4.4" rx="1" fill="#c0453b"/><rect x="2" y="23.8" width="30" height="4.4" rx="1" fill="#c0453b"/><rect x="2" y="15.8" width="30" height="4.4" rx="1" fill="#c0453b"/><rect x="2" y="7.9" width="12.5" height="4.4" rx="1" fill="#c0453b"/><rect x="19.5" y="7.9" width="12.5" height="4.4" rx="1" fill="#c0453b"/><rect x="2" y="0.0" width="30" height="4.4" rx="1" fill="#c0453b"/></svg></div>
+      <div class="nm">旅<b>りょ</b></div>
+      <div class="tri">🔥<span>火</span>／<span>山</span>⛰</div>
+    </div><div class="turn right">⤵</div></div><div class="row rev"><div class="node" style="--ac:#cc7a2e;--rot:-0.5deg;--tint:#f6eede" data-era="下経">
+      <div class="num">64</div>
+      <div class="fig"><svg viewBox="0 0 34 44" width="34" height="44"><rect x="2" y="39.6" width="12.5" height="4.4" rx="1" fill="#cc7a2e"/><rect x="19.5" y="39.6" width="12.5" height="4.4" rx="1" fill="#cc7a2e"/><rect x="2" y="31.7" width="30" height="4.4" rx="1" fill="#cc7a2e"/><rect x="2" y="23.8" width="12.5" height="4.4" rx="1" fill="#cc7a2e"/><rect x="19.5" y="23.8" width="12.5" height="4.4" rx="1" fill="#cc7a2e"/><rect x="2" y="15.8" width="30" height="4.4" rx="1" fill="#cc7a2e"/><rect x="2" y="7.9" width="12.5" height="4.4" rx="1" fill="#cc7a2e"/><rect x="19.5" y="7.9" width="12.5" height="4.4" rx="1" fill="#cc7a2e"/><rect x="2" y="0.0" width="30" height="4.4" rx="1" fill="#cc7a2e"/></svg></div>
+      <div class="nm">未済<b>びせい</b></div>
+      <div class="tri">🔥<span>火</span>／<span>水</span>〜</div>
+    </div><div class="arw">←</div><div class="node" style="--ac:#3f7d55;--rot:-1.5deg;--tint:#f6eede" data-era="下経">
+      <div class="num">63</div>
+      <div class="fig"><svg viewBox="0 0 34 44" width="34" height="44"><rect x="2" y="39.6" width="30" height="4.4" rx="1" fill="#3f7d55"/><rect x="2" y="31.7" width="12.5" height="4.4" rx="1" fill="#3f7d55"/><rect x="19.5" y="31.7" width="12.5" height="4.4" rx="1" fill="#3f7d55"/><rect x="2" y="23.8" width="30" height="4.4" rx="1" fill="#3f7d55"/><rect x="2" y="15.8" width="12.5" height="4.4" rx="1" fill="#3f7d55"/><rect x="19.5" y="15.8" width="12.5" height="4.4" rx="1" fill="#3f7d55"/><rect x="2" y="7.9" width="30" height="4.4" rx="1" fill="#3f7d55"/><rect x="2" y="0.0" width="12.5" height="4.4" rx="1" fill="#3f7d55"/><rect x="19.5" y="0.0" width="12.5" height="4.4" rx="1" fill="#3f7d55"/></svg></div>
+      <div class="nm">既済<b>きせい</b></div>
+      <div class="tri">〜<span>水</span>／<span>火</span>🔥</div>
+    </div><div class="arw">←</div><div class="node" style="--ac:#c0453b;--rot:1.0deg;--tint:#f6eede" data-era="下経">
+      <div class="num">62</div>
+      <div class="fig"><svg viewBox="0 0 34 44" width="34" height="44"><rect x="2" y="39.6" width="12.5" height="4.4" rx="1" fill="#c0453b"/><rect x="19.5" y="39.6" width="12.5" height="4.4" rx="1" fill="#c0453b"/><rect x="2" y="31.7" width="12.5" height="4.4" rx="1" fill="#c0453b"/><rect x="19.5" y="31.7" width="12.5" height="4.4" rx="1" fill="#c0453b"/><rect x="2" y="23.8" width="30" height="4.4" rx="1" fill="#c0453b"/><rect x="2" y="15.8" width="30" height="4.4" rx="1" fill="#c0453b"/><rect x="2" y="7.9" width="12.5" height="4.4" rx="1" fill="#c0453b"/><rect x="19.5" y="7.9" width="12.5" height="4.4" rx="1" fill="#c0453b"/><rect x="2" y="0.0" width="12.5" height="4.4" rx="1" fill="#c0453b"/><rect x="19.5" y="0.0" width="12.5" height="4.4" rx="1" fill="#c0453b"/></svg></div>
+      <div class="nm">小過<b>しょうか</b></div>
+      <div class="tri">⚡︎<span>雷</span>／<span>山</span>⛰</div>
+    </div><div class="arw">←</div><div class="node" style="--ac:#2f5c8f;--rot:0.0deg;--tint:#f6eede" data-era="下経">
+      <div class="num">61</div>
+      <div class="fig"><svg viewBox="0 0 34 44" width="34" height="44"><rect x="2" y="39.6" width="30" height="4.4" rx="1" fill="#2f5c8f"/><rect x="2" y="31.7" width="30" height="4.4" rx="1" fill="#2f5c8f"/><rect x="2" y="23.8" width="12.5" height="4.4" rx="1" fill="#2f5c8f"/><rect x="19.5" y="23.8" width="12.5" height="4.4" rx="1" fill="#2f5c8f"/><rect x="2" y="15.8" width="12.5" height="4.4" rx="1" fill="#2f5c8f"/><rect x="19.5" y="15.8" width="12.5" height="4.4" rx="1" fill="#2f5c8f"/><rect x="2" y="7.9" width="30" height="4.4" rx="1" fill="#2f5c8f"/><rect x="2" y="0.0" width="30" height="4.4" rx="1" fill="#2f5c8f"/></svg></div>
+      <div class="nm">中孚<b>ちゅうふ</b></div>
+      <div class="tri">🍃<span>風</span>／<span>沢</span>💧</div>
+    </div><div class="arw">←</div><div class="node" style="--ac:#6f5591;--rot:-1.0deg;--tint:#f6eede" data-era="下経">
+      <div class="num">60</div>
+      <div class="fig"><svg viewBox="0 0 34 44" width="34" height="44"><rect x="2" y="39.6" width="30" height="4.4" rx="1" fill="#6f5591"/><rect x="2" y="31.7" width="30" height="4.4" rx="1" fill="#6f5591"/><rect x="2" y="23.8" width="12.5" height="4.4" rx="1" fill="#6f5591"/><rect x="19.5" y="23.8" width="12.5" height="4.4" rx="1" fill="#6f5591"/><rect x="2" y="15.8" width="12.5" height="4.4" rx="1" fill="#6f5591"/><rect x="19.5" y="15.8" width="12.5" height="4.4" rx="1" fill="#6f5591"/><rect x="2" y="7.9" width="30" height="4.4" rx="1" fill="#6f5591"/><rect x="2" y="0.0" width="12.5" height="4.4" rx="1" fill="#6f5591"/><rect x="19.5" y="0.0" width="12.5" height="4.4" rx="1" fill="#6f5591"/></svg></div>
+      <div class="nm">節<b>せつ</b></div>
+      <div class="tri">〜<span>水</span>／<span>沢</span>💧</div>
+    </div><div class="arw">←</div><div class="node" style="--ac:#c99a2e;--rot:1.5deg;--tint:#f6eede" data-era="下経">
+      <div class="num">59</div>
+      <div class="fig"><svg viewBox="0 0 34 44" width="34" height="44"><rect x="2" y="39.6" width="12.5" height="4.4" rx="1" fill="#c99a2e"/><rect x="19.5" y="39.6" width="12.5" height="4.4" rx="1" fill="#c99a2e"/><rect x="2" y="31.7" width="30" height="4.4" rx="1" fill="#c99a2e"/><rect x="2" y="23.8" width="12.5" height="4.4" rx="1" fill="#c99a2e"/><rect x="19.5" y="23.8" width="12.5" height="4.4" rx="1" fill="#c99a2e"/><rect x="2" y="15.8" width="12.5" height="4.4" rx="1" fill="#c99a2e"/><rect x="19.5" y="15.8" width="12.5" height="4.4" rx="1" fill="#c99a2e"/><rect x="2" y="7.9" width="30" height="4.4" rx="1" fill="#c99a2e"/><rect x="2" y="0.0" width="30" height="4.4" rx="1" fill="#c99a2e"/></svg></div>
+      <div class="nm">渙<b>かん</b></div>
+      <div class="tri">🍃<span>風</span>／<span>水</span>〜</div>
+    </div><div class="arw">←</div><div class="node" style="--ac:#cc7a2e;--rot:0.5deg;--tint:#f6eede" data-era="下経">
+      <div class="num">58</div>
+      <div class="fig"><svg viewBox="0 0 34 44" width="34" height="44"><rect x="2" y="39.6" width="30" height="4.4" rx="1" fill="#cc7a2e"/><rect x="2" y="31.7" width="30" height="4.4" rx="1" fill="#cc7a2e"/><rect x="2" y="23.8" width="12.5" height="4.4" rx="1" fill="#cc7a2e"/><rect x="19.5" y="23.8" width="12.5" height="4.4" rx="1" fill="#cc7a2e"/><rect x="2" y="15.8" width="30" height="4.4" rx="1" fill="#cc7a2e"/><rect x="2" y="7.9" width="30" height="4.4" rx="1" fill="#cc7a2e"/><rect x="2" y="0.0" width="12.5" height="4.4" rx="1" fill="#cc7a2e"/><rect x="19.5" y="0.0" width="12.5" height="4.4" rx="1" fill="#cc7a2e"/></svg></div>
+      <div class="nm">兌<b>だ</b></div>
+      <div class="tri">💧<span>沢</span>／<span>沢</span>💧</div>
+    </div><div class="arw">←</div><div class="node" style="--ac:#3f7d55;--rot:-0.5deg;--tint:#f6eede" data-era="下経">
+      <div class="num">57</div>
+      <div class="fig"><svg viewBox="0 0 34 44" width="34" height="44"><rect x="2" y="39.6" width="12.5" height="4.4" rx="1" fill="#3f7d55"/><rect x="19.5" y="39.6" width="12.5" height="4.4" rx="1" fill="#3f7d55"/><rect x="2" y="31.7" width="30" height="4.4" rx="1" fill="#3f7d55"/><rect x="2" y="23.8" width="30" height="4.4" rx="1" fill="#3f7d55"/><rect x="2" y="15.8" width="12.5" height="4.4" rx="1" fill="#3f7d55"/><rect x="19.5" y="15.8" width="12.5" height="4.4" rx="1" fill="#3f7d55"/><rect x="2" y="7.9" width="30" height="4.4" rx="1" fill="#3f7d55"/><rect x="2" y="0.0" width="30" height="4.4" rx="1" fill="#3f7d55"/></svg></div>
+      <div class="nm">巽<b>そん</b></div>
+      <div class="tri">🍃<span>風</span>／<span>風</span>🍃</div>
+    </div></div>
+  <div class="inset">
+    <h3>◎ もうひとつの変化 ＝ 変爻（こうへん）</h3>
+    <p>一本道とは別に、いまの卦の「線を1本」変えると別の卦へ飛ぶ。どの卦も6通り＝全部で<b>384通り</b>の変化がある。例：乾①のばあい—</p>
+    <div class="chgs"><span class="chg"><i>1爻</i>姤<u>こう</u></span><span class="chg"><i>2爻</i>同人<u>どうじん</u></span><span class="chg"><i>3爻</i>履<u>り</u></span><span class="chg"><i>4爻</i>小畜<u>しょうちく</u></span><span class="chg"><i>5爻</i>大有<u>たいゆう</u></span><span class="chg"><i>6爻</i>夬<u>かい</u></span></div>
+  </div>
+  <div class="foot">序卦＝一本道の順番／変爻＝枝分かれ。並びも枝も db/ の一次情報に一致（推測なし）。</div>
+</div></body></html>
