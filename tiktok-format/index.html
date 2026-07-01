@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>TikTokフォーマット底上げ — 研究＋実データの結論と判断</title>
+<style>
+  :root{--ink:#1c1a17;--ink2:#5c554c;--bg:#f4efe6;--paper:#fffdf8;--line:#e3dccd;
+    --accent:#b8860b;--accent-soft:#f0e4c4;--ok:#2e7d4f;--ok-soft:#d8efe0;--warn:#b5530a;--warn-soft:#f6e3d0;--navy:#1f3a5f;
+    --sans:-apple-system,"Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,sans-serif;--mono:"SF Mono",Menlo,monospace;}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.7}
+  .wrap{max-width:900px;margin:0 auto;padding:28px 18px 70px}
+  header{padding:22px 0 14px;border-bottom:2px solid var(--accent)}
+  .kicker{font-size:12px;letter-spacing:.14em;color:var(--accent);font-weight:700}
+  h1{font-size:25px;line-height:1.35;margin:.3em 0 .2em}
+  .lede{color:var(--ink2);font-size:15px}
+  .tldr{background:var(--paper);border:1px solid var(--line);border-left:4px solid var(--warn);border-radius:10px;padding:15px 18px;margin:18px 0}
+  .tldr b{color:var(--warn)}
+  section{margin:28px 0}
+  h2{font-size:19px;border-left:5px solid var(--accent);padding-left:11px;margin:0 0 12px}
+  table{width:100%;border-collapse:collapse;background:var(--paper);border:1px solid var(--line);border-radius:9px;overflow:hidden;font-size:14px;margin:10px 0}
+  th,td{padding:9px 11px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+  th{background:var(--accent-soft);font-weight:700}
+  tr:last-child td{border-bottom:none}
+  .pick{background:var(--ok-soft)}
+  .bad{background:var(--warn-soft)}
+  .num{font-family:var(--mono);font-weight:700;color:var(--navy)}
+  .callout{background:var(--paper);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:9px;padding:12px 16px;margin:14px 0;font-size:14px}
+  .callout.warn{border-left-color:var(--warn);background:var(--warn-soft)}
+  .opt{background:var(--paper);border:1px solid var(--line);border-radius:9px;padding:13px 17px;margin:9px 0}
+  .opt.rec{border:2px solid var(--ok)}.opt h4{margin:0 0 5px;font-size:15px}
+  small{color:var(--ink2)}
+  .tag{display:inline-block;font-size:11px;font-weight:700;padding:1px 8px;border-radius:999px;background:var(--accent-soft);color:var(--accent);margin-left:6px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="kicker">TikTok底上げ ／ 研究＋実データ ／ 2026-07-01</div>
+  <h1>字幕拡大の前に、もっと効く急所が見つかった</h1>
+  <p class="lede">「字幕拡大・バッジ追加で底上げ」を、同系統チャンネルの定石(deep-research)と現状の実再生データで検証。結論は当初の想定を上書きしました。</p>
+</header>
+
+<div class="tldr">
+  <p>🎯 <b>TikTok苦戦の主因は「字幕サイズ」でなく「尺(5分49秒)」。</b> 字幕拡大は正しいが二次的。最大レバーは短尺化で、これは現行方針「全編縦のみ・切り抜き禁止」と正面衝突する ＝ あなたの判断が要る分岐です。</p>
+  <p><small>※ deep-researchの裏取り(verify)がAPIセッション制限で全滅→数値claimは<b>未検証(出典付き・複数ソース収束)</b>。ただし下記の自社実データと完全に整合しており、方向性の確度は高い。</small></p>
+</div>
+
+<section>
+  <h2>1. 現状の実再生（一次情報・TikTok Studio 06-26・177本）</h2>
+  <table>
+    <tr><th>指標</th><th>実測</th></tr>
+    <tr class="bad"><td>再生数 中央値</td><td class="num">460 再生</td></tr>
+    <tr><td>1000再生未満</td><td class="num">128 / 177本（72%）</td></tr>
+    <tr><td>0再生も多数</td><td>抽象人生訓キャプション（「盛った自分を演じ続けるほど…」等）に集中</td></tr>
+    <tr class="pick"><td>最大</td><td class="num">47,000</td>「離婚率0%のAI婚か、泥臭い生身の恋か」＝挑発的な具体フック（外れ値・1本）</tr>
+    <tr><td>準トップ帯</td><td>4,000–8,000：「易経3000年の知恵 なぜ〜」型の具体的問い</td></tr>
+  </table>
+  <p><small>勝っているのは<b>具体×問い×固有性</b>のフック。負けているのは抽象人生訓。＝YouTube側の学び(H39)とTikTokでも一致。</small></p>
+</section>
+
+<section>
+  <h2>2. 同系統チャンネルの定石（deep-research・未検証/出典付き）</h2>
+  <table>
+    <tr><th>論点</th><th>研究claim（複数ソース収束）</th></tr>
+    <tr class="bad"><td><b>尺（最重要）</b></td><td>短尺&lt;15s=完走92%・全再生の35%／16-30s=84%／<b>3分超=完走28%・全再生の3%</b>。短尺は長尺よりエンゲージ2.5倍。<b>5:49は最下位tier</b></td></tr>
+    <tr><td>冒頭3秒フック</td><td>3秒維持70-85%→再生2.2倍／&gt;85%→2.8倍／&lt;60%→ほぼ拡散されない。バイラルの84%が冒頭3秒にフック</td></tr>
+    <tr class="pick"><td>字幕サイズ</td><td>1080×1920で<b>55-75pt・画面高の12-20%</b>・太字白+黒縁（太字は可読+31%）</td></tr>
+    <tr class="pick"><td>字幕配置(安全域)</td><td>中下段。<b>下25%(いいね/コメント/CTA)・上15%(検索/ID)・右120px(エンゲージ列)を避ける</b>。キー字幕は下端から約15%上</td></tr>
+    <tr><td>字幕演出</td><td>カラオケ式(語ごと表示)は教育系で完走+15%（動きで目を引き留める）</td></tr>
+    <tr><td>シリーズ/バッジ</td><td>連番シリーズ構造は伸びる(高成績短尺の60%)。<b>但し商用ロゴ的バッジを冒頭3秒に出すと"宣伝臭"で掴みを削る</b>指摘あり</td></tr>
+  </table>
+</section>
+
+<section>
+  <h2>3. ぶつかる方針（あなたの判断が要る理由）</h2>
+  <div class="callout warn">
+    <p>現行スクリプトのコメントに <b>「TikTokは全編縦のみ・切り抜き禁止」(2026-06-12方針)</b> と明記されています。研究と実データは真逆（短尺が勝つ）を示す。これは私が勝手に変えられない<b>チャンネル方針の分岐</b>なので、まず判断をもらいます。<br>
+    また「字幕拡大＋バッジ追加」のうち<b>バッジ追加は研究上むしろ逆効果になりうる</b>（冒頭3秒の宣伝臭）ので、当初案そのままは推奨しません。</p>
+  </div>
+</section>
+
+<section>
+  <h2>4. あなたが決めること</h2>
+  <div class="opt rec">
+    <h4>A（推奨・最小&最大効果）：TikTokにも短尺切り抜きを解禁 <span class="tag">方針変更</span></h4>
+    <p><small>研究の本命。YouTube用に既に作った縦ショート2本（Hook 18秒・刃32秒＝独立採点90/88で合格済み）を<b>そのままTikTokにも投稿</b>できる。追加制作コストほぼゼロで、5:49全編縦(完走3%tier)より桁違いに伸びる見込み。全編縦は残すなら補助として併存。</small></p>
+  </div>
+  <div class="opt">
+    <h4>B（方針は維持・在庫低リスク）：全編縦のフォーマットだけ底上げ</h4>
+    <p><small>「全編縦のみ」は変えず、make-vertical-longを改修：①下の余白(現在44%)に<b>字幕を55-75ptで大きく再焼込み</b>（安全域=中下段）②冒頭3秒に固有名詞フック③バッジは冒頭を避け控えめに。字幕は良くなるが、尺(5:49)由来の低完走は残る＝伸びは限定的。</small></p>
+  </div>
+  <div class="opt">
+    <h4>C（両取り）：A＋B</h4>
+    <p><small>短尺切り抜きをTikTok主軸に、全編縦も字幕底上げして併存。制作は既存ショート流用＋make-vertical-long改修。手数は最大。</small></p>
+  </div>
+  <p><small>どれでも、決まり次第この続きを<b>ハーネスの内側ループ（独立採点→threshold 88まで）</b>で仕上げます。Aなら既存ショートのTikTok最適チェック、Bならmake-vertical-long改修を採点収束。</small></p>
+</section>
+
+<footer style="border-top:1px solid var(--line);padding-top:14px;margin-top:26px;color:var(--ink2);font-size:12px">
+  出典: 現状=analytics/tiktok-summary.json(TikTok Studio 06-26)。研究=opus.pro/zeely.ai/blitzcutai/kreatli/ttsvibes/influencers-time 他（deep-research抽出・verify未完=未検証claim）。方針=scripts/make-vertical-long.sh 記載の2026-06-12方針。
+</footer>
+</div>
+</body>
+</html>
