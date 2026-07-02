@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>施策台帳ハーネス — 12施策の承認判断（人間ゲート1）</title>
+<style>
+  :root {
+    --ink: #1a1a1a;
+    --ink-2: #4a4a4a;
+    --bg: #f7f5ee;
+    --paper: #fbf9f1;
+    --line: #d8d2bf;
+    --accent: #8a6d1f;
+    --accent-soft: #f0e8cf;
+    --warn: #c83a2c;
+    --warn-soft: #f6dcd6;
+    --yellow: #f4d35e;
+    --shadow: 0 1px 0 rgba(0,0,0,.04), 0 8px 24px rgba(0,0,0,.06);
+    --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+    --sans: -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN",
+            "Hiragino Sans", "Noto Sans JP", "Yu Gothic", "Meiryo", sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { font-family: var(--sans); background: var(--bg); color: var(--ink); line-height: 1.7; -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 56px 28px 96px; }
+  .hero { margin-bottom: 48px; }
+  .hero .kicker { display: inline-block; background: var(--accent); color: #fff; font-size: 12px; font-weight: 700; letter-spacing: .12em; padding: 6px 12px; border-radius: 999px; margin-bottom: 18px; }
+  .hero h1 { font-size: 38px; line-height: 1.3; margin: 0 0 14px; letter-spacing: -.01em; }
+  .hero h1 b { color: var(--accent); }
+  .hero p.lede { font-size: 18px; color: var(--ink-2); margin: 0; max-width: 800px; }
+  .tldr { margin-top: 28px; padding: 22px 24px; background: var(--paper); border: 1px solid var(--line); border-radius: 12px; box-shadow: var(--shadow); }
+  .tldr h2 { font-size: 13px; letter-spacing: .15em; color: var(--accent); margin: 0 0 10px; }
+  .tldr ol { margin: 0; padding-left: 20px; }
+  .tldr li { margin: 4px 0; }
+  section { margin: 56px 0 0; }
+  section > h2 { font-size: 26px; line-height: 1.4; margin: 0 0 6px; border-left: 6px solid var(--accent); padding-left: 12px; }
+  section > h2 .num { color: var(--accent); font-variant-numeric: tabular-nums; margin-right: 10px; }
+  section > p.sub { color: var(--ink-2); margin: 0 0 22px; }
+  figure { margin: 0 0 24px; padding: 12px; background: var(--paper); border: 1px solid var(--line); border-radius: 14px; box-shadow: var(--shadow); }
+  figure img { display: block; width: 100%; height: auto; border-radius: 8px; }
+  figcaption { font-size: 13px; color: var(--ink-2); margin-top: 10px; text-align: center; }
+  .table { width: 100%; border-collapse: collapse; margin: 12px 0 6px; background: var(--paper); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; box-shadow: var(--shadow); }
+  .table th, .table td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--line); vertical-align: top; font-size: 14px; }
+  .table th { background: #efeadb; font-weight: 700; white-space: nowrap; }
+  .table tr:last-child td { border-bottom: 0; }
+  .table .pick { background: var(--accent-soft); }
+  .table td.ice { font-family: var(--mono); font-weight: 700; color: var(--accent); white-space: nowrap; }
+  .table td.mid { white-space: nowrap; }
+  .badge { display: inline-block; font-size: 11px; padding: 1px 8px; border-radius: 999px; color: #fff; font-weight: 700; margin-right: 4px; }
+  .b1 { background: #c83a2c; } .b2 { background: #d68c1a; } .b3 { background: #3a7d44; } .b4 { background: #3a5ba0; } .b0 { background: #777; }
+  pre { margin: 0; padding: 16px 18px; background: #1f2226; color: #e8e6df; border-radius: 10px; font-family: var(--mono); font-size: 13px; line-height: 1.65; overflow-x: auto; }
+  pre .c { color: #8a8f78; }
+  code.inline { font-family: var(--mono); font-size: .92em; background: #efeadb; padding: 1px 6px; border-radius: 4px; }
+  .callout { margin: 18px 0; padding: 16px 18px; border-left: 4px solid var(--accent); background: var(--accent-soft); border-radius: 0 10px 10px 0; }
+  .callout.warn { border-color: var(--warn); background: var(--warn-soft); }
+  .callout p { margin: 0; }
+  .callout strong { color: var(--accent); }
+  .callout.warn strong { color: var(--warn); }
+  .conclusion { margin-top: 56px; padding: 28px 28px 24px; background: var(--ink); color: #f6f3e8; border-radius: 16px; }
+  .conclusion h2 { color: var(--yellow); border: 0; padding: 0; margin: 0 0 12px; }
+  .conclusion ol { margin: 0; padding-left: 20px; }
+  .conclusion li { margin: 6px 0; }
+  .conclusion code.inline { background: #2c2f33; color: #f6f3e8; }
+  footer { margin-top: 36px; color: var(--ink-2); font-size: 13px; }
+  @media (max-width: 720px) {
+    .wrap { padding: 32px 18px 64px; }
+    .hero h1 { font-size: 28px; }
+    section > h2 { font-size: 21px; }
+    .table th, .table td { font-size: 12.5px; padding: 8px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <span class="kicker">施策台帳 承認判断（人間ゲート1）</span>
+    <h1>チャンネルを伸ばす施策12件 — <b>あなたの承認</b>で実装が動き出します</h1>
+    <p class="lede">施策の「立案→優先度→承認→実装→判定」を一気通貫で管理する施策台帳ハーネスを構築し、文脈ゼロの独立AIと主担当の双方で立案した施策を統合して12件積みました。<b>承認された施策だけ</b>が毎日のgrowth-tickに「今日の実装対象」として出ます。</p>
+    <div class="tldr">
+      <h2>TL;DR</h2>
+      <ol>
+        <li>独立診断の核心: <b>足りないのはアイデアでなく実行スループット</b>（決定済み施策27件が期日超過で停止・第2律速に実験実体ゼロ・H35/H37はコホート0/3で判定不能）</li>
+        <li>仕組み: <code class="inline">node scripts/measures.mjs</code>（ICE優先度・実装レシピ・判定指標・期日を機械強制）＋growth-tick統合。承認と採否は<b>本人しかできない</b>（--by-owner防波堤）</li>
+        <li><b>お願い: 下の表から承認する施策の番号を返信してください</b>（例:「M2,M4,M5承認」/「全部」/「M12は却下」）</li>
+      </ol>
+    </div>
+  </header>
+
+  <section>
+    <h2><span class="num">01</span>診断 — なぜ「施策を考える」より先に「実行の詰まり」なのか</h2>
+    <p class="sub">文脈ゼロの独立AIに一次データだけ渡して立案させ、主担当の案と突き合わせた結果、両者が同じ結論に収束しました。</p>
+    <figure>
+      <img src="images/concept-02-01.png" alt="決定済み施策の山が漏斗で詰まっている図">
+      <figcaption>戦略・配線はほぼ正しい。決まったことが実行されない構造が登録0.56人/日の主犯</figcaption>
+    </figure>
+    <table class="table">
+      <thead><tr><th>実測（一次データ）</th><th>意味</th></tr></thead>
+      <tbody>
+        <tr><td>coordタスク27件が期日超過（最大17日）</td><td>ウォーターマーク・TikTokプロフ整備など「決定済み」が放置</td></tr>
+        <tr><td>第2律速（冒頭離脱40-45%）に実験実体ゼロ</td><td>診断済みなのに experiments.json に登録されていない</td></tr>
+        <tr><td>H35/H37 コホート0/3</td><td>シェア率0.003%の律速に対する実験が「制作待ち」で判定不能</td></tr>
+        <tr><td>登録ペース0.56人/日（このままだと1000まで約4.5年）</td><td>施策の不足でなく実行スループットの問題</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2><span class="num">02</span>仕組み — 施策が「消えない」一本道</h2>
+    <p class="sub">思いついたが実装されない・実装したが測らない、を構造的に禁止する台帳（SSOT=analytics/measures.json）。</p>
+    <figure>
+      <img src="images/concept-01-01.png" alt="立案→ICE→本人承認→実装→判定のベルトコンベア">
+      <figcaption>独立立案→ICE優先度→本人承認（関所）→実装→期日付き判定。growth-tickが毎日「今日の実装対象」を提示</figcaption>
+    </figure>
+    <pre><span class="c"># 毎日: growth-tick が承認済み施策の最上位を「今日の実装対象」として先頭表示</span>
+node scripts/growth-tick.mjs
+<span class="c"># 台帳操作</span>
+node scripts/measures.mjs list      <span class="c"># ICE降順（ICE = 効果×確信/手間）</span>
+node scripts/measures.mjs next      <span class="c"># 次に実装すべき施策＋レシピ＋判定基準</span>
+node scripts/measures.mjs status M2 approved --by-owner   <span class="c"># 承認は本人のみ（防波堤）</span></pre>
+    <div class="callout">
+      <p><strong>規律:</strong> 各施策は〔律速リンク・実装レシピ・判定指標・判定期日〕が無いと台帳に入れません（validateが機械拒否）。実装停滞7日超・判定期日超過・第一律速に施策ゼロは growth-tick が毎日WARNします。テスト30本PASS・独立採点95/100で検証済み。</p>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="num">03</span>承認判断 — 施策12件（ICE優先度順）</h2>
+    <p class="sub">全て実行中の実験（H42サムネA/B・SH-CONTENT-1・TikTok形式実験）と干渉しない設計です。<b>番号で承認/却下を返信してください。</b></p>
+    <table class="table">
+      <thead><tr><th>ID</th><th>律速</th><th>施策</th><th>ICE</th><th>要点</th></tr></thead>
+      <tbody>
+        <tr class="pick"><td>M2</td><td class="mid"><span class="badge b2">律速2</span></td><td><b>冒頭断定テンプレを次回制作から適用＋ゲート化</b></td><td class="ice">24.5</td><td>冒頭7-18秒で40-45%離脱への直接手。制作ラインに乗せるだけでコホートが自動で積み上がる</td></tr>
+        <tr class="pick"><td>M9</td><td class="mid"><span class="badge b0">横断</span></td><td><b>metrics-snapshot週次自動化（Mac mini）</b></td><td class="ice">22.5</td><td>計測16日停止の再発防止＝全judgeの土台</td></tr>
+        <tr class="pick"><td>M4</td><td class="mid"><span class="badge b4">律速4</span></td><td><b>登録ウォーターマーク設定</b></td><td class="ice">21</td><td>11日放置タスク。1回の設定が全95本に自動適用・手間最小</td></tr>
+        <tr class="pick"><td>M5</td><td class="mid"><span class="badge b4">律速4</span></td><td><b>公開前ショート2本のリンク欠落修正</b></td><td class="ice">18</td><td>growth-state実測フラグ。7/6公開前に済ませる（本編の登録変換はショートの36倍）</td></tr>
+        <tr><td>M6</td><td class="mid"><span class="badge b4">律速4</span></td><td>CTAコメント付与を日次スイープへ組込</td><td class="ice">16</td><td>毎日2本公開で欠落が再蓄積する構造を自動化で塞ぐ</td></tr>
+        <tr><td>M8</td><td class="mid"><span class="badge b0">横断</span></td><td>coordタスク棚卸し＋週次実行レビュー儀式化</td><td class="ice">16</td><td>27件を即実行/消化/廃止に三分類。以後overdue7日超は倒すルール</td></tr>
+        <tr><td>M7</td><td class="mid"><span class="badge b0">横断</span></td><td>TikTokプロフィール→YouTube導線整備</td><td class="ice">15</td><td>11日放置。TikTokエンゲージ8倍の面からYT外部流入（現状ほぼ0）を開く</td></tr>
+        <tr><td>M10</td><td class="mid"><span class="badge b3">律速3</span></td><td>TikTok短尺デイリー化（7/17判定後）</td><td class="ice">14</td><td>TT-EXP-051の勝ち形式を定常運用へ</td></tr>
+        <tr><td>M1</td><td class="mid"><span class="badge b1">律速1</span></td><td>H42勝ち様式の横展開サムネ在庫を事前生産</td><td class="ice">13.5</td><td>判定7/15と同時に一括反映＝2週間の空走をゼロに（判定前ライブ反映は厳禁）</td></tr>
+        <tr><td>M3</td><td class="mid"><span class="badge b3">律速3</span></td><td>H35/H37コホート充填を今週のショート枠に強制割当</td><td class="ice">12</td><td>シェア率0.003%律速の実験を判定可能にする（設計済み3本の制作）</td></tr>
+        <tr><td>M11</td><td class="mid"><span class="badge b3">律速3</span></td><td>コメント全返信＋二択質問の日次運用</td><td class="ice">6.7</td><td>会話面（30日11コメント）の底上げ。AI臭返信禁止</td></tr>
+        <tr><td>M12</td><td class="mid"><span class="badge b0">横断</span></td><td>コミュニティ投稿 週2（4週撤退基準付き）</td><td class="ice">6</td><td>期待値低め・コストほぼゼロ・撤退基準を先に固定</td></tr>
+      </tbody>
+    </table>
+    <div class="callout warn">
+      <p><strong>推奨:</strong> 上位4件（M2/M9/M4/M5）は手間が小さく確信度が高い即効枠。M1/M3は工数はあるが第1・第3律速の本丸です。詳細レシピ・判定基準は <code class="inline">node scripts/measures.mjs show M2</code> で全文確認できます。</p>
+    </div>
+  </section>
+
+  <div class="conclusion">
+    <h2>結論と次の一歩</h2>
+    <ol>
+      <li>独立診断が「実行詰まり」を主犯と特定 → 施策を<b>台帳で運ぶ仕組み</b>（立案→承認→実装→判定・機械強制）を構築した</li>
+      <li>12施策は全て一次データ接地・実行中実験と非干渉・既存ツールで実装可能な粒度</li>
+      <li><b>あなたの返信で動き出します</b>: 承認する施策番号を返信 → 次セッションから growth-tick が「今日の実装対象」として提示し、順に実装します</li>
+    </ol>
+  </div>
+
+  <footer>題材: scripts/measures.mjs / analytics/measures.json（12件） / analytics/bottleneck.json — 独立採点95/100・テスト30本PASS — 2026-07-02</footer>
+
+</div>
+</body>
+</html>
