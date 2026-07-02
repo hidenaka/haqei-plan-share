@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>creative-loop — 生成物の品質収束ハーネス レビュー</title>
+<style>
+  :root {
+    --ink: #1a1a1a;
+    --ink-2: #4a4a4a;
+    --bg: #f7f5ee;
+    --paper: #fbf9f1;
+    --line: #d8d2bf;
+    --accent: #3a5ba0;
+    --accent-soft: #dde5f4;
+    --warn: #c83a2c;
+    --warn-soft: #f6dcd6;
+    --yellow: #f4d35e;
+    --shadow: 0 1px 0 rgba(0,0,0,.04), 0 8px 24px rgba(0,0,0,.06);
+    --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+    --sans: -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN",
+            "Hiragino Sans", "Noto Sans JP", "Yu Gothic", "Meiryo", sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { font-family: var(--sans); background: var(--bg); color: var(--ink); line-height: 1.7; -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 56px 28px 96px; }
+  .hero { margin-bottom: 56px; }
+  .hero .kicker { display: inline-block; background: var(--accent); color: #fff; font-size: 12px; font-weight: 700; letter-spacing: .12em; padding: 6px 12px; border-radius: 999px; margin-bottom: 18px; }
+  .hero h1 { font-size: 40px; line-height: 1.3; margin: 0 0 14px; letter-spacing: -.01em; }
+  .hero h1 b { color: var(--accent); }
+  .hero p.lede { font-size: 18px; color: var(--ink-2); margin: 0; max-width: 780px; }
+  .tldr { margin-top: 28px; padding: 22px 24px; background: var(--paper); border: 1px solid var(--line); border-radius: 12px; box-shadow: var(--shadow); }
+  .tldr h2 { font-size: 13px; letter-spacing: .15em; color: var(--accent); margin: 0 0 10px; }
+  .tldr ol { margin: 0; padding-left: 20px; }
+  .tldr li { margin: 4px 0; }
+  section { margin: 64px 0 0; }
+  section > h2 { font-size: 28px; line-height: 1.4; margin: 0 0 6px; border-left: 6px solid var(--accent); padding-left: 12px; }
+  section > h2 .num { color: var(--accent); font-variant-numeric: tabular-nums; margin-right: 10px; }
+  section > p.sub { color: var(--ink-2); margin: 0 0 22px; }
+  figure { margin: 0 0 24px; padding: 12px; background: var(--paper); border: 1px solid var(--line); border-radius: 14px; box-shadow: var(--shadow); }
+  figure img { display: block; width: 100%; height: auto; border-radius: 8px; }
+  figcaption { font-size: 13px; color: var(--ink-2); margin-top: 10px; text-align: center; }
+  .table { width: 100%; border-collapse: collapse; margin: 12px 0 6px; background: var(--paper); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; box-shadow: var(--shadow); }
+  .table th, .table td { text-align: left; padding: 12px 14px; border-bottom: 1px solid var(--line); vertical-align: top; font-size: 14.5px; }
+  .table th { background: #efeadb; font-weight: 700; }
+  .table tr:last-child td { border-bottom: 0; }
+  .table .pick { background: var(--accent-soft); }
+  .table .pick td:first-child { font-weight: 700; color: var(--accent); }
+  pre { margin: 0; padding: 16px 18px; background: #1f2226; color: #e8e6df; border-radius: 10px; font-family: var(--mono); font-size: 13px; line-height: 1.65; overflow-x: auto; }
+  pre .c { color: #8a8f78; }
+  pre .k { color: #6ec5a8; }
+  code.inline { font-family: var(--mono); font-size: .92em; background: #efeadb; padding: 1px 6px; border-radius: 4px; }
+  .callout { margin: 18px 0; padding: 16px 18px; border-left: 4px solid var(--accent); background: var(--accent-soft); border-radius: 0 10px 10px 0; }
+  .callout.warn { border-color: var(--warn); background: var(--warn-soft); }
+  .callout p { margin: 0; }
+  .callout strong { color: var(--accent); }
+  .callout.warn strong { color: var(--warn); }
+  .conclusion { margin-top: 56px; padding: 28px 28px 24px; background: var(--ink); color: #f6f3e8; border-radius: 16px; }
+  .conclusion h2 { color: var(--yellow); border: 0; padding: 0; margin: 0 0 12px; }
+  .conclusion ol { margin: 0; padding-left: 20px; }
+  .conclusion li { margin: 6px 0; }
+  .conclusion code.inline { background: #2c2f33; color: #f6f3e8; }
+  footer { margin-top: 36px; color: var(--ink-2); font-size: 13px; }
+  @media (max-width: 720px) {
+    .wrap { padding: 32px 18px 64px; }
+    .hero h1 { font-size: 30px; }
+    section > h2 { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <span class="kicker">CREATIVE-LOOP 構築レビュー</span>
+    <h1>台本・サムネ・ビジュアルを<b>90点まで研ぐ</b>品質収束ハーネス</h1>
+    <p class="lede">「作った頭が自分で合格を出す」を構造的に禁止し、生成物を fork独立採点で threshold 90 まで詰めるループを CLI として機械化しました。実サムネで1周 dogfood 済み・実バグ2件を独立採点で検出→修正済みです。</p>
+    <div class="tldr">
+      <h2>TL;DR</h2>
+      <ol>
+        <li><code class="inline">scripts/creative-loop.mjs</code> = init → prompt（採点プロンプト決定論生成）→ record（採点検証・停止則）→ best（最良版採用）</li>
+        <li>採点表6種（<b>台本 / シーン画像</b> 新設 ＋ サムネ/タイトル/フック/ショート台本）。不正採点（キー増減・点の水増し・合格の自己申告）は<b>自動0点</b></li>
+        <li>dogfood: ep32実サムネをforkが実際に見て<b>78点＋直し方3点</b>を返した（既存Tier Aでも改善余地が具体化する＝ループは甘くない）</li>
+      </ol>
+    </div>
+  </header>
+
+  <section>
+    <h2><span class="num">01</span>ループの回り方 — 4部品を全部機械側へ</h2>
+    <p class="sub">品質ループに必要なのは、採点表・独立採点者・停止則・最良版追跡の4部品。従来は全部「会話の空気」の中にあった。</p>
+    <figure>
+      <img src="images/concept-01-01.png" alt="creative-loopの円環: 作る→別室の審査員→採点票→直す→人間ゲート">
+      <figcaption>作る → 別の頭が採点 → 直し方が返る → 90点で人間ゲートへ。採用は常に最良版</figcaption>
+    </figure>
+    <pre><span class="c"># 1) ループ開始（元依頼が毎周再注入される錨になる）</span>
+node scripts/creative-loop.mjs init essay-script content/053/full_script.json --request "ep33の台本..."
+<span class="c"># 2) 採点プロンプトを決定論生成 → まっさらな fork Agent へ（制作会話は見せない）</span>
+node scripts/creative-loop.mjs prompt &lt;id&gt;
+<span class="c"># 3) forkの返答JSONを記録 → continue(直し方) / passed / max / plateau</span>
+node scripts/creative-loop.mjs record &lt;id&gt; -
+<span class="c"># 4) 採用は常に最良版（最新版ではない）</span>
+node scripts/creative-loop.mjs best &lt;id&gt;</pre>
+    <p>対象は6種: <b>essay-script</b>（本編台本・新設）/ <b>scene-visual</b>（シーン画像・新設）/ thumbnail / title / long-hook / short-script。essay-episode スキルの工程に配線済みで、Step 2 台本・Step 5 画像・Step 8.5 タイトル・Step 9 サムネは<b>合格版だけが人間ゲートに出ます</b>。</p>
+  </section>
+
+  <section>
+    <h2><span class="num">02</span>報酬ハッキングを塞ぐ — 不正採点は自動0点</h2>
+    <p class="sub">ループが無限に回るか品質に収束するかの分かれ目は「採点者がいるか・直し方が返るか」。その採点自体の抜け道も機械で塞ぐ。</p>
+    <figure>
+      <img src="images/concept-02-01.png" alt="不正な採点レコードを弾く関所">
+      <figcaption>基準を緩めて合格させる裏口を record コマンドが全部検問する</figcaption>
+    </figure>
+    <table class="table">
+      <thead><tr><th>裏口</th><th>機械の対処</th></tr></thead>
+      <tbody>
+        <tr><td>採点軸を勝手に増減して点を作る</td><td>breakdownキーがスキーマと完全一致しなければ<b>0点扱い</b></td></tr>
+        <tr><td>1軸に重み以上の点を盛る</td><td>各軸 0〜weight 範囲外は0点扱い</td></tr>
+        <tr class="pick"><td>「passed: true」と自己申告する</td><td>申告は無視。<b>score ≧ threshold で必ず再計算</b></td></tr>
+        <tr><td>直し方を書かずに点だけ付ける</td><td>feedback欠落は0点扱い（直し方が返らないループは収束しない）</td></tr>
+        <tr><td>採点者が壊れて周回だけ消費</td><td>無効採点は<b>周回予算に数えない</b>。2連続無効は judge_error（採点者側の故障として停止・ループは開いたまま）</td></tr>
+      </tbody>
+    </table>
+    <div class="callout">
+      <p><strong>停止則は3+1:</strong> passed（合格）/ max_reached（3周未達→最良版採用＋目標を疑う）/ plateau（3周同点＝堂々巡り→採点軸か作り方を変える）/ judge_error（採点者故障）。成果物は毎周スナップショットされ、出力が確率的に悪化しても<b>最良版が常に取り出せます</b>。</p>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="num">03</span>検証 — dogfoodと独立採点（数字は実測）</h2>
+    <p class="sub">仕組み自体も同じ思想で検証: 作った私ではなく、文脈ゼロのforkが実物を開いて採点した。</p>
+    <table class="table">
+      <thead><tr><th>検証</th><th>結果</th></tr></thead>
+      <tbody>
+        <tr class="pick"><td>dogfood（実運用1周）</td><td>ep32実サムネ(052.png)をforkが360px縮小まで作って実見 → <b>78点</b>＋直し方3点（2行目が実測8字で規定7字超過 / 書体が明朝寄りで面の太さ不足 / 金雲と題字の焦点競合）。スナップショット・最良版追跡も動作</td></tr>
+        <tr><td>純関数テスト</td><td><code class="inline">test-creative-loop.mjs</code> 11本PASS（不正形5種・plateau・passed再計算・無効採点の予算除外）</td></tr>
+        <tr><td>独立採点（この構築自体）</td><td><b>96/100 合格</b>。採点者は自分でinit→不正/正常recordの実験まで実施。指摘された実バグ2件（plateau到達不能・無効採点が周回消費）は<b>修正してテスト追加済み</b></td></tr>
+        <tr><td>採点表の接地</td><td>criteriaは全て実事故・実測から（写実化ドリフト・顔/キャラ意匠・画像内文字・冒頭7-18秒で40-45%離脱・処方箋が価値の本体 等）</td></tr>
+      </tbody>
+    </table>
+    <div class="callout warn">
+      <p><strong>運用上の約束:</strong> このループは人間承認ゲートを置き換えません。合格版だけを人間に出すことで、<b>あなたの時間を「ほぼ合格品の最終判断」に集中させる</b>のが目的です。企画・台本提示・通し視聴の承認ゲートは従来どおりです。</p>
+    </div>
+  </section>
+
+  <div class="conclusion">
+    <h2>結論</h2>
+    <ol>
+      <li>生成物の品質ループの4部品（採点表・独立採点者・停止則・最良版）が全部機械側に移った — <code class="inline">creative-loop.mjs</code> ＋ 採点表6種</li>
+      <li>dogfoodの78点が示す通りループは甘くない。既存Tier Aサムネにも「どこを・なぜ・どう直すか」が具体的に出る</li>
+      <li>次: 進行中エピソードの台本/サムネ/シーン画像で実運用開始（essay-episode の各Stepに配線済み）</li>
+    </ol>
+  </div>
+
+  <footer>題材: scripts/creative-loop.mjs / scripts/lib/creative.mjs / analytics/eval-schemas/（6種）/ analytics/creative-loops/demo-thumb-052/ — 2026-07-02</footer>
+
+</div>
+</body>
+</html>
