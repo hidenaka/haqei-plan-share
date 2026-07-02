@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>収益モデルの結論 — 地図では稼げない、業務で稼ぐ</title>
+<style>
+  :root {
+    --ink: #1a1a1a; --ink-2: #4a4a4a;
+    --bg: #f7f5ee; --paper: #fbf9f1; --line: #d8d2bf;
+    --accent: #2e9e6b; --accent-soft: #d7efe2;
+    --warn: #c83a2c; --warn-soft: #f6dcd6; --yellow: #f4d35e;
+    --shadow: 0 1px 0 rgba(0,0,0,.04), 0 8px 24px rgba(0,0,0,.06);
+    --sans: -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP","Yu Gothic","Meiryo", sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { font-family: var(--sans); background: var(--bg); color: var(--ink); line-height: 1.7; -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 56px 28px 96px; }
+  .hero { margin-bottom: 40px; }
+  .hero .kicker { display: inline-block; background: var(--accent); color: #fff; font-size: 12px; font-weight: 700; letter-spacing: .12em; padding: 6px 12px; border-radius: 999px; margin-bottom: 18px; }
+  .hero h1 { font-size: 36px; line-height: 1.32; margin: 0 0 14px; letter-spacing: -.01em; }
+  .hero h1 b { color: var(--accent); }
+  .hero p.lede { font-size: 18px; color: var(--ink-2); margin: 0; max-width: 860px; }
+  .tldr { margin-top: 26px; padding: 22px 24px; background: var(--paper); border: 1px solid var(--line); border-radius: 12px; box-shadow: var(--shadow); }
+  .tldr h2 { font-size: 13px; letter-spacing: .15em; color: var(--accent); margin: 0 0 10px; }
+  .tldr ol { margin: 0; padding-left: 20px; } .tldr li { margin: 5px 0; }
+  section { margin: 56px 0 0; }
+  section > h2 { font-size: 25px; line-height: 1.4; margin: 0 0 6px; border-left: 6px solid var(--accent); padding-left: 12px; }
+  section > h2 .num { color: var(--accent); font-variant-numeric: tabular-nums; margin-right: 10px; }
+  section > p.sub { color: var(--ink-2); margin: 0 0 22px; }
+  figure { margin: 0 0 24px; padding: 12px; background: var(--paper); border: 1px solid var(--line); border-radius: 14px; box-shadow: var(--shadow); }
+  figure img { display: block; width: 100%; height: auto; border-radius: 8px; }
+  figcaption { font-size: 13px; color: var(--ink-2); margin-top: 10px; text-align: center; }
+  .table { width: 100%; border-collapse: collapse; margin: 12px 0 6px; background: var(--paper); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; box-shadow: var(--shadow); }
+  .table th, .table td { text-align: left; padding: 11px 13px; border-bottom: 1px solid var(--line); vertical-align: top; font-size: 14px; }
+  .table th { background: #eef1e9; font-weight: 700; }
+  .table tr:last-child td { border-bottom: 0; }
+  .table .pick { background: var(--accent-soft); } .table .pick td:first-child { font-weight: 700; color: var(--accent); }
+  .yes { color: var(--accent); font-weight: 700; } .no { color: var(--warn); font-weight: 700; } .maybe { color: #d68c1a; font-weight: 700; }
+  .callout { margin: 18px 0; padding: 16px 18px; border-left: 4px solid var(--accent); background: var(--accent-soft); border-radius: 0 10px 10px 0; }
+  .callout.warn { border-color: var(--warn); background: var(--warn-soft); }
+  .callout p { margin: 0; } .callout strong { color: var(--accent); } .callout.warn strong { color: var(--warn); }
+  .cards { display: grid; grid-template-columns: 1fr; gap: 16px; margin: 16px 0; }
+  .card { padding: 18px 20px; background: var(--paper); border: 1px solid var(--line); border-radius: 12px; box-shadow: var(--shadow); }
+  .card.pick { border: 2px solid var(--accent); background: var(--accent-soft); }
+  .card h3 { margin: 0 0 8px; font-size: 18px; } .card.pick h3 { color: var(--accent); }
+  .card ul { margin: 6px 0 0; padding-left: 18px; } .card li { margin: 3px 0; font-size: 14.5px; }
+  .tag { display:inline-block; font-size: 11px; font-weight:700; padding: 2px 8px; border-radius: 999px; margin-left: 6px; vertical-align: 2px; }
+  .tag.rec { background: var(--accent); color:#fff; } .tag.mid { background:#d68c1a; color:#fff; } .tag.no { background:#bbb; color:#fff; }
+  .conclusion { margin-top: 52px; padding: 28px 28px 24px; background: var(--ink); color: #f6f3e8; border-radius: 16px; }
+  .conclusion h2 { color: var(--yellow); border: 0; padding: 0; margin: 0 0 12px; }
+  .conclusion ol { margin: 0; padding-left: 20px; } .conclusion li { margin: 6px 0; }
+  footer { margin-top: 36px; color: var(--ink-2); font-size: 12.5px; line-height: 1.6; }
+  @media (max-width: 720px) { .wrap { padding: 32px 18px 64px; } .hero h1 { font-size: 25px; } section > h2 { font-size: 20px; } .table th,.table td{font-size:13px;padding:9px 10px;} }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <span class="kicker">収益モデル判断 / サブエージェント2体統合</span>
+    <h1>収益の可能性は「ある。ただし1本だけ」— <b>地図で稼ぐな、業務で稼げ</b></h1>
+    <p class="lede">収益モデル設計とレッドチームの両方が、地図・データ配信では稼げない（公共財化＋鮮度コスト）で一致。唯一の筋は保育お散歩／特支実踏の「業務ワークフローSaaS」。この可能性を根拠に、ハッカソンには出す価値がある。</p>
+    <div class="tldr">
+      <h2>TL;DR</h2>
+      <ol>
+        <li>地図/データ配信では稼げない（自治体が無料でやるべき論＋工事情報の鮮度維持コストが売上を食う）。</li>
+        <li>稼げる唯一の筋＝お散歩/実踏の業務ツール（記録・共有・引継ぎ・しおり生成）。最初の1円＝1施設 月3,000〜5,000円。</li>
+        <li>ハッカソンは出す価値あり（モデルが描けてピッチが強い）。ただし実運営は将来オプション。本命はポートフォリオ＋接続。</li>
+      </ol>
+    </div>
+  </header>
+
+  <section>
+    <h2><span class="num">01</span>全体像</h2>
+    <figure>
+      <img src="images/overview-01.png" alt="地図では稼げない/業務で稼ぐの対比と収益モデル">
+      <figcaption>稼げないもの（地図・データ配信）と、稼げる筋（業務SaaS）</figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <h2><span class="num">02</span>2体が一致した核心</h2>
+    <p class="sub">収益モデル設計 と レッドチーム、逆の立場が同じ結論に着地。</p>
+    <table class="table">
+      <thead><tr><th>論点</th><th>結論</th></tr></thead>
+      <tbody>
+        <tr><td>地図・データそのもの</td><td><span class="no">稼げない</span>：元が公共オープンデータ＝「自治体が無料で」論。工事情報の鮮度維持は人的コストで売上を上回る</td></tr>
+        <tr class="pick"><td>業務ワークフロー</td><td><span class="yes">唯一稼げる</span>：実踏/お散歩の記録・共有・引継ぎ・しおり自動生成・複数職員の経路確認。地図は入口、業務が堀</td></tr>
+        <tr><td>実運営の主体</td><td><span class="no">個人には重い</span>：SLA・データ更新・自治体折衝。レッドチーム「収益追求は時間を回収できない確度75%」</td></tr>
+      </tbody>
+    </table>
+    <div class="callout">
+      <p><strong>なぜ業務なら稼げるか：</strong>実踏（下見）の公費は原則1回のみで、教員は私的時間で再訪している実在ペイン。保育・介護ICTは「初期0円・月数千円」で導入する文化が既にある（コドモン月5,500円）。教員の下見再訪1回＝半日1.5万円を防げば月額は即ペイ。</p>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="num">03</span>収益モデル候補と現実的なTop2</h2>
+    <p class="sub">単価・回収難易度・立上げ速度で評価。</p>
+    <table class="table">
+      <thead><tr><th>モデル</th><th>課金主体</th><th>単価感[仮説]</th><th>評価</th></tr></thead>
+      <tbody>
+        <tr class="pick"><td>A. 事業者向けSaaS月額（実踏/お散歩業務）</td><td>施設・法人</td><td>月3,000〜8,000円/施設</td><td><span class="yes">本命</span>・直販で刺せる</td></tr>
+        <tr class="pick"><td>E. 補助金・受託実証</td><td>国・自治体</td><td>単発300万〜</td><td><span class="yes">立上げ燃料</span>（デジ田交付金）</td></tr>
+        <tr><td>B. 自治体ライセンス</td><td>市区町村</td><td>年30万〜150万</td><td><span class="maybe">調達12〜18ヶ月</span></td></tr>
+        <tr><td>C. データAPI提供</td><td>ナビ/物流/損保</td><td>年100万〜</td><td><span class="no">網羅性が育つまで不可</span></td></tr>
+        <tr><td>D. B2B2C（当事者へ自治体経由）</td><td>自治体</td><td>Bに内包</td><td><span class="no">予算依存で消えやすい</span></td></tr>
+      </tbody>
+    </table>
+    <div class="callout">
+      <p><strong>規模感[仮説]：</strong>TAM 約36億/年、SAM 約5.4億/年、SOM（3年）約2,700万/年。介護ICT市場全体が約350億の中、ニッチ機能単体の上限はこのオーダー。＝“大きい事業”にはならないが“小さく回る”可能性はある。</p>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="num">04</span>公共財化リスクの回避策</h2>
+    <p class="sub">「自治体が無料でやるべき」を食らわないために。</p>
+    <div class="callout warn">
+      <p><strong>芯を地図に置かない：</strong>地図表示は無料化されても、園務・介護記録に統合された業務ツール（実踏記録・引継ぎ・しおり生成）は代替されない。コドモンが連絡網でなく業務基盤化で勝ったのと同じ構造。データ提供(C)を主軸にするほど公共化リスクを正面から食らう。<strong>地図で集客し、業務で課金する。</strong></p>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="num">05</span>あなたが選ぶ — ハッカソンにどう出すか</h2>
+    <p class="sub">「収益の可能性があるなら出したい」への答え＝可能性はある。出し方を選ぶ。</p>
+    <div class="cards">
+      <div class="card pick">
+        <h3>A. 出す＋業務SaaSの収益モデルを添える<span class="tag rec">★ 推奨</span></h3>
+        <ul>
+          <li>デモ（地図＋実踏/お散歩の業務プロトタイプ）＋事業モデル1枚（A:実踏SaaS / E:補助金で立上げ）</li>
+          <li>審査のサービスデザイン・事業性で加点。「動く＋儲け方が描けてる」で刺さる</li>
+          <li>実運営は将来オプション。反応が良ければ実施設でPoC、なければポートフォリオとして完遂</li>
+          <li>👍 ピッチが強い・次に繋がる　⚠️ 業務ワークフローまで作ると4週間はタイト（地図＋簡易記録に絞る）</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>B. 出す＋純ポートフォリオ割り切り<span class="tag mid">堅実</span></h3>
+        <ul>
+          <li>収益モデルは軽く触れ、技術・社会インパクト・完遂で勝負</li>
+          <li>👍 4週間に収めやすい　👎 事業性の見せ場を捨てる</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>C. 出さない<span class="tag no">保留</span></h3>
+        <ul>
+          <li>収益天井の低さ・運営負荷を重く見て見送り、別テーマへ</li>
+          <li>👍 機会費用最適化　👎 締切ドライブ・接点・物語を捨てる</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <div class="conclusion">
+    <h2>結論</h2>
+    <ol>
+      <li>収益の可能性はある。ただし「地図/データ」ではなく「実踏・お散歩の業務SaaS」の1本だけ。天井は小さい（SOM ~2,700万/年）。</li>
+      <li>だからこそハッカソンに出す価値がある。収益モデルが描けたことでピッチが強くなる（推奨A）。</li>
+      <li>実際に事業を運営するかは将来オプション。あなたの目的（ポートフォリオ＋接続）なら「モデルは描く、運営は後で決める」が最適。A / B / C どれで行く？</li>
+    </ol>
+  </div>
+
+  <footer>
+    題材: 東京都オープンデータハッカソン応募 / 収益モデル判断 v1 — noindex<br>
+    出典: コドモン料金 / カイポケ訪問看護 / 矢野経済 介護ICT市場350億 / デジ田交付金 交付決定実績 / 実踏の公費1回問題 / こども家庭庁 保育ICT補助 / 国交省 バリアフリーマップ作成マニュアル / Bmaps・WheeLog!（日本財団）（取得日 2026-07-02・一部[仮説]）
+  </footer>
+
+</div>
+</body>
+</html>
