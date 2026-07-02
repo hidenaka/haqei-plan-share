@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>おさんぽセーフティ 設計ロック — 実装前の最終確認</title>
+<style>
+  :root {
+    --ink: #1a1a1a; --ink-2: #4a4a4a;
+    --bg: #f7f5ee; --paper: #fbf9f1; --line: #d8d2bf;
+    --accent: #2e9e6b; --accent-soft: #d7efe2;
+    --warn: #c83a2c; --warn-soft: #f6dcd6; --yellow: #f4d35e;
+    --shadow: 0 1px 0 rgba(0,0,0,.04), 0 8px 24px rgba(0,0,0,.06);
+    --sans: -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP","Yu Gothic","Meiryo", sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { font-family: var(--sans); background: var(--bg); color: var(--ink); line-height: 1.7; -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 56px 28px 96px; }
+  .hero { margin-bottom: 40px; }
+  .hero .kicker { display: inline-block; background: var(--accent); color: #fff; font-size: 12px; font-weight: 700; letter-spacing: .12em; padding: 6px 12px; border-radius: 999px; margin-bottom: 18px; }
+  .hero h1 { font-size: 36px; line-height: 1.32; margin: 0 0 14px; letter-spacing: -.01em; }
+  .hero h1 b { color: var(--accent); }
+  .hero p.lede { font-size: 18px; color: var(--ink-2); margin: 0; max-width: 860px; }
+  .tldr { margin-top: 26px; padding: 22px 24px; background: var(--paper); border: 1px solid var(--line); border-radius: 12px; box-shadow: var(--shadow); }
+  .tldr h2 { font-size: 13px; letter-spacing: .15em; color: var(--accent); margin: 0 0 10px; }
+  .tldr ol { margin: 0; padding-left: 20px; } .tldr li { margin: 5px 0; }
+  section { margin: 56px 0 0; }
+  section > h2 { font-size: 25px; line-height: 1.4; margin: 0 0 6px; border-left: 6px solid var(--accent); padding-left: 12px; }
+  section > h2 .num { color: var(--accent); font-variant-numeric: tabular-nums; margin-right: 10px; }
+  section > p.sub { color: var(--ink-2); margin: 0 0 22px; }
+  figure { margin: 0 0 24px; padding: 12px; background: var(--paper); border: 1px solid var(--line); border-radius: 14px; box-shadow: var(--shadow); }
+  figure img { display: block; width: 100%; height: auto; border-radius: 8px; }
+  figcaption { font-size: 13px; color: var(--ink-2); margin-top: 10px; text-align: center; }
+  .table { width: 100%; border-collapse: collapse; margin: 12px 0 6px; background: var(--paper); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; box-shadow: var(--shadow); }
+  .table th, .table td { text-align: left; padding: 11px 13px; border-bottom: 1px solid var(--line); vertical-align: top; font-size: 14px; }
+  .table th { background: #eef1e9; font-weight: 700; }
+  .table tr:last-child td { border-bottom: 0; }
+  .table .pick { background: var(--accent-soft); } .table .pick td:first-child { font-weight: 700; color: var(--accent); }
+  .callout { margin: 18px 0; padding: 16px 18px; border-left: 4px solid var(--accent); background: var(--accent-soft); border-radius: 0 10px 10px 0; }
+  .callout.warn { border-color: var(--warn); background: var(--warn-soft); }
+  .callout p { margin: 0; } .callout strong { color: var(--accent); } .callout.warn strong { color: var(--warn); }
+  ul.clean { padding-left: 20px; } ul.clean li { margin: 5px 0; }
+  .conclusion { margin-top: 52px; padding: 28px 28px 24px; background: var(--ink); color: #f6f3e8; border-radius: 16px; }
+  .conclusion h2 { color: var(--yellow); border: 0; padding: 0; margin: 0 0 12px; }
+  .conclusion ol { margin: 0; padding-left: 20px; } .conclusion li { margin: 6px 0; }
+  footer { margin-top: 36px; color: var(--ink-2); font-size: 12.5px; line-height: 1.6; }
+  @media (max-width: 720px) { .wrap { padding: 32px 18px 64px; } .hero h1 { font-size: 25px; } section > h2 { font-size: 20px; } .table th,.table td{font-size:13px;padding:9px 10px;} }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <span class="kicker">設計ロック / 実装前の最終レビュー</span>
+    <h1>おさんぽセーフティ — <b>設計確定、実装へ</b></h1>
+    <p class="lede">7本の判断（設計→価値→お散歩→調査→収益→ODPT）を1本のspecに統合。方向はA（2段ロケット）で確定。コードを書き始める前の最終レビュー。ここでOKが出たら実装計画（writing-plans）に進む。</p>
+    <div class="tldr">
+      <h2>TL;DR</h2>
+      <ol>
+        <li>芯＝「動的な歩道工事規制」×歩行弱者の事前ルート安全。地図は入口、業務ワークフローが堀。</li>
+        <li>Stage1(7月)＝お散歩×歩道工事で尖らせる。Stage2(10月ODPT)＝駅→徒歩ラストマイルを疎結合で足す。</li>
+        <li>Cloudflare＋地理院タイル＋MapLibre。データ＝東京都工事＋ほこナビ歩行空間。</li>
+      </ol>
+    </div>
+  </header>
+
+  <section>
+    <h2><span class="num">01</span>全体像</h2>
+    <figure>
+      <img src="images/overview-01.png" alt="設計ロックの全体像">
+      <figcaption>Stage1 MVPで作るものと技術スタック</figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <h2><span class="num">02</span>Stage1（7月）で作るもの</h2>
+    <p class="sub">東京都ハッカソン向けMVP。1シナリオ完動を優先。</p>
+    <table class="table">
+      <thead><tr><th>#</th><th>機能</th><th>中身</th></tr></thead>
+      <tbody>
+        <tr class="pick"><td>1</td><td>リスク地図</td><td>東京都工事＋ほこナビを地図表示。歩行者/車椅子/ベビーカーモードで歩道規制・迂回・段差を強調</td></tr>
+        <tr class="pick"><td>2</td><td>利用者別リスク変換</td><td>同一規制を利用者別の注意度（低/中/高）に変換</td></tr>
+        <tr class="pick"><td>3</td><td>お散歩/実踏ルート記録<br>（業務の芯）</td><td>地図上でルートを引き、工事規制と重ねて危険箇所を自動ハイライト。メモ保存・共有リンク/簡易しおり出力</td></tr>
+        <tr class="pick"><td>4</td><td>データ出力</td><td>GeoJSON / CSV / API</td></tr>
+      </tbody>
+    </table>
+    <div class="callout">
+      <p><strong>後段（時間が余れば）：</strong>AI自動入力（お知らせPDF→規制下書き）、影響スコアの精緻化。<strong>除外（将来）：</strong>車線レベル可視化・ルート上プッシュ通知・公共交通連携(Stage2)・当事者向けB2B2C・課金機能。</p>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="num">03</span>技術スタックとデータ</h2>
+    <table class="table">
+      <thead><tr><th>層</th><th>技術</th></tr></thead>
+      <tbody>
+        <tr><td>フロント / 地図</td><td>Cloudflare Pages + MapLibre GL JS + 国土地理院タイル</td></tr>
+        <tr><td>API</td><td>Cloudflare Workers + Hono</td></tr>
+        <tr><td>DB</td><td>Cloudflare D1（SQLite）</td></tr>
+        <tr><td>データ</td><td>東京都 工事オープンデータ ＋ 国交省 ほこナビ 歩行空間ネットワークデータ</td></tr>
+      </tbody>
+    </table>
+    <div class="callout">
+      <p><strong>疎結合の肝：</strong>データ層を restrictions（工事規制）/ walkspace（ほこナビ）/ transit（公共交通・Stage1は空）に分離。ルート判定を純粋関数で切り出し、10月のODPT拡張は transit を差し込むだけで済む形にする。</p>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="num">04</span>ガードレール</h2>
+    <ul class="clean">
+      <li><b>誤情報/公式誤認</b>：verification_status ＋ 免責常時表示「実際の通行可否は警察・道路管理者・現地標識の公式情報を確認」</li>
+      <li><b>データ鮮度</b>：最終更新日時を明示。Stage1はオープンデータのスナップショット＋手動サンプルと明記</li>
+      <li><b>公開項目</b>：場所・期間・影響・問い合わせ先・更新日時に限定</li>
+    </ul>
+  </section>
+
+  <div class="conclusion">
+    <h2>この設計でOKか</h2>
+    <ol>
+      <li>Stage1の4機能（リスク地図／利用者別変換／お散歩ルート記録／データ出力）でMVPを作る。</li>
+      <li>OKなら実装計画（writing-plans）を作り、Week1のコア（プロジェクト雛形＋D1＋地図表示＋データ投入）から着手。</li>
+      <li>修正したい点（機能の増減・優先順位・命名など）があればここで。無ければ「GO」で実装計画に進む。</li>
+    </ol>
+  </div>
+
+  <footer>
+    題材: おさんぽセーフティ 設計ロック v1 — spec: docs/superpowers/specs/2026-07-02-osanpo-safety-design.md — noindex
+  </footer>
+
+</div>
+</body>
+</html>
