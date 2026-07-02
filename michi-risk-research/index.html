@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>市場調査レポート — 隣接層と競合の空白地帯</title>
+<style>
+  :root {
+    --ink: #1a1a1a; --ink-2: #4a4a4a;
+    --bg: #f7f5ee; --paper: #fbf9f1; --line: #d8d2bf;
+    --accent: #2e9e6b; --accent-soft: #d7efe2;
+    --warn: #c83a2c; --warn-soft: #f6dcd6; --yellow: #f4d35e;
+    --shadow: 0 1px 0 rgba(0,0,0,.04), 0 8px 24px rgba(0,0,0,.06);
+    --sans: -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP","Yu Gothic","Meiryo", sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { font-family: var(--sans); background: var(--bg); color: var(--ink); line-height: 1.7; -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 56px 28px 96px; }
+  .hero { margin-bottom: 40px; }
+  .hero .kicker { display: inline-block; background: var(--accent); color: #fff; font-size: 12px; font-weight: 700; letter-spacing: .12em; padding: 6px 12px; border-radius: 999px; margin-bottom: 18px; }
+  .hero h1 { font-size: 36px; line-height: 1.32; margin: 0 0 14px; letter-spacing: -.01em; }
+  .hero h1 b { color: var(--accent); }
+  .hero p.lede { font-size: 18px; color: var(--ink-2); margin: 0; max-width: 860px; }
+  .tldr { margin-top: 26px; padding: 22px 24px; background: var(--paper); border: 1px solid var(--line); border-radius: 12px; box-shadow: var(--shadow); }
+  .tldr h2 { font-size: 13px; letter-spacing: .15em; color: var(--accent); margin: 0 0 10px; }
+  .tldr ol { margin: 0; padding-left: 20px; } .tldr li { margin: 5px 0; }
+  section { margin: 56px 0 0; }
+  section > h2 { font-size: 25px; line-height: 1.4; margin: 0 0 6px; border-left: 6px solid var(--accent); padding-left: 12px; }
+  section > h2 .num { color: var(--accent); font-variant-numeric: tabular-nums; margin-right: 10px; }
+  section > p.sub { color: var(--ink-2); margin: 0 0 22px; }
+  figure { margin: 0 0 24px; padding: 12px; background: var(--paper); border: 1px solid var(--line); border-radius: 14px; box-shadow: var(--shadow); }
+  figure img { display: block; width: 100%; height: auto; border-radius: 8px; }
+  figcaption { font-size: 13px; color: var(--ink-2); margin-top: 10px; text-align: center; }
+  .table { width: 100%; border-collapse: collapse; margin: 12px 0 6px; background: var(--paper); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; box-shadow: var(--shadow); }
+  .table th, .table td { text-align: left; padding: 11px 13px; border-bottom: 1px solid var(--line); vertical-align: top; font-size: 14px; }
+  .table th { background: #eef1e9; font-weight: 700; }
+  .table tr:last-child td { border-bottom: 0; }
+  .table .pick { background: var(--accent-soft); } .table .pick td:first-child { font-weight: 700; color: var(--accent); }
+  .yes { color: var(--accent); font-weight: 700; } .no { color: var(--warn); font-weight: 700; } .maybe { color: #d68c1a; font-weight: 700; }
+  .callout { margin: 18px 0; padding: 16px 18px; border-left: 4px solid var(--accent); background: var(--accent-soft); border-radius: 0 10px 10px 0; }
+  .callout.warn { border-color: var(--warn); background: var(--warn-soft); }
+  .callout p { margin: 0; } .callout strong { color: var(--accent); } .callout.warn strong { color: var(--warn); }
+  .conclusion { margin-top: 52px; padding: 28px 28px 24px; background: var(--ink); color: #f6f3e8; border-radius: 16px; }
+  .conclusion h2 { color: var(--yellow); border: 0; padding: 0; margin: 0 0 12px; }
+  .conclusion ol { margin: 0; padding-left: 20px; } .conclusion li { margin: 6px 0; }
+  footer { margin-top: 36px; color: var(--ink-2); font-size: 12.5px; line-height: 1.6; }
+  footer a { color: var(--accent); }
+  @media (max-width: 720px) { .wrap { padding: 32px 18px 64px; } .hero h1 { font-size: 25px; } section > h2 { font-size: 20px; } .table th,.table td{font-size:13px;padding:9px 10px;} }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <span class="kicker">市場調査レポート / サブエージェント2体統合</span>
+    <h1>調べた結論 — <b>「動的な歩道工事規制」は国内ほぼ無人地帯</b></h1>
+    <p class="lede">お散歩事業者の隣接層と、似た領域の既存サービス・データを調査。静的バリアフリーマップは飽和だが、「工事による歩道の“一時的”規制を動的に扱う」ことは誰もやっていない。そこが空いている勝ち筋。</p>
+    <div class="tldr">
+      <h2>TL;DR</h2>
+      <ol>
+        <li>静的バリアフリー（WheeLog!/Bmaps）は寡占で正面勝負不利。動的な工事歩道規制は国内空白＝狙い所。</li>
+        <li>隣接層Top＝特別支援学校の「実踏（下見）」。文科省で制度化された事前確認行動で、保育と同型・最小改修で横展開。</li>
+        <li>あなたの「車線レベル」ニーズは本物のギャップだがデータが世に無い＝今は作れない。区間レベルで妥協し将来ビジョンに。</li>
+      </ol>
+    </div>
+  </header>
+
+  <section>
+    <h2><span class="num">01</span>全体像</h2>
+    <figure>
+      <img src="images/overview-01.png" alt="競合の空白地帯と隣接ユーザー層マップ">
+      <figcaption>競合マップ（静的＝飽和／動的工事規制＝空白）と隣接ユーザー層</figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <h2><span class="num">02</span>競合 — どこが飽和で、どこが空白か</h2>
+    <p class="sub">正面勝負を避け、空いている所を突く。</p>
+    <table class="table">
+      <thead><tr><th>サービス</th><th>対象</th><th>工事規制の扱い</th><th>余地</th></tr></thead>
+      <tbody>
+        <tr><td>WheeLog!（日）</td><td>車椅子走行ログ＋スポット</td><td><span class="no">扱わない</span>（静的・人力投稿）</td><td>大</td></tr>
+        <tr><td>Bmaps／ミライロマップ（日）</td><td>施設バリアフリー</td><td><span class="no">扱わない</span>（施設単位・経路なし）</td><td>大</td></tr>
+        <tr><td>Google Maps 車椅子ルート（日）</td><td>公共交通の車椅子ルート</td><td><span class="no">歩道工事は反映せず</span></td><td>中</td></tr>
+        <tr class="pick"><td>AccessMap（米シアトル）</td><td>歩道単位ルーティング</td><td><span class="yes">工事ゾーン回避が中核</span></td><td>思想が最も近い・日本未展開</td></tr>
+        <tr><td>NAVITIME/Yahoo/VICS（日）</td><td>車向けカーナビ</td><td><span class="maybe">車道の規制は表示</span>（歩道は非対象）</td><td>歩行者領域は空白</td></tr>
+      </tbody>
+    </table>
+    <div class="callout">
+      <p><strong>空白地帯：</strong>(a)歩道の「工事による一時的通行規制」を動的に扱うサービスは国内に実質不在。(b)国交省の歩行空間ネットワークデータは静的属性中心で一時規制の反映は標準に無く、東京も点的整備のみ。(c)AccessMapの思想（工事回避ルーティング）を日本の歩道工事文脈に持ち込むのが最短の独自性。</p>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="num">03</span>隣接ユーザー層 — 保育お散歩の次は？</h2>
+    <p class="sub">共通項＝「歩行弱者を連れて、定時に、計画したルートを通す責任者」。</p>
+    <table class="table">
+      <thead><tr><th>層</th><th>事前確認行動</th><th>評価・理由</th></tr></thead>
+      <tbody>
+        <tr class="pick"><td>特別支援学校の校外学習</td><td><span class="yes">強（制度化）</span></td><td>「実踏＝下見」が文科省通知で制度化。公費予算・保育と同型で最小改修で横展開（確度70%）</td></tr>
+        <tr><td>訪問看護・訪問介護（徒歩）</td><td><span class="maybe">中</span></td><td>定期反復ルート、遅延の金銭価値が明確＝事業所単位のB2B課金が成立しやすい</td></tr>
+        <tr><td>視覚障害者・車椅子（当事者）</td><td><span class="yes">強</span></td><td>事故・命に直結、確認習慣が定着。単価取りにくく自治体/福祉経由のB2B2Cが現実的</td></tr>
+        <tr><td>フードデリバリー/配達</td><td><span class="no">弱</span></td><td>リアルタイム志向・確認習慣が弱い。初期は外す</td></tr>
+        <tr><td>観光/ベビーカー一般</td><td><span class="maybe">中</span></td><td>当事者性はあるが無料期待・単発で収益化困難</td></tr>
+      </tbody>
+    </table>
+    <div class="callout">
+      <p><strong>見落とされがちな空白：</strong>視覚障害者の「音響信号・点字ブロックの工事中断」情報は既存マップが未カバー。工事×福祉の交点は完全な空白地帯。学童・児童館の外出も保育と同型で漏れている。</p>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="num">04</span>あなたの「車線レベル」ニーズの実在性</h2>
+    <p class="sub">結論：本物のギャップ。だが今は作れない。</p>
+    <table class="table">
+      <thead><tr><th>データ源</th><th>粒度</th><th>状態</th></tr></thead>
+      <tbody>
+        <tr><td>JARTIC オープンデータ</td><td>区間中心・恒久規制</td><td>月次CSV。一時工事のリアルタイムは主対象外[仮説]</td></tr>
+        <tr><td>東京都 建設局/保全公社</td><td>点/線</td><td>2〜3カ月更新のWeb掲載。機械可読・車線粒度ではない</td></tr>
+        <tr><td>VICS（→Google/Yahoo/NAVITIME）</td><td>区間/点</td><td><span class="no">非オープン・車道用</span>。車線単位の一般開放なし</td></tr>
+      </tbody>
+    </table>
+    <div class="callout warn">
+      <p><strong>正直な判断：</strong>「どの車線が・どの区間で」の車線粒度データはオープンにも商用にも実質存在しない＝あなたの実感するギャップは本物。だがデータが世に無い以上、自前収集（現地/画像/クラウドソース）が必要で、ハッカソン4週間では不可能。<strong>MVPは区間レベルで妥協し、車線レベルは「将来ビジョン／自主研究の到達点」として語る</strong>のが現実的。</p>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="num">05</span>示唆 — プロダクトの形</h2>
+    <p class="sub">コアは1つ、導線は層別。</p>
+    <div class="callout">
+      <p><strong>束ねる：</strong>「工事×歩道規制の地図データ＋事前ルート通行可否判定」エンジンは共通化。<strong>分ける：</strong>導線を(A)事業者向けB2B（保育・特支・訪問看護＝予算/責任者あり）と(B)当事者向けB2B2C（視覚障害・車椅子＝自治体/福祉経由）に二分。フードデリバリー等は毛色が違うので初期は外す。第2の橋頭堡は<strong>特別支援学校の実踏支援</strong>が最有力。</p>
+    </div>
+  </section>
+
+  <div class="conclusion">
+    <h2>結論</h2>
+    <ol>
+      <li>差別化の芯が確定：静的バリアフリーではなく「動的な歩道工事規制」＝国内空白。AccessMapの思想を日本の歩道文脈へ。</li>
+      <li>MVPは保育お散歩を主役に、特別支援学校の実踏を第2の橋頭堡として設計に織り込む。</li>
+      <li>車線レベルは将来ビジョンに退避、区間レベルで作る。この芯で設計を組み直して実装に入るか、次の判断へ。</li>
+    </ol>
+  </div>
+
+  <footer>
+    題材: 東京都オープンデータハッカソン応募 / 市場調査 v1 — noindex<br>
+    出典: WheeLog! / Bmaps・ミライロマップ / Google Maps車椅子ルート(東京) / AccessMap(UW) / Project Sidewalk / 国交省 歩行空間ネットワークデータ整備仕様・G空間情報センター / JARTICオープンデータ(k_2.1) / 東京都建設局・道路整備保全公社 / VICS / 文科省 校外活動安全・通学路取組事例（取得日 2026-07-02）
+  </footer>
+
+</div>
+</body>
+</html>
