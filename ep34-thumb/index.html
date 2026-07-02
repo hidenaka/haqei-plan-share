@@ -4,62 +4,87 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex">
-<title>第34話 サムネ（新方式・洞察型）</title>
+<title>第34話 サムネ最終判断（洞察型・ハーネス90点通過）</title>
 <style>
-  :root{--bg:#faf7f0;--ink:#1f2430;--sub:#5b6472;--line:#e4ddcd;--card:#fff;--accent:#e8662a;--ok:#e3f3e6;}
+  :root{--bg:#faf7f0;--ink:#1f2430;--sub:#5b6472;--line:#e4ddcd;--card:#fff;--accent:#c8862a;--ok:#e3f3e6;--warn:#fbeede;}
   *{box-sizing:border-box}
   body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif;line-height:1.7}
-  .wrap{max-width:680px;margin:0 auto;padding:20px 15px 70px}
-  .kicker{font-size:12px;letter-spacing:.15em;color:var(--accent);font-weight:700}
-  h1{font-size:20px;margin:.25em 0 .12em;line-height:1.35}
-  .lede{color:var(--sub);font-size:14px;margin:0 0 12px}
-  figure{margin:12px 0;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#111}
+  .wrap{max-width:680px;margin:0 auto;padding:20px 15px 80px}
+  .kicker{font-size:12px;letter-spacing:.14em;color:var(--accent);font-weight:800}
+  h1{font-size:20px;margin:.25em 0 .1em;line-height:1.35}
+  .lede{color:var(--sub);font-size:14px;margin:0 0 14px}
+  figure{margin:14px 0;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#111}
   figure img{display:block;width:100%}
-  figcaption{font-size:12px;color:var(--sub);padding:7px 12px;background:#fffdf7}
-  .box{background:var(--ok);border:1px solid #bfe0c6;border-radius:12px;padding:12px 14px;margin:14px 0;font-size:13.5px}
-  .decide{background:#fff;border:2px dashed var(--accent);border-radius:14px;padding:15px 17px;margin:18px 0}
+  figcaption{font-size:13px;color:#3a4150;padding:9px 13px;background:#fffdf7}
+  .tag{display:inline-block;font-size:11px;font-weight:800;padding:2px 8px;border-radius:20px;margin-right:6px;vertical-align:middle}
+  .pass{background:#dff3e2;color:#1f7a3a}.mid{background:#fdeede;color:#9a5a12}
+  .box{background:var(--ok);border:1px solid #bfe0c6;border-radius:12px;padding:12px 14px;margin:16px 0;font-size:13.5px}
+  .warn{background:var(--warn);border:1px solid #eccfa0;border-radius:12px;padding:12px 14px;margin:16px 0;font-size:13.5px}
+  h2{font-size:15.5px;border-bottom:2px solid var(--line);padding-bottom:5px;margin:26px 0 10px}
+  table{width:100%;border-collapse:collapse;font-size:12.5px;margin:8px 0}
+  th,td{border:1px solid var(--line);padding:6px 8px;text-align:left}
+  th{background:#f3ecdb}
+  .decide{background:#fff;border:2px dashed var(--accent);border-radius:14px;padding:15px 17px;margin:22px 0}
   .decide h2{border:none;margin:0 0 8px;color:var(--accent);font-size:16px}
-  .opt{padding:6px 0;border-bottom:1px dashed var(--line);font-size:14.5px}
-  .opt:last-child{border-bottom:none}.opt .k{color:var(--accent);font-weight:800;margin-right:7px}
+  .opt{padding:8px 0;border-bottom:1px dashed var(--line);font-size:14.5px}
+  .opt:last-child{border-bottom:none}.opt .k{color:var(--accent);font-weight:900;margin-right:8px;font-size:16px}
+  .rec{background:#eef7ef;border-radius:8px}
   .small{font-size:12px;color:var(--sub)}
-  .ref{max-width:340px;border-radius:8px;border:1px solid var(--line);display:block;margin:6px 0}
+  code{background:#efe9db;padding:1px 5px;border-radius:4px;font-size:12px}
 </style>
 </head>
 <body>
 <div class="wrap">
-  <div class="kicker">第34話 サムネ ・ 新方式（三井寿ライブテスト型）</div>
-  <h1>洞察型サムネ A/B — 旧tierAは廃棄</h1>
-  <p class="lede">ご指摘の新ハーネス＝三井寿でライブテスト中の型（シネマ比喩背景＋読み替えステートメント＋卦バッジ・作品名タグなし）を特定し、<code>make-thumbnail-insight.py</code>としてハーネス化。ep34を同型で作りました。</p>
+  <div class="kicker">第34話 HUNTER×HUNTER × 旅 ・ サムネ最終判断</div>
+  <h1>洞察型サムネ — 独立ハーネスで90点通過（作品名タグ版）</h1>
+  <p class="lede">新設した洞察型ハーネス <code>make-thumbnail-insight.py</code>（シネマ比喩背景＋読み替えステートメント＋卦バッジ）で制作。<b>文脈ゼロの独立採点</b>（<code>analytics/eval-schemas/thumbnail.json</code>・閾値90）にかけ、作品名タグ版が<b>90点で通過</b>しました。背景＝夜明けの一本道・地平の旅人・<b>手前に伸びる長い影＝ついてくる自分</b>を専用生成した現代浮世絵。</p>
 
-  <div class="box">
-    <b>参考＝三井寿ライブ（今テスト中の実物）：</b><br>
-    <img class="ref" src="images/ref_mitsui.jpg" alt="三井寿ライブサムネ">
-    小見出し「どん底から戻れる人の共通点」＋特大「復活は、地中で始まる」＋卦バッジ。この文法に合わせています。
+  <div class="warn">
+    <b>💡 今回の発見（ハーネス整合の不具合を1つ直しました）：</b><br>
+    採点ルーブリック <code>thumbnail.json</code> は旧Tier A用で、「固有名詞が無いと <code>curiosity_gap</code> 減点」という基準を持ちます。純・洞察型（三井寿と同じ作品名なし）はこの基準に構造的に引っかかり<b>80点で頭打ち</b>でした。<br>
+    → チャンネルの成長戦略SSOT（<code>growth-1000-strategy.md</code>「作品名先出しが無名chの唯一効くレバー」）に沿って<b>作品名タグを小さく載せる</b>ことで、洞察が主役のまま固有名詞要件も満たし<b>90点</b>に。タイトルも既に「キルアは家を出ても…」と作品名先出しなので一貫します。
   </div>
 
   <figure>
-    <img src="images/A.png" alt="A 好奇心ギャップ">
-    <figcaption><b>A（好奇心ギャップ）</b>：小見出し「環境を変えても、なぜか苦しい人へ」＋「<b>逃げた先に、先回りしているもの</b>」— 何が?の空白で引く</figcaption>
+    <img src="images/C.png" alt="C 作品名タグあり">
+    <figcaption><span class="tag pass">90点 PASS</span><b>C：作品名タグあり</b>（左上 HUNTER×HUNTER ＋「なぜ逃げても、消えないのか」）— 戦略◎・推奨</figcaption>
   </figure>
-
   <figure>
-    <img src="images/B.png" alt="B 損失フレーム">
-    <figcaption><b>B（損失フレーム）</b>：同じ小見出し＋「<b>場所を変えても、自分だけは連れて行く</b>」— 損失の言い切りで刺す</figcaption>
+    <img src="images/B.png" alt="B タグなし損失">
+    <figcaption><span class="tag mid">80点</span><b>B：タグなし・損失フレーム</b>（三井寿と同型の純・洞察）— Cと背景/コピー同一、タグ有無だけ違う</figcaption>
+  </figure>
+  <figure>
+    <img src="images/A.png" alt="A タグなし好奇心">
+    <figcaption><span class="tag mid">~80点</span><b>A：タグなし・好奇心</b>（「逃げた先で、待つのは誰か」）— コピー違いの別案</figcaption>
   </figure>
 
+  <h2>実寸フィード確認（360px / 180px）</h2>
   <figure>
     <img src="images/mock.png" alt="実寸モック">
-    <figcaption>実寸モック（240px / 180px）— どちらも読めることを確認済み。背景＝夜明けの一本道・リュックの旅人・<b>手前に伸びる人型の影（＝ついてくる自分）</b>を専用生成。</figcaption>
+    <figcaption>3案とも180pxで題字が読めることを確認済み。Cのタグも小サイズで潰れず判読可。</figcaption>
   </figure>
+
+  <h2>独立採点の内訳（Cが最強な理由）</h2>
+  <table>
+    <tr><th>観点(配点)</th><th>C タグあり</th><th>B タグなし</th></tr>
+    <tr><td>可読性360px(30)</td><td>28</td><td>27</td></tr>
+    <tr><td>一点集中(20)</td><td>16</td><td>16</td></tr>
+    <tr><td>明るさ対比(15)</td><td>14</td><td>12</td></tr>
+    <tr><td>好奇心ギャップ(15)</td><td>14</td><td>9 ※固有名詞なし</td></tr>
+    <tr><td>約束回収(10)</td><td>8</td><td>8</td></tr>
+    <tr><td>方針順守(10)</td><td>10</td><td>8</td></tr>
+    <tr><td><b>合計</b></td><td><b>90 PASS</b></td><td><b>80</b></td></tr>
+  </table>
+  <p class="small">残課題（採点者フラグ）：一点集中が最弱＝中央の放射光と題字が視線を奪い合い。次周で背景中央のコントラストを一段落とせば+数点。公開後CTRで検証します（PDCA仮説）。</p>
 
   <div class="decide">
     <h2>👉 どうしますか？</h2>
-    <div class="opt"><span class="k">1</span><b>AとBの両方でYouTube公式A/Bテスト</b>（三井寿と同じ運用・推奨）</div>
-    <div class="opt"><span class="k">2</span>Aのみ採用</div>
-    <div class="opt"><span class="k">3</span>Bのみ採用</div>
-    <div class="opt"><span class="k">4</span>コピー/背景を直す（指示ください）</div>
+    <div class="opt rec"><span class="k">1</span><b>C(タグあり) と B(タグなし) でYouTube公式A/Bテスト</b>（推奨）— 同背景・同コピーで<b>「作品名タグはサムネCTRに効くか」を1変数で検証</b>。戦略仮説を直接データ化</div>
+    <div class="opt"><span class="k">2</span><b>C（作品名タグあり）単独</b>で確定 — 戦略に最も忠実・ハーネス90点</div>
+    <div class="opt"><span class="k">3</span><b>純・洞察型（B or A・作品名なし）</b>を採用 — 三井寿実験と揃える（戦略とは外れる）</div>
+    <div class="opt"><span class="k">4</span>コピー/背景/タグを直す（指示ください）</div>
   </div>
-  <p class="small">選定後：TikTok縦カバーもこの勝ち版から生成し、概要欄→ショート2本→公開キットへ進みます。新ハーネス（insight型）は registry.thumb_insight 駆動で再現可能にしてあります。</p>
+  <p class="small">選定後：勝ち版からTikTok縦カバー生成 → 概要欄 → ショート2本（幕4刃＋冒頭Hook）→ 公開キットへ。公開は 2026-07-13 04:00 JST 予約。アップロードのボタンは必ずあなたが押します。</p>
 </div>
 </body>
 </html>
