@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>「見る地図」は誰が使う？ — 価値の再検証</title>
+<style>
+  :root {
+    --ink: #1a1a1a; --ink-2: #4a4a4a;
+    --bg: #f7f5ee; --paper: #fbf9f1; --line: #d8d2bf;
+    --accent: #e8590c; --accent-soft: #fbe3d3;
+    --warn: #c83a2c; --warn-soft: #f6dcd6; --yellow: #f4d35e;
+    --shadow: 0 1px 0 rgba(0,0,0,.04), 0 8px 24px rgba(0,0,0,.06);
+    --sans: -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP","Yu Gothic","Meiryo", sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { font-family: var(--sans); background: var(--bg); color: var(--ink); line-height: 1.7; -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 56px 28px 96px; }
+  .hero { margin-bottom: 40px; }
+  .hero .kicker { display: inline-block; background: var(--accent); color: #fff; font-size: 12px; font-weight: 700; letter-spacing: .12em; padding: 6px 12px; border-radius: 999px; margin-bottom: 18px; }
+  .hero h1 { font-size: 38px; line-height: 1.3; margin: 0 0 14px; letter-spacing: -.01em; }
+  .hero h1 b { color: var(--accent); }
+  .hero p.lede { font-size: 18px; color: var(--ink-2); margin: 0; max-width: 840px; }
+  .tldr { margin-top: 26px; padding: 22px 24px; background: var(--paper); border: 1px solid var(--line); border-radius: 12px; box-shadow: var(--shadow); }
+  .tldr h2 { font-size: 13px; letter-spacing: .15em; color: var(--accent); margin: 0 0 10px; }
+  .tldr ol { margin: 0; padding-left: 20px; } .tldr li { margin: 5px 0; }
+  section { margin: 56px 0 0; }
+  section > h2 { font-size: 26px; line-height: 1.4; margin: 0 0 6px; border-left: 6px solid var(--accent); padding-left: 12px; }
+  section > h2 .num { color: var(--accent); font-variant-numeric: tabular-nums; margin-right: 10px; }
+  section > p.sub { color: var(--ink-2); margin: 0 0 22px; }
+  figure { margin: 0 0 24px; padding: 12px; background: var(--paper); border: 1px solid var(--line); border-radius: 14px; box-shadow: var(--shadow); }
+  figure img { display: block; width: 100%; height: auto; border-radius: 8px; }
+  figcaption { font-size: 13px; color: var(--ink-2); margin-top: 10px; text-align: center; }
+  .table { width: 100%; border-collapse: collapse; margin: 12px 0 6px; background: var(--paper); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; box-shadow: var(--shadow); }
+  .table th, .table td { text-align: left; padding: 12px 14px; border-bottom: 1px solid var(--line); vertical-align: top; font-size: 14.5px; }
+  .table th { background: #efeadb; font-weight: 700; }
+  .table tr:last-child td { border-bottom: 0; }
+  .yes { color: #2e8b57; font-weight: 700; } .no { color: var(--warn); font-weight: 700; } .maybe { color: #d68c1a; font-weight: 700; }
+  .callout { margin: 18px 0; padding: 16px 18px; border-left: 4px solid var(--accent); background: var(--accent-soft); border-radius: 0 10px 10px 0; }
+  .callout.warn { border-color: var(--warn); background: var(--warn-soft); }
+  .callout p { margin: 0; } .callout strong { color: var(--accent); } .callout.warn strong { color: var(--warn); }
+  .cards { display: grid; grid-template-columns: 1fr; gap: 16px; margin: 16px 0; }
+  .card { padding: 18px 20px; background: var(--paper); border: 1px solid var(--line); border-radius: 12px; box-shadow: var(--shadow); }
+  .card.pick { border: 2px solid var(--accent); background: var(--accent-soft); }
+  .card h3 { margin: 0 0 8px; font-size: 18px; } .card.pick h3 { color: var(--accent); }
+  .card ul { margin: 6px 0 0; padding-left: 18px; } .card li { margin: 3px 0; font-size: 14.5px; }
+  .tag { display:inline-block; font-size: 11px; font-weight:700; padding: 2px 8px; border-radius: 999px; margin-left: 6px; vertical-align: 2px; }
+  .tag.rec { background: var(--accent); color:#fff; } .tag.mid { background:#d68c1a; color:#fff; } .tag.no { background:#bbb; color:#fff; }
+  .conclusion { margin-top: 52px; padding: 28px 28px 24px; background: var(--ink); color: #f6f3e8; border-radius: 16px; }
+  .conclusion h2 { color: var(--yellow); border: 0; padding: 0; margin: 0 0 12px; }
+  .conclusion ol { margin: 0; padding-left: 20px; } .conclusion li { margin: 6px 0; }
+  footer { margin-top: 36px; color: var(--ink-2); font-size: 13px; }
+  @media (max-width: 720px) { .wrap { padding: 32px 18px 64px; } .hero h1 { font-size: 27px; } section > h2 { font-size: 21px; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <span class="kicker">価値の再検証 / インタラクションモデル</span>
+    <h1>「開いて見る地図」は誰が使う？ — <b>直感は正しい。ただし例外が1つ</b></h1>
+    <p class="lede">「地図を見ながら移動する人しか価値がないのでは＝趣味レベルでは？」という問い。答え：一般人に対してはその通り。だが“出発前に必ず地図を見る”実在行動を持つ人だけは別。そこが唯一の勝ち筋。</p>
+    <div class="tldr">
+      <h2>TL;DR</h2>
+      <ol>
+        <li>一般歩行者・ドライバーは工事地図を開かない。ドライバーはナビが規制を経路に織り込む＝「見る地図」は redundant。</li>
+        <li>例外＝車椅子・ベビーカー・視覚障害・高齢者と、配送/タクシー/介護の配車。彼らは本当に事前確認する。</li>
+        <li>これは前回の「交通弱者×工事」一点突破と一致。地図が本物の価値を持つ唯一のセグメント。</li>
+      </ol>
+    </div>
+  </header>
+
+  <section>
+    <h2><span class="num">01</span>全体像</h2>
+    <figure>
+      <img src="images/overview-01.png" alt="地図を事前に見る人・見ない人の対比と2つの絞り方">
+      <figcaption>誰が地図を見るか＝価値がどこに集中するか</figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <h2><span class="num">02</span>「見る地図」は誰に価値があるか</h2>
+    <p class="sub">“出発前に地図を見る”のが実在行動かどうかで分かれる。</p>
+    <table class="table">
+      <thead><tr><th>利用者</th><th>事前に地図を見る？</th><th>理由</th></tr></thead>
+      <tbody>
+        <tr><td>一般歩行者</td><td><span class="no">✕ 見ない</span></td><td>行き当たりばったり。工事地図を開く習慣がない</td></tr>
+        <tr><td>一般ドライバー</td><td><span class="no">✕ 見ない</span></td><td>Google/Yahooカーナビが既に規制を経路に反映。別地図は不要</td></tr>
+        <tr><td>自転車（新規ルート）</td><td><span class="maybe">△ ときどき</span></td><td>初めての道は調べるが習慣化まではしない</td></tr>
+        <tr><td>車椅子・ベビーカー・視覚障害・高齢者</td><td><span class="yes">◎ 必ず見る</span></td><td>歩道が塞がる＝行き止まり／危険。事前確認は死活問題で実在行動</td></tr>
+        <tr><td>配送・タクシー・バス・介護訪問の配車</td><td><span class="yes">◎ 見る</span></td><td>ルート計画が仕事。規制は遅延・コストに直結</td></tr>
+      </tbody>
+    </table>
+    <div class="callout">
+      <p><strong>気づき：</strong>地図interactionが本物の価値を持つ唯一のセグメントが「交通弱者＋プロの配車」。偶然ではなく、そこだけ“事前に地図を見る”が実在行動だから。前回の一点突破と一致する。</p>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="num">03</span>なぜ一般向け「見る地図」は趣味レベルになるか</h2>
+    <p class="sub">インタラクションモデルの問題。</p>
+    <table class="table">
+      <thead><tr><th>モデル</th><th>価値</th><th>難点</th></tr></thead>
+      <tbody>
+        <tr><td>Pull＝開いて見る地図</td><td><span class="no">低</span></td><td>誰も工事地図を開かない。ナビと重複。＝趣味レベルの正体</td></tr>
+        <tr><td>Push＝関係する所だけ届く</td><td><span class="yes">高</span></td><td>データ完全性＋ユーザー基盤が必要。ハッカソンでは実証困難</td></tr>
+        <tr><td>データ基盤＝既存アプリに流す</td><td><span class="maybe">中</span></td><td>価値はあるがデモで見えない＋JARTIC等が既存</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2><span class="num">04</span>あなたが選ぶ</h2>
+    <p class="sub">「趣味で出すノリ」も正しい割り切りの一つ。要は狙いを決めること。</p>
+    <div class="cards">
+      <div class="card pick">
+        <h3>A. アクセシビリティ特化で“本物の価値”を狙う<span class="tag rec">★ 実世界価値あり</span></h3>
+        <ul>
+          <li>「工事で歩道が塞がる時、車椅子・ベビーカー・視覚障害の人が事前に迂回を知れる」pre-trip planner に絞る</li>
+          <li>地図interactionが本物になる唯一の道。社会的インパクトが明確で審査でも刺さる</li>
+          <li>👍 実世界で意味がある・差別化明確　⚠️ アクセシビリティのデータ精度が課題</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>B. 趣味／ポートフォリオと割り切って綺麗に完遂<span class="tag mid">現実的</span></h3>
+        <ul>
+          <li>実世界採用は主張せず、技術力・完遂・発信の証拠として綺麗に作る</li>
+          <li>キャリア分析の「価値の8割＝完遂と発信」と整合。低リスク</li>
+          <li>👍 確実に完成する・自己信頼の証拠になる　👎 “世界を変える”話ではない（それでOKなら最適）</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>C. このテーマ自体を降りる<span class="tag no">保留</span></h3>
+        <ul>
+          <li>別の消費者ツール／OSS小物3本／BacktraceEngine集中へ</li>
+          <li>👍 機会費用最適化　👎 締切ドライブとGovTech接点を捨てる</li>
+        </ul>
+      </div>
+    </div>
+    <div class="callout warn">
+      <p><strong>正直な線引き：</strong>「実世界で意味あるものにしたい」なら実質 A 一択。「完遂と発信の実績が欲しい・世界を変える必要はない」なら B が正解で、“趣味のノリ”はむしろ健全なスコープ管理。B を選ぶこと自体は負けではない。</p>
+    </div>
+  </section>
+
+  <div class="conclusion">
+    <h2>結論</h2>
+    <ol>
+      <li>あなたの直感は正しい。一般向け「開いて見る地図」は価値が薄く、そのままなら趣味レベル。</li>
+      <li>例外は“事前に地図を見る”実在行動を持つ交通弱者×プロ配車のみ。ここに絞れば本物の価値になる（A）。</li>
+      <li>「趣味で出すノリ」も割り切りとして正しい（B）。完遂と発信の価値は残る。狙いを A / B で先に決める。</li>
+    </ol>
+  </div>
+
+  <footer>題材: 東京都オープンデータハッカソン応募判断 / インタラクションモデル再検証 v1 — noindex</footer>
+
+</div>
+</body>
+</html>
