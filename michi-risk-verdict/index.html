@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>このテーマ出す価値ある？ — 3視点の統合判断</title>
+<style>
+  :root {
+    --ink: #1a1a1a; --ink-2: #4a4a4a;
+    --bg: #f7f5ee; --paper: #fbf9f1; --line: #d8d2bf;
+    --accent: #e8590c; --accent-soft: #fbe3d3;
+    --warn: #c83a2c; --warn-soft: #f6dcd6; --yellow: #f4d35e;
+    --shadow: 0 1px 0 rgba(0,0,0,.04), 0 8px 24px rgba(0,0,0,.06);
+    --mono: ui-monospace, Menlo, Consolas, monospace;
+    --sans: -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP","Yu Gothic","Meiryo", sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { font-family: var(--sans); background: var(--bg); color: var(--ink); line-height: 1.7; -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 56px 28px 96px; }
+  .hero { margin-bottom: 40px; }
+  .hero .kicker { display: inline-block; background: var(--accent); color: #fff; font-size: 12px; font-weight: 700; letter-spacing: .12em; padding: 6px 12px; border-radius: 999px; margin-bottom: 18px; }
+  .hero h1 { font-size: 38px; line-height: 1.3; margin: 0 0 14px; letter-spacing: -.01em; }
+  .hero h1 b { color: var(--accent); }
+  .hero p.lede { font-size: 18px; color: var(--ink-2); margin: 0; max-width: 840px; }
+  .tldr { margin-top: 26px; padding: 22px 24px; background: var(--paper); border: 1px solid var(--line); border-radius: 12px; box-shadow: var(--shadow); }
+  .tldr h2 { font-size: 13px; letter-spacing: .15em; color: var(--accent); margin: 0 0 10px; }
+  .tldr ol { margin: 0; padding-left: 20px; } .tldr li { margin: 5px 0; }
+  section { margin: 56px 0 0; }
+  section > h2 { font-size: 26px; line-height: 1.4; margin: 0 0 6px; border-left: 6px solid var(--accent); padding-left: 12px; }
+  section > h2 .num { color: var(--accent); font-variant-numeric: tabular-nums; margin-right: 10px; }
+  section > p.sub { color: var(--ink-2); margin: 0 0 22px; }
+  figure { margin: 0 0 24px; padding: 12px; background: var(--paper); border: 1px solid var(--line); border-radius: 14px; box-shadow: var(--shadow); }
+  figure img { display: block; width: 100%; height: auto; border-radius: 8px; }
+  figcaption { font-size: 13px; color: var(--ink-2); margin-top: 10px; text-align: center; }
+  .table { width: 100%; border-collapse: collapse; margin: 12px 0 6px; background: var(--paper); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; box-shadow: var(--shadow); }
+  .table th, .table td { text-align: left; padding: 12px 14px; border-bottom: 1px solid var(--line); vertical-align: top; font-size: 14.5px; }
+  .table th { background: #efeadb; font-weight: 700; }
+  .table tr:last-child td { border-bottom: 0; }
+  .lv-h { color: var(--warn); font-weight: 700; } .lv-m { color: #d68c1a; font-weight: 700; } .lv-l { color: #2e8b57; font-weight: 700; }
+  .callout { margin: 18px 0; padding: 16px 18px; border-left: 4px solid var(--accent); background: var(--accent-soft); border-radius: 0 10px 10px 0; }
+  .callout.warn { border-color: var(--warn); background: var(--warn-soft); }
+  .callout p { margin: 0; } .callout strong { color: var(--accent); } .callout.warn strong { color: var(--warn); }
+  .cards { display: grid; grid-template-columns: 1fr; gap: 16px; margin: 16px 0; }
+  .card { padding: 18px 20px; background: var(--paper); border: 1px solid var(--line); border-radius: 12px; box-shadow: var(--shadow); }
+  .card.pick { border: 2px solid var(--accent); background: var(--accent-soft); }
+  .card h3 { margin: 0 0 8px; font-size: 18px; }
+  .card.pick h3 { color: var(--accent); }
+  .card ul { margin: 6px 0 0; padding-left: 18px; } .card li { margin: 3px 0; font-size: 14.5px; }
+  .tag { display:inline-block; font-size: 11px; font-weight:700; padding: 2px 8px; border-radius: 999px; margin-left: 6px; vertical-align: 2px; }
+  .tag.rec { background: var(--accent); color:#fff; } .tag.no { background:#bbb; color:#fff; }
+  .conclusion { margin-top: 52px; padding: 28px 28px 24px; background: var(--ink); color: #f6f3e8; border-radius: 16px; }
+  .conclusion h2 { color: var(--yellow); border: 0; padding: 0; margin: 0 0 12px; }
+  .conclusion ol { margin: 0; padding-left: 20px; } .conclusion li { margin: 6px 0; }
+  footer { margin-top: 36px; color: var(--ink-2); font-size: 13px; }
+  @media (max-width: 720px) { .wrap { padding: 32px 18px 64px; } .hero h1 { font-size: 28px; } section > h2 { font-size: 21px; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <span class="kicker">意思決定 / サブエージェント3視点統合</span>
+    <h1>このテーマ、出す価値ある？ — <b>結論: 芯をピボットすればGO</b></h1>
+    <p class="lede">「ハッカソンに出す価値／キャリア接続」を、①競争力 ②キャリア ③逆張り の3体に独立評価させた統合結果。3体とも「テーマは良いが、当初の“供給側1分登録基盤”は最大の弱点」で一致した。</p>
+    <div class="tldr">
+      <h2>TL;DR</h2>
+      <ol>
+        <li>テーマの方向性は勝ち筋のど真ん中（Final進出は現実的、受賞は低〜中）。</li>
+        <li>ただし「担当者が1分登録する供給基盤」は3体全員が最大の弱点と指摘 → 捨てるかデモ補助に格下げ。</li>
+        <li>キャリアは単体では変わらない。価値の8割は「完遂」と「発信」。本当の価値は“2件目を始める自分”。</li>
+      </ol>
+    </div>
+  </header>
+
+  <section>
+    <h2><span class="num">01</span>全体像</h2>
+    <figure>
+      <img src="images/overview-01.png" alt="3視点の結論と3つの選択肢の俯瞰図">
+      <figcaption>3視点の結論と、あなたが選ぶ3つの選択肢</figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <h2><span class="num">02</span>3体の独立評価</h2>
+    <p class="sub">忖度なし。それぞれ別の役割で走らせた。</p>
+    <table class="table">
+      <thead><tr><th>視点</th><th>結論</th><th>効いた指摘</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><b>① 競争力</b></td>
+          <td>Final進出=<span class="lv-m">中</span>／受賞=<span class="lv-h">低〜中</span></td>
+          <td>勝ち筋ど真ん中（都知事杯2025最優秀「YORUMICHI」と同系）。だが二番煎じ＋登録データ実在性が穴</td>
+        </tr>
+        <tr>
+          <td><b>② キャリア</b></td>
+          <td>単体では<span class="lv-h">変わらない</span></td>
+          <td>価値の8割は完遂＋発信。GovTech複業40%/AI受託35%/自社10%/転職20%。本当の価値=2件目を始める自分</td>
+        </tr>
+        <tr>
+          <td><b>③ 逆張り</b></td>
+          <td>当初案は<span class="lv-h">折れやすい</span></td>
+          <td>JARTIC/国交省が既にリアルタイム規制を配信済み。空のDB問題。型（着想得意・完遂課題）と逆行</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="callout warn">
+      <p><strong>3体の一致点：</strong>①方向性は良い ②「供給側=担当者1分登録」は捨てる/格下げ ③ピボット先は全員一致で「既存オープンデータの消費者側ツール」 ④行政採用は狙うな ⑤あなたの型的に「完遂＋撤退線」が生命線。</p>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="num">03</span>なぜピボットか（当初案の弱点）</h2>
+    <p class="sub">「担当者が1分で登録する供給基盤」が抱える構造的な穴。</p>
+    <table class="table">
+      <thead><tr><th>弱点</th><th>中身</th></tr></thead>
+      <tbody>
+        <tr><td>空のDB問題</td><td>道路規制の一次情報は事業者・警察・道路管理者が持つ。個人アプリに現場が登録する動機がない＝DBが埋まらない</td></tr>
+        <tr><td>再配信の新規性が薄い</td><td>JARTIC（5分更新API）・国交省・都カタログが既に配信済み。「再配信」は既存インフラと重複</td></tr>
+        <tr><td>正確性の担保</td><td>利用者別リスク値の正しさを個人が保証できない。事故・迂回誘導に絡むと信頼/責任リスク</td></tr>
+        <tr><td>型との逆行</td><td>データ供給・継続運用が必須＝着想得意・完遂課題のあなたが最も折れやすい構造</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2><span class="num">04</span>あなたが選ぶ</h2>
+    <p class="sub">3体の推奨は A。ただし決めるのはあなた。</p>
+    <div class="cards">
+      <div class="card pick">
+        <h3>A. 消費者側にピボットしてGO<span class="tag rec">★ 3体の推奨</span></h3>
+        <ul>
+          <li>既存の東京都/JARTIC規制データを読み込み → 車・歩行者・自転車・車椅子の「利用者別リスク」に変換して見せる消費者ツール1個に絞る</li>
+          <li>1分登録は供給基盤ではなく「デモ用サンプル追加」に格下げ（見せ場としては残す）</li>
+          <li>芯は「交通弱者（車椅子・ベビーカー）×工事規制」の一点突破。行政採用は狙わずポートフォリオ1作＋発信と割り切る</li>
+          <li>👍 完遂しやすい / 供給問題を回避 / 発信の物語が強い　⚠️ 新規性はUI・切り口勝負</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>B. 当初案（供給側1分登録基盤）のままGO</h3>
+        <ul>
+          <li>「1分登録できる供給基盤」を正面から作る</li>
+          <li>👍 コンセプトが壮大で刺されば大きい　👎 空のDB問題・二番煎じ・完遂リスクを承知で突っ込む</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>C. 出さない / 代替案へ<span class="tag no">保留</span></h3>
+        <ul>
+          <li>(1)既存API消費者ツール単体 (2)AI技術ブログ+OSS小物を4週で3本 (3)易経×AI（BacktraceEngine, 既存5条件4/5）に集中</li>
+          <li>👍 機会費用を最適化・未完の山を増やさない　👎 ハッカソンの締切ドライブと接点を捨てる</li>
+        </ul>
+      </div>
+    </div>
+    <div class="callout">
+      <p><strong>どれを選んでも共通の生命線：</strong>Day7に撤退線を引く（実データ接続できなければ縮小 or 撤退）＋ 開発と並行でX/note週次ログ・GitHub整備・技術記事1本（価値の8割はここ）。</p>
+    </div>
+  </section>
+
+  <div class="conclusion">
+    <h2>結論</h2>
+    <ol>
+      <li>出す価値はある。ただし「供給側1分登録基盤」の芯はピボットせよ（← 3体一致）。</li>
+      <li>推奨は A：既存データを消費して利用者別リスクに変換する“消費者側ツール”＋交通弱者×工事の一点突破。</li>
+      <li>行政採用は狙わない。ポートフォリオ1作＋発信＋撤退線。本当の価値は「2件目を始める自分」を作ること。</li>
+    </ol>
+  </div>
+
+  <footer>題材: 東京都オープンデータハッカソン応募判断 / サブエージェント3視点統合 v1 — 出典: 都知事杯2025受賞発表・GovTech東京採用・JARTICオープンデータ・しずみちinfo(総務省事例)</footer>
+
+</div>
+</body>
+</html>
