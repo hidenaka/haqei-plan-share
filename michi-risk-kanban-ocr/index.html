@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>工事看板OCR — 許可申請と絡める案の判断</title>
+<style>
+  :root {
+    --ink: #1a1a1a; --ink-2: #4a4a4a;
+    --bg: #f7f5ee; --paper: #fbf9f1; --line: #d8d2bf;
+    --accent: #d97706; --accent-soft: #fdeeD5;
+    --warn: #c83a2c; --warn-soft: #f6dcd6; --yellow: #f4d35e;
+    --shadow: 0 1px 0 rgba(0,0,0,.04), 0 8px 24px rgba(0,0,0,.06);
+    --sans: -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP","Yu Gothic","Meiryo", sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { font-family: var(--sans); background: var(--bg); color: var(--ink); line-height: 1.7; -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 56px 28px 96px; }
+  .hero { margin-bottom: 40px; }
+  .hero .kicker { display: inline-block; background: var(--accent); color: #fff; font-size: 12px; font-weight: 700; letter-spacing: .12em; padding: 6px 12px; border-radius: 999px; margin-bottom: 18px; }
+  .hero h1 { font-size: 36px; line-height: 1.32; margin: 0 0 14px; letter-spacing: -.01em; }
+  .hero h1 b { color: var(--accent); }
+  .hero p.lede { font-size: 18px; color: var(--ink-2); margin: 0; max-width: 860px; }
+  .tldr { margin-top: 26px; padding: 22px 24px; background: var(--paper); border: 1px solid var(--line); border-radius: 12px; box-shadow: var(--shadow); }
+  .tldr h2 { font-size: 13px; letter-spacing: .15em; color: var(--accent); margin: 0 0 10px; }
+  .tldr ol { margin: 0; padding-left: 20px; } .tldr li { margin: 5px 0; }
+  section { margin: 56px 0 0; }
+  section > h2 { font-size: 25px; line-height: 1.4; margin: 0 0 6px; border-left: 6px solid var(--accent); padding-left: 12px; }
+  section > h2 .num { color: var(--accent); font-variant-numeric: tabular-nums; margin-right: 10px; }
+  section > p.sub { color: var(--ink-2); margin: 0 0 22px; }
+  figure { margin: 0 0 24px; padding: 12px; background: var(--paper); border: 1px solid var(--line); border-radius: 14px; box-shadow: var(--shadow); }
+  figure img { display: block; width: 100%; height: auto; border-radius: 8px; }
+  figcaption { font-size: 13px; color: var(--ink-2); margin-top: 10px; text-align: center; }
+  .table { width: 100%; border-collapse: collapse; margin: 12px 0 6px; background: var(--paper); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; box-shadow: var(--shadow); }
+  .table th, .table td { text-align: left; padding: 11px 13px; border-bottom: 1px solid var(--line); vertical-align: top; font-size: 14px; }
+  .table th { background: #f3ead9; font-weight: 700; }
+  .table tr:last-child td { border-bottom: 0; }
+  .table .pick { background: var(--accent-soft); } .table .pick td:first-child { font-weight: 700; color: var(--accent); }
+  .yes { color: #2e9e6b; font-weight: 700; } .no { color: var(--warn); font-weight: 700; } .maybe { color: #d68c1a; font-weight: 700; }
+  .callout { margin: 18px 0; padding: 16px 18px; border-left: 4px solid var(--accent); background: var(--accent-soft); border-radius: 0 10px 10px 0; }
+  .callout.warn { border-color: var(--warn); background: var(--warn-soft); }
+  .callout p { margin: 0; } .callout strong { color: var(--accent); } .callout.warn strong { color: var(--warn); }
+  .cards { display: grid; grid-template-columns: 1fr; gap: 16px; margin: 16px 0; }
+  .card { padding: 18px 20px; background: var(--paper); border: 1px solid var(--line); border-radius: 12px; box-shadow: var(--shadow); }
+  .card.pick { border: 2px solid var(--accent); background: var(--accent-soft); }
+  .card h3 { margin: 0 0 8px; font-size: 18px; } .card.pick h3 { color: var(--accent); }
+  .card ul { margin: 6px 0 0; padding-left: 18px; } .card li { margin: 3px 0; font-size: 14.5px; }
+  .tag { display:inline-block; font-size: 11px; font-weight:700; padding: 2px 8px; border-radius: 999px; margin-left: 6px; vertical-align: 2px; }
+  .tag.rec { background: var(--accent); color:#fff; } .tag.mid { background:#d68c1a; color:#fff; } .tag.no { background:#bbb; color:#fff; }
+  .conclusion { margin-top: 52px; padding: 28px 28px 24px; background: var(--ink); color: #f6f3e8; border-radius: 16px; }
+  .conclusion h2 { color: var(--yellow); border: 0; padding: 0; margin: 0 0 12px; }
+  .conclusion ol { margin: 0; padding-left: 20px; } .conclusion li { margin: 6px 0; }
+  footer { margin-top: 36px; color: var(--ink-2); font-size: 12.5px; line-height: 1.6; }
+  @media (max-width: 720px) { .wrap { padding: 32px 18px 64px; } .hero h1 { font-size: 25px; } section > h2 { font-size: 20px; } .table th,.table td{font-size:13px;padding:9px 10px;} }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <span class="kicker">企画判断 / データ取得の新経路</span>
+    <h1>看板を撮るだけ、データが生まれる — <b>警察DBは取れない。でも看板がある</b></h1>
+    <p class="lede">「道路使用許可申請と絡めてデータを取れないか？OCR写真アップは？」の調査結果。行政データ直結ルートは死んでいるが、現場の工事看板を撮影→OCR→GPS付与する市民参加ルートは合法かつ数日で実装可能。「空のDB問題」への回答になる。</p>
+    <div class="tldr">
+      <h2>TL;DR</h2>
+      <ol>
+        <li>警察・道路管理者の許可申請データは個票が完全非公開。API・オープンデータ化の計画も無い＝直結は不可。</li>
+        <li>だが工事看板（工事名・工期・時間・規制・連絡先）は通達で掲示が事実上義務＝合法な一次情報源。撮影も適法。</li>
+        <li>「看板写真1枚→OCR→地図に規制」はLLM visionで数日で実装可。精度は人間確認前提と正直に線引きする。</li>
+      </ol>
+    </div>
+  </header>
+
+  <section>
+    <h2><span class="num">01</span>全体像</h2>
+    <figure>
+      <img src="images/overview-01.png" alt="看板撮影からOCR・GPS・地図反映までのフロー">
+      <figcaption>撮影 → OCR → GPS → 地図。市民・保育士・現場作業者がデータの発生源になる</figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <h2><span class="num">02</span>調査結果 — 5つの問いへの答え</h2>
+    <table class="table">
+      <thead><tr><th>問い</th><th>結論</th></tr></thead>
+      <tbody>
+        <tr><td>許可申請データを外部から取れるか</td><td><span class="no">ほぼ不可</span>。個票のオープンデータ・APIはゼロ。東京都にあるのは「件数」集計のみ。情報公開請求も粒度・網羅性・鮮度で実用不可</td></tr>
+        <tr><td>オンライン申請のデジタル化</td><td><span class="maybe">進行中だが芽は薄い</span>。2025年12月に47都道府県でe-Gov統一。ただし外部データ連携を明言した公式文書は無し</td></tr>
+        <tr class="pick"><td>工事看板の掲示義務と記載項目</td><td><span class="yes">OCR対象として妥当</span>。情報看板（工事名・工期・作業時間・連絡先・規制内容）は通達（昭37道発372号）が許可条件を介し事実上義務化。レイアウトは自治体・業者でばらつき</td></tr>
+        <tr class="pick"><td>撮影の法的問題</td><td><span class="yes">支障なし</span>。公道の看板撮影は適法（著作権法46条・受忍限度）。注意は業者情報を大量DB化する際の個人情報保護のみ</td></tr>
+        <tr><td>OCR＋LLM構造化の実現性</td><td><span class="yes">数日で動く</span>[仮説]。LLM visionのJSON schema抽出一発型が最良。手書き・色あせ・逆光で精度低下→人間の確認UI必須</td></tr>
+      </tbody>
+    </table>
+    <div class="callout">
+      <p><strong>意味するもの：</strong>これは「空のDB問題」（現場が個人アプリに登録する動機がない）への回答。ゼロから入力させるのではなく、<strong>散歩中の保育士・現場作業者・市民が写真1枚撮るだけ</strong>でデータが生まれる。ほこナビDPの「多様な主体で鮮度高く更新」思想とも一致し、「動的な歩道工事規制×市民参加収集」で差別化がさらに尖る。</p>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="num">03</span>企画への組み込み方</h2>
+    <p class="sub">「許可申請と絡める」は語り方を変える。</p>
+    <div class="callout warn">
+      <p><strong>言ってはいけない：</strong>「警察の許可データと連携します」→ 制度上不可能なので審査で刺される。<strong>正しい語り：</strong>「許可を得た工事は現場に看板を掲げる義務がある。その看板こそが分散した一次情報。本サービスは看板の撮影1枚でそれを構造化データに変える。将来、行政のオンライン申請データがオープン化されれば直結できる設計にしておく」— 制度の現実を踏まえた上で先回りする姿勢が伝わる。</p>
+    </div>
+    <table class="table">
+      <thead><tr><th>ピッチでの位置づけ</th><th>内容</th></tr></thead>
+      <tbody>
+        <tr><td>現在（MVP）</td><td>看板写真→OCR→確認→地図。市民参加でデータが育つ入口</td></tr>
+        <tr><td>正直な線引き</td><td>精度は人間確認前提。verification_statusで未確認/確認済みを区別</td></tr>
+        <tr><td>将来ビジョン</td><td>e-Gov申請データのオープン化を待ち受ける設計（申請→自動登録）＋車線レベル可視化</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2><span class="num">04</span>あなたが選ぶ — Stage1に入れるか</h2>
+    <p class="sub">MVPは12タスク完了・ローカル動作済み。締切7/27まで約3週間。</p>
+    <div class="cards">
+      <div class="card pick">
+        <h3>A. Stage1に「看板OCR登録」を1画面追加<span class="tag rec">★ 推奨</span></h3>
+        <ul>
+          <li>写真アップ→LLM visionで工事名・工期・規制種別をJSON抽出→人間が地図上で位置と内容を確認→登録</li>
+          <li>デモの見せ場が「地図を見る」から「データを生む」に広がり、審査のデータ活用・アイデア力で強い</li>
+          <li>👍 差別化が尖る・2分動画で映える　⚠️ 実装+検証で3〜5日、LLM APIキーが必要</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>B. ピッチの将来構想として語るだけ<span class="tag mid">安全</span></h3>
+        <ul>
+          <li>実装せず、資料に「看板OCRによる市民参加収集」を将来像として1枚入れる</li>
+          <li>👍 工数ゼロ・MVPを磨く時間を確保　👎 「動くもの」の説得力は出ない</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>C. 入れない<span class="tag no">見送り</span></h3>
+        <ul>
+          <li>Stage1はお散歩ルート×既存データに集中。OCRはStage2以降</li>
+          <li>👍 スコープ最小　👎 「空のDB問題」への回答を捨てる</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <div class="conclusion">
+    <h2>結論</h2>
+    <ol>
+      <li>警察DB直結は不可（事実）。だが工事看板の撮影OCRは合法・現実的で、「空のDB問題」への回答になる。</li>
+      <li>「許可申請と絡める」は「許可の証である看板を市民が撮る」に言い換えると制度的に正確で、ピッチも強い。</li>
+      <li>推奨A: Stage1に看板OCR登録を1画面追加（3〜5日）。A / B / C どれで行く？</li>
+    </ol>
+  </div>
+
+  <footer>
+    題材: おさんぽセーフティ / 工事看板OCR企画判断 v1 — noindex<br>
+    出典: 東京都カタログ(道路占用許可件数) / 警察庁 中長期計画・交通統計 / 道路使用許可オンライン申請(e-Gov統一) / 標示施設等の設置基準(昭37道発372号) / 著作権法46条 / OpenAI GPT-4V System Card / 個人情報保護委員会（取得日 2026-07-02・一部[仮説]）
+  </footer>
+
+</div>
+</body>
+</html>
