@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>成長ループに足りないもの — ギャップ監査（2026-07-02）</title>
+<style>
+  :root {
+    --ink: #1a1a1a; --ink-2: #4a4a4a; --bg: #f7f5ee; --paper: #fbf9f1; --line: #d8d2bf;
+    --accent: #2f6f4f; --accent-soft: #dcebe2; --warn: #c83a2c; --warn-soft: #f6dcd6;
+    --yellow: #f4d35e; --shadow: 0 1px 0 rgba(0,0,0,.04), 0 8px 24px rgba(0,0,0,.06);
+    --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+    --sans: -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Noto Sans JP", "Yu Gothic", "Meiryo", sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { font-family: var(--sans); background: var(--bg); color: var(--ink); line-height: 1.7; -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 56px 28px 96px; }
+  .hero { margin-bottom: 48px; }
+  .hero .kicker { display: inline-block; background: var(--accent); color: #fff; font-size: 12px; font-weight: 700; letter-spacing: .12em; padding: 6px 12px; border-radius: 999px; margin-bottom: 18px; }
+  .hero h1 { font-size: 38px; line-height: 1.3; margin: 0 0 14px; letter-spacing: -.01em; }
+  .hero h1 b { color: var(--accent); }
+  .hero p.lede { font-size: 18px; color: var(--ink-2); margin: 0; max-width: 800px; }
+  .tldr { margin-top: 28px; padding: 22px 24px; background: var(--paper); border: 1px solid var(--line); border-radius: 12px; box-shadow: var(--shadow); }
+  .tldr h2 { font-size: 13px; letter-spacing: .15em; color: var(--accent); margin: 0 0 10px; }
+  .tldr ol { margin: 0; padding-left: 20px; }
+  .tldr li { margin: 4px 0; }
+  section { margin: 56px 0 0; }
+  section > h2 { font-size: 26px; line-height: 1.4; margin: 0 0 6px; border-left: 6px solid var(--accent); padding-left: 12px; }
+  section > h2 .num { color: var(--accent); font-variant-numeric: tabular-nums; margin-right: 10px; }
+  section > p.sub { color: var(--ink-2); margin: 0 0 22px; }
+  figure { margin: 0 0 24px; padding: 12px; background: var(--paper); border: 1px solid var(--line); border-radius: 14px; box-shadow: var(--shadow); }
+  figure img { display: block; width: 100%; height: auto; border-radius: 8px; }
+  figcaption { font-size: 13px; color: var(--ink-2); margin-top: 10px; text-align: center; }
+  .table { width: 100%; border-collapse: collapse; margin: 12px 0 6px; background: var(--paper); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; box-shadow: var(--shadow); }
+  .table th, .table td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--line); vertical-align: top; font-size: 14px; }
+  .table th { background: #efeadb; font-weight: 700; white-space: nowrap; }
+  .table tr:last-child td { border-bottom: 0; }
+  .table .pick { background: var(--accent-soft); }
+  .sev { display: inline-block; font-size: 11px; padding: 1px 8px; border-radius: 999px; color: #fff; font-weight: 700; white-space: nowrap; }
+  .sh { background: var(--warn); } .sm { background: #d68c1a; }
+  code.inline { font-family: var(--mono); font-size: .92em; background: #efeadb; padding: 1px 6px; border-radius: 4px; }
+  .callout { margin: 18px 0; padding: 16px 18px; border-left: 4px solid var(--accent); background: var(--accent-soft); border-radius: 0 10px 10px 0; }
+  .callout.warn { border-color: var(--warn); background: var(--warn-soft); }
+  .callout p { margin: 0; }
+  .callout strong { color: var(--accent); }
+  .callout.warn strong { color: var(--warn); }
+  .conclusion { margin-top: 56px; padding: 28px 28px 24px; background: var(--ink); color: #f6f3e8; border-radius: 16px; }
+  .conclusion h2 { color: var(--yellow); border: 0; padding: 0; margin: 0 0 12px; }
+  .conclusion ol { margin: 0; padding-left: 20px; }
+  .conclusion li { margin: 6px 0; }
+  .conclusion code.inline { background: #2c2f33; color: #f6f3e8; }
+  footer { margin-top: 36px; color: var(--ink-2); font-size: 13px; }
+  @media (max-width: 720px) {
+    .wrap { padding: 32px 18px 64px; }
+    .hero h1 { font-size: 28px; }
+    section > h2 { font-size: 21px; }
+    .table th, .table td { font-size: 12.5px; padding: 8px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <span class="kicker">ギャップ監査（判断資料）</span>
+    <h1>成長ループに足りないもの — <b>部品は揃った、配線が3本足りない</b></h1>
+    <p class="lede">「今の仕組みで足りないことある？」への答えです。文脈ゼロの独立監査AIと私の検証を別々に走らせ、同じ結論に収束しました。<b>足りないのは新しい部品ではなく、無人で回り続けるための配線</b>です。全て施策台帳にM13〜M19として積み済み（承認待ち・未実装）。</p>
+    <div class="tldr">
+      <h2>TL;DR</h2>
+      <ol>
+        <li><b>心臓が無い</b>: growth-tick自体がセッション起動依存。誰も開かない日は判定漏れもジョブの死も沈黙（通知チャネルゼロ）</li>
+        <li><b>血流が分岐</b>: Mac miniの自動化はmini側のanalyticsに書き、MacBookへ還流しない。しかも監査中に<b>relink-sweepがChrome未ログインで停止中</b>なのを発見（誰も気づいていなかった＝穴の実証）</li>
+        <li><b>複利がゼロ</b>: winning-patternsは運用3週間で空。実験に勝っても、次の制作・採点表・preflightに機械的に乗る配線が無い</li>
+      </ol>
+    </div>
+  </header>
+
+  <section>
+    <h2><span class="num">01</span>足りているもの（安心材料）</h2>
+    <p class="sub">今週作った3層（growth-tick / creative-loop / measures）自体の設計は独立監査でも健全と判定。</p>
+    <table class="table">
+      <tbody>
+        <tr><td>期日駆動の外側ループ</td><td>judge_due・コホート・coord期日・施策台帳を毎回機械走査（テスト付き純関数）</td></tr>
+        <tr><td>施策台帳の規律</td><td>recipe/metric/judge_due必須を機械強制・人間ゲートは--by-ownerでAIの勝手承認を阻止</td></tr>
+        <tr><td>内側ループの採点</td><td>報酬ハッキング対策（キー固定・passed再計算・違反0点・最良版採用）が機械側に</td></tr>
+        <tr><td>計測の一部無人化</td><td>metrics-weekly(MacBook週次)＋truth-sync(mini 30分毎・ショート系)＋relink-sweep(mini日次)</td></tr>
+        <tr><td>律速台帳の鮮度契約</td><td>診断30日で再接地強制・第一律速の実験カバレッジ監視</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2><span class="num">02</span>足りないもの — 7つの穴（重要度順）</h2>
+    <p class="sub">独立監査＋私の一次検証の統合。ICEは施策台帳の優先度スコア。</p>
+    <figure>
+      <img src="images/concept-01-01.png" alt="水車は完成しているが心臓・血流・複利の3本の配線が未接続">
+      <figcaption>ループの体は完成。心臓（無人実行+通知）・血流（2台のデータ還流）・複利（勝ちの還流）が未接続</figcaption>
+    </figure>
+    <table class="table">
+      <thead><tr><th>ID</th><th>穴</th><th>重要度</th><th>証拠（一次情報）</th><th>最小の直し方</th></tr></thead>
+      <tbody>
+        <tr class="pick"><td>M13</td><td><b>心臓の不在</b> — tickが無人日に回らない・通知ゼロ</td><td><span class="sev sh">HIGH</span></td><td>launchd/cron登録なし・coordタスク3件が7-13日超過のまま滞留</td><td>mini日次launchd＋WARN時のみスマホpush（ICE 21.3）</td></tr>
+        <tr class="pick"><td>M14</td><td><b>2台でanalytics分岐</b> — SSOTの物理分裂</td><td><span class="sev sh">HIGH</span></td><td>miniのcta-comment-log等はmini側のみ更新・pull-truth-syncは手動4ファイルのみ</td><td>sweep末尾でrsync還流 or tick冒頭にpull（ICE 18.7）</td></tr>
+        <tr class="pick"><td>M15</td><td><b>複利ゼロ</b> — 勝ちが次へ還流しない</td><td><span class="sev sh">HIGH</span></td><td>winning-patterns={patterns:[]}・preflight/script-buildはどれも読まない(grep実証)</td><td>preflightに読込チェック＋promote時にeval-schema更新。H42判定(7/15)で初運用（ICE 11.2）</td></tr>
+        <tr><td>M16</td><td>CTR鮮度の死角 — 第一律速の指標だけ手動で腐りを検出できない</td><td><span class="sev sm">MID</span></td><td>measurement-staleはtimeseries齢のみ監視・ctr-summaryは6/30のまま</td><td>tickにfetched_at齢チェック1本（ICE 54＝最安・最速）</td></tr>
+        <tr><td>M17</td><td>ジョブの死が沈黙 — ハートビート監視なし</td><td><span class="sev sm">MID</span></td><td><b>relink-sweepが今まさにChrome未ログインexit2で停止中</b>（監査で発見）</td><td>各ジョブがheartbeatを書きtickが齢チェック。即対応=miniのChromeへGUIログイン1回（本人操作）（ICE 24）</td></tr>
+        <tr><td>M18</td><td>台帳のロック無し並行書込 — 過去のH番号二重採番事故と同型</td><td><span class="sev sm">MID</span></td><td>measures/experimentsはread-modify-write全置換・並行セッション常態</td><td>coord.sh方式のロックファイル（ICE 20）</td></tr>
+        <tr><td>M19</td><td>反復タスクの風化 — 日次/週次施策の期日を誰も再生成しない</td><td><span class="sev sm">MID</span></td><td>M11/M12/週次レビューは「セッションが開いたらやる」前提のまま</td><td>recurring.jsonをtickが走査（ICE 14）</td></tr>
+      </tbody>
+    </table>
+    <div class="callout warn">
+      <p><strong>今すぐ本人にしかできない1件:</strong> Mac miniのYouTube用Chrome（ポート9333）に一度GUIでログインしてください。relink-sweep（関連動画リンクの自動設定）が止まっており、コメントの誘導文が「関連動画リンクから」に変わった今、この導線の実体です。</p>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="num">03</span>推奨する順番</h2>
+    <p class="sub">効果÷手間の順。M16→M17→M14→M13は互いに前提関係があります。</p>
+    <table class="table">
+      <thead><tr><th>順</th><th>やること</th><th>理由</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td><b>M16</b> CTR鮮度チェック（effort S）＋ mini ChromeへのGUIログイン（本人1回）</td><td>H42判定（7/15）を新鮮なCTRで迎えるため。期日が最も近い</td></tr>
+        <tr><td>2</td><td><b>M17→M14→M13</b> ハートビート → データ還流 → 無人tick+通知</td><td>この順で積むと「miniで回して・正しいデータで・スマホに届く」が一本の線になる</td></tr>
+        <tr><td>3</td><td><b>M15</b> 複利配線</td><td>H42判定（7/15）が初の勝ちパターン。それまでに配線しておくと判定当日に床が上がる</td></tr>
+        <tr><td>4</td><td>M18/M19</td><td>守りの整備。並行セッションが増えるほど効く</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <div class="conclusion">
+    <h2>結論</h2>
+    <ol>
+      <li><b>足りないことは、ある。</b>ただし新部品ではなく配線: 心臓（M13）・血流（M14）・複利（M15）の3本がHIGH</li>
+      <li>監査自体が穴を実証した: relink-sweepの停止（Chrome未ログイン）に誰も気づいていなかった＝M17の必要性そのもの</li>
+      <li>7件ともM13〜M19として施策台帳にproposed済み。<b>承認する番号を返信いただければ順に実装します</b>（例:「M16,M17承認」「全部」）。miniのChromeログインだけは本人操作が必要です</li>
+    </ol>
+  </div>
+
+  <footer>手法: 文脈ゼロ独立監査AI＋主担当検証の収束 / 一次情報: launchctl実査・mini ssh実査・winning-patterns/cta-comment-log実読・growth-tick実行 — 2026-07-02</footer>
+
+</div>
+</body>
+</html>
