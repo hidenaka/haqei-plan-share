@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>道路使用許可のオンライン申請は本当に「整備済み」なのか</title>
+<style>
+  :root {
+    --ink: #1a1a1a;
+    --ink-2: #4a4a4a;
+    --bg: #f7f5ee;
+    --paper: #fbf9f1;
+    --line: #d8d2bf;
+    --accent: #2c5f8a;
+    --accent-soft: #dce8f2;
+    --warn: #c83a2c;
+    --warn-soft: #f6dcd6;
+    --yellow: #f4d35e;
+    --shadow: 0 1px 0 rgba(0,0,0,.04), 0 8px 24px rgba(0,0,0,.06);
+    --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+    --sans: -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN",
+            "Hiragino Sans", "Noto Sans JP", "Yu Gothic", "Meiryo", sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 56px 28px 96px; }
+
+  /* hero */
+  .hero { margin-bottom: 56px; }
+  .hero .kicker {
+    display: inline-block;
+    background: var(--accent); color: #fff;
+    font-size: 12px; font-weight: 700; letter-spacing: .12em;
+    padding: 6px 12px; border-radius: 999px;
+    margin-bottom: 18px;
+  }
+  .hero h1 {
+    font-size: 40px; line-height: 1.3; margin: 0 0 14px;
+    letter-spacing: -.01em;
+  }
+  .hero h1 b { color: var(--accent); }
+  .hero p.lede {
+    font-size: 18px; color: var(--ink-2); margin: 0; max-width: 780px;
+  }
+  .tldr {
+    margin-top: 28px; padding: 22px 24px;
+    background: var(--paper); border: 1px solid var(--line); border-radius: 12px;
+    box-shadow: var(--shadow);
+  }
+  .tldr h2 { font-size: 13px; letter-spacing: .15em; color: var(--accent); margin: 0 0 10px; }
+  .tldr ol { margin: 0; padding-left: 20px; }
+  .tldr li { margin: 4px 0; }
+
+  /* sections */
+  section { margin: 64px 0 0; }
+  section > h2 {
+    font-size: 28px; line-height: 1.4; margin: 0 0 6px;
+    border-left: 6px solid var(--accent); padding-left: 12px;
+  }
+  section > h2 .num {
+    color: var(--accent); font-variant-numeric: tabular-nums; margin-right: 10px;
+  }
+  section > p.sub { color: var(--ink-2); margin: 0 0 22px; }
+
+  figure {
+    margin: 0 0 24px; padding: 12px;
+    background: var(--paper); border: 1px solid var(--line); border-radius: 14px;
+    box-shadow: var(--shadow);
+  }
+  figure img { display: block; width: 100%; height: auto; border-radius: 8px; }
+  figcaption {
+    font-size: 13px; color: var(--ink-2); margin-top: 10px; text-align: center;
+  }
+
+  /* compare table */
+  .table {
+    width: 100%; border-collapse: collapse; margin: 12px 0 6px;
+    background: var(--paper); border: 1px solid var(--line); border-radius: 12px; overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+  .table th, .table td {
+    text-align: left; padding: 12px 14px; border-bottom: 1px solid var(--line);
+    vertical-align: top; font-size: 14.5px;
+  }
+  .table th { background: #efeadb; font-weight: 700; }
+  .table tr:last-child td { border-bottom: 0; }
+  .table .pick { background: var(--accent-soft); }
+  .table .pick td:first-child { font-weight: 700; color: var(--accent); }
+
+  /* code */
+  code.inline {
+    font-family: var(--mono); font-size: .92em;
+    background: #efeadb; padding: 1px 6px; border-radius: 4px;
+  }
+
+  /* callouts */
+  .callout {
+    margin: 18px 0;
+    padding: 16px 18px;
+    border-left: 4px solid var(--accent);
+    background: var(--accent-soft);
+    border-radius: 0 10px 10px 0;
+  }
+  .callout.warn { border-color: var(--warn); background: var(--warn-soft); }
+  .callout p { margin: 0; }
+  .callout strong { color: var(--accent); }
+  .callout.warn strong { color: var(--warn); }
+
+  /* conclusion */
+  .conclusion {
+    margin-top: 56px; padding: 28px 28px 24px;
+    background: var(--ink); color: #f6f3e8; border-radius: 16px;
+  }
+  .conclusion h2 { color: var(--yellow); border: 0; padding: 0; margin: 0 0 12px; }
+  .conclusion ol { margin: 0; padding-left: 20px; }
+  .conclusion li { margin: 6px 0; }
+  .conclusion code.inline { background: #2c2f33; color: #f6f3e8; }
+
+  footer { margin-top: 36px; color: var(--ink-2); font-size: 13px; }
+
+  @media (max-width: 720px) {
+    .wrap { padding: 32px 18px 64px; }
+    .hero h1 { font-size: 30px; }
+    section > h2 { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <span class="kicker">行政デジタル化リサーチ</span>
+    <h1>道路使用許可のオンライン申請は<b>本当に</b>「整備済み」なのか</h1>
+    <p class="lede">警察庁が進める道路使用許可オンライン申請の実態を、公式発表・都道府県警サイト・警察庁中長期計画PDFに当たって事実ベースで検証した。結論：全国展開は完了しているが、様式の標準化・外部データ連携・マイナポータル連携はいずれも「未確認」または「未着手」に近い。</p>
+    <div class="tldr">
+      <h2>TL;DR</h2>
+      <ol>
+        <li>全国展開は「完了」——47都道府県警がe-Gov電子申請に統一移行済み（2025年12月15日、対象約560手続）</li>
+        <li>ただし道路使用許可自体は「定型的な更新・類似案件」中心に対象が限定され、様式もスキャンPDF添付が濃厚で構造化データ化は不十分</li>
+        <li>外部連携・オープンデータ化を明言した警察庁・デジタル庁の公式文書は確認できず、マイナポータル連携も未確認・おそらく未実装</li>
+      </ol>
+    </div>
+  </header>
+
+  <section>
+    <h2><span class="num">01</span>展開状況 — 全国47都道府県で「窓口」は統一された</h2>
+    <p class="sub">2025年12月15日、警察庁独自サイトからデジタル庁運営のe-Gov電子申請へ全面移行。ただし道路使用許可個別の対象は限定的。</p>
+    <figure>
+      <img src="images/concept-01-01.png" alt="警察行政手続オンライン化の展開タイムライン図解">
+      <figcaption>2021年6月の試行開始から2025年12月15日のe-Gov全面移行まで</figcaption>
+    </figure>
+    <table class="table">
+      <thead><tr><th>時期</th><th>できごと</th></tr></thead>
+      <tbody>
+        <tr><td>2021年6月</td><td>警察庁「警察行政手続サイト」試行運用開始（proc.npa.go.jp、メールによる簡易申請）</td></tr>
+        <tr><td>2022年1月</td><td>対象手続を追加</td></tr>
+        <tr class="pick"><td>2025年12月15日 14:00</td><td>「警察行政手続オンライン化システム」運用開始。旧サイトは運用停止。e-Gov電子申請（デジタル庁運営）へ全面移行。約560手続が対象</td></tr>
+      </tbody>
+    </table>
+    <div class="callout">
+      <p><strong>47都道府県警が移行済み</strong>——千葉県警・京都府警・宮城県警・大阪府警・長崎県警など、各県警の公式ページで移行完了と旧サイト停止を確認。ただし各県警が個別に「対象手続一覧」PDFを公開しており、周知のタイミングと粒度は県警ごとに差がある。</p>
+    </div>
+    <div class="callout warn">
+      <p><strong>道路使用許可の対象は限定的</strong>——埼玉県警の例では、新規申請のうち「工事・作業」「工作物設置」「露店・屋台営業」「祭礼・ロケーション撮影」の4類型のみがオンライン対象。減免対象の申請はオンライン不可。手数料納付と許可証受取は引き続き窓口対応が必要。</p>
+    </div>
+    <p style="font-size:13px;color:var(--ink-2);">※ 出典: 警察庁「行政手続等のオンライン化等の状況」 <code class="inline">npa.go.jp/policies/policy/online.html</code> ／ 埼玉県警察 <code class="inline">police.pref.saitama.lg.jp</code> ／ 千葉・京都・宮城・大阪・長崎の各県警公式サイト</p>
+  </section>
+
+  <section>
+    <h2><span class="num">02</span>申請様式は統一されているか — 「窓口は1つ、中身はバラバラ」</h2>
+    <p class="sub">e-Govという統一ポータルの奥では、添付書類の形式・対象手続の細目が都道府県警ごとに異なる状態が続いている。</p>
+    <figure>
+      <img src="images/concept-02-01.png" alt="e-Gov統一ポータルと都道府県ごとに異なる申請様式の構造図解">
+      <figcaption>ポータルは統一、添付書類の形式・対象範囲は都道府県ごとに差が残る</figcaption>
+    </figure>
+    <p>警察庁中長期計画（重点計画に基づく警察庁中長期計画PDF）によれば、旧「警察行政手続サイト」は「メールによる簡易な方法で申請等の手続ができるよう」構築された<strong>試行的なウェブサイト</strong>だった。新システム（e-Gov）はより多くの手続を扱う全国統一ポータルとして構築されたが、2022年時点の計画書では「添付書類の合理化」はまだ<strong>「検討を進めている」段階</strong>として記載されている。</p>
+    <ul>
+      <li>ポータル自体（e-Gov）は全国共通のシステム</li>
+      <li>埼玉県警のページには「スキャナ等により電子化したデータを添付してください」と記載——構造化Web入力フォームではなく、紙書類のスキャンPDF添付方式である可能性が高い</li>
+      <li>対象手続の細目・必要書類は都道府県警ごとに個別のPDF一覧で公開されており、内容に差がある</li>
+    </ul>
+    <div class="callout">
+      <p>評価: <strong>「統一ポータル・非統一データ」</strong>の状態。窓口が1つになったことと、そこで扱われるデータが構造化・標準化されたことは別問題。</p>
+    </div>
+    <p style="font-size:13px;color:var(--ink-2);">※ 出典: 警察庁中長期計画PDF <code class="inline">npa.go.jp/policies/policy/digital/honbun_npa.pdf</code>（p.5「(5) 行政手続のオンライン化実施に係るシステム整備」）／ 埼玉県警察道路使用許可ページ</p>
+  </section>
+
+  <section>
+    <h2><span class="num">03</span>外部連携・オープンデータ化への言及はあるか — 「検討中」の3項目のみ</h2>
+    <p class="sub">警察庁中長期計画に明記された今後の検討事項は、本人確認・手数料納付・添付書類合理化の3点。データ公開への言及は見当たらない。</p>
+    <table class="table">
+      <thead><tr><th>確認した公式文書</th><th>道路使用許可データの外部連携・オープンデータ化への言及</th></tr></thead>
+      <tbody>
+        <tr><td>警察庁中長期計画PDF (npa.go.jp)</td><td>なし。今後の検討事項は「添付書類の合理化」「マイナンバーカード等を用いた本人確認」「手数料のオンライン納付」の3点のみ（p.5）</td></tr>
+        <tr><td>デジタル庁 重点計画（概要資料群）</td><td>「各府省庁が保有するデータは原則オープンデータとして公開」という<strong>全省庁共通の一般原則</strong>はあるが、道路使用許可データに特化した言及はなし</td></tr>
+        <tr><td>規制改革推進会議 令和7年5月28日答申</td><td>警察庁・経産省・国交省の連携に言及があるが、内容は光ファイバー整備等の<strong>道路占用（国交省所管、別制度）</strong>が中心。道路使用許可データのAPI公開への直接言及なし</td></tr>
+      </tbody>
+    </table>
+    <div class="callout warn">
+      <p>警察庁のKPIは「オンライン化率100%」（オンラインで申請できる手続の割合）であり、<strong>「データ公開率」ではない</strong>。この2つを混同しないこと。</p>
+    </div>
+    <p>なお警察庁は交通事故統計データについては別施策として既にオープンデータ公開しているが、これは道路使用許可の申請・許可データとは別のデータセットである。</p>
+    <p style="font-size:13px;color:var(--ink-2);">※ 出典: 警察庁中長期計画PDF <code class="inline">npa.go.jp/policies/policy/digital/honbun_npa.pdf</code> ／ デジタル庁重点計画概要資料 <code class="inline">digital.go.jp</code> ／ 規制改革推進会議答申 <code class="inline">www8.cao.go.jp/kisei-kaikaku/kisei/publication/opinion/250528.pdf</code></p>
+  </section>
+
+  <section>
+    <h2><span class="num">04</span>マイナポータルとの連携有無 — 別施策と混同されがちな論点</h2>
+    <p class="sub">道路使用許可とマイナポータルの直接連携を示す公式情報は見つからなかった。関連施策の「運転免許証との一体化」は別制度。</p>
+    <div class="callout warn">
+      <p>道路使用許可オンライン申請とマイナポータルの直接連携を示す公式情報は<strong>本調査では発見できなかった</strong>。</p>
+    </div>
+    <p>警察庁中長期計画には別項目として「マイナンバーカードと運転免許証の一体化の推進に係るシステム整備」があり、令和6年度末までに各都道府県警のシステムを共通基盤に集約し、住所変更手続のワンストップ化・居住地外での免許更新等を実現する目標が明記されている。<strong>これは運転免許証手続に関する施策であり、道路使用許可とは別制度</strong>。両者を混同した紹介記事も見られるため注意が必要。</p>
+    <ul>
+      <li>道路使用許可オンライン化システム内では「マイナンバーカード等を用いた本人確認」の検討に言及があるのみ</li>
+      <li>マイナポータル本体とのAPI連携・情報連携が実装されたことを示す一次情報は未確認</li>
+      <li>「マイナ免許証連携」（myna.go.jp）は別制度であり道路使用許可とは無関係</li>
+    </ul>
+    <p style="font-size:13px;color:var(--ink-2);">※ 出典: 警察庁中長期計画PDF p.5「(4) マイナンバーカードと運転免許証の一体化の推進に係るシステム整備」</p>
+  </section>
+
+  <section>
+    <h2><span class="num">05</span>総合評価 — 「展開」は進んだが「連携」は別軸</h2>
+    <p class="sub">全国化の進捗と、外部データ連携の進捗は別の軸で評価する必要がある。</p>
+    <figure>
+      <img src="images/concept-05-01.png" alt="全国展開の進捗と外部データ連携の進捗を示す2軸マトリクス図解">
+      <figcaption>道路使用許可オンライン申請の現在地：展開済み・連携は未着手に近い</figcaption>
+    </figure>
+    <p>「オンライン申請できるようになった」ことと「そのデータが構造化され外部連携可能になった」ことは別軸の話であり、混同して楽観視すべきではない。今回の調査で確認できた事実に限れば、道路使用許可のオンライン申請は<strong>展開（全国化）は完了、連携（外部データ活用）は未着手に近い</strong>という評価が最も忖度のない結論になる。</p>
+  </section>
+
+  <div class="conclusion">
+    <h2>結論</h2>
+    <ol>
+      <li>全国展開は2025年12月15日をもって完了（47都道府県警がe-Gov電子申請に統一移行、約560手続が対象）。ただし道路使用許可個別では「定型的な更新・類似案件」中心に対象が限定され、新規の複雑審査案件はオンライン対象外。</li>
+      <li>申請ポータルはe-Govで統一されたが、添付書類はスキャンPDF方式が濃厚で構造化データとしての標準化は不十分。警察庁自身が「添付書類の合理化」を今後の検討事項としている段階にとどまる。</li>
+      <li>外部連携・オープンデータ化を明言した警察庁・デジタル庁・規制改革推進会議の公式文書は本調査では発見できなかった。マイナポータルとの連携も道路使用許可については未確認——「全国的な外部データ連携基盤が整いつつある」と評価するのは時期尚早。</li>
+    </ol>
+  </div>
+
+  <footer>調査日: 2026年7月2日／出典: npa.go.jp（警察庁）, digital.go.jp（デジタル庁）, www8.cao.go.jp（規制改革推進会議）, 各都道府県警察公式サイト（千葉・京都・宮城・大阪・長崎・埼玉）／本ページは公式一次情報を優先して検証した調査結果であり、断定できない箇所は「未確認」と明記している。</footer>
+
+</div>
+</body>
+</html>
