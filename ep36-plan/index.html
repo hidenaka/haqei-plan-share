@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>ep36 企画ゲート — 坤 × 風の谷のナウシカ</title>
+<style>
+  :root {
+    --ink: #1a1a1a;
+    --ink-2: #4a4a4a;
+    --bg: #f7f5ee;
+    --paper: #fbf9f1;
+    --line: #d8d2bf;
+    --accent: #31548f;
+    --accent-soft: #dae3f0;
+    --warn: #c83a2c;
+    --warn-soft: #f6dcd6;
+    --yellow: #f4d35e;
+    --shadow: 0 1px 0 rgba(0,0,0,.04), 0 8px 24px rgba(0,0,0,.06);
+    --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+    --sans: -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN",
+            "Hiragino Sans", "Noto Sans JP", "Yu Gothic", "Meiryo", sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 56px 28px 96px; }
+  .hero { margin-bottom: 56px; }
+  .hero .kicker {
+    display: inline-block;
+    background: var(--accent); color: #fff;
+    font-size: 12px; font-weight: 700; letter-spacing: .12em;
+    padding: 6px 12px; border-radius: 999px;
+    margin-bottom: 18px;
+  }
+  .hero h1 { font-size: 40px; line-height: 1.3; margin: 0 0 14px; letter-spacing: -.01em; }
+  .hero h1 b { color: var(--accent); }
+  .hero p.lede { font-size: 18px; color: var(--ink-2); margin: 0; max-width: 780px; }
+  .tldr {
+    margin-top: 28px; padding: 22px 24px;
+    background: var(--paper); border: 1px solid var(--line); border-radius: 12px;
+    box-shadow: var(--shadow);
+  }
+  .tldr h2 { font-size: 13px; letter-spacing: .15em; color: var(--accent); margin: 0 0 10px; }
+  .tldr ol { margin: 0; padding-left: 20px; }
+  .tldr li { margin: 4px 0; }
+  section { margin: 64px 0 0; }
+  section > h2 {
+    font-size: 28px; line-height: 1.4; margin: 0 0 6px;
+    border-left: 6px solid var(--accent); padding-left: 12px;
+  }
+  section > h2 .num { color: var(--accent); font-variant-numeric: tabular-nums; margin-right: 10px; }
+  section > p.sub { color: var(--ink-2); margin: 0 0 22px; }
+  figure {
+    margin: 0 0 24px; padding: 12px;
+    background: var(--paper); border: 1px solid var(--line); border-radius: 14px;
+    box-shadow: var(--shadow);
+  }
+  figure img { display: block; width: 100%; height: auto; border-radius: 8px; }
+  figcaption { font-size: 13px; color: var(--ink-2); margin-top: 10px; text-align: center; }
+  .table {
+    width: 100%; border-collapse: collapse; margin: 12px 0 6px;
+    background: var(--paper); border: 1px solid var(--line); border-radius: 12px; overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+  .table th, .table td {
+    text-align: left; padding: 12px 14px; border-bottom: 1px solid var(--line);
+    vertical-align: top; font-size: 14.5px;
+  }
+  .table th { background: #efeadb; font-weight: 700; }
+  .table tr:last-child td { border-bottom: 0; }
+  .table .pick { background: var(--accent-soft); }
+  .table .pick td:first-child { font-weight: 700; color: var(--accent); }
+  .callout {
+    margin: 18px 0; padding: 16px 18px;
+    border-left: 4px solid var(--accent);
+    background: var(--accent-soft);
+    border-radius: 0 10px 10px 0;
+  }
+  .callout.warn { border-color: var(--warn); background: var(--warn-soft); }
+  .callout p { margin: 0; }
+  .callout strong { color: var(--accent); }
+  .callout.warn strong { color: var(--warn); }
+  .quote { border-left: 3px solid var(--line); padding: 6px 16px; color: var(--ink-2); font-size: 14.5px; margin: 18px 0; }
+  .badge {
+    display: inline-block; font-size: 12px; padding: 2px 8px; border-radius: 999px;
+    background: var(--accent); color: #fff; font-weight: 700; letter-spacing: .04em;
+    vertical-align: 2px; margin-left: 6px;
+  }
+  code.inline { font-family: var(--mono); font-size: .92em; background: #efeadb; padding: 1px 6px; border-radius: 4px; }
+  .conclusion {
+    margin-top: 56px; padding: 28px 28px 24px;
+    background: var(--ink); color: #f6f3e8; border-radius: 16px;
+  }
+  .conclusion h2 { color: var(--yellow); border: 0; padding: 0; margin: 0 0 12px; }
+  .conclusion ol { margin: 0; padding-left: 20px; }
+  .conclusion li { margin: 6px 0; }
+  footer { margin-top: 36px; color: var(--ink-2); font-size: 13px; }
+  @media (max-width: 720px) {
+    .wrap { padding: 32px 18px 64px; }
+    .hero h1 { font-size: 30px; }
+    section > h2 { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <span class="kicker">EP36 企画ゲート（承認判断）</span>
+    <h1>第36話 企画案 — <b>坤 × 風の谷のナウシカ</b>「受け身は、弱さではない」</h1>
+    <p class="lede">content/056・公開枠 <b>2026-07-15（水）朝4:00 JST</b>（スロット取得済み）。topic-radar 未使用卦の最上位候補です。Step 0 の PDCA 判定と新仮説 H46 を添えて承認をお願いします。タイトルはルール通り<b>台本確定後（Step 8.5）</b>に決めます。</p>
+    <div class="tldr">
+      <h2>TL;DR</h2>
+      <ol>
+        <li>推奨＝<b>坤×風の谷のナウシカ</b>（radar 59.4・未使用卦×未使用作品の最高点。ジブリIPはショート実測でも強い＝千と千尋 1,598/1,277再生）</li>
+        <li>幕1は痛点フック（H41系）<b>「言い返せなかった夜、自分を弱いと責める」</b>→ 坤で「強い受容」へ常識反転</li>
+        <li>新仮説 <b>H46</b>（採番済み）: 常識反転フックがコメント/保存率を上げるか。判定＝72h-7dで ep29-35 コホート中央値比</li>
+      </ol>
+    </div>
+  </header>
+
+  <section>
+    <h2><span class="num">01</span>Step 0 — PDCA判定と今回への反映</h2>
+    <p class="sub">2026-07-03 10:19 実測スナップショット（yt-stats.mjs）と検証中仮説の照合。</p>
+    <table class="table">
+      <thead><tr><th>実測</th><th>値</th><th>読み</th></tr></thead>
+      <tbody>
+        <tr><td>登録 / 総再生</td><td>68（+2/日）/ 44,988（+2,891/日）</td><td>ショートが再生の主エンジン（変わらず）</td></tr>
+        <tr class="pick"><td>鋼の錬金術師ショート</td><td>1,153再生@216.6/h・1,699@118.7/h</td><td>H39「既知キャラ×未知の驚き」フックが効いている傍証</td></tr>
+        <tr><td>ジブリ系ショート</td><td>千と千尋 1,598 / 1,277</td><td>ジブリIPの認知度はこのchで実測済みの強さ（H2系）</td></tr>
+        <tr><td>検証中仮説（H40/H41ほか）</td><td>判定日未達</td><td>対象epが予約公開待ち → 1日データで動かさない（本人ルール）</td></tr>
+      </tbody>
+    </table>
+    <p><b>今回の企画に反映した学び（どの仮説をどう反映したか）:</b></p>
+    <ul>
+      <li><b>H2（IP認知度が初速を支配）</b> → 国民的ジブリIP「風の谷のナウシカ」を選定。0再生ニッチは捨てる（成長SSOT準拠）</li>
+      <li><b>H41（痛点×自己投影フック）</b> → 幕1は現代の痛点から入り、作品は幕2で名乗る（ep03/ep34で確立した型）</li>
+      <li><b>H39（既知キャラ×未知の驚き）</b> → 「ナウシカは優しいから戦わないのではない」型の前提裏切りをショート切り出しの核に</li>
+      <li><b>H40（問い先頭タイトル・検証中）</b> → タイトルは台本確定後の Step 8.5 で3案提示（企画では決めない）</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2><span class="num">02</span>推奨企画 — 6幕アウトライン</h2>
+    <p class="sub">一行コンセプト：<b>戦わないナウシカが、巨神兵で焼き払うクシャナより遠くへ行けたのはなぜか</b> — 「受け身」を弱さでなく最強の戦略として読み直す回。</p>
+    <figure>
+      <img src="images/concept-02-01.png" alt="6幕構成の流れ図（絵巻物メタファー）">
+      <figcaption>6幕構成（v2.2）— 価値の本体は幕5・処方箋（六爻の階段）</figcaption>
+    </figure>
+    <table class="table">
+      <thead><tr><th>幕</th><th>内容</th><th>尺</th></tr></thead>
+      <tbody>
+        <tr><td>1. 違和感の提示</td><td>「言い返せなかった帰り道、自分を弱いと責めたことはないでしょうか」— 受け身＝弱さ、という常識への違和感。卦名teaser（坤）</td><td>30秒</td></tr>
+        <tr><td>2. 観察</td><td>ナウシカの名場面を固有名で積む：①テトに指を噛ませて「ほら、怖くない」②王蟲の暴走に武器でなく身を差し出す ③毒の森と恐れられた腐海が、実は大地を浄化していた — 「受け止める側」が世界を治していた構造。対比＝クシャナ（巨神兵で焼き払う→蟲の大群を呼ぶ）</td><td>3-5分</td></tr>
+        <tr><td>3. 種明かし</td><td>坤＝六本すべて陰・大地の卦（GUA6六爻図）。乾（ep02・夜神月）の正反対。「先んずれば迷い、後るれば主を得る」・牝馬の貞</td><td>2-3分</td></tr>
+        <tr><td>4. 風刺の刃</td><td>即レス・論破文化。黙って受け止める人が「言い返せない人」として下に見られる社会の空気と、そう見てしまう自分自身へ</td><td>30秒-1分</td></tr>
+        <tr class="pick"><td>5. 処方箋（価値の本体）</td><td>坤の六爻＋象辞「厚徳載物」を"受け止め方の階段"として設計（§03参照）。各段をナウシカ/クシャナの選択に着地</td><td>1.5-3分</td></tr>
+        <tr><td>6. 余韻</td><td>断言で締める（定型の問いかけ禁止）</td><td>30秒</td></tr>
+      </tbody>
+    </table>
+    <div class="callout">
+      <p><strong>比較作品:</strong> ①クシャナ（作内対比＝力で焼き払う出口）②エレン・イェーガー（ep06「革」＝力で世界を変える出口・シリーズ内クロス参照で回遊導線）</p>
+    </div>
+    <div class="callout warn">
+      <p><strong>fact_check は Step 2 で一次確認:</strong> 上記の作中事実（テト・王蟲・腐海の設定）は台本段階で ja.wikipedia / 公式で全数照合し <code class="inline">content/056/fact_check.md</code> に記録してから進めます（L9再発防止・記憶を一次ソースにしない）。</p>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="num">03</span>卦の適合 — なぜ坤か・処方箋の骨子</h2>
+    <p class="sub">坤（こん・kw#2）＝六爻すべて陰の純粋な受容。乾と対をなす易経の二大根本卦。ナウシカの「抗わずに受け止めて、いちばん遠くまで行く」構造と一致。</p>
+    <figure>
+      <img src="images/concept-03-01.png" alt="坤の構造 — 六爻すべて陰・乾との対比">
+      <figcaption>坤＝大地・牝馬。「先んずれば迷い、後るれば主を得る」（先迷後得主）</figcaption>
+    </figure>
+    <p><b>処方箋＝六爻の階段（骨子案）</b> — 正確な爻辞文言は Step 2 で <code class="inline">db/hexagrams.json</code> から引き直します（記憶で書かない・深掘り必須ルール）:</p>
+    <table class="table">
+      <thead><tr><th>爻</th><th>爻辞（骨子）</th><th>受け止め方の段階</th><th>作品への着地</th></tr></thead>
+      <tbody>
+        <tr><td>初六</td><td>霜を履んで堅氷至る</td><td>小さな兆しを受け取る感度 — 受容は鈍感ではなく察知から始まる</td><td>腐海の胞子ひとつから森の異変を読むナウシカ</td></tr>
+        <tr><td>六二</td><td>直・方・大</td><td>まっすぐで在れば、技巧なしで通る</td><td>蟲に対して策でなく素手で向き合う</td></tr>
+        <tr><td>六三</td><td>章を含みて貞にすべし</td><td>才能を誇示せず内に抱える</td><td>風使いの腕を誇らない</td></tr>
+        <tr><td>六四</td><td>嚢を括る</td><td>語らない局面の見極め — 沈黙は逃げではなく判断</td><td>怒りを飲み込む場面</td></tr>
+        <tr class="pick"><td>六五</td><td>黄裳、元吉</td><td>中庸の受容が最高の吉 — 受け身の完成形は「支える側の中心」になること</td><td>民が自然とナウシカに従う構造</td></tr>
+        <tr><td>上六</td><td>龍、野に戦う</td><td>受容が極まって争えば共倒れ — 受け身にも限界線がある（怒りの発露＝ナウシカも一度剣を取った）</td><td>父を殺された直後の激昂</td></tr>
+      </tbody>
+    </table>
+    <div class="callout">
+      <p><strong>象辞「地勢坤、君子以て厚徳もて物を載す」</strong>＝受け流すのではなく「載せる」。我慢（消耗）と受容（器）の違いが本編の背骨になります。</p>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="num">04</span>代替候補・新仮説H46・承認事項</h2>
+    <p class="sub">topic-radar 上位のうち未使用卦×未使用作品でフィルタした代替。radar 1位のコードギアス（87.2）は卦＝革が ep06 で使用済みのため今回は見送り（別卦での再マッピングは将来検討）。</p>
+    <table class="table">
+      <thead><tr><th>候補</th><th>radar</th><th>卦</th><th>life_moment</th></tr></thead>
+      <tbody>
+        <tr class="pick"><td>風の谷のナウシカ（推奨）</td><td>59.4</td><td>坤</td><td>抗うより受け止める人が、いちばん遠くまで進む</td></tr>
+        <tr><td>BLEACH（黒崎一護）</td><td>58.0</td><td>震</td><td>突然すべてが崩れた時、最初に動けた人が後を分ける</td></tr>
+        <tr><td>ジョジョの奇妙な冒険</td><td>54.9</td><td>同人</td><td>本当の仲間は、得じゃなく志でつながる</td></tr>
+        <tr><td>Re:ゼロから始める異世界生活</td><td>54.2</td><td>小過</td><td>一発逆転より、小さくやり直す方が確かに進む</td></tr>
+      </tbody>
+    </table>
+    <div class="callout">
+      <p><strong>新仮説 H46（採番済み・056）:</strong> 「受け身＝弱さ」の常識を反転する<b>強い受容フレーム</b>のフックは、自己投影コメント（「これ、私だ」系）と保存率を上げる。<b>判定基準:</b> 公開後72h-7dで ep36 関連ショート/本編のコメント率・保存率が ep29-35 コホート中央値を上回れば規則化候補へ。単発断定はしない。</p>
+    </div>
+    <p><b>承認いただきたい3点:</b></p>
+    <ul>
+      <li>① 題材＝<b>坤 × 風の谷のナウシカ</b>（代替を選ぶ場合はその旨だけ返信ください）</li>
+      <li>② 6幕アウトライン（§02）と処方箋の骨子（§03）</li>
+      <li>③ 新仮説 H46 の内容と判定基準</li>
+    </ul>
+  </section>
+
+  <div class="conclusion">
+    <h2>結論</h2>
+    <ol>
+      <li>承認いただきたいのは <b>①題材（坤×ナウシカ）②6幕アウトライン ③新仮説H46</b> の3点</li>
+      <li>承認後: <code class="inline">essay.sh</code> 登録（ep36/056/坤）→ Step 2 台本へ（fact_check 全数照合＋preflight PASS＋creative-loop fork採点≧90 を経て台本レビューで再度お見せします）</li>
+      <li>タイトル・サムネはこの段階では決めません（Step 8.5 / Step 9 で別途提示）</li>
+    </ol>
+  </div>
+
+  <footer>題材: analytics/topic-radar.json（2026-06-29走査）/ docs/pdca.md / db/hexagrams.json（坤 kw#2）。H46・2026-07-15 long スロット取得済み。生成: 2026-07-03</footer>
+
+</div>
+</body>
+</html>
