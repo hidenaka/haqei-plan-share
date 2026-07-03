@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>申込キット | おさんぽセーフティ</title>
+<style>
+  :root {
+    --ink: #1a1a1a; --ink-2: #555;
+    --bg: #f7f5ee; --paper: #ffffff; --line: #ddd6c4;
+    --accent: #2e9e6b; --accent-dark: #237a52; --blue: #2e6ee8;
+    --warn: #c83a2c; --yellow: #f4d35e;
+    --sans: -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP", sans-serif;
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body { margin: 0; padding: 0; }
+  body { font-family: var(--sans); background: var(--bg); color: var(--ink); line-height: 1.75; font-size: 16px; }
+  .wrap { max-width: 640px; margin: 0 auto; padding: 20px 16px 80px; }
+
+  .deadline { background: var(--warn); color: #fff; border-radius: 12px; padding: 12px 16px; font-weight: 700; text-align: center; margin-bottom: 16px; font-size: 15px; }
+  h1 { font-size: 22px; line-height: 1.4; margin: 8px 0 4px; }
+  .lede { color: var(--ink-2); font-size: 14px; margin: 0 0 20px; }
+
+  .bigbtn { display: block; text-align: center; background: var(--accent); color: #fff; font-size: 18px; font-weight: 700; padding: 16px; border-radius: 14px; text-decoration: none; box-shadow: 0 4px 12px rgba(46,158,107,.35); margin: 12px 0 24px; }
+  .bigbtn:active { background: var(--accent-dark); }
+
+  .step { background: var(--paper); border: 1px solid var(--line); border-radius: 14px; padding: 16px; margin: 0 0 16px; box-shadow: 0 2px 8px rgba(0,0,0,.05); }
+  .step h2 { font-size: 17px; margin: 0 0 10px; display: flex; align-items: center; gap: 8px; }
+  .stepnum { display: inline-flex; align-items: center; justify-content: center; min-width: 26px; height: 26px; border-radius: 50%; background: var(--accent); color: #fff; font-size: 14px; font-weight: 700; }
+  .step p.hint { font-size: 13px; color: var(--ink-2); margin: 0 0 10px; }
+
+  .field { margin: 14px 0; }
+  .field .flabel { font-size: 13px; font-weight: 700; color: var(--accent-dark); margin-bottom: 4px; display: flex; justify-content: space-between; align-items: center; }
+  .count { font-size: 11px; font-weight: 700; color: #2e7d32; background: #e3efe3; border-radius: 999px; padding: 1px 8px; }
+  .copybox { position: relative; background: #f6f4ec; border: 1px solid var(--line); border-radius: 10px; padding: 12px 12px 44px; font-size: 14px; line-height: 1.7; word-break: break-all; white-space: pre-wrap; }
+  .copybtn { position: absolute; right: 8px; bottom: 8px; border: 0; background: var(--blue); color: #fff; font-size: 13px; font-weight: 700; padding: 8px 16px; border-radius: 8px; }
+  .copybtn:active { opacity: .7; }
+  .copybtn.done { background: #2e7d32; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 13px; background: #f6f4ec; border-radius: 10px; overflow: hidden; }
+  th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { background: #ece8da; }
+  tr:last-child td { border-bottom: 0; }
+
+  .cap { margin: 12px 0; }
+  .cap img { width: 100%; border-radius: 10px; border: 1px solid var(--line); display: block; }
+  .cap .cl { font-size: 13px; color: var(--ink-2); margin-top: 4px; }
+  .savehint { background: #fdf3d7; border: 1px solid #eddc9e; border-radius: 10px; padding: 10px 12px; font-size: 13px; margin: 10px 0; }
+
+  .check { list-style: none; padding: 0; margin: 8px 0 0; }
+  .check li { padding: 10px 12px; background: #f6f4ec; border: 1px solid var(--line); border-radius: 10px; margin-bottom: 8px; font-size: 14px; display: flex; gap: 10px; align-items: flex-start; }
+  .check input { transform: scale(1.4); margin-top: 5px; }
+
+  footer { margin-top: 24px; color: var(--ink-2); font-size: 11.5px; text-align: center; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="deadline">⏰ 申込締切: 7月27日(月) 17:00</div>
+  <h1>📝 参加申込キット</h1>
+  <p class="lede">都知事杯オープンデータ・ハッカソン2026 —「おさんぽセーフティ」。このページだけでスマホから申込が完結します。各項目は「コピー」を押してフォームに貼り付けてください。</p>
+
+  <a class="bigbtn" href="https://form.jotform.com/261468325066056" target="_blank" rel="noopener">▶ 申込フォームを開く</a>
+
+  <div class="step">
+    <h2><span class="stepnum">1</span>基本情報</h2>
+    <div class="field">
+      <div class="flabel">チーム名 <button class="copybtn" style="position:static;padding:4px 12px" onclick="cp(this,'おさんぽセーフティ')">コピー</button></div>
+      <div style="font-size:15px;font-weight:700">おさんぽセーフティ</div>
+    </div>
+    <div class="field">
+      <div class="flabel">参加形態</div>
+      <div style="font-size:15px">個人参加（1名）</div>
+    </div>
+    <div class="field">
+      <div class="flabel">サービス案を短く聞かれたら <span class="count">42字</span></div>
+      <div class="copybox" id="t0">工事による歩道規制を事前に知らせ、園児・車椅子のお散歩ルートの安全を守る地図サービス<button class="copybtn" onclick="cpEl(this,'t0')">コピー</button></div>
+    </div>
+  </div>
+
+  <div class="step">
+    <h2><span class="stepnum">2</span>サービス概要 <span class="count">290字</span></h2>
+    <p class="hint">着目した課題・背景、サービスの詳細（300字程度）</p>
+    <div class="copybox" id="t1">保育園のお散歩や特別支援学校の校外学習の下見（実踏）では、担当者が事前にルートの安全を確認しているが、工事による歩道の一時的な通行止めや狭小を事前に知る手段がない。歩道が塞がれると園児の列や車椅子は急な迂回を強いられ、車道側にはみ出す危険が生じる。「おさんぽセーフティ」は東京都の路上工事オープンデータ等を活用し、地図上に散歩ルートを引くだけで工事規制との交差を自動判定し、歩行者・車椅子・ベビーカー別に危険箇所を提示する。データは工事関係者が看板写真をAIに読み取らせるだけで登録でき、住民配布用のお知らせビラとQRコードを自動生成。既存の近隣周知業務の延長で規制データが育つ。<button class="copybtn" onclick="cpEl(this,'t1')">コピー</button></div>
+  </div>
+
+  <div class="step">
+    <h2><span class="stepnum">3</span>プロダクト・技術詳細 <span class="count">294字</span></h2>
+    <p class="hint">技術選定理由、生成AI活用方法、デモURL（300字程度）</p>
+    <div class="copybox" id="t2">Cloudflare上にフルサーバレスで構築（Pages/Workers/Hono/D1）。地図は国土地理院タイル＋MapLibre GL JSを採用し、APIキーやライセンス制約なく公開できる構成とした。ルートと規制の交差判定は線分間距離の幾何エンジンを実装し、同一の規制を歩行者・車椅子・ベビーカー別の注意度（低中高）に変換する。生成AIはClaudeのvision＋構造化出力を用い、工事看板の写真1枚から工事名・工期・規制種別をJSONで抽出し登録下書きを生成する。登録データはGeoJSON/CSV/APIで再配信し他サービスから再利用できる。デモURLは提出時までに公開予定。<button class="copybtn" onclick="cpEl(this,'t2')">コピー</button></div>
+  </div>
+
+  <div class="step">
+    <h2><span class="stepnum">4</span>チーム実行力 <span class="count">258字</span></h2>
+    <p class="hint">メンバー構成と役割（300字程度）</p>
+    <div class="copybox" id="t3">個人参加。企画・調査・設計・実装・テストの全工程を、生成AIエージェントを駆使した開発体制で一人で高速に回している。応募時点でMVP（リスク地図・利用者別リスク変換・お散歩ルートの危険自動判定・看板OCR登録・データ出力API）は実装済みで、自動テスト38件が全て通過している。またAIリサーチにより市場・競合・制度の調査を実施し、「工事による歩道の一時規制を動的に扱う国内サービスは空白領域」であることを確認した上で開発している。残期間は実データ拡充、Cloudflareへの公開、UI改善、プレゼン制作に充てる。<button class="copybtn" onclick="cpEl(this,'t3')">コピー</button></div>
+  </div>
+
+  <div class="step">
+    <h2><span class="stepnum">5</span>オープンデータ利用状況</h2>
+    <p class="hint">利用中または予定（最大10件）。まとめてコピーできます。</p>
+    <table>
+      <thead><tr><th>データ</th><th>状況</th></tr></thead>
+      <tbody>
+        <tr><td>東京都建設局「23区内 都道の路上工事情報」(CC BY)</td><td>利用中</td></tr>
+        <tr><td>国土地理院 地理院タイル</td><td>利用中</td></tr>
+        <tr><td>国交省 歩行空間ネットワークデータ(ほこナビ)</td><td>予定</td></tr>
+        <tr><td>JARTIC 交通量オープンデータ</td><td>予定</td></tr>
+        <tr><td>東京都オープンデータAPIカタログ(路上工事)</td><td>予定</td></tr>
+      </tbody>
+    </table>
+    <div class="copybox" id="t4" style="margin-top:10px">1. 東京都建設局「23区内 都道の路上工事情報」（CC BY）: 利用中。工事規制データとして取込
+2. 国土地理院 地理院タイル: 利用中。ベースマップ
+3. 国土交通省「歩行空間ネットワークデータ」（ほこナビ）: 利用予定。段差・幅員による車椅子リスク判定
+4. JARTIC 交通量オープンデータ: 利用予定。規制の影響度スコアの重みづけ
+5. 東京都オープンデータAPIカタログ（建設局 路上工事情報 JSON/XML）: 利用予定。更新自動化<button class="copybtn" onclick="cpEl(this,'t4')">コピー</button></div>
+  </div>
+
+  <div class="step">
+    <h2><span class="stepnum">6</span>画面キャプチャ（最大3点）</h2>
+    <div class="savehint">📲 画像を<b>長押し→「"写真"に保存」</b>してから、フォームでアップロードしてください。</div>
+    <div class="cap"><img src="images/capture-1-risk-map.png" alt="リスク地図"><div class="cl">① リスク地図 — 車椅子モードで規制を危険度別に色分け表示（凡例つき）</div></div>
+    <div class="cap"><img src="images/capture-2-route-hazard.png" alt="ルート危険判定"><div class="cl">② お散歩ルート危険判定 — ルートが東京駅の歩道閉鎖と交差し「⚠️高」を検出</div></div>
+    <div class="cap"><img src="images/capture-3-notice-kit.png" alt="周知キット"><div class="cl">③ 周知キット — 登録から自動生成される「工事のお知らせ」ページ（QR・印刷ビラ）</div></div>
+  </div>
+
+  <div class="step">
+    <h2><span class="stepnum">7</span>送信前チェック</h2>
+    <ul class="check">
+      <li><input type="checkbox" id="c1"><label for="c1">全項目を貼り付けた（文字数制限内であることは確認済み）</label></li>
+      <li><input type="checkbox" id="c2"><label for="c2">キャプチャ3点をアップロードした</label></li>
+      <li><input type="checkbox" id="c3"><label for="c3">送信ボタンを押した</label></li>
+      <li><input type="checkbox" id="c4"><label for="c4">🎁 送信後: <b>提供ツール申請</b>（OpenCode LLMセット＋Cloudflare Paid相当・9月末まで）を忘れずに！</label></li>
+    </ul>
+  </div>
+
+  <a class="bigbtn" href="https://form.jotform.com/261468325066056" target="_blank" rel="noopener">▶ 申込フォームを開く</a>
+
+  <footer>おさんぽセーフティ / 都知事杯オープンデータ・ハッカソン2026 申込キット — noindex</footer>
+
+</div>
+<script>
+function flash(btn){ btn.textContent = "✓ コピー済み"; btn.classList.add("done"); setTimeout(()=>{ btn.textContent="コピー"; btn.classList.remove("done"); }, 1800); }
+function cp(btn, text){ navigator.clipboard.writeText(text).then(()=>flash(btn)).catch(()=>fallback(text, btn)); }
+function cpEl(btn, id){ const el = document.getElementById(id).cloneNode(true); el.querySelectorAll("button").forEach(b=>b.remove()); cp(btn, el.textContent.trim()); }
+function fallback(text, btn){ const ta = document.createElement("textarea"); ta.value = text; document.body.appendChild(ta); ta.select(); document.execCommand("copy"); ta.remove(); flash(btn); }
+</script>
+</body>
+</html>
