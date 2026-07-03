@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>AI漫画ハーネス v2 — 完了報告と次の一手</title>
+<style>
+:root{--ink:#1c1a17;--muted:#6b6255;--paper:#faf6ec;--card:#fff;--line:#d8cfbd;--accent:#b8862a;--ok:#2e7d4f;--warn:#b3452e;--blue:#2c5f8a}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif;line-height:1.75}
+main{width:min(920px,calc(100vw - 28px));margin:28px auto 64px}
+.kicker{color:var(--accent);font-weight:800;letter-spacing:.12em;font-size:13px}
+h1{margin:.2em 0 .3em;font-size:clamp(26px,5vw,40px);line-height:1.25}
+h2{margin:2.2em 0 .6em;font-size:clamp(19px,3vw,24px);border-bottom:2px solid var(--line);padding-bottom:.3em}
+.lede{color:var(--muted);font-size:16px}
+.tldr{background:var(--card);border:2px solid var(--line);border-left:6px solid var(--accent);padding:14px 18px;margin:18px 0;border-radius:6px}
+.tldr b{display:block;margin-bottom:4px}
+figure{margin:26px 0}
+figure img{width:100%;border:2px solid var(--line);border-radius:8px;display:block}
+figcaption{color:var(--muted);font-size:13px;margin-top:6px}
+table{width:100%;border-collapse:collapse;background:var(--card);font-size:14px}
+th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+th{background:#f1ead9;white-space:nowrap}
+code{background:#f1ead9;padding:1px 6px;border-radius:4px;font-size:.92em}
+.callout{background:#fdf3e3;border:2px solid #e5c98a;padding:12px 16px;border-radius:6px;margin:14px 0}
+.score{font-weight:900;font-size:22px}
+.ok{color:var(--ok);font-weight:700}.ng{color:var(--warn);font-weight:700}
+.choice{display:grid;gap:12px;margin:16px 0}
+.opt{background:var(--card);border:2px solid var(--line);border-radius:8px;padding:14px 18px}
+.opt.rec{border-color:var(--accent);border-width:3px;background:#fffbef}
+.opt h3{margin:0 0 6px;font-size:17px}
+.opt .tag{font-size:12px;font-weight:800;color:#fff;background:var(--accent);border-radius:4px;padding:2px 8px;margin-left:8px;vertical-align:2px}
+.src{color:var(--muted);font-size:12px}
+ul{padding-left:1.3em}
+.concl{background:var(--card);border:2px solid var(--line);border-radius:8px;padding:14px 18px;margin-top:28px}
+</style>
+</head>
+<body>
+<main>
+
+<p class="kicker">CONFIRM — AI MANGA HARNESS v2</p>
+<h1>AI漫画ハーネスを「両モデル対応＋自己改善ループ内蔵」に最適化しました</h1>
+<p class="lede">manga-lab の制作基盤を、claude / codex どちらのセッションでも同じ手順・同じゲートで回せる形に再構築。品質は自己申告でなく独立採点で守り、教訓は台帳から機械ゲートへ還流します。</p>
+
+<div class="tldr">
+<b>TL;DR（3行）</b>
+① プレイブック（manga-lab/AGENTS.md）＋一気通貫コマンド（manga-produce.mjs）で、どのモデルでも同一の制作フローに。<br>
+② 独立採点ループを実走：完成済み001は <span class="score">71点</span>（不合格）— コマ単調・人物ドリフト等の「直し方」を採点者から取得済み。<br>
+③ 判断してほしいのは1点：<b>001を改善2周目に回すか</b>（画像枠を消費）。
+</div>
+
+<figure>
+<img src="images/overview-01.png" alt="AI漫画ハーネスv2の全体俯瞰図">
+<figcaption>全体俯瞰：3段ゲート × 2階建てループ × claude/codex共通プレイブック</figcaption>
+</figure>
+
+<h2>1. 何を作ったか（7点）</h2>
+<table>
+<tr><th>成果物</th><th>役割</th></tr>
+<tr><td><code>manga-lab/AGENTS.md</code>（＋CLAUDE.md symlink）</td><td>プレイブック＝このレーンの正。10ステップ制作フロー・ゲート・モデル別の採点起動法。codexはAGENTS.mdを、claudeはsymlink経由で同じ内容を読む</td></tr>
+<tr><td><code>scripts/manga-produce.mjs</code></td><td>一気通貫オーケストレータ（検証→不足画像だけ生成→コマ割りレンダ→サイト→機械QA）。冪等・中断後は再実行で続きから</td></tr>
+<tr><td><code>analytics/eval-schemas/manga-name.json</code></td><td>ネーム段階の採点表（画像枠を使う<b>前</b>のゲート）。5軸固定・threshold 90</td></tr>
+<tr><td><code>analytics/eval-schemas/manga-render.json</code></td><td>完成紙面の採点表。6軸固定・IP混入は0点の致命傷扱い</td></tr>
+<tr><td><code>manga-lab/LESSONS.md</code></td><td>教訓台帳（外側ループのSSOT）。L-01〜L-10・open/applied状態管理</td></tr>
+<tr><td>機械ゲート強化</td><td><code>validateMangaProject</code> に人物ドリフト検査（visual_anchor）を追加＋テンプレschema更新</td></tr>
+<tr><td>バグ修正</td><td><code>creative-loop.mjs</code> record後のクラッシュ（未定義変数）を修正</td></tr>
+</table>
+
+<h2>2. claude / codex 同等性はどう担保するか</h2>
+<ul>
+<li><b>創作テキスト以外は全部CLI</b>：モデルの仕事は brief / pages.json / visual_prompts.tsv だけ。画像生成・レンダ・QA・サイトは <code>node scripts/manga-*.mjs</code> ＝誰が回しても決定論で同じ結果。</li>
+<li><b>品質はゲートで守る</b>：機械QA → fork独立採点（≧90）→ 人間ゲート の3段。モデルの善意・自己採点に依存しない。</li>
+<li><b>採点も両モデル対応</b>：同じ採点プロンプトを、claudeはまっさらなfork subagentへ、codexは <code>codex exec</code> へ（codex-cli 0.142.5 導入確認済み）。契約違反の採点JSONは自動0点化。</li>
+</ul>
+
+<h2>3. 自己改善ループ（2階建て）</h2>
+<ul>
+<li><b>内側ループ</b>：1作品を「作る → fork独立採点 → feedbackの箇所だけ直す」で90点まで詰める（creative-loop・threshold 90 / max 3 / 最良版採用）。</li>
+<li><b>外側ループ</b>：完了ごとに教訓を LESSONS.md へ → <b>機械ゲート・テンプレ・採点表に実装して初めて applied</b>（台帳に書くだけでは closed にならない）。今日だけで L-08（人物ドリフト→機械検査化）と L-10（ループ機構自体のバグ修正）がこの経路で還流済み。</li>
+</ul>
+
+<h2>4. 実証結果（今日の実走）</h2>
+<table>
+<tr><th>検証</th><th>結果</th><th>出典</th></tr>
+<tr><td>一気通貫 produce（001）</td><td class="ok">完走（8ページレンダ＋QA PASS）</td><td class="src">manga-produce.mjs 実行ログ</td></tr>
+<tr><td>ハーネステスト</td><td class="ok">19件 / fail 0</td><td class="src">node --test tests/manga-lib.test.mjs</td></tr>
+<tr><td>fork独立採点（001完成紙面）</td><td class="ng">71点・不合格</td><td class="src">analytics/creative-loops/manga-render-001/state.json</td></tr>
+</table>
+<div class="callout">
+<b>71点の内訳と直し方（採点者の処方・要約）</b><br>
+最大失点は <b>panel_variety 5/15</b>：全ページ同一グリッドで1枚画像を4回切り回し（＝以前から台帳に載せていた弱点L-05を第三者が裏取り）。次いで <b>visual_identity 8/15</b>：主人公がP04以降「江戸の絵師風」にドリフト。処方＝1ページ2〜3枚のコマ単位画像（P0N_A形式）＋全プロンプトに固定人物記述句。IP安全・可読性はクリア。
+</div>
+
+<h2>5. あなたはどれを選ぶ</h2>
+<div class="choice">
+<div class="opt rec">
+<h3>A. 001を改善2周目に回す<span class="tag">推奨</span></h3>
+採点feedbackどおりコマ単位で画像を作り直し（推定 16〜24枚生成＝<b>共有画像枠を消費</b>）、レイアウト分岐を実装して再採点。90点合格の完成見本が1本立ち、以降の64卦横展開の型が固まる。
+</div>
+<div class="opt">
+<h3>B. 002（別の卦）を新ハーネスでゼロから作る</h3>
+改善ループを「新規制作の最初から」通しで検証。ネーム採点ゲート①（画像前・安い）から効かせられるが、001は71点のまま残る。
+</div>
+<div class="opt">
+<h3>C. 今日はここまで（基盤のみ確定）</h3>
+ハーネス変更をコミットして終了。画像枠は使わない。001の改善は次セッションのStep 0（LESSONS再注入）から再開できる。
+</div>
+</div>
+
+<div class="concl">
+<b>結論（3行）</b><br>
+基盤は完成し、ループが実際に「弱点を見つけて基盤に還流する」ところまで実証済み。<br>
+残る意思決定は画像枠を使う改善2周目のタイミングだけ。<br>
+A を選べばこのセッションで71→90点の収束まで自走します（コミットは承認後に実施）。
+</div>
+
+</main>
+</body>
+</html>
