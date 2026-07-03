@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>参加申込 原稿レビュー — 都知事杯ODハッカソン2026</title>
+<style>
+  :root {
+    --ink: #1a1a1a; --ink-2: #4a4a4a;
+    --bg: #f7f5ee; --paper: #fbf9f1; --line: #d8d2bf;
+    --accent: #2e6ee8; --accent-soft: #dae6fb;
+    --warn: #c83a2c; --warn-soft: #f6dcd6; --yellow: #f4d35e;
+    --shadow: 0 1px 0 rgba(0,0,0,.04), 0 8px 24px rgba(0,0,0,.06);
+    --sans: -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP","Yu Gothic","Meiryo", sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { font-family: var(--sans); background: var(--bg); color: var(--ink); line-height: 1.75; -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 56px 28px 96px; }
+  .hero { margin-bottom: 40px; }
+  .hero .kicker { display: inline-block; background: var(--accent); color: #fff; font-size: 12px; font-weight: 700; letter-spacing: .12em; padding: 6px 12px; border-radius: 999px; margin-bottom: 18px; }
+  .hero h1 { font-size: 34px; line-height: 1.32; margin: 0 0 14px; letter-spacing: -.01em; }
+  .hero h1 b { color: var(--accent); }
+  .hero p.lede { font-size: 17px; color: var(--ink-2); margin: 0; max-width: 860px; }
+  .tldr { margin-top: 26px; padding: 22px 24px; background: var(--paper); border: 1px solid var(--line); border-radius: 12px; box-shadow: var(--shadow); }
+  .tldr h2 { font-size: 13px; letter-spacing: .15em; color: var(--accent); margin: 0 0 10px; }
+  .tldr ol { margin: 0; padding-left: 20px; } .tldr li { margin: 5px 0; }
+  section { margin: 48px 0 0; }
+  section > h2 { font-size: 23px; line-height: 1.4; margin: 0 0 6px; border-left: 6px solid var(--accent); padding-left: 12px; }
+  section > h2 .num { color: var(--accent); margin-right: 8px; }
+  section > p.sub { color: var(--ink-2); margin: 0 0 16px; font-size: 14px; }
+  figure { margin: 0 0 24px; padding: 12px; background: var(--paper); border: 1px solid var(--line); border-radius: 14px; box-shadow: var(--shadow); }
+  figure img { display: block; width: 100%; height: auto; border-radius: 8px; }
+  figcaption { font-size: 13px; color: var(--ink-2); margin-top: 10px; text-align: center; }
+  .draft { background: var(--paper); border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px; box-shadow: var(--shadow); font-size: 15px; }
+  .count { display: inline-block; font-size: 12px; font-weight: 700; background: #e3efe3; color: #2e7d32; border-radius: 999px; padding: 2px 10px; margin-left: 8px; vertical-align: 2px; }
+  .table { width: 100%; border-collapse: collapse; margin: 12px 0 6px; background: var(--paper); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; box-shadow: var(--shadow); }
+  .table th, .table td { text-align: left; padding: 10px 13px; border-bottom: 1px solid var(--line); vertical-align: top; font-size: 14px; }
+  .table th { background: #e6ecf6; font-weight: 700; }
+  .table tr:last-child td { border-bottom: 0; }
+  .callout { margin: 18px 0; padding: 16px 18px; border-left: 4px solid var(--accent); background: var(--accent-soft); border-radius: 0 10px 10px 0; }
+  .callout p { margin: 0; } .callout strong { color: var(--accent); }
+  .conclusion { margin-top: 52px; padding: 28px 28px 24px; background: var(--ink); color: #f6f3e8; border-radius: 16px; }
+  .conclusion h2 { color: var(--yellow); border: 0; padding: 0; margin: 0 0 12px; }
+  .conclusion ol { margin: 0; padding-left: 20px; } .conclusion li { margin: 6px 0; }
+  footer { margin-top: 36px; color: var(--ink-2); font-size: 12.5px; }
+  @media (max-width: 720px) { .wrap { padding: 32px 18px 64px; } .hero h1 { font-size: 24px; } section > h2 { font-size: 19px; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <span class="kicker">参加申込 原稿レビュー / 締切 7月27日(月) 17:00</span>
+    <h1>都知事杯ハッカソン 参加申込 — <b>この内容で提出する</b></h1>
+    <p class="lede">申込フォーム（form.jotform.com/261468325066056）の記入項目（各300文字程度×6項目）に合わせた原稿。全文が下にあるので、OKならそのままコピペで提出できる。修正指示があれば直します。</p>
+    <div class="tldr">
+      <h2>TL;DR</h2>
+      <ol>
+        <li>6項目すべて執筆済み・全て文字数制限内（258〜294字）。コピペ元は osanpo-safety/docs/entry/entry-application.md。</li>
+        <li>芯は「お散歩・実踏の安全×歩道工事規制×看板OCR」。実装済みMVP（テスト35件）を実行力の証拠として明記。</li>
+        <li>申込後すぐ「提供ツール申請」（OpenCode LLMセット＋Cloudflare Paid相当）を出す。</li>
+      </ol>
+    </div>
+  </header>
+
+  <section>
+    <h2><span class="num">0.</span>全体像</h2>
+    <figure>
+      <img src="images/overview-01.png" alt="申込書6項目の記入内容マップ">
+      <figcaption>6項目の記入内容マップ</figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <h2><span class="num">1.</span>チーム情報</h2>
+    <div class="draft">
+      チーム名: <b>おさんぽセーフティ</b> ／ 参加形態: 個人参加<br>
+      <span style="color:#666;font-size:13px">（サービス案を50字で聞かれた場合）</span><br>
+      工事による歩道規制を事前に知らせ、園児・車椅子のお散歩ルートの安全を守る地図サービス<span class="count">42字/50字</span>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="num">2.</span>サービス概要 <span class="count">275字/300字</span></h2>
+    <p class="sub">着目した課題・背景、サービスの詳細</p>
+    <div class="draft">保育園のお散歩や特別支援学校の校外学習の下見（実踏）では、担当者が事前にルートの安全を確認しているが、工事による歩道の一時的な通行止めや狭小を事前に知る手段がない。歩道が塞がれると園児の列や車椅子は急な迂回を強いられ、車道側にはみ出す危険が生じる。本サービス「おさんぽセーフティ」は、東京都の路上工事オープンデータ等を活用し、地図上に散歩ルートを引くだけで工事規制との交差を自動判定し、歩行者・車椅子・ベビーカー別に危険箇所を提示する。さらに現場の工事看板を撮影するとAIが工事名・工期・規制内容を読み取り、市民参加で規制データが育つ仕組みを備える。</div>
+  </section>
+
+  <section>
+    <h2><span class="num">3.</span>プロダクト・技術詳細 <span class="count">294字/300字</span></h2>
+    <p class="sub">技術選定理由、生成AI活用方法、デモURL</p>
+    <div class="draft">Cloudflare上にフルサーバレスで構築（Pages/Workers/Hono/D1）。地図は国土地理院タイル＋MapLibre GL JSを採用し、APIキーやライセンス制約なく公開できる構成とした。ルートと規制の交差判定は線分間距離の幾何エンジンを実装し、同一の規制を歩行者・車椅子・ベビーカー別の注意度（低中高）に変換する。生成AIはClaudeのvision＋構造化出力を用い、工事看板の写真1枚から工事名・工期・規制種別をJSONで抽出し登録下書きを生成する。登録データはGeoJSON/CSV/APIで再配信し他サービスから再利用できる。デモURLは提出時までに公開予定。</div>
+  </section>
+
+  <section>
+    <h2><span class="num">4.</span>チーム実行力 <span class="count">258字/300字</span></h2>
+    <p class="sub">メンバー構成と役割</p>
+    <div class="draft">個人参加。企画・調査・設計・実装・テストの全工程を、生成AIエージェントを駆使した開発体制で一人で高速に回している。応募時点でMVP（リスク地図・利用者別リスク変換・お散歩ルートの危険自動判定・看板OCR登録・データ出力API）は実装済みで、自動テスト35件が全て通過している。またAIリサーチにより市場・競合・制度の調査を実施し、「工事による歩道の一時規制を動的に扱う国内サービスは空白領域」であることを確認した上で開発している。残期間は実データ拡充、Cloudflareへの公開、UI改善、プレゼン制作に充てる。</div>
+  </section>
+
+  <section>
+    <h2><span class="num">5.</span>オープンデータ利用状況（最大10件）</h2>
+    <table class="table">
+      <thead><tr><th>#</th><th>データ</th><th>状況・用途</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>東京都建設局「23区内 都道の路上工事情報」(CC BY)</td><td>利用中。工事規制データとして取込</td></tr>
+        <tr><td>2</td><td>国土地理院 地理院タイル</td><td>利用中。ベースマップ</td></tr>
+        <tr><td>3</td><td>国交省「歩行空間ネットワークデータ」(ほこナビ)</td><td>利用予定。段差・幅員による車椅子リスク判定</td></tr>
+        <tr><td>4</td><td>JARTIC 交通量オープンデータ</td><td>利用予定。影響度スコアの重みづけ</td></tr>
+        <tr><td>5</td><td>東京都オープンデータAPIカタログ（路上工事 JSON/XML）</td><td>利用予定。更新自動化</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2><span class="num">6.</span>プレゼン資料（画面キャプチャ 最大3点）</h2>
+    <table class="table">
+      <thead><tr><th>#</th><th>キャプチャ</th><th>準備</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>リスク地図画面（利用者別モードで規制が色分け表示）</td><td>ローカルで撮影可能</td></tr>
+        <tr><td>2</td><td>お散歩ルート危険判定（危険箇所パネル表示）</td><td>ローカルで撮影可能</td></tr>
+        <tr><td>3</td><td>看板OCR登録（写真→AI下書き→地図登録）</td><td>APIキー設定後に撮影</td></tr>
+      </tbody>
+    </table>
+    <div class="callout">
+      <p><strong>提出後のアクション：</strong>①提供ツール申請（OpenCode LLMセット＋Cloudflare Paid相当・9月末まで利用可）②キャプチャ3点は私が撮影して用意します。</p>
+    </div>
+  </section>
+
+  <div class="conclusion">
+    <h2>確認事項</h2>
+    <ol>
+      <li>この6項目の内容で提出してよいか（チーム名「おさんぽセーフティ」含む）。</li>
+      <li>「自動テスト35件」「空白領域」等の実績記述は事実ベース（実装・調査済み）— 誇張が気になる箇所があれば指摘を。</li>
+      <li>OKならフォーム（form.jotform.com/261468325066056）にコピペ提出 → 提供ツール申請へ。原稿は docs/entry/entry-application.md。</li>
+    </ol>
+  </div>
+
+  <footer>題材: 都知事杯オープンデータ・ハッカソン2026 参加申込原稿 v1 — noindex</footer>
+
+</div>
+</body>
+</html>
