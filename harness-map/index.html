@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex">
+<title>AI漫画ハーネス 全体整理 ─ 元の目的とどう繋がっているか</title>
+<style>
+:root{--ink:#1c1a17;--muted:#6b6255;--paper:#faf6ec;--card:#fff;--line:#d8cfbd;--accent:#b8862a;--ok:#2e7d4f;--blue:#2c5f8a;--warn:#b3452e}
+@media (prefers-color-scheme:dark){:root{--ink:#e9e3d5;--muted:#a99f8c;--paper:#1a1815;--card:#242019;--line:#3a342a;--accent:#d6a441}}
+:root[data-theme=light]{--ink:#1c1a17;--muted:#6b6255;--paper:#faf6ec;--card:#fff;--line:#d8cfbd}
+:root[data-theme=dark]{--ink:#e9e3d5;--muted:#a99f8c;--paper:#1a1815;--card:#242019;--line:#3a342a;--accent:#d6a441}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif;line-height:1.7}
+main{width:min(960px,calc(100vw - 26px));margin:24px auto 60px}
+.kicker{color:var(--accent);font-weight:800;letter-spacing:.12em;font-size:12px}
+h1{margin:.2em 0 .3em;font-size:clamp(23px,4.6vw,34px);line-height:1.28}
+h2{margin:2em 0 .5em;font-size:clamp(18px,3vw,22px);border-bottom:2px solid var(--line);padding-bottom:.3em}
+.lede{color:var(--muted);font-size:15.5px}
+.tl{background:var(--card);border:2px solid var(--line);border-left:6px solid var(--ok);padding:13px 17px;margin:16px 0;border-radius:6px}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin:12px 0}
+.card{background:var(--card);border:2px solid var(--line);border-radius:8px;padding:13px 15px}
+.card h3{margin:0 0 6px;font-size:15px}.card p{margin:0;font-size:13.5px;color:var(--muted)}
+.ok{color:var(--ok);font-weight:800}.warn{color:var(--warn);font-weight:800}
+.flow{display:flex;flex-direction:column;gap:8px;margin:14px 0}
+.step{display:grid;grid-template-columns:120px 1fr;gap:12px;align-items:center;background:var(--card);border:2px solid var(--line);border-radius:8px;padding:10px 14px}
+.step.gate{border-color:var(--accent);border-left-width:6px}
+.step.human{border-color:var(--blue);border-left-width:6px}
+.step .st{font-weight:900;font-size:14px}
+.step .sd{font-size:13.5px;color:var(--muted)}
+.step .sd b{color:var(--ink)}
+.arrow{text-align:center;color:var(--line);font-size:16px;line-height:.6}
+table{width:100%;border-collapse:collapse;background:var(--card);font-size:13px;margin:8px 0}
+th,td{border:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top}th{background:color-mix(in srgb,var(--accent) 14%,var(--card));white-space:nowrap}
+code{background:color-mix(in srgb,var(--accent) 14%,var(--card));padding:1px 5px;border-radius:4px;font-size:.9em}
+.loop{background:var(--card);border:2px dashed var(--accent);border-radius:10px;padding:14px 17px;margin:14px 0}
+.loop ol{margin:6px 0 0;padding-left:1.3em}.loop li{margin:3px 0;font-size:14px}
+.callout{background:color-mix(in srgb,var(--accent) 10%,var(--card));border:2px solid var(--line);border-radius:8px;padding:12px 16px;margin:14px 0;font-size:14.5px}
+.pill{display:inline-block;font-size:11px;font-weight:800;padding:2px 8px;border-radius:20px;border:1px solid var(--line);color:var(--muted);margin-left:6px}
+</style></head><body><main>
+
+<p class="kicker">整理 ─ AI漫画ハーネス 全体像</p>
+<h1>いま作っているのは「ハーネス」。エピソード001はその実証台です</h1>
+<p class="lede">工程が増えて見えにくくなったので、元の目的とどう繋がっているかを1枚に整理します。結論から：脱線ではなく、あなたの各指摘がそのまま"ハーネスの新しい層"になって積み上がっています。</p>
+
+<div class="tl"><b>いちばん大事な確認：</b> 最初の依頼は「AI漫画ハーネスの最適化＝①claude/codec両対応で同等品質 ②自分で良い基盤を作り ③自分で改善するループを回す」でした。<b>作品(001)を完璧にすることが目的ではなく、ハーネスを育てることが目的</b>。001はそれを試す題材です。</div>
+
+<h2>1. 元の目的に対して、今どうか</h2>
+<div class="grid3">
+<div class="card"><h3>① claude/codex 両対応 <span class="ok">達成</span></h3><p>モデルの仕事は創作テキストだけ。工程は全部CLI(node scripts/manga-*)＝どちらのモデルでも同じコマンドで同じ結果。codexは批評者としても実稼働（L-19）。</p></div>
+<div class="card"><h3>② 良い基盤を自分で作る <span class="ok">達成</span></h3><p>入口 manga-produce.mjs(冪等一気通貫)＋コンテ/作画/検証スクリプト＋5つの採点表＋プレイブック(AGENTS.md)。</p></div>
+<div class="card"><h3>③ 自己改善ループ <span class="ok">実走した</span></h3><p>あなたの指摘が毎回→新ゲート/新層→LESSONS(L-01〜23)→機械に反映。ループが実際に回った証拠が下の§4。</p></div>
+</div>
+
+<h2>2. ハーネスの全工程（企画→完成までの一本道）</h2>
+<p class="lede">増えた工程を並べ直すとこうです。<span class="pill">★ゲート＝先に進む前の検問</span> <span class="pill" style="border-color:var(--blue)">人間＝あなたの判断</span></p>
+<div class="flow">
+<div class="step"><span class="st">1. 企画</span><span class="sd">卦＋題材を決める。<b>db/hexagrams.json</b></span></div>
+<div class="arrow">▼</div>
+<div class="step gate"><span class="st">1.5 面白さエンジン ★</span><span class="sd"><b>面白さを"作る"</b>。3案を発散→採点→最良を選ぶ。<b>docs/story-engine.md</b>（謙で実証：3案88/92/91）</span></div>
+<div class="arrow">▼</div>
+<div class="step"><span class="st">2-3. 台本/ネーム</span><span class="sd">brief.md / pages.json（8ページ・セリフ・ページ末の引き）</span></div>
+<div class="arrow">▼</div>
+<div class="step gate"><span class="st">4. 機械QA ★</span><span class="sd">構造・文字禁止・IP安全を機械チェック。<b>manga-qa</b></span></div>
+<div class="arrow">▼</div>
+<div class="step gate"><span class="st">5. 面白さ採点 ★</span><span class="sd"><b>面白さを"測る"</b>。6軸でfork独立採点≧90。<b>manga-story</b>（画像前＝安い段階で平板を落とす）</span></div>
+<div class="arrow">▼</div>
+<div class="step gate"><span class="st">6.5 コンテ ★</span><span class="sd"><b>物語の読みやすさを設計</b>。各コマの「伝える事・配置・視線」。<b>manga-storyboard</b>（絵より前に筋を確定）</span></div>
+<div class="arrow">▼</div>
+<div class="step"><span class="st">7. 作画</span><span class="sd">青年誌B&W・縦書き・扉つきで一括生成→組版。<b>manga-produce</b></span></div>
+<div class="arrow">▼</div>
+<div class="step gate"><span class="st">8.4 1ページ目 ★</span><span class="sd">SNSで数秒で掴めるか。<b>manga-page1-hook</b></span></div>
+<div class="step gate"><span class="st">8.5 通読 ★</span><span class="sd">絵と文字だけで筋が伝わるか（beat無しの実読者）。<b>manga-readthrough</b></span></div>
+<div class="step gate"><span class="st">8. 仕上げ ★</span><span class="sd">紙面として読めるか。<b>manga-render</b></span></div>
+<div class="arrow">▼</div>
+<div class="step human"><span class="st">9. 人間ゲート</span><span class="sd">あなたが通し視聴して確定</span></div>
+<div class="arrow">▼</div>
+<div class="step"><span class="st">10-11. 公開/レトロ</span><span class="sd">GitHub Pages公開 → 失敗/改善を LESSONS へ（次の§4へ回る）</span></div>
+</div>
+
+<h2>3. 5つの採点表（それぞれ"別の観点"を守る）</h2>
+<table>
+<tr><th>採点表</th><th>いつ</th><th>何を守るか</th></tr>
+<tr><td><code>manga-story</code></td><td>画像前</td><td><b>面白いか</b>（変化・キャラ・転・引き…6軸）</td></tr>
+<tr><td><code>manga-name</code></td><td>画像前</td><td>構造の正しさ・安全・AI臭</td></tr>
+<tr><td><code>manga-page1-hook</code></td><td>作画後</td><td><b>SNSの1枚目で掴めるか</b></td></tr>
+<tr><td><code>manga-readthrough</code></td><td>作画後</td><td><b>絵だけで筋が伝わるか</b>（実読者・beat見せない）</td></tr>
+<tr><td><code>manga-render</code></td><td>作画後</td><td>紙面として読めるか（可読・IP安全・仕上げ）</td></tr>
+</table>
+<p class="lede">＋物差しの本質ドキュメント：<code>story-craft.md</code>（面白さの基準）/ <code>story-engine.md</code>（面白さの作り方）。</p>
+
+<h2>4. 自己改善ループが"実際に回った"履歴（＝目的③の証拠）</h2>
+<div class="loop"><b>あなたの一言 → ハーネスの新しい層 → LESSONS → 機械に固定</b>、が毎回起きました：
+<ol>
+<li>「読めるが面白くない」→ <b>面白さ採点</b>を新設（L-13）</li>
+<li>「ストーリーが全然見えない」→ <b>ブラインド通読ゲート</b>（採点者がbeatを読む盲点を発見・L-16）</li>
+<li>「商業漫画みたいに」→ 画風を<b>青年誌B&W</b>へ転換（L-17）</li>
+<li>「縦書きで説明するでしょ」→ <b>縦書きボックス/吹き出し</b>（L-18）</li>
+<li>「codexに批評してもらって」→ codex批評が私の通読ゲートと<b>完全一致</b>＝診断の信頼性実証（L-19）</li>
+<li>「Twitterで読まれる漫画に」→ <b>1ページ目ゲート＋SNS構成</b>（L-20）</li>
+<li>「絵以上に何を言ってるか分からん」→ <b>コンテ(ネーム)層</b>を新設（L-22）</li>
+<li>「面白さを作るハーネスも」→ <b>面白さエンジン</b>（発散→採点→選択・L-23）</li>
+</ol>
+これが「自分で改善するループ」の実体です。脱線でなく、指摘が資産になっています。</div>
+
+<h2>5. エピソード001は今どこ</h2>
+<div class="callout"><b>001＝ハーネスの実証台。</b>いま「面白さエンジンで作り直した案B（面白さ93点）」の<b>コンテまで完成</b>。次は作画（画像枠9枚）。<br>
+※「エピソードとしてはいい」＝旧版(泰・下手なほう)も新版(案B・凪)も題材として成立。<b>どちらを001の正式版にするかはあなたの選択</b>（旧版はバックアップ済み）。</div>
+
+<h2>6. 正直な整理：ごちゃごちゃの正体と、絞るなら</h2>
+<p>工程が多く見えるのは、<b>「作る前の設計ゲート」と「作った後の検証ゲート」が両方揃った</b>から。実は一本道です：<br>
+<b>面白さを作る(engine)→設計を固める(コンテ)→安い段階で採点(story)→作画→読者目線で検証(通読/1枚目)</b>。<br>
+核はこの5つだけ。他(manga-name/render/qa)は安全網です。迷ったら「面白さエンジン→コンテ→作画→通読」の4点だけ意識すれば筋は通ります。</p>
+
+<div class="tl"><b>次の一手（あなたの判断）：</b> ①001は案B(93点)で作画に進む ／ ②001は旧版(泰・下手なほう)を正式版に戻す ／ ③ハーネスはここで一旦確定し、コミットして棚卸し完了。<br>どれでも、ハーネス自体は元の目的（両対応・自己改善）を満たしています。</div>
+
+</main>
+<script>
+const t=document.documentElement;const btn=document.createElement('button');
+btn.textContent='◐';btn.style.cssText='position:fixed;top:10px;right:10px;z-index:9;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:20px;padding:4px 10px;cursor:pointer';
+btn.onclick=()=>{const d=t.getAttribute('data-theme')||(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light');t.setAttribute('data-theme',d==='dark'?'light':'dark')};
+document.body.appendChild(btn);
+</script>
+</body></html>
