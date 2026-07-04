@@ -1,0 +1,75 @@
+<!doctype html><html lang="ja"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex">
+<title>面白さハーネス — 一次情報で「面白い漫画」を測るループ</title>
+<style>
+:root{--ink:#1c1a17;--muted:#6b6255;--paper:#faf6ec;--card:#fff;--line:#d8cfbd;--accent:#b8862a;--ok:#2e7d4f;--warn:#b3452e;--blue:#2c5f8a}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif;line-height:1.75}
+main{width:min(940px,calc(100vw - 28px));margin:26px auto 64px}
+.kicker{color:var(--accent);font-weight:800;letter-spacing:.12em;font-size:13px}
+h1{margin:.2em 0 .3em;font-size:clamp(23px,5vw,37px);line-height:1.26}
+h2{margin:2em 0 .6em;font-size:clamp(18px,3vw,23px);border-bottom:2px solid var(--line);padding-bottom:.3em}
+.lede{color:var(--muted);font-size:16px}
+.tldr{background:var(--card);border:2px solid var(--line);border-left:6px solid var(--accent);padding:14px 18px;margin:18px 0;border-radius:6px}
+table{width:100%;border-collapse:collapse;background:var(--card);font-size:14px;margin:8px 0}
+th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}th{background:#f1ead9;white-space:nowrap}
+code{background:#f1ead9;padding:1px 6px;border-radius:4px;font-size:.9em}
+.big{font-weight:900;font-size:20px}.ok{color:var(--ok)}.ng{color:var(--warn)}
+.callout{background:#fdf3e3;border:2px solid #e5c98a;padding:12px 16px;border-radius:6px;margin:14px 0}
+.opt{background:var(--card);border:2px solid var(--line);border-radius:8px;padding:14px 18px;margin:10px 0}
+.opt.rec{border-color:var(--accent);border-width:3px;background:#fffbef}
+.opt h3{margin:0 0 6px;font-size:17px}.opt .tag{font-size:12px;font-weight:800;color:#fff;background:var(--accent);border-radius:4px;padding:2px 8px;margin-left:8px}
+ul{padding-left:1.3em}.concl{background:var(--card);border:2px solid var(--line);border-radius:8px;padding:14px 18px;margin-top:26px}
+.bar{height:22px;background:linear-gradient(90deg,var(--warn),var(--accent),var(--ok));border-radius:4px;position:relative;margin:4px 0}
+.src{color:var(--muted);font-size:12px}
+</style></head><body><main>
+<p class="kicker">HUMAN GATE — 「面白い」を測るハーネスへ昇華</p>
+<h1>「読めるが面白くない」の正体は、採点表に“面白さ”軸が無かったこと。一次情報で作り直しました</h1>
+<p class="lede">面白い漫画の作り方を一次情報（漫画編集・原作術）で調べ、6つの採点軸＋企画チェックリスト＋「画像を作る前の面白さゲート」に落とし、ループに組み込みました。同じ001でその効きを実証しています。</p>
+<div class="tldr"><b>TL;DR</b><br>
+① 根本原因＝旧ハーネスは<b>「面白い」を一度も測っていなかった</b>（読める・安全・整うだけ）。測らない軸は良くならない。<br>
+② 一次情報20件（各3-0検証）から<b>面白さ6軸</b>を設計＝<code>manga-story</code>採点表＋<code>story-craft.md</code>。<br>
+③ 実証：同じ001が<b>仕上げ採点89点 / 面白さ採点49点</b>。ギャップが「面白くない」の正体。<br>
+④ ループで面白さを<b>49→61→69→75</b>まで機械的に上昇（画像枠ゼロのテキスト改稿）。90は創作方向の判断が要る＝あなたの領分。</div>
+
+<h2>1. 一次情報で抽出した「面白さ6軸」</h2>
+<p class="src">出典（各主張3-0で検証採択）: 少年ジャンプ漫画学校 / Save the Cat / Kishōtenketsu(Wikipedia) / Reedsy / McCloud『Understanding Comics』 / シナリオ・センター</p>
+<table>
+<tr><th>軸</th><th>一次情報の原則</th><th>制作チェック</th></tr>
+<tr><td><b>変化</b> 18</td><td>ジャンプ第一原則「最初と最後で何かが変わる」。変化が小さい＝地味</td><td>1p目と最終pの差を1文で言えるか</td></tr>
+<tr><td><b>キャラを好きに</b> 18</td><td>第二原則「話はキャラを好きにさせる手段」。憧れ性×共通性(欠点)＋利他</td><td>長所と欠点の両方＋誰かのために動くか</td></tr>
+<tr><td><b>欠落と弧</b> 16</td><td>Orphan＝欠けて始まる／want→needのすり替え(Story Circle)</td><td>開幕の欠落と、want→needの気づき</td></tr>
+<tr><td><b>転</b> 16</td><td>Kishōtenketsu「転」＝3/4で主要素を伏せて出し反転。ビートは1-2文で言えて存在</td><td>見方を反転させる転を1文で言えるか</td></tr>
+<tr><td><b>引き</b> 16</td><td>週刊連載の思想＝各単位末に未解決の問い・急転で次を読ませる</td><td>各ページ末が「次どうなる？」を作るか</td></tr>
+<tr><td><b>葛藤と感情</b> 16</td><td>三幕＝葛藤で駆動。クライマックスにページを厚く、説明台詞を避ける</td><td>阻む障害と感情の山、ナレ依存でないか</td></tr>
+</table>
+
+<h2>2. 実証：同じ001、二つの採点</h2>
+<div class="callout"><b>仕上げ採点(manga-render) = <span class="big ok">89点</span>（読める・安全・整う）<br>面白さ採点(manga-story) = <span class="big ng">49点</span>（面白い）</b><br>
+このギャップこそ「読めるが面白くない」の数値的な正体。旧ループが89で合格させていたものを、新ゲートは49で落とす。面白さは絵でなく<b>企画・ネームのテキスト</b>で判定するので、画像を作る前の安い段階で止められる。</div>
+
+<h2>3. ループで面白さが機械的に上がることの実証（画像枠ゼロ）</h2>
+<p>採点者のfeedback（利他が無い・他者不在・転が内省・ページ末が教訓で閉じる…）どおりに脚本だけ直して再採点を反復：</p>
+<table>
+<tr><th>周</th><th>面白さ点</th><th>入れた面白さの手</th></tr>
+<tr><td>iter1</td><td class="ng">49</td><td>（初版＝教訓型の平板）</td></tr>
+<tr><td>iter2</td><td>61→69</td><td>慕う後輩ハルを登場・利他の瞬間・外的な事件を追加</td></tr>
+<tr><td>iter3</td><td class="big">75</td><td>キャプション全廃→セリフ/行動駆動・転を外的化(トレス束+破り)・無言の崩れページで山</td></tr>
+</table>
+<div class="bar"></div><p class="src">49 → 61 → 69 → 75（+26点）。プラトーでなく一貫上昇＝ループは面白さを上げる装置として機能している。</p>
+
+<h2>4. なぜ今 90 でなく、ここで止めて聞くか</h2>
+<p>残る失点は採点者いわく<b>①転にミスリード→反転が欲しい（トレスで一見“順調”→実は檻だったと裏返す）②ページ末を軟着陸でなく引きで切る③外形変化を絵に出す</b>。これらは<b>物語の創作方向の判断</b>を含み、主人公・後輩という設定ごと owner の好みが要る領域です（企画・台本は人間ゲート）。max3周は登り切る前に切っただけで、あと数周のテキスト改稿（画像枠は不使用）で90に届く見込みです。</p>
+
+<h2>あなたの判断</h2>
+<div class="opt rec"><h3>A. この脚本ループを続けて面白さ≧90にしてから画像化<span class="tag">推奨</span></h3>
+テキスト改稿（画像枠ゼロ・安い）で90まで詰め、合格した“面白い脚本”になって初めて16枚を再生成。「面白い漫画」を1本立てる。現行の後輩ハル路線でよければ即続行。</div>
+<div class="opt"><h3>B. 物語の方向をあなたが決めてから続行</h3>
+「後輩ハルに憧れが刃として刺さる」路線が好みでなければ、主人公・題材・オチの方向を指定。それを起点に脚本ループを回す。</div>
+<div class="opt"><h3>C. ハーネス昇華までで確定（脚本は保留）</h3>
+面白さゲート・6軸・企画チェックリストの実装と実証（89vs49・49→75）までを成果として確定。001の面白版は次セッションで。</div>
+
+<div class="concl"><b>結論</b><br>
+ご依頼「面白い漫画の作り方を一次情報で調べ、ハーネスループ設計に昇華」は完了し、効きも数値で実証しました（89↔49の暴露、49→75の改善）。<br>
+残るのは「どの物語で90まで詰めるか」という創作方向の判断で、そこはあなたの領分です。<br>
+Aなら現行路線で脚本を90まで自走→画像化まで持っていきます。</div>
+</main></body></html>
