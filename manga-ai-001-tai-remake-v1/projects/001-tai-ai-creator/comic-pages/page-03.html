@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta name="robots" content="noindex,nofollow,noarchive">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=900, initial-scale=1">
+  <title>AIで神絵師になった俺の絵柄は、消えた相棒のものだった Page 03</title>
+  <style>:root {
+  --paper: #fffaf0;
+  --ink: #111;
+  --muted: #5f574b;
+  --line: #111;
+  --gold: #b88a2a;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 900px;
+  min-height: 1350px;
+  margin: 0;
+  background: #d8ccb4;
+  color: var(--ink);
+  font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", sans-serif;
+}
+
+body {
+  display: grid;
+  place-items: start center;
+}
+
+.comic-sheet {
+  position: relative;
+  width: 900px;
+  height: 1350px;
+  padding: 30px;
+  background: var(--paper);
+  overflow: hidden;
+  isolation: isolate;
+}
+
+/* ノンブル＝隅の小さなページ番号（漫画原稿らしく・帯ヘッダは廃止・L-19） */
+.page-nombre {
+  position: absolute;
+  right: 20px;
+  bottom: 8px;
+  z-index: 8;
+  color: var(--muted);
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.comic-grid {
+  position: relative;
+  height: 1284px;
+  display: grid;
+  gap: 12px;
+}
+
+.comic-panel {
+  position: relative;
+  overflow: hidden;
+  border: 4px solid var(--line);
+  background: #eee5d4;
+}
+
+.comic-panel img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  filter: contrast(1.06) saturate(0.94);
+}
+
+.comic-panel.inset {
+  position: absolute;
+  right: 16px;
+  bottom: 128px;
+  width: 300px;
+  height: 300px;
+  border-width: 5px;
+  box-shadow: -8px 8px 0 rgba(17, 17, 17, 0.28);
+  z-index: 5;
+}
+
+/* 吹き出し＝縦書き（日本の漫画の標準）。文字量に合わせて縦長の楕円になる */
+.balloon {
+  position: absolute;
+  z-index: 6;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  height: max-content;
+  max-height: 62%;
+  padding: 20px 16px;
+  background: #fff;
+  border: 3px solid var(--line);
+  border-radius: 42% / 50%;
+  color: var(--ink);
+  font-size: 25px;
+  line-height: 1.5;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+/* 尻尾＝外枠(黒)＋内側(白)の三角。縦書き吹き出しは下端から下向きに伸ばす */
+.balloon::before,
+.balloon::after {
+  content: "";
+  position: absolute;
+  right: 30px;
+  width: 0;
+  height: 0;
+  border-left: 12px solid transparent;
+  border-right: 12px solid transparent;
+}
+.balloon.tail-down::before { bottom: -18px; border-top: 18px solid var(--line); }
+.balloon.tail-down::after { bottom: -12px; border-top: 13px solid #fff; }
+.balloon.tail-up::before { top: -18px; border-bottom: 18px solid var(--line); }
+.balloon.tail-up::after { top: -12px; border-bottom: 13px solid #fff; }
+
+/* インセット小窓の吹き出しは枠が狭いので字を締める */
+.comic-panel.inset .balloon {
+  font-size: 19px;
+  max-height: 84%;
+  padding: 12px 10px;
+}
+
+.sfx {
+  position: absolute;
+  z-index: 4;
+  writing-mode: vertical-rl;
+  color: #111;
+  font-size: 54px;
+  font-weight: 1000;
+  line-height: 1;
+  text-shadow: 3px 3px 0 #fff, -1px -1px 0 #fff;
+  transform: rotate(-6deg);
+}
+
+/* ナレーション＝縦書きの説明ボックス（右上・小さめ＝主役は絵・L-19） */
+.caption-box {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 7;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  max-height: 58%;
+  padding: 12px 11px;
+  background: rgba(255, 255, 255, 0.95);
+  border: 2px solid var(--line);
+  color: var(--ink);
+  font-size: 20px;
+  line-height: 1.5;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  box-shadow: 3px 3px 0 rgba(17, 17, 17, 0.16);
+}
+
+.caption-kicker {
+  display: block;
+  color: var(--muted);
+  font-size: 15px;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  margin-left: 8px;
+}
+
+/* 回想ページの視覚マーカー（L-25）＝読者が「これは過去/回想」と一目で分かる。
+   ①角の「回想」タグ ②コマ枠を波打つ丸角＋やや白飛び ③全面に淡いトーンとヴィネット。
+   page.flashback:true のとき comic-sheet に .flashback が付く。 */
+.comic-sheet.flashback .comic-panel {
+  border-style: dashed;
+  border-radius: 22px;
+}
+.comic-sheet.flashback .comic-panel img {
+  filter: contrast(0.9) saturate(0.55) brightness(1.12);
+}
+.comic-sheet.flashback .comic-grid::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at center, rgba(238,229,212,0) 55%, rgba(30,26,20,0.28) 100%),
+    repeating-linear-gradient(45deg, rgba(255,255,255,0.10) 0 2px, rgba(255,255,255,0) 2px 5px);
+}
+.flashback-tag {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  z-index: 9;
+  writing-mode: vertical-rl;
+  padding: 12px 8px;
+  background: rgba(17, 17, 17, 0.82);
+  color: #f4ecd8;
+  font-size: 20px;
+  font-weight: 900;
+  letter-spacing: 0.22em;
+  border: 2px solid #f4ecd8;
+}
+</style>
+</head>
+<body>
+  <main class="comic-sheet" data-page="03" data-layout="4koma">
+    <section class="comic-grid" style="grid-template-rows:1fr 1fr 1fr 1fr;grid-template-columns:1fr">
+      <div class="comic-panel" data-panel="P03_A" style="grid-area:1 / 1">
+        <img src="../assets/generated/P03_A.png" alt="03 wide 1" style="object-position:50% 45%">
+        
+        
+      </div>
+<div class="comic-panel" data-panel="P03_B" style="grid-area:2 / 1">
+        <img src="../assets/generated/P03_B.png" alt="03 detail 2" style="object-position:50% 50%">
+        <div class="balloon tail-down" style="left:8%;top:8%">参考にするだけだ</div>
+        <div class="sfx" style="left:70%;top:20%">ピッ</div>
+      </div>
+<div class="comic-panel" data-panel="P03_C" style="grid-area:3 / 1">
+        <img src="../assets/generated/P03_C.png" alt="03 medium 3" style="object-position:50% 45%">
+        
+        <div class="sfx" style="left:72%;top:16%">ザッ</div>
+      </div>
+<div class="comic-panel" data-panel="P03_D" style="grid-area:4 / 1">
+        <img src="../assets/generated/P03_D.png" alt="03 close 4" style="object-position:50% 45%">
+        <div class="balloon tail-down" style="left:48%;top:7%">制作過程、見せてもらえますか</div>
+<div class="balloon tail-down" style="left:8%;top:28%">完成品だけ見ればいい</div>
+        
+      </div>
+      <div class="caption-box">締切に追われたアオは、共有箱のラフをまとめて読み込ませた。</div>
+    </section>
+    
+    <span class="page-nombre">3</span>
+  </main>
+</body>
+</html>
