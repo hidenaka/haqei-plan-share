@@ -225,6 +225,15 @@
           <pre id="facts">読み込み中...</pre>
         </details>
       </section>
+
+      <section>
+        <h2>ハーネス検証</h2>
+        <p>サブエージェント指摘、creative-loop、停止位置の確認メモです。</p>
+        <details>
+          <summary>harness_review.md を表示</summary>
+          <pre id="review">読み込み中...</pre>
+        </details>
+      </section>
     </div>
   </main>
 
@@ -267,6 +276,11 @@
       .then((r) => r.text())
       .then((t) => { document.getElementById('planning').textContent = t; })
       .catch((e) => { document.getElementById('planning').textContent = 'planning_briefの読み込みに失敗: ' + e.message; });
+
+    fetch('harness_review.md')
+      .then((r) => r.text())
+      .then((t) => { document.getElementById('review').textContent = t; })
+      .catch((e) => { document.getElementById('review').textContent = 'harness_reviewの読み込みに失敗: ' + e.message; });
   </script>
 </body>
 </html>
