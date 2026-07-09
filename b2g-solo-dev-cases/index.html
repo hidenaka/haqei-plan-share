@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>個人開発はB2Gに採用されるのか — 実例6件と3つの関門</title>
+<style>
+  :root {
+    --ink: #1a1a1a;
+    --ink-2: #4a4a4a;
+    --bg: #f7f5ee;
+    --paper: #fbf9f1;
+    --line: #d8d2bf;
+    --accent: #2563eb;
+    --accent-soft: #dbe7fb;
+    --warn: #c83a2c;
+    --warn-soft: #f6dcd6;
+    --yellow: #f4d35e;
+    --shadow: 0 1px 0 rgba(0,0,0,.04), 0 8px 24px rgba(0,0,0,.06);
+    --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+    --sans: -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN",
+            "Hiragino Sans", "Noto Sans JP", "Yu Gothic", "Meiryo", sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 56px 28px 96px; }
+
+  .hero { margin-bottom: 56px; }
+  .hero .kicker {
+    display: inline-block;
+    background: var(--accent); color: #fff;
+    font-size: 12px; font-weight: 700; letter-spacing: .12em;
+    padding: 6px 12px; border-radius: 999px;
+    margin-bottom: 18px;
+  }
+  .hero h1 {
+    font-size: 40px; line-height: 1.3; margin: 0 0 14px;
+    letter-spacing: -.01em;
+  }
+  .hero h1 b { color: var(--accent); }
+  .hero p.lede {
+    font-size: 18px; color: var(--ink-2); margin: 0; max-width: 780px;
+  }
+  .tldr {
+    margin-top: 28px; padding: 22px 24px;
+    background: var(--paper); border: 1px solid var(--line); border-radius: 12px;
+    box-shadow: var(--shadow);
+  }
+  .tldr h2 { font-size: 13px; letter-spacing: .15em; color: var(--accent); margin: 0 0 10px; }
+  .tldr ol { margin: 0; padding-left: 20px; }
+  .tldr li { margin: 4px 0; }
+
+  section { margin: 64px 0 0; }
+  section > h2 {
+    font-size: 28px; line-height: 1.4; margin: 0 0 6px;
+    border-left: 6px solid var(--accent); padding-left: 12px;
+  }
+  section > h2 .num {
+    color: var(--accent); font-variant-numeric: tabular-nums; margin-right: 10px;
+  }
+  section > p.sub { color: var(--ink-2); margin: 0 0 22px; }
+
+  figure {
+    margin: 0 0 24px; padding: 12px;
+    background: var(--paper); border: 1px solid var(--line); border-radius: 14px;
+    box-shadow: var(--shadow);
+  }
+  figure img { display: block; width: 100%; height: auto; border-radius: 8px; }
+  figcaption {
+    font-size: 13px; color: var(--ink-2); margin-top: 10px; text-align: center;
+  }
+
+  .table {
+    width: 100%; border-collapse: collapse; margin: 12px 0 6px;
+    background: var(--paper); border: 1px solid var(--line); border-radius: 12px; overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+  .table th, .table td {
+    text-align: left; padding: 12px 14px; border-bottom: 1px solid var(--line);
+    vertical-align: top; font-size: 14.5px;
+  }
+  .table th { background: #efeadb; font-weight: 700; }
+  .table tr:last-child td { border-bottom: 0; }
+  .table .pick { background: var(--accent-soft); }
+  .table .pick td:first-child { font-weight: 700; color: var(--accent); }
+
+  .callout {
+    margin: 18px 0;
+    padding: 16px 18px;
+    border-left: 4px solid var(--accent);
+    background: var(--accent-soft);
+    border-radius: 0 10px 10px 0;
+  }
+  .callout.warn { border-color: var(--warn); background: var(--warn-soft); }
+  .callout p { margin: 0; }
+  .callout strong { color: var(--accent); }
+  .callout.warn strong { color: var(--warn); }
+
+  .quote {
+    border-left: 3px solid var(--line); padding: 6px 16px;
+    color: var(--ink-2); font-size: 14.5px; margin: 18px 0;
+  }
+
+  .conclusion {
+    margin-top: 56px; padding: 28px 28px 24px;
+    background: var(--ink); color: #f6f3e8; border-radius: 16px;
+  }
+  .conclusion h2 { color: var(--yellow); border: 0; padding: 0; margin: 0 0 12px; }
+  .conclusion ol { margin: 0; padding-left: 20px; }
+  .conclusion li { margin: 6px 0; }
+
+  footer { margin-top: 36px; color: var(--ink-2); font-size: 13px; }
+
+  @media (max-width: 720px) {
+    .wrap { padding: 32px 18px 64px; }
+    .hero h1 { font-size: 30px; }
+    section > h2 { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <span class="kicker">B2G 実例調査</span>
+    <h1>個人開発はB2Gに採用されるのか — <b>実例6件と3つの関門</b></h1>
+    <p class="lede">「個人事業で作ったものが行政に採用されたケースはあるか」— 答えは Yes。ただし全事例に共通するパターンがあり、「個人のまま行ける距離」と「法人化が必要になる地点」がはっきり分かれている。工事情報マップのB2G構想に直接使える形で整理した。</p>
+    <div class="tldr">
+      <h2>TL;DR</h2>
+      <ol>
+        <li>実例はある（台湾マスクマップ・5374.jp・ふるさとチョイス等）。ただし「個人のまま有償契約」はほぼ無く、無償公認→法人化→契約が定石</li>
+        <li>都知事杯は「社会実装支援」を制度として持つ数少ないハッカソン。延べ37サービスが実装済み — あなたは既に最短ルートの上にいる</li>
+        <li>共通の乗車券は「まず動くものを無償で見せる」。金が動く瞬間に法人格が要る</li>
+      </ol>
+    </div>
+  </header>
+
+  <section>
+    <h2><span class="num">01</span>結論 — 3つの関門。公認までは個人で行ける</h2>
+    <p class="sub">無償の採用と有償の契約は、別のゲート</p>
+    <figure>
+      <img src="images/concept-01-01.png" alt="B2Gの3つの関門: 公認は個人OK、少額随契は個人△、本契約は法人">
+      <figcaption>ゲート1（公認・OSS採用）は個人OK。ゲート3（本契約・実証事業）は法人格が切符</figcaption>
+    </figure>
+    <p>調査の結論を先に言うと、「行政に採用される」には3段階あり、要求されるものが違う。<b>ゲート1: 公認・協定・OSS採用</b> — 個人のままで到達可能。実例多数。<b>ゲート2: 少額随意契約</b> — 入札なしで発注できる枠。2025年4月の改正で基準額が引き上げられ（例: 市区町村の工事200万円等、区分別）、個人事業主でも受注の入口はある。<b>ゲート3: 継続的な委託契約・実証事業</b> — 財務・実績審査と法人格が事実上必須。東京都のキングサーモンプロジェクト等の実証制度も応募資格がスタートアップ企業前提 [仮説: 個人事業主は実質対象外]。</p>
+    <p style="font-size: 13px; color: var(--ink-2);">※ 出典: 総務省 少額随意契約基準額改正資料 (soumu.go.jp)、キングサーモンPJ公募要領 (kingsalmon.metro.tokyo.lg.jp)。2026-07-10取得。</p>
+  </section>
+
+  <section>
+    <h2><span class="num">02</span>実例6件 — 「無償×個人」は多い。「有償×個人」はほぼ無い</h2>
+    <p class="sub">全事例が同じ分布を描く</p>
+    <figure>
+      <img src="images/concept-02-01.png" alt="実例6件を個人度×収益化度の2軸に配置したマトリクス">
+      <figcaption>個人のまま到達できるのは左上（無償・公認）ゾーン。右上（有償×個人）は空白</figcaption>
+    </figure>
+    <table class="table">
+      <thead><tr><th>事例</th><th>作った人</th><th>行政との関係</th><th>示唆</th></tr></thead>
+      <tbody>
+        <tr class="pick"><td>台湾マスクマップ (2020)</td><td>個人エンジニア（呉展瑋）が一晩で開発</td><td>唐鳳（デジタル大臣）経由で政府採用。全土約6,000拠点・3分毎更新</td><td>個人のまま最速採用の実例。ただし「政府側に受け手がいた」特殊条件</td></tr>
+        <tr><td>5374.jp (2013)</td><td>Code for Kanazawa（シビックテック）</td><td>OSS公開→広島・渋谷等に展開。江別市では市の清掃部局自身が改修して公式公開</td><td>行政が自主的にOSSを採用する現象は実在する。ただし無償</td></tr>
+        <tr><td>さっぽろ保育園マップ</td><td>Code for Sapporo</td><td>MITライセンスで水戸・つくば・流山・千葉等に横展開</td><td>「マップ×自治体データ」の横展開モデル。おさんぽセーフティと同型</td></tr>
+        <tr><td>RecordTrac (2013, 米)</td><td>Code for America フェロー数名</td><td>Oakland市と共同開発→市が正式運用→他市採用→NextRequestとして事業化</td><td>無償共同開発→運用実績→法人化して有償化、の教科書的順路</td></tr>
+        <tr><td>Civichat (2021)</td><td>学生発の制度案内チャットボット</td><td>株式会社化した上で熊本市と実証実験</td><td>PoC段階で既に法人。「実証」ですら法人格が前提だった</td></tr>
+        <tr><td>ふるさとチョイス (2012)</td><td>須永珠代・資本金50万円・1人創業</td><td>4年で1,100自治体から受託（寄付額1〜5%の成果報酬）</td><td>1人発→B2G大規模収益化の最大実例。ただし契約主体は最初から法人</td></tr>
+      </tbody>
+    </table>
+    <div class="callout"><p><strong>探索の限界も明記:</strong> コロナ禍の国内個人開発サイトが自治体に「正式採用」された確証事例は、今回のWeb検索4系統では発見できなかった（不在の証明ではない）。</p></div>
+    <p style="font-size: 13px; color: var(--ink-2);">※ 出典: Newsweek日本版、江別市公式サイト、Code for Sapporo、マイナビニュース、PR Times、Columbia Journalism Review。すべて2026-07-10取得。</p>
+  </section>
+
+  <section>
+    <h2><span class="num">03</span>採用への4ルート — 共通項は「まず動くものを無償で見せる」</h2>
+    <p class="sub">どの路線も無償の実物から始まっている</p>
+    <figure>
+      <img src="images/concept-03-01.png" alt="行政採用へ合流する4つのルート: OSS・シビックテック・ハッカソン・創業">
+      <figcaption>4路線とも「動く実物を先に見せる」駅を必ず通る</figcaption>
+    </figure>
+    <ul>
+      <li><b>①OSS線</b>（5374.jp・papamama型）: 公開しておくと行政側が勝手に採用する。収益は生まないが「〇〇市が使っている」という実績が生まれる</li>
+      <li><b>②シビックテック線</b>（RecordTrac型）: 行政と共同開発→運用実績→事業化。日本ならCode for Japan系コミュニティが接点</li>
+      <li><b>③ハッカソン線</b>（Civichat型）: 受賞→実証→法人化。<b>あなたが今いる路線</b></li>
+      <li><b>④創業線</b>（ふるさとチョイス型）: 最初から法人を作って営業。1人・資本金50万円でも始められた実例はあるが、B2G営業の長期戦を前提とする</li>
+    </ul>
+    <div class="quote">6事例に「完成した企画書を持ち込んで採用された」ものは1つも無い。全て「動くもの」が先。おさんぽセーフティを提出し公開すること自体が、どの路線に乗るにしても共通の乗車券になる。</div>
+  </section>
+
+  <section>
+    <h2><span class="num">05</span>都知事杯は「実装まで面倒を見る」制度を持っている</h2>
+    <p class="sub">あなたは既に最短ルートの改札内にいる</p>
+    <figure>
+      <img src="images/concept-05-01.png" alt="都知事杯ハッカソンから都政実装へのファネル">
+      <figcaption>参加→Final Stage→実装支援→社会実装。延べ37サービスが実装済み</figcaption>
+    </figure>
+    <p>都知事杯オープンデータハッカソンは、表彰して終わりではなく<b>社会実装支援</b>が制度化されている: Final Stage進出チームへの年度末までの実装支援（技術助言・勉強会）、GovTech東京と連携した行政採用向けの技術検証窓口、区市町村が提示する課題への提案枠。都の発表では延べ37サービスが実装済み、2023年度は660名参加・8件実装。個人参加も可。</p>
+    <div class="callout"><p><strong>工事情報マップ構想への意味:</strong> 「自治体に工事情報の公開ツールとして採用してもらう」というB2G仮説を検証する最初の窓口が、参加中のハッカソンに標準装備されている。外に営業に行く前に、まずFinal Stage進出→実装支援枠で「区市町村の道路管理課と繋いでほしい」と言うのが最短。</p></div>
+    <p style="font-size: 13px; color: var(--ink-2);">※ 出典: 東京都プレスリリース (metro.tokyo.lg.jp 2026-06)、CodeZine。2026-07-10取得。[未確認] 実装37件の個別作品名・連携先の一覧は公開資料から特定できず。</p>
+  </section>
+
+  <section>
+    <h2><span class="num">06</span>あなたの順路 — 実例に沿った3ステップ</h2>
+    <p class="sub">法人化は「有償化の話が出た時」でいい</p>
+    <table class="table">
+      <thead><tr><th>ステップ</th><th>やること</th><th>実例の裏付け</th></tr></thead>
+      <tbody>
+        <tr class="pick"><td>Step 1（いま〜7/27）</td><td>おさんぽセーフティを提出・公開。動く実物＝共通乗車券を手に入れる</td><td>6事例すべて「動くもの」が先</td></tr>
+        <tr><td>Step 2（8月〜年度内）</td><td>Final Stage進出を狙い、実装支援・GovTech東京窓口経由で1自治体の「公認実績」を作る（無償でよい）</td><td>台湾マスクマップ・5374.jp型: 公認は個人のまま取れる</td></tr>
+        <tr><td>Step 3（有償化の話が出た時）</td><td>法人化を検討。少額随契（〜数十万円規模）なら個人のまま試せる可能性もある</td><td>Civichat・ふるさとチョイス型: 契約の直前に法人化で間に合う</td></tr>
+      </tbody>
+    </table>
+    <div class="callout warn"><p><strong>先に法人を作らないこと。</strong>実例が示すのは「実績→需要確認→法人化」の順。需要が確認できる前の法人化は固定費と事務負担だけが先行する。ふるさとチョイスですら資本金50万円・需要を見てからの勝負だった。</p></div>
+  </section>
+
+  <div class="conclusion">
+    <h2>結論</h2>
+    <ol>
+      <li>個人発プロダクトのB2G採用実例は存在する。ただし「個人のまま有償契約」はほぼ空白で、無償公認→需要確認→法人化→契約が全事例に共通する順路。</li>
+      <li>公認・OSS採用・実装支援までは個人のままで到達できる。金が動く瞬間（継続委託・実証事業）に法人格が要る。</li>
+      <li>あなたは都知事杯という「実装支援制度つきの最短ルート」に既に乗っている。まず7/27に提出し、Final Stage→GovTech東京窓口で道路管理課との接点を狙うのが実例に沿った次の一手。</li>
+    </ol>
+  </div>
+
+  <footer>題材: 工事情報マップ事業のB2Gルート検証 / リサーチ取得日 2026-07-10 / [仮説][未確認] 表記は確証が取れていない項目</footer>
+
+</div>
+</body>
+</html>
