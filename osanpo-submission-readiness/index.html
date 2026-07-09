@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>おさんぽセーフティ — 提出準備レポート（59点→96点）</title>
+<style>
+  :root {
+    --ink: #1a1a1a;
+    --ink-2: #4a4a4a;
+    --bg: #f7f5ee;
+    --paper: #fbf9f1;
+    --line: #d8d2bf;
+    --accent: #10a37f;
+    --accent-soft: #d8efe5;
+    --warn: #c83a2c;
+    --warn-soft: #f6dcd6;
+    --yellow: #f4d35e;
+    --shadow: 0 1px 0 rgba(0,0,0,.04), 0 8px 24px rgba(0,0,0,.06);
+    --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+    --sans: -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN",
+            "Hiragino Sans", "Noto Sans JP", "Yu Gothic", "Meiryo", sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 56px 28px 96px; }
+
+  .hero { margin-bottom: 56px; }
+  .hero .kicker {
+    display: inline-block;
+    background: var(--accent); color: #fff;
+    font-size: 12px; font-weight: 700; letter-spacing: .12em;
+    padding: 6px 12px; border-radius: 999px;
+    margin-bottom: 18px;
+  }
+  .hero h1 {
+    font-size: 40px; line-height: 1.3; margin: 0 0 14px;
+    letter-spacing: -.01em;
+  }
+  .hero h1 b { color: var(--accent); }
+  .hero p.lede {
+    font-size: 18px; color: var(--ink-2); margin: 0; max-width: 780px;
+  }
+  .tldr {
+    margin-top: 28px; padding: 22px 24px;
+    background: var(--paper); border: 1px solid var(--line); border-radius: 12px;
+    box-shadow: var(--shadow);
+  }
+  .tldr h2 { font-size: 13px; letter-spacing: .15em; color: var(--accent); margin: 0 0 10px; }
+  .tldr ol { margin: 0; padding-left: 20px; }
+  .tldr li { margin: 4px 0; }
+
+  section { margin: 64px 0 0; }
+  section > h2 {
+    font-size: 28px; line-height: 1.4; margin: 0 0 6px;
+    border-left: 6px solid var(--accent); padding-left: 12px;
+  }
+  section > h2 .num {
+    color: var(--accent); font-variant-numeric: tabular-nums; margin-right: 10px;
+  }
+  section > p.sub { color: var(--ink-2); margin: 0 0 22px; }
+
+  figure {
+    margin: 0 0 24px; padding: 12px;
+    background: var(--paper); border: 1px solid var(--line); border-radius: 14px;
+    box-shadow: var(--shadow);
+  }
+  figure img { display: block; width: 100%; height: auto; border-radius: 8px; }
+  figcaption {
+    font-size: 13px; color: var(--ink-2); margin-top: 10px; text-align: center;
+  }
+
+  .table {
+    width: 100%; border-collapse: collapse; margin: 12px 0 6px;
+    background: var(--paper); border: 1px solid var(--line); border-radius: 12px; overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+  .table th, .table td {
+    text-align: left; padding: 12px 14px; border-bottom: 1px solid var(--line);
+    vertical-align: top; font-size: 14.5px;
+  }
+  .table th { background: #efeadb; font-weight: 700; }
+  .table tr:last-child td { border-bottom: 0; }
+  .table .pick { background: var(--accent-soft); }
+  .table .pick td:first-child { font-weight: 700; color: var(--accent); }
+
+  code.inline {
+    font-family: var(--mono); font-size: .92em;
+    background: #efeadb; padding: 1px 6px; border-radius: 4px;
+  }
+
+  .callout {
+    margin: 18px 0;
+    padding: 16px 18px;
+    border-left: 4px solid var(--accent);
+    background: var(--accent-soft);
+    border-radius: 0 10px 10px 0;
+  }
+  .callout.warn { border-color: var(--warn); background: var(--warn-soft); }
+  .callout p { margin: 0; }
+  .callout strong { color: var(--accent); }
+  .callout.warn strong { color: var(--warn); }
+
+  .quote {
+    border-left: 3px solid var(--line); padding: 6px 16px;
+    color: var(--ink-2); font-size: 14.5px; margin: 18px 0;
+  }
+
+  .conclusion {
+    margin-top: 56px; padding: 28px 28px 24px;
+    background: var(--ink); color: #f6f3e8; border-radius: 16px;
+  }
+  .conclusion h2 { color: var(--yellow); border: 0; padding: 0; margin: 0 0 12px; }
+  .conclusion ol { margin: 0; padding-left: 20px; }
+  .conclusion li { margin: 6px 0; }
+  .conclusion code.inline { background: #2c2f33; color: #f6f3e8; }
+
+  footer { margin-top: 36px; color: var(--ink-2); font-size: 13px; }
+
+  @media (max-width: 720px) {
+    .wrap { padding: 32px 18px 64px; }
+    .hero h1 { font-size: 30px; }
+    section > h2 { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <span class="kicker">都知事杯オープンデータ・ハッカソン2026 提出準備レポート</span>
+    <h1>おさんぽセーフティ — <b>59点の診断から96点合格</b>まで、残るは本人の3手</h1>
+    <p class="lede">審査員視点の独立採点で弱点を特定し、致命傷だった「実オープンデータ未統合」と検証ハーネスの不在を実装で解消した。テストは40→101件全パス、独立検証96点で合格。締切7/27まで残り18日、技術的ブロッカーはゼロ。</p>
+    <div class="tldr">
+      <h2>TL;DR</h2>
+      <ol>
+        <li>初期採点 <strong>59/100</strong>。致命傷は「実データが1件も流れていない」と「デモURL無し」の2つだった</li>
+        <li>東京都路上工事 <strong>753件のETL</strong>＋ほこナビ2,583リンク＋smoke/preflight/deployハーネスを実装し、<strong>独立検証96点で合格</strong></li>
+        <li>残るのは本人にしかできない3手のみ: <code class="inline">wrangler login</code> → <code class="inline">bash scripts/deploy.sh</code> → フォーム提出（前2つで約10分）</li>
+      </ol>
+    </div>
+  </header>
+
+  <section>
+    <h2><span class="num">01</span>接地検証 — 審査員視点でいきなり採点したら59点</h2>
+    <p class="sub">テーマとアイデアは強い。主張と実態の乖離が足を引っ張っていた</p>
+    <figure>
+      <img src="images/concept-01-01.png" alt="審査5軸の採点と2つの致命傷を示す診断書風の図">
+      <figcaption>独立エージェントが応募原稿・実コード・実データを突き合わせて絶対評価した結果</figcaption>
+    </figure>
+    <p>まっさらな文脈の審査エージェントに、応募原稿・README・実コード・シードSQL・画面キャプチャを渡して絶対評価させた。結果は59/100。アイデア（74）と技術力（70）は水準以上、問題はデータ活用（40）だった。</p>
+    <table class="table">
+      <thead><tr><th>審査軸</th><th>初期採点</th><th>主な根拠</th></tr></thead>
+      <tbody>
+        <tr class="pick"><td>データ活用</td><td>40</td><td>実データ0件（手書きシード12件のみ）。原稿の「利用中」と乖離</td></tr>
+        <tr><td>アイデア</td><td>74</td><td>利用者別リスク変換の差別化は明確に強い</td></tr>
+        <tr><td>技術力</td><td>70</td><td>domain純関数のTDD・幾何エンジンは堅実。ただし未デプロイ</td></tr>
+        <tr><td>ソーシャルインパクト</td><td>60</td><td>コールドスタート未解決、仮説段階</td></tr>
+        <tr><td>サービスデザイン</td><td>72</td><td>OCR→人間承認→周知キットの業務接続は筋が良い</td></tr>
+      </tbody>
+    </table>
+    <div class="callout warn"><p><strong>致命傷は2つ。</strong>①実CSVに緯度経度が無くジオコーディング未対応のため手書き12件にフォールバックしており、オープンデータ・ハッカソンなのに実データが1件も流れていない。②database_idがダミーのまま未デプロイで、審査員が触れるデモURLが無い。</p></div>
+  </section>
+
+  <section>
+    <h2><span class="num">02</span>本丸 — 実データ753件を本当に地図へ流すETL</h2>
+    <p class="sub">住所しか無いCSVを、ジオコーディングでD1に流し込む</p>
+    <figure>
+      <img src="images/concept-02-01.png" alt="実データETLパイプラインの流れ図">
+      <figcaption>東京都建設局「23区内 都道の路上工事情報」(CC BY 4.0) 全753件を取込</figcaption>
+    </figure>
+    <p>実CSV（753行）には緯度経度カラムが無い。起点・終点住所（「港区海岸２丁目」のような丁目単位）を国土地理院の住所検索APIでジオコーディングし、654ユニーク住所を成功率100%で解決。結果はキャッシュに永続化し、再実行時はネットに一切出ない。</p>
+    <ul>
+      <li>終点なし346件はPoint、終点あり407件はLineStringとして幾何化（同一丁目に解決された21件はPointへフォールバック）</li>
+      <li>restriction_typeは車線制限数から分類: lane_closure 667 / alternating_one_way 85 / road_closed 1</li>
+      <li><code class="inline">source='tokyo_kensetsu'</code> で既存の手書き12件と区別。既存データとテストは無傷</li>
+      <li>実データの罠も処理: 年カラムの「26」（2桁）や「22027」（5桁誤入力）を正規化、セル内改行入り引用符フィールドはRFC4180対応の自作パーサで対応</li>
+    </ul>
+    <div class="callout"><p>位置精度は丁目セントロイド（実際の工事現場ではない）が限界。地図ポップアップに「出典: 東京都建設局（CC BY 4.0）/ 位置は丁目単位の概略」を明示し、誠実さを保った。さらに2系統目として<strong>国交省ほこナビ歩行空間ネットワーク（新宿エリア2,583リンク）</strong>を統合し、幅員2m未満・段差ありの「歩行バリア」オーバーレイを追加。</p></div>
+  </section>
+
+  <section>
+    <h2><span class="num">03</span>ハーネス — 提出を事故らせない検証の足回り</h2>
+    <p class="sub">smoke・preflight・deploy・CI。smokeは初回実行で本物のバグを発見した</p>
+    <figure>
+      <img src="images/concept-03-01.png" alt="検証ハーネス4点セットの構成図">
+      <figcaption>「完了と言う前に証拠を取る」を1コマンド化した</figcaption>
+    </figure>
+    <table class="table">
+      <thead><tr><th>道具</th><th>何をするか</th><th>実績</th></tr></thead>
+      <tbody>
+        <tr class="pick"><td>scripts/smoke.mjs</td><td>主要7項目のHTTPスモーク（health/一覧/geojson/csv/ルート判定/notice/OCR）</td><td>初回実行で /api/ocr の502を発見 → nodejs_compat欠落と特定し修正</td></tr>
+        <tr><td>scripts/preflight.mjs</td><td>提出前チェック: テスト・database_id・認証スコープ・本番URL</td><td>現状のダミーIDとd1:writeスコープ欠落を正しく検出</td></tr>
+        <tr><td>scripts/deploy.sh</td><td>D1作成→ID書換→migrate→secret→deploy→smokeを1コマンドで</td><td>手順ミスで壊れたデモURLを提出する事故を構造的に防ぐ</td></tr>
+        <tr><td>GitHub Actions CI</td><td>push毎に101テストを自動実行</td><td>手動実行忘れを排除</td></tr>
+      </tbody>
+    </table>
+    <div class="callout"><p>smokeが見つけたOCRの502は「@anthropic-ai/sdk がWorkersランタイムで node:fs を要求して認証解決に失敗する」既存バグだった。wrangler.jsonc に <code class="inline">compatibility_flags: ["nodejs_compat"]</code> を1行追加して解消。<strong>ハーネスは作った瞬間に元を取った。</strong></p></div>
+  </section>
+
+  <section>
+    <h2><span class="num">04</span>独立検証 — 作った頭に採点させない</h2>
+    <p class="sub">別エージェントが実機で採点。84点で差し戻し、修正して96点合格</p>
+    <figure>
+      <img src="images/concept-04-01.png" alt="実装・独立検証・差し戻しのループ図">
+      <figcaption>採点表固定・絶対評価・実物を自分で動かす、の3契約で検証</figcaption>
+    </figure>
+    <p>実装エージェントの報告は一切信じず、独立エージェントが採点表（etl_real_data 40 / smoke_and_preflight 25 / walkability 15 / integrity 20、合格90点）に沿って全て実機で検証した。SQLの753件を機械パースして座標・日付・enum逸脱を全数検査、APIをcurlで実測、smokeとpreflightは成功と失敗の両方を確認。</p>
+    <ul>
+      <li>1周目84点: 年正規化漏れ（end_at='26-09-01'）や分類の一様化などを指摘 → 差し戻し</li>
+      <li>修正: 2桁/5桁年の正規化、車線数ベースの規制分類、団子重複の決定的オフセット</li>
+      <li>2周目<strong>96点で合格</strong>。最終状態: テスト101件全パス、tscクリーン、既存機能の回帰ゼロ</li>
+    </ul>
+    <div class="quote">無限ループと品質に収束するループの分かれ目は、採点者がいるか・直し方が返るか の2つだけ。</div>
+  </section>
+
+  <section>
+    <h2><span class="num">05</span>残る本人作業 — 3手で提出完了</h2>
+    <p class="sub">認証と本番公開は停止ゲート。ここだけは代行しない</p>
+    <figure>
+      <img src="images/concept-05-01.png" alt="提出までの残り3ステップのすごろく図">
+      <figcaption>①②は合計10分程度。締切2026-07-27（月）17:00まで技術的ブロッカーなし</figcaption>
+    </figure>
+    <table class="table">
+      <thead><tr><th>手順</th><th>コマンド/場所</th><th>所要</th><th>なぜ本人か</th></tr></thead>
+      <tbody>
+        <tr class="pick"><td>① wrangler再認証</td><td>チャットに <code class="inline">! npx wrangler login</code> と入力（!プレフィックスでこのセッション内実行）</td><td>2分</td><td>現トークンにd1:writeスコープが無く、ブラウザでのOAuth承認が必要</td></tr>
+        <tr><td>② デプロイ</td><td><code class="inline">! bash scripts/deploy.sh</code>（D1作成→migrate→ANTHROPIC_API_KEY設定→deploy→smoke）</td><td>8分</td><td>本番公開＝停止ゲート。secretの投入も本人</td></tr>
+        <tr><td>③ フォーム提出</td><td>form.jotform.com/261468325066056 に原稿6項目をコピペ＋キャプチャ3点</td><td>15分</td><td>応募は本人名義</td></tr>
+      </tbody>
+    </table>
+    <div class="callout"><p>応募原稿は実態に合わせて更新済み（テスト40→101件、路上工事753件取込、ほこナビ「利用中」へ）。デプロイ後にやること: 原稿の「デモURLは提出時までに公開予定」を実URLに差し替え、実データが写った状態でキャプチャ3点を撮り直し、<code class="inline">npm run preflight &lt;本番URL&gt;</code> で最終確認。</p></div>
+    <div class="callout warn"><p><strong>注意:</strong> リポジトリはiCloud Drive上にあり、node_modules/.wrangler が同期対象のまま。「Macのストレージを最適化」が発火すると提出直前にwranglerが突然壊れるリスクがある（対処はdocs/DEPLOY.mdに記載）。また本日の変更は未コミット — 動作確認が済んだらコミット推奨。</p></div>
+  </section>
+
+  <div class="conclusion">
+    <h2>結論</h2>
+    <ol>
+      <li>テーマ・技術スタックの選択は妥当だった（アイデア74/技術70は初期から高評価）。弱点は「主張と実態の乖離」であり、実装で主張を真にする方向で解消した。</li>
+      <li>実データ2系統（都建設局753件＋ほこナビ2,583リンク）が実際に流れ、応募原稿と実態が一致した。データ活用軸は40→65+相当への改善見込み。</li>
+      <li>締切まで18日。残りは本人の3手（<code class="inline">login</code>→<code class="inline">deploy</code>→提出）と、キャプチャ撮り直しのみ。技術的ブロッカーはゼロ。</li>
+    </ol>
+  </div>
+
+  <footer>題材: ハッカソン/osanpo-safety（stage1-mvp、未コミット変更あり）/ 検証: 独立エージェント2周・96点合格 / 2026-07-09</footer>
+
+</div>
+</body>
+</html>
