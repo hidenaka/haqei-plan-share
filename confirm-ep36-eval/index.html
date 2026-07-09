@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>ep36 無バイアス多面評価 — 5レーン×red-team</title>
+<style>
+  :root{
+    --ink:#1c1a17;--ink2:#57524b;--bg:#f6f3ec;--paper:#fbf9f2;--line:#e0d9c8;
+    --accent:#2f5a86;--gold:#a9822c;--new:#1f7a4d;--warn:#b4531f;--red:#a33b2f;
+    --sans:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP","Yu Gothic",Meiryo,sans-serif;
+    --shadow:0 1px 0 rgba(0,0,0,.03),0 10px 26px rgba(0,0,0,.07);
+  }
+  @media(prefers-color-scheme:dark){
+    :root{--ink:#ece7dd;--ink2:#a9a296;--bg:#151310;--paper:#201d18;--line:#332e26;--accent:#7fa9d4;--gold:#d9ad55;--new:#5cc48c;--warn:#e0894f;--red:#e0796b;}
+  }
+  *{box-sizing:border-box}html,body{margin:0;padding:0}
+  body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1.7;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:840px;margin:0 auto;padding:32px 16px 90px}
+  .kick{display:inline-block;background:var(--accent);color:#fff;font-size:11.5px;font-weight:700;letter-spacing:.09em;padding:5px 11px;border-radius:999px}
+  h1{font-size:23px;line-height:1.35;margin:12px 0 6px}
+  h1 b{color:var(--accent)}
+  .lede{font-size:14px;color:var(--ink2);margin:0 0 10px}
+  h2{font-size:17px;margin:30px 0 10px;padding-bottom:7px;border-bottom:2px solid var(--line)}
+  h2 .em{font-size:12px;color:var(--ink2);font-weight:600;margin-left:6px}
+  .scores{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:14px 0}
+  @media(max-width:560px){.scores{grid-template-columns:repeat(2,1fr)}.scores .pill:last-child{grid-column:span 2}}
+  .pill{background:var(--paper);border:1px solid var(--line);border-radius:11px;padding:10px 6px;text-align:center;box-shadow:var(--shadow)}
+  .pill b{font-size:26px;display:block;line-height:1.1}
+  .pill span{font-size:11px;color:var(--ink2)}
+  .g b{color:var(--new)}.y b{color:var(--gold)}.r b{color:var(--red)}
+  .card{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin:11px 0;box-shadow:var(--shadow)}
+  .card h3{font-size:14.5px;margin:0 0 6px}
+  .card p{font-size:13.5px;margin:4px 0}
+  .ok{border-left:5px solid var(--new)}
+  .ng{border-left:5px solid var(--red)}
+  .un{border-left:5px solid var(--gold)}
+  .tag{display:inline-block;font-size:10.5px;font-weight:700;border-radius:6px;padding:1px 7px;margin-right:6px;vertical-align:middle}
+  .tag.c{background:rgba(31,122,77,.14);color:var(--new)}
+  .tag.x{background:rgba(163,59,47,.13);color:var(--red)}
+  .tag.u{background:rgba(169,130,44,.15);color:var(--gold)}
+  .tag.s{background:rgba(47,90,134,.12);color:var(--accent)}
+  table{width:100%;border-collapse:collapse;font-size:13px;margin:8px 0}
+  th,td{text-align:left;padding:8px 9px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{color:var(--ink2);font-size:11.5px;font-weight:700;white-space:nowrap}
+  .pri{font-weight:800;color:var(--accent);white-space:nowrap}
+  ul{margin:6px 0;padding-left:19px}li{margin:5px 0;font-size:13.5px}
+  .verdict{margin:16px 0;padding:16px 18px;background:linear-gradient(180deg,rgba(47,90,134,.08),transparent);border:1px solid var(--line);border-left:5px solid var(--accent);border-radius:12px}
+  .verdict p{font-size:14px;margin:5px 0}
+  .gate{margin-top:30px;padding:19px;background:var(--ink);color:#f4efe3;border-radius:14px}
+  @media(prefers-color-scheme:dark){.gate{background:#0e0c0a}}
+  .gate h2{color:#f2c766;border:none;margin:0 0 8px}
+  .gate p{font-size:13.5px;margin:6px 0}
+  .opt{background:rgba(255,255,255,.06);border-radius:9px;padding:10px 13px;margin:8px 0;font-size:13.5px}
+  .opt b{color:#8fc9a6}
+  .foot{margin-top:22px;color:var(--ink2);font-size:11.5px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <span class="kick">EP36 無バイアス評価 · 5レーン×RED-TEAM</span>
+  <h1>動画は水準以上。ただし<b>「伸ばす」の主戦場はこの動画の外</b>にある</h1>
+  <p class="lede">文脈ゼロの独立監査6体（フック実写／戦略適合／ペーシング実測／画・音・字幕／パッケージ→敵対検証）。制作意図は一切渡さず、実フレーム抽出・実データ照合で判定。red-teamが各提言をソースに当てて反証済み。</p>
+
+  <div class="scores">
+    <div class="pill y"><b>77</b><span>フック(冒頭2分)</span></div>
+    <div class="pill y"><b>54</b><span>戦略適合</span></div>
+    <div class="pill r"><b>35</b><span>ペーシング配置</span></div>
+    <div class="pill g"><b>78</b><span>画・音・字幕</span></div>
+    <div class="pill r"><b>30</b><span>パッケージ*</span></div>
+  </div>
+  <p class="lede">* パッケージ30点の主張2件（サムネ判別不能・カット破損で公開不可）はred-teamが現物照合で<b>過大評価と却下</b>。実態はこれより上。ただし「YouTube上の実体が旧版のまま」という指摘は本物（下記）。</p>
+
+  <div class="verdict">
+    <p><b>総合判定</b>：動画単体のcraft（30秒フック・画風統一・字幕60px・易経忠実度）は無名chの水準を超える。しかし戦略SSOTの実測は「<b>再生の95.5%はショートフィード。ロングのCTR/維持は現状誤差レベル</b>」。つまりこの動画をさらに磨いても伸びには直結しない——<b>この動画から最強のショートを切り出し、配線し、公開実体を正すこと</b>が、評価が指した最適化のすべて。</p>
+  </div>
+
+  <h2>red-teamを生き残った結論<span class="em">CONFIRMED のみ</span></h2>
+
+  <div class="card ng">
+    <h3><span class="tag x">実害リスク#1</span>YouTubeに予約済みの実体が「どのレンダ版か」誰も知らない</h3>
+    <p>ep36は既に予約済み（7/15 朝4:00・mPw1iLU8TdA）だが、publish_kitの記録は7/6の旧版（zrepair_depthflow）のまま。<b>今日完成したv3への差し替えは未実行</b>。このままだと旧版（画像・モーション・音が古い）が公開される。5レーン全員がローカルのv3を論じたが、それがYouTubeに載っている保証はゼロ——red-teamが「ep36最大の実害リスク」と認定。</p>
+  </div>
+
+  <div class="card ok">
+    <h3><span class="tag c">最高ROI</span>「乾派？坤派？」二択自己分類ショートの切り出し</h3>
+    <p>戦略の実エンジンはショートフィード（再生の95.5%）。坤×ナウシカの最大の武器は<b>乾（やり返す）vs 坤（受け止める）の二択</b>——topic-radar実データで conflict=0.8（コードギアス同等の高値）。「あなたはクシャナ派？ナウシカ派？」で友達と割れる＝share装置として構造的に強い。素材は本編に既にある（クシャナ対比・王蟲の目 赤→青・テト噛みつき）。</p>
+  </div>
+
+  <div class="card ok">
+    <h3><span class="tag c">低工数・即効</span>音量が5LU足りない → ショート切り出し時に必ず -14 LUFS 正規化</h3>
+    <p>実測 -19.2 LUFS（YouTube目標-14）。フィードで相対的に小さく聞こえ、完走率を削る。本編差し替え時とショート書き出し時に loudnorm を通す（音声のみ再エンコードで低コスト）。</p>
+  </div>
+
+  <div class="card ok">
+    <h3><span class="tag c">次作へのテンプレ</span>構成診断は正確 — ただし直すのは「この動画」ではなく「次の台本ゲート」</h3>
+    <p>診断：幕1が規定30秒→実測47秒（+57%）／幕2説明が6シーン連続111秒＝実測最大離脱帯が冒頭2分の6割を占有／価値の本体（処方箋）が尺の71%地点／尺が計画500秒→595秒（+19%）。<b>この個体の再編集はred-teamが「戦略違反・工数不当」と却下</b>。代わりに essay-preflight の台本ゲートに「対比を90秒以内に・幕1は30秒・連続act2_storyは4シーンまで・尺±10%」の機械チェックを恒久追加する。</p>
+  </div>
+
+  <div class="card ok">
+    <h3><span class="tag c">将来方針</span>題材選定の順序違反を繰り返さない</h3>
+    <p>ナウシカは topic-radar rank8/17・チャンネル実績なし（channelPerf=0.5）のまま直接ロング化された＝「ショートで点火→勝った題材だけロング化」の順序を飛ばした。次からは実績上位（コードギアス87・スラムダンク75等）か、ショートで点火実証済みの題材からロング化する。</p>
+  </div>
+
+  <h2>red-teamが潰した提案<span class="em">やらないこと</span></h2>
+  <ul>
+    <li><span class="tag x">却下</span><b>本編の全尺再編集（500秒へ圧縮）</b>——SSOT「ロング維持の大改修はやらない」と正面衝突。診断は次作テンプレへ。</li>
+    <li><span class="tag x">却下</span><b>サムネの全差し替え</b>——現行サムネは王蟲（赤い複眼群）が主役でIP認知は成立済み。「主人公が判別不能」は人物だけ見た過小評価。既存のA/Bテスト3案で回す。</li>
+    <li><span class="tag x">却下</span><b>「坤は低コンフリクトでshareに弱い」という断定</b>——実データはconflict=0.8の高値。乾vs坤の二択はむしろ本エピソード最大の武器。</li>
+    <li><span class="tag u">保留</span><b>「モーションgate FAILだから公開不可」</b>——FAILの実体はWan由来検証の来歴不一致で、v3本体は視認可能な破損なし（別レーンが独立に78点・破損なしを追認）。</li>
+  </ul>
+
+  <h2>誰も見ていなかった欠落<span class="em">red-team指摘</span></h2>
+  <ul>
+    <li>YouTube実体のバイト列を一次検証した者がいない（→アクションAで解消）</li>
+    <li>サムネ差し替えはA/Bテスト稼働中だとAPIが拒否する既知ブロッカーの確認漏れ</li>
+    <li>肝心のショート切り出し設計（タイムコード・フック・share装置）が空白のまま</li>
+    <li>「長尺にそもそもインプレが来るか」を誰も問うていない——維持最適化の前提が未検証</li>
+  </ul>
+
+  <h2>アクションプラン<span class="em">優先順</span></h2>
+  <table>
+    <tr><th>#</th><th>やること</th><th>効く先</th><th>工数</th></tr>
+    <tr><td class="pri">A</td><td><b>公開実体の修正</b>：v3に loudnorm(-14LUFS) を当て、YouTube(mPw1iLU8TdA)の動画を差し替え、publish_kit/registryを同期</td><td>7/15公開事故の防止</td><td>S</td></tr>
+    <tr><td class="pri">B</td><td><b>「乾派？坤派？」二択ショート設計→切り出し2本</b>（クシャナvs.ナウシカ対比＋王蟲の目 赤→青）＋ -14LUFS</td><td>share率（律速#3）</td><td>S-M</td></tr>
+    <tr><td class="pri">C</td><td><b>ショート配線</b>：シリーズ行＋本編リンク＋登録CTAコメント＝変換コホート投入</td><td>登録転換（律速#4）</td><td>S</td></tr>
+    <tr><td class="pri">D</td><td><b>サムネA/B起動</b>：既存3案（洞察A/B＋TierA）でH-CTR-056を回す</td><td>CTR（律速#1）</td><td>S</td></tr>
+    <tr><td class="pri">E</td><td><b>台本ゲート恒久強化</b>：対比90秒以内・幕1=30秒・act2_story連続≤4・尺±10% をessay-preflightに機械化</td><td>次作以降の維持率</td><td>M</td></tr>
+  </table>
+
+  <div class="gate">
+    <h2>判断してください</h2>
+    <p>評価の結論：<b>この動画はもう磨かない。公開実体を正し、ショートに全力を移す。</b></p>
+    <div class="opt"><b>A. プラン承認・A→E全部進めて</b>（YouTube差し替えは実行前に対象を再確認して報告します。公開ボタン相当の不可逆操作は都度確認）</div>
+    <div class="opt"><b>B. 一部だけ</b>（例:「AとBだけ」「Eは後で」）</div>
+    <div class="opt"><b>C. 異議あり</b>（red-teamの却下判断に納得いかない点があれば指定を——例:本編を直したい）</div>
+  </div>
+
+  <p class="foot">実行: 6エージェント・566kトークン・全completion／hook=実フレーム9枚・pacing=タイミングJSON実測・audiovisual=フレーム14枚+2.5秒差分+360px実寸・strategy=SSOT+topic-radar実データ・packaging=実寸サムネ目視 → red-teamがソース照合で反証。lane生データ=wf_8da2bdf5-68e journal。</p>
+</div>
+</body>
+</html>
