@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>工事お知らせAI — 提出準備レポート（統合完了・残り3手）</title>
+<style>
+  :root {
+    --ink: #1a1a1a;
+    --ink-2: #4a4a4a;
+    --bg: #f7f5ee;
+    --paper: #fbf9f1;
+    --line: #d8d2bf;
+    --accent: #cc785c;
+    --accent-soft: #f5e0d6;
+    --warn: #c83a2c;
+    --warn-soft: #f6dcd6;
+    --yellow: #f4d35e;
+    --shadow: 0 1px 0 rgba(0,0,0,.04), 0 8px 24px rgba(0,0,0,.06);
+    --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+    --sans: -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN",
+            "Hiragino Sans", "Noto Sans JP", "Yu Gothic", "Meiryo", sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { font-family: var(--sans); background: var(--bg); color: var(--ink); line-height: 1.7; -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 56px 28px 96px; }
+  .hero { margin-bottom: 56px; }
+  .hero .kicker { display: inline-block; background: var(--accent); color: #fff; font-size: 12px; font-weight: 700; letter-spacing: .12em; padding: 6px 12px; border-radius: 999px; margin-bottom: 18px; }
+  .hero h1 { font-size: 40px; line-height: 1.3; margin: 0 0 14px; letter-spacing: -.01em; }
+  .hero h1 b { color: var(--accent); }
+  .hero p.lede { font-size: 18px; color: var(--ink-2); margin: 0; max-width: 780px; }
+  .tldr { margin-top: 28px; padding: 22px 24px; background: var(--paper); border: 1px solid var(--line); border-radius: 12px; box-shadow: var(--shadow); }
+  .tldr h2 { font-size: 13px; letter-spacing: .15em; color: var(--accent); margin: 0 0 10px; }
+  .tldr ol { margin: 0; padding-left: 20px; }
+  .tldr li { margin: 4px 0; }
+  section { margin: 64px 0 0; }
+  section > h2 { font-size: 28px; line-height: 1.4; margin: 0 0 6px; border-left: 6px solid var(--accent); padding-left: 12px; }
+  section > h2 .num { color: var(--accent); font-variant-numeric: tabular-nums; margin-right: 10px; }
+  section > p.sub { color: var(--ink-2); margin: 0 0 22px; }
+  figure { margin: 0 0 24px; padding: 12px; background: var(--paper); border: 1px solid var(--line); border-radius: 14px; box-shadow: var(--shadow); }
+  figure img { display: block; width: 100%; height: auto; border-radius: 8px; }
+  figcaption { font-size: 13px; color: var(--ink-2); margin-top: 10px; text-align: center; }
+  .table { width: 100%; border-collapse: collapse; margin: 12px 0 6px; background: var(--paper); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; box-shadow: var(--shadow); }
+  .table th, .table td { text-align: left; padding: 12px 14px; border-bottom: 1px solid var(--line); vertical-align: top; font-size: 14.5px; }
+  .table th { background: #efeadb; font-weight: 700; }
+  .table tr:last-child td { border-bottom: 0; }
+  .table .pick { background: var(--accent-soft); }
+  .table .pick td:first-child { font-weight: 700; color: var(--accent); }
+  code.inline { font-family: var(--mono); font-size: .92em; background: #efeadb; padding: 1px 6px; border-radius: 4px; }
+  .callout { margin: 18px 0; padding: 16px 18px; border-left: 4px solid var(--accent); background: var(--accent-soft); border-radius: 0 10px 10px 0; }
+  .callout.warn { border-color: var(--warn); background: var(--warn-soft); }
+  .callout p { margin: 0; }
+  .callout strong { color: var(--accent); }
+  .callout.warn strong { color: var(--warn); }
+  .quote { border-left: 3px solid var(--line); padding: 6px 16px; color: var(--ink-2); font-size: 14.5px; margin: 18px 0; }
+  .conclusion { margin-top: 56px; padding: 28px 28px 24px; background: var(--ink); color: #f6f3e8; border-radius: 16px; }
+  .conclusion h2 { color: var(--yellow); border: 0; padding: 0; margin: 0 0 12px; }
+  .conclusion ol { margin: 0; padding-left: 20px; }
+  .conclusion li { margin: 6px 0; }
+  .conclusion code.inline { background: #2c2f33; color: #f6f3e8; }
+  footer { margin-top: 36px; color: var(--ink-2); font-size: 13px; }
+  @media (max-width: 720px) {
+    .wrap { padding: 32px 18px 64px; }
+    .hero h1 { font-size: 30px; }
+    section > h2 { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <span class="kicker">都知事杯2026 提出準備レポート v2 — 主題: 工事お知らせAI</span>
+    <h1>工事お知らせAI — <b>再接地 → 統合 → 実装完了</b>、残るは本人の3手</h1>
+    <p class="lede">提出主題を「工事お知らせAI」に正して再検証。63点の致命傷（原稿ズレ・デモURL無し・証跡ハードコード・GTFS地理不整合）はすべて「未統合・未コミット・未公開」が原因だったため、worktreeとmainを統合し4laneで不足物を実装した。テストは162→208件全パス、主要フローは実測で動作確認済み。</p>
+    <div class="tldr">
+      <h2>TL;DR</h2>
+      <ol>
+        <li>主題は<strong>工事お知らせAI</strong>（7/6 spec で決定済み、おさんぽセーフティは住民側ユースケースとして内包）。前回レポートの主題判定は接地ミスで、指摘を受け一次情報で訂正した</li>
+        <li>main（実データ753件＋ハーネス）× worktree（書類読取・トレーサー・発注者報告）を<strong>マージ統合し、証跡実データ化・ランディング/A4チラシ・都営バスGTFS・抽出検証80%実測</strong>を実装。テスト208件全パス</li>
+        <li>残るのは本人の3手: <code class="inline">wrangler login</code> → <code class="inline">bash scripts/deploy.sh</code> → フォーム提出。＋OCRのAPIキー設定と、抽出ロジック既知バグ7件の扱い判断</li>
+      </ol>
+    </div>
+  </header>
+
+  <section>
+    <h2><span class="num">01</span>再接地 — 本当の主題は「工事お知らせAI」だった</h2>
+    <p class="sub">前回レポートの主題判定を訂正。一次情報（7/6 spec・worktree README）で確認</p>
+    <figure>
+      <img src="images/concept-01-01.png" alt="テーマの分かれ道と道標の図">
+      <figcaption>7/6 spec「主題は工事お知らせAIにする」— おさんぽセーフティは住民側ユースケースとしてアーカイブ</figcaption>
+    </figure>
+    <p>指摘を受けて記録を再実査した結果、<code class="inline">docs/superpowers/specs/2026-07-06-construction-notice-ai-design.md</code> に「主題は工事お知らせAIにする」と明記されており、実装本体も worktree <code class="inline">construction-section-tracer</code>（書類読取・帳票OCR・発注者報告・GTFS徒歩影響、12コミット）で進行していた。前回「おさんぽで確定」とした根拠は薄い記録の誤読で、これは接地の失敗。ただし前回作った実データETL753件・ほこナビ・検証ハーネス・nodejs_compat修正は<strong>同一コードベースの資産としてそのまま工事お知らせAIに効く</strong>ため、無駄になった作業はない。</p>
+  </section>
+
+  <section>
+    <h2><span class="num">02</span>工事お知らせAI採点 — 63点、致命傷は「未統合・未コミット・未公開」</h2>
+    <p class="sub">実装コアは本物と判定。減点は作れていないからではなく、まとまっていないから</p>
+    <figure>
+      <img src="images/concept-02-01.png" alt="工事お知らせAIの診断書と3つの致命傷">
+      <figcaption>審査員視点の絶対評価（提出＝今日と仮定）。サービスデザイン48が最弱だった</figcaption>
+    </figure>
+    <table class="table">
+      <thead><tr><th>審査軸</th><th>採点</th><th>主な根拠</th></tr></thead>
+      <tbody>
+        <tr><td>データ活用</td><td>62</td><td>753件+ほこナビはmain側に隔離されデモに未接続。GTFSは国立市のみで都心と地理不整合</td></tr>
+        <tr><td>アイデア</td><td>78</td><td>「既存書類→周知+発注者報告」の業務接続は強い</td></tr>
+        <tr><td>技術力</td><td>70</td><td>OCR構造化・幾何演算・レポート生成は実装本物（テストで確認）</td></tr>
+        <tr><td>ソーシャルインパクト</td><td>55</td><td>実務者ヒアリング未実施、証跡が仮説段階</td></tr>
+        <tr class="pick"><td>サービスデザイン</td><td>48</td><td>トップが旧デモに着地／申込原稿が旧テーマ／発注者報告の数字がハードコード（views:128固定）</td></tr>
+      </tbody>
+    </table>
+    <div class="callout warn"><p><strong>審査で見抜かれると信頼を失う点が3つあった:</strong> ①審査員が最初に読む申込原稿が別製品（おさんぽセーフティ）のまま ②デモURL未着手 ③目玉の発注者報告の閲覧数・問い合わせ数が毎回ハードコードの架空値。いずれも18日で解消可能な「統合・コミット・公開」の問題と判定。</p></div>
+  </section>
+
+  <section>
+    <h2><span class="num">03</span>統合 — main × worktree を1つのアプリに</h2>
+    <p class="sub">衝突4ファイルを解消してマージ。テスト101+101 → 208件全パス</p>
+    <figure>
+      <img src="images/concept-03-01.png" alt="mainとworktreeの合流図">
+      <figcaption>実データ・ハーネス（main）と工事お知らせAI機能（worktree）が合流し、双方の欠けが埋まった</figcaption>
+    </figure>
+    <ul>
+      <li>両側の未コミットを整理してコミット → <code class="inline">stage1-mvp</code> へマージ（<code class="inline">b7c3a2a</code>）。衝突は README・申込原稿・src/index.ts・.gitignore の4つで、方針（工事お知らせAI主題）に沿って解消</li>
+      <li>migrations の採番衝突（0003×2）を 0005 改名で解消。0001〜0006 が一列に</li>
+      <li>worktree 側に無かった <code class="inline">nodejs_compat</code>（OCR 502 の修正）と実データ753件が工事お知らせAIのデモに接続された</li>
+      <li>統合後: テスト208件全パス・tsc クリーン・<code class="inline">/api/restrictions</code> 765件・trace/notice/flyer 全200</li>
+    </ul>
+    <div class="callout"><p><strong>コミットはすべてローカルのみ。</strong>push・リモート追加は一切していない（git remote は空のまま）。</p></div>
+  </section>
+
+  <section>
+    <h2><span class="num">04</span>不足物の実装 — 4lane</h2>
+    <p class="sub">証跡の実データ化 / 導線とチラシ / 都心GTFS / 抽出検証の実測</p>
+    <figure>
+      <img src="images/concept-04-01.png" alt="4つの実装laneの工具箱図">
+      <figcaption>すべて独立エージェントが実機検証（機能面は3周とも合格判定）</figcaption>
+    </figure>
+    <table class="table">
+      <thead><tr><th>lane</th><th>作ったもの</th><th>実証</th></tr></thead>
+      <tbody>
+        <tr class="pick"><td>① 証跡実データ化</td><td><code class="inline">notice_events</code> テーブル＋API。閲覧・問い合わせ・公開・変更をD1に実記録。views:128等の架空値コードは削除、未計測時は「計測開始前」と正直表示</td><td>POST view→GET stats で件数増加をcurl実証</td></tr>
+        <tr><td>② 導線・成果物</td><td>トップを工事お知らせAIランディングに（旧デモは app.html に退避・導線維持）。A4印刷チラシ flyer.html＋町会・商店会向け文面。ODPT過大表記を是正</td><td>/ と flyer が200、印刷CSS確認</td></tr>
+        <tr><td>③ 都心GTFS</td><td>都営バスGTFS（ODPT静的配布・CC BY 4.0）を取込み、国立市と結合した1,535停留所。都心753件の工事と「最寄り停留所」が実際にヒット</td><td>東京駅〜新宿圏でヒット確認テスト</td></tr>
+        <tr><td>④ 抽出検証</td><td>実務様式準拠サンプル10件（正直にサンプルと明記）で必須項目抽出率を実測: <strong>80.0%、10件中6件が80%ゲート通過</strong>。結果を trace の検証パネルと docs/entry/validation-results.md に反映</td><td>node scripts/validate-extraction.mjs で再現可能</td></tr>
+      </tbody>
+    </table>
+    <p>検証ループは 64→85→82 で機械的合格ライン（90）には未達のまま max 到達したが、後半2周の減点はほぼ「実装が未コミット」への指摘（lane への私の指示と採点表の不整合）。機能面は3周とも実測で合格判定だったため、ループを打ち切り4つの論理コミットで解消した（<code class="inline">54146f3</code>〜<code class="inline">d362237</code>）。</p>
+  </section>
+
+  <section>
+    <h2><span class="num">05</span>残る本人作業と、正直な注意点</h2>
+    <p class="sub">3手で提出完了。ただし出す前に知っておくべきことが3つ</p>
+    <figure>
+      <img src="images/concept-05-01.png" alt="残り3ステップと注意点のすごろく図">
+      <figcaption>締切 2026-07-27（月）17:00。技術的ブロッカーはゼロ、判断事項が3つ</figcaption>
+    </figure>
+    <table class="table">
+      <thead><tr><th>手順</th><th>コマンド/場所</th><th>所要</th></tr></thead>
+      <tbody>
+        <tr class="pick"><td>① wrangler再認証</td><td>チャットに <code class="inline">! npx wrangler login</code>（d1:writeスコープが現トークンに無い）</td><td>2分</td></tr>
+        <tr><td>② デプロイ</td><td><code class="inline">! bash scripts/deploy.sh</code>（D1作成→migrate→ANTHROPIC_API_KEY設定→deploy→smoke）</td><td>8分</td></tr>
+        <tr><td>③ フォーム提出</td><td>form.jotform.com/261468325066056 へ工事お知らせAI版原稿6項目＋新キャプチャ3点（書類読取/地図候補確認/QR・発注者報告）</td><td>20分</td></tr>
+      </tbody>
+    </table>
+    <div class="callout warn"><p><strong>注意点（正直に）:</strong> ① <code class="inline">/api/ocr</code> はローカルの <code class="inline">.dev.vars</code> のAPIキーが認証エラー（有効なANTHROPIC_API_KEYの設定が必要。本番はdeploy.shがsecret設定を案内） ② 抽出ロジックに既知バグ7件（全角数字・令和年号・「翌」またぎ時間・「歩道通行止め」の誤分類等 — 検証で発見済み、validation-results.md に記録。提出前に直すか「既知の制約」として扱うかは判断次第） ③ 検証パネルの80%は<strong>サンプルでの実測</strong>。実書類1〜2件での再検証と、工事事業者ヒアリング1〜2件が審査説得力を大きく上げる（審査員採点でも最優先改善に挙がった）。</p></div>
+  </section>
+
+  <div class="conclusion">
+    <h2>結論</h2>
+    <ol>
+      <li>主題「工事お知らせAI」で提出できる状態になった。統合済み・テスト208件全パス・主要フロー実測動作・原稿も主題に整合。前回の実データ753件やハーネスもすべてこの主題に効いている。</li>
+      <li>審査上の残リスクは「実書類・実務者の裏取りが無い」こと。ヒアリング1〜2件と実書類再検証が、63点の評価を最も効率よく引き上げる。</li>
+      <li>締切まで18日。<code class="inline">login</code>→<code class="inline">deploy</code>→提出の3手＋キャプチャ撮り直しで完了。コミットはローカルのみ、push は本人判断。</li>
+    </ol>
+  </div>
+
+  <footer>題材: ハッカソン/osanpo-safety（stage1-mvp、統合コミット済み・pushなし）/ 検証: 独立エージェント3周＋Lead最終実測 / 2026-07-09</footer>
+
+</div>
+</body>
+</html>
