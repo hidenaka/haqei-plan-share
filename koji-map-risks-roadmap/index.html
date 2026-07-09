@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>工事情報マップ — リスク台帳と実現ロードマップ</title>
+<style>
+  :root {
+    --ink: #1a1a1a;
+    --ink-2: #4a4a4a;
+    --bg: #f7f5ee;
+    --paper: #fbf9f1;
+    --line: #d8d2bf;
+    --accent: #6d28d9;
+    --accent-soft: #e6ddf7;
+    --warn: #c83a2c;
+    --warn-soft: #f6dcd6;
+    --yellow: #f4d35e;
+    --shadow: 0 1px 0 rgba(0,0,0,.04), 0 8px 24px rgba(0,0,0,.06);
+    --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+    --sans: -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN",
+            "Hiragino Sans", "Noto Sans JP", "Yu Gothic", "Meiryo", sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 56px 28px 96px; }
+
+  .hero { margin-bottom: 56px; }
+  .hero .kicker {
+    display: inline-block;
+    background: var(--accent); color: #fff;
+    font-size: 12px; font-weight: 700; letter-spacing: .12em;
+    padding: 6px 12px; border-radius: 999px;
+    margin-bottom: 18px;
+  }
+  .hero h1 {
+    font-size: 40px; line-height: 1.3; margin: 0 0 14px;
+    letter-spacing: -.01em;
+  }
+  .hero h1 b { color: var(--accent); }
+  .hero p.lede {
+    font-size: 18px; color: var(--ink-2); margin: 0; max-width: 780px;
+  }
+  .tldr {
+    margin-top: 28px; padding: 22px 24px;
+    background: var(--paper); border: 1px solid var(--line); border-radius: 12px;
+    box-shadow: var(--shadow);
+  }
+  .tldr h2 { font-size: 13px; letter-spacing: .15em; color: var(--accent); margin: 0 0 10px; }
+  .tldr ol { margin: 0; padding-left: 20px; }
+  .tldr li { margin: 4px 0; }
+
+  section { margin: 64px 0 0; }
+  section > h2 {
+    font-size: 28px; line-height: 1.4; margin: 0 0 6px;
+    border-left: 6px solid var(--accent); padding-left: 12px;
+  }
+  section > h2 .num {
+    color: var(--accent); font-variant-numeric: tabular-nums; margin-right: 10px;
+  }
+  section > p.sub { color: var(--ink-2); margin: 0 0 22px; }
+
+  figure {
+    margin: 0 0 24px; padding: 12px;
+    background: var(--paper); border: 1px solid var(--line); border-radius: 14px;
+    box-shadow: var(--shadow);
+  }
+  figure img { display: block; width: 100%; height: auto; border-radius: 8px; }
+  figcaption {
+    font-size: 13px; color: var(--ink-2); margin-top: 10px; text-align: center;
+  }
+
+  .table {
+    width: 100%; border-collapse: collapse; margin: 12px 0 6px;
+    background: var(--paper); border: 1px solid var(--line); border-radius: 12px; overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+  .table th, .table td {
+    text-align: left; padding: 12px 14px; border-bottom: 1px solid var(--line);
+    vertical-align: top; font-size: 14.5px;
+  }
+  .table th { background: #efeadb; font-weight: 700; }
+  .table tr:last-child td { border-bottom: 0; }
+  .table .pick { background: var(--accent-soft); }
+  .table .pick td:first-child { font-weight: 700; color: var(--accent); }
+  .lv-h { color: var(--warn); font-weight: 700; }
+  .lv-m { color: #d68c1a; font-weight: 700; }
+  .lv-l { color: #0f7b6c; font-weight: 700; }
+
+  .callout {
+    margin: 18px 0;
+    padding: 16px 18px;
+    border-left: 4px solid var(--accent);
+    background: var(--accent-soft);
+    border-radius: 0 10px 10px 0;
+  }
+  .callout.warn { border-color: var(--warn); background: var(--warn-soft); }
+  .callout p { margin: 0; }
+  .callout strong { color: var(--accent); }
+  .callout.warn strong { color: var(--warn); }
+
+  .quote {
+    border-left: 3px solid var(--line); padding: 6px 16px;
+    color: var(--ink-2); font-size: 14.5px; margin: 18px 0;
+  }
+
+  .conclusion {
+    margin-top: 56px; padding: 28px 28px 24px;
+    background: var(--ink); color: #f6f3e8; border-radius: 16px;
+  }
+  .conclusion h2 { color: var(--yellow); border: 0; padding: 0; margin: 0 0 12px; }
+  .conclusion ol { margin: 0; padding-left: 20px; }
+  .conclusion li { margin: 6px 0; }
+
+  footer { margin-top: 36px; color: var(--ink-2); font-size: 13px; }
+
+  @media (max-width: 720px) {
+    .wrap { padding: 32px 18px 64px; }
+    .hero h1 { font-size: 30px; }
+    section > h2 { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <span class="kicker">リスク台帳 ＋ 実現ロードマップ</span>
+    <h1>工事情報マップ — <b>リスクの本丸は2つ。道は関所4つ</b></h1>
+    <p class="lede">リスクは8つ洗い出したが、追加調査の結果、外部リスク（国の公共代替・大手参入・法的責任・データ利用制限）はいずれも管理可能と確認できた。本当に怖いのは「データ供給の鶏卵問題」（構造）と「対人フェーズで実行が止まること」（内部）の2つ。ロードマップはこの2つを正面から潰す設計にし、各関所に撤退基準を付けた。</p>
+    <div class="tldr">
+      <h2>TL;DR</h2>
+      <ol>
+        <li>外部リスクは低〜中: オープンデータ商用利用可を一次確認、xROAD・大手は車向けに集中、誤情報責任は免責設計で管理可</li>
+        <li>本丸は「データの鶏卵」— 英国は法律で解いた。日本では3層データ戦略（オープンデータ→自治体契約→現場直接）で解く</li>
+        <li>あなたの仕事は週2〜4時間の「人と会う・話す・決める」だけ。作る・調べる・監視するはAIに投げる。最初の一手は7/27の提出</li>
+      </ol>
+    </div>
+  </header>
+
+  <section>
+    <h2><span class="num">01</span>リスクマップ — 本丸は2つだけ</h2>
+    <p class="sub">8つ洗い出して、6つは管理可能と確認できた</p>
+    <figure>
+      <img src="images/concept-01-01.png" alt="リスクマップ: 影響×発生可能性の2軸に8リスクを配置。右上はデータ鶏卵と実行停止">
+      <figcaption>右上（影響大×可能性高）にいるのは「データ鶏卵」と「実行停止」。外部リスクは左下に散っている</figcaption>
+    </figure>
+    <table class="table">
+      <thead><tr><th>リスク</th><th>評価</th><th>根拠（調査結果）</th><th>対策</th></tr></thead>
+      <tbody>
+        <tr class="pick"><td>R1 実行停止（内部）</td><td class="lv-h">高</td><td>ここまでの前進3本はすべてデスクワーク。次フェーズは「人と会う」で、性質が変わる。調査・構想は快適で、対人接触は先延ばししやすい</td><td>ゲート制。週次の進捗指標を「人と話した数」だけにする。調査の追加はAIに投げて自分ではやらない</td></tr>
+        <tr class="pick"><td>R2 データの鶏卵（構造）</td><td class="lv-h">高</td><td>日本には英国Street Managerのような工事登録の法義務がない。現場が入力しないと詳細データは生まれず、詳細データがないと使われない</td><td>3層データ戦略（セクション03）。オープンデータで先に価値を見せ、自治体契約で入力を仕様化する</td></tr>
+        <tr><td>R3 需要不在</td><td class="lv-m">中〜高</td><td>B2B支払い意思は推定のみ（あなた自身の住民体験からも疑義あり）。B2G導入意思も未確認</td><td>G1ゲート（9月ヒアリング5件）で検証。0/5ならB2B軸を廃棄しB2G単独に転換</td></tr>
+        <tr><td>R4 公共代替（国が無料で出す）</td><td class="lv-m">中</td><td>xROADのAPI公開は現状交通量のみ（直轄国道約2,600箇所・一次確認）。工事規制APIは構想の記述のみで具体計画なし。ただし構想に明記あり</td><td>3〜5年軸でAIが監視。国データが来たら競合ではなく無料の仕入れとして取り込み、「集約＋歩行者UX」レイヤーに軸足を移す</td></tr>
+        <tr><td>R5 大手参入</td><td class="lv-l">低〜中</td><td>ナビタイム=ドライバー向け、ゼンリン=車両・自治体向け、Googleはユーザー報告ベースで誤表示事例あり（一次確認）。歩行者向けは全社手薄</td><td>スピードと現場関係の堀。大手が動く前に自治体公認と現場接点を押さえる</td></tr>
+        <tr><td>R6 調達の壁・営業サイクル</td><td class="lv-m">中</td><td>自治体は年度予算で導入まで12〜18ヶ月。個人の3関門（B2G調査で確認済み）</td><td>都知事杯実装支援→GovTech東京窓口で通常営業を短絡。法人化はG3まで待つ</td></tr>
+        <tr><td>R7 誤情報の法的責任</td><td class="lv-l">低</td><td>誤案内で情報提供者の賠償責任を認めた公表判例は確認できず [未確認]。実務は免責表記が標準</td><td>「現地の規制・標識が常に優先」明示＋利用規約の免責＋B2G契約に責任限定条項。設計段階から組み込む</td></tr>
+        <tr><td>R8 市場天井・一人運営</td><td class="lv-m">中</td><td>SAM上限は全国年10億弱のニッチ（収益化調査）。B2G営業＋開発＋運用を一人で回す持続性</td><td>期待値を最初から「年商240〜400万」に設定。拡大は看板業界OEM等のチャネルで、自分の時間を増やさずに行う</td></tr>
+      </tbody>
+    </table>
+    <p style="font-size: 13px; color: var(--ink-2);">※ R4/R5/R7の根拠出典: xroad.mlit.go.jp、各社公式サイト、国交省判例集。データ商用利用は都オープンデータ利用規約（CC BY 4.0）・JARTIC利用規約第2条で「可」を一次確認。すべて2026-07-10取得。</p>
+  </section>
+
+  <section>
+    <h2><span class="num">02</span>安心材料 — 追加調査で消えたリスク</h2>
+    <p class="sub">やる前から詰んでいる要素は無いことを確認した</p>
+    <ul>
+      <li><b>データの権利は問題なし（一次確認）</b>: 東京都オープンデータカタログは CC BY 4.0 で商用利用可。JARTIC利用規約も第2条で商用利用可・第6条でCC BY 4.0互換を明記。事業の法的基盤は成立する</li>
+      <li><b>既存B2Gベンダーの横展開リスクは低い</b>: My City Report は市民→自治体の損傷通報に特化しており、自治体→住民への工事情報公開機能は持っていない（公式サイトで確認）</li>
+      <li><b>Googleの弱点はむしろ機会</b>: Googleマップの通行止めはユーザー報告ベースで、自治体が誤表示の是正を要請した事例（長野県小谷村）すらある。「行政公式のデータで正確」はGoogleに対する差別化になる</li>
+    </ul>
+    <div class="callout"><p><strong>結論:</strong> 外部環境に「今すぐ撤退すべき理由」は見つからなかった。リスクの重心は外ではなく、構造（鶏卵）と実行（自分）にある。</p></div>
+  </section>
+
+  <section>
+    <h2><span class="num">03</span>本丸その1: データの鶏卵は「3層」で解く</h2>
+    <p class="sub">英国は法律で解いた。日本では契約で解く</p>
+    <figure>
+      <img src="images/concept-03-01.png" alt="3層データ戦略: L1オープンデータ自動収集、L2自治体契約で入力を仕様化、L3現場直接入力">
+      <figcaption>下の層がないと上は乗らない。L1で見せる → L2で面を取る → L3で粒度を上げる</figcaption>
+    </figure>
+    <p>「現場が入力しないと価値が出ない、価値がないと入力されない」— この鶏卵を一気に解こうとしないのが要点。<b>Layer 1（オープンデータ自動収集）</b>: 都・JARTIC・区のデータを自動取込。粗くても「今日の工事が1画面で見える」だけで既存サービスより上（歩行者向けは空白なので）。ここはAIと自動化だけで作れ、誰の協力も要らない。<b>Layer 2（自治体経由）</b>: B2G採用時に「受注者は工事情報を本システムに入力すること」を発注仕様に入れてもらう。英国で法律がやったデータ供給の強制を、日本では契約で代替する。<b>Layer 3（現場直接）</b>: 看板QR＋現場ページで施工会社が自ら更新。ここまで来ればデータの堀は完成。</p>
+    <div class="quote">重要な帰結: 最初の1年でやるべきはL1とL2だけ。「現場の人に入力してもらう仕組み」（L3）を最初に作りたくなるが、それは自治体の面を取った後の話。</div>
+  </section>
+
+  <section>
+    <h2><span class="num">04</span>ロードマップ — 関所4つ、撤退基準つき</h2>
+    <p class="sub">何もない状態からの道順。各関所で「進む/曲がる/止まる」を決める</p>
+    <figure>
+      <img src="images/concept-04-01.png" alt="Phase 0〜4のロードマップすごろく。G0〜G3の判断ゲートと撤退分岐">
+      <figcaption>関所には撤退の分岐がある。ズルズル続けない設計</figcaption>
+    </figure>
+    <table class="table">
+      <thead><tr><th>フェーズ</th><th>やること</th><th>関所（判断基準）</th></tr></thead>
+      <tbody>
+        <tr class="pick"><td>Phase 0<br>今〜7/27</td><td>おさんぽセーフティの提出3手（login→deploy→提出）のみ。事業構想は全部凍結</td><td><b>G0</b>: 提出完了。これが全ルートの起点で、未完なら以降のすべてが無い</td></tr>
+        <tr><td>Phase 1<br>8月</td><td>①L1データ取込でギャップ可視化デモ＋現場数実カウント（AI主担当） ②接点3本: 無料セミナー申込・区の道路管理課問い合わせ・X建設DX界隈に実物投稿（本人）</td><td>—（仕込みフェーズ。ゲートなし）</td></tr>
+        <tr><td>Phase 2<br>9月</td><td>工事看板→施工業者ルートで現場ヒアリング5件＋自治体1〜2件。聞くのは「問い合わせ週何件・誰が受ける・発注者から周知に何を求められるか・いくらなら払うか」</td><td><b>G1</b>: 支払い意思が5件中0なら、B2B軸を廃棄してB2G単独へ転換（撤退ではなく軸の整理）</td></tr>
+        <tr><td>Phase 3<br>10〜12月</td><td>都知事杯Final Stage→実装支援→GovTech東京窓口で道路管理課に接続。1自治体の無償β（公認実績づくり）。余力があれば看板QRテスト1現場</td><td><b>G2</b>: 年度末までに公認実績ゼロなら、区へ直接提案3件。それでもゼロなら事業を棚上げし、おさんぽセーフティは個人開発として維持</td></tr>
+        <tr><td>Phase 4<br>2027年〜</td><td>無償βの実績をもとに有償化打診（MCR型: 初期30〜50万＋年額50〜100万）。3〜5自治体で年商240〜400万へ</td><td><b>G3</b>: 具体的な金額の話が出た時点で法人化を判断（それまで法人は作らない）</td></tr>
+      </tbody>
+    </table>
+    <div class="callout warn"><p><strong>撤退基準を先に決めておく理由:</strong> Maximizer型は「もう少し調べれば・もう少し磨けば」で無限に続けられてしまう。G1・G2の基準は今日決めたものを使い、当日の気分で動かさない。基準に達しなければ、それはあなたの失敗ではなく仮説の反証 — 一次情報を取りに行った成果そのもの。</p></div>
+  </section>
+
+  <section>
+    <h2><span class="num">05</span>あなたがすべきこと — 週2〜4時間だけ</h2>
+    <p class="sub">「人と会う・話す・決める」以外は全部AIに投げる</p>
+    <figure>
+      <img src="images/concept-05-01.png" alt="2レーン分担: 本人は人と会う・決める、AIは作る・調べる・監視する">
+      <figcaption>リレーの2レーン。バトンの受け渡し（ヒアリング結果→分析→次の質問リスト）を高速で回す</figcaption>
+    </figure>
+    <table class="table">
+      <thead><tr><th>あなたにしかできないこと（週2〜4時間）</th><th>AIに投げること（あなたはやらない）</th></tr></thead>
+      <tbody>
+        <tr class="pick"><td>① 7/27までに提出3手を実行する（今週・最優先）</td><td>提出手順の整理・つまずき対応・デプロイ作業の支援</td></tr>
+        <tr><td>② 人と会う: セミナーに実際に行く、工事看板の番号に電話する、現場事務所を訪ねる、自治体窓口へメールを送る（送信者は本人）</td><td>アポメール・問い合わせ文面のドラフト、質問リスト設計、ヒアリング結果の分析と次回質問への反映</td></tr>
+        <tr><td>③ X建設DX界隈へ本人名義で発信する</td><td>投稿文案・スクショ素材の準備</td></tr>
+        <tr><td>④ 関所G0〜G3でGo/No-Goを決める</td><td>判断材料の収集・整理（この資料のような形で毎回提出）</td></tr>
+        <tr><td>—</td><td>L1データ取込の実装、現場数の実カウント、ギャップ可視化デモ、xROAD・入札情報・競合の定点監視</td></tr>
+      </tbody>
+    </table>
+    <div class="callout"><p><strong>この分担の意味:</strong> 事業が前に進むかどうかを決める変数は、今後は「コードの量」でも「調査の深さ」でもなく<strong>「あなたが人と接触した回数」</strong>だけ。デスクでできることはすべてAI側のレーンに置いた。逆に言えば、週2〜4時間の対人行動さえ確保できれば、この事業は回る設計になっている。</p></div>
+  </section>
+
+  <section>
+    <h2><span class="num">06</span>直近7日にやること</h2>
+    <p class="sub">今週はこれ以外やらない</p>
+    <table class="table">
+      <thead><tr><th>#</th><th>アクション</th><th>担当</th></tr></thead>
+      <tbody>
+        <tr class="pick"><td>1</td><td>おさんぽセーフティ: login → deploy → 提出（締切7/27に対し2週間以上の余裕を持って完了させる）</td><td>あなた（AIが伴走）</td></tr>
+        <tr><td>2</td><td>8月の無料建設DXセミナーを1本選んで申し込む（15分で終わる）</td><td>あなた</td></tr>
+        <tr><td>3</td><td>事業構想の追加調査・機能アイデア出しは一切しない（湧いたらメモしてAIに投げる）</td><td>—</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <div class="conclusion">
+    <h2>結論</h2>
+    <ol>
+      <li>リスク8つのうち外部要因6つは調査の結果すべて管理可能（商用利用可・公共代替は3〜5年軸・大手は車向け・誤情報は免責設計）。本丸は「データの鶏卵」と「実行停止」の2つ。</li>
+      <li>鶏卵は3層データ戦略で解く: オープンデータで先に見せ、自治体契約で入力を強制し、最後に現場直接。英国が法律でやったことを日本では契約でやる。最初の1年はL1とL2だけ。</li>
+      <li>あなたの仕事は週2〜4時間の「人と会う・話す・決める」に集約した。進捗の指標は人と話した数。そして全ルートの起点は7/27の提出 — 今週やるのはそれと、セミナー申込1本だけ。</li>
+    </ol>
+  </div>
+
+  <footer>題材: 工事情報マップ事業のリスク台帳＋実現ロードマップ / 追加調査取得日 2026-07-10 / 前提資料: 一次情報獲得戦略・B2G採用実例・収益化調査（同日作成）</footer>
+
+</div>
+</body>
+</html>
