@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>工事情報マップの収益化 — 一次情報で検証した3階建てモデル</title>
+<style>
+  :root {
+    --ink: #1a1a1a;
+    --ink-2: #4a4a4a;
+    --bg: #f7f5ee;
+    --paper: #fbf9f1;
+    --line: #d8d2bf;
+    --accent: #0f7b6c;
+    --accent-soft: #d4ece7;
+    --warn: #c83a2c;
+    --warn-soft: #f6dcd6;
+    --yellow: #f4d35e;
+    --shadow: 0 1px 0 rgba(0,0,0,.04), 0 8px 24px rgba(0,0,0,.06);
+    --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+    --sans: -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN",
+            "Hiragino Sans", "Noto Sans JP", "Yu Gothic", "Meiryo", sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 56px 28px 96px; }
+
+  .hero { margin-bottom: 56px; }
+  .hero .kicker {
+    display: inline-block;
+    background: var(--accent); color: #fff;
+    font-size: 12px; font-weight: 700; letter-spacing: .12em;
+    padding: 6px 12px; border-radius: 999px;
+    margin-bottom: 18px;
+  }
+  .hero h1 {
+    font-size: 40px; line-height: 1.3; margin: 0 0 14px;
+    letter-spacing: -.01em;
+  }
+  .hero h1 b { color: var(--accent); }
+  .hero p.lede {
+    font-size: 18px; color: var(--ink-2); margin: 0; max-width: 780px;
+  }
+  .tldr {
+    margin-top: 28px; padding: 22px 24px;
+    background: var(--paper); border: 1px solid var(--line); border-radius: 12px;
+    box-shadow: var(--shadow);
+  }
+  .tldr h2 { font-size: 13px; letter-spacing: .15em; color: var(--accent); margin: 0 0 10px; }
+  .tldr ol { margin: 0; padding-left: 20px; }
+  .tldr li { margin: 4px 0; }
+
+  section { margin: 64px 0 0; }
+  section > h2 {
+    font-size: 28px; line-height: 1.4; margin: 0 0 6px;
+    border-left: 6px solid var(--accent); padding-left: 12px;
+  }
+  section > h2 .num {
+    color: var(--accent); font-variant-numeric: tabular-nums; margin-right: 10px;
+  }
+  section > p.sub { color: var(--ink-2); margin: 0 0 22px; }
+
+  figure {
+    margin: 0 0 24px; padding: 12px;
+    background: var(--paper); border: 1px solid var(--line); border-radius: 14px;
+    box-shadow: var(--shadow);
+  }
+  figure img { display: block; width: 100%; height: auto; border-radius: 8px; }
+  figcaption {
+    font-size: 13px; color: var(--ink-2); margin-top: 10px; text-align: center;
+  }
+
+  .table {
+    width: 100%; border-collapse: collapse; margin: 12px 0 6px;
+    background: var(--paper); border: 1px solid var(--line); border-radius: 12px; overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+  .table th, .table td {
+    text-align: left; padding: 12px 14px; border-bottom: 1px solid var(--line);
+    vertical-align: top; font-size: 14.5px;
+  }
+  .table th { background: #efeadb; font-weight: 700; }
+  .table tr:last-child td { border-bottom: 0; }
+  .table .pick { background: var(--accent-soft); }
+  .table .pick td:first-child { font-weight: 700; color: var(--accent); }
+
+  .callout {
+    margin: 18px 0;
+    padding: 16px 18px;
+    border-left: 4px solid var(--accent);
+    background: var(--accent-soft);
+    border-radius: 0 10px 10px 0;
+  }
+  .callout.warn { border-color: var(--warn); background: var(--warn-soft); }
+  .callout p { margin: 0; }
+  .callout strong { color: var(--accent); }
+  .callout.warn strong { color: var(--warn); }
+
+  .quote {
+    border-left: 3px solid var(--line); padding: 6px 16px;
+    color: var(--ink-2); font-size: 14.5px; margin: 18px 0;
+  }
+
+  .conclusion {
+    margin-top: 56px; padding: 28px 28px 24px;
+    background: var(--ink); color: #f6f3e8; border-radius: 16px;
+  }
+  .conclusion h2 { color: var(--yellow); border: 0; padding: 0; margin: 0 0 12px; }
+  .conclusion ol { margin: 0; padding-left: 20px; }
+  .conclusion li { margin: 6px 0; }
+
+  footer { margin-top: 36px; color: var(--ink-2); font-size: 13px; }
+
+  @media (max-width: 720px) {
+    .wrap { padding: 32px 18px 64px; }
+    .hero h1 { font-size: 30px; }
+    section > h2 { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <span class="kicker">収益化調査レポート</span>
+    <h1>工事情報マップの収益化 — <b>一次情報で検証した「3階建て」モデル</b></h1>
+    <p class="lede">料金表・入札結果・決算・政府統計という一次情報を3系統並列で調べた結論: 住民から金は取れない（実例が全滅）。金は業務側 — 自治体のサブスクと工事会社の現場課金 — から取る。この型には英国に丸ごと先行事例（one.network）があり、日本のB2G実勢価格も既に公表されている。</p>
+    <div class="tldr">
+      <h2>TL;DR</h2>
+      <ol>
+        <li>住民は無料・B2G（自治体サブスク）が本命・B2B（現場課金）が2本目 — の3階建て。C課金の実例は全滅（Bmaps終了・WheeLog資金難）</li>
+        <li>B2G実勢価格は公表されている: My City Report 料金表 = 入会金30万円＋人口別年会費30万〜960万円。「初期30〜50万＋年額50〜100万」が通りやすい価格帯</li>
+        <li>規模感 [推定]: 都内で年1.2億円前後、全国で年数億〜10億弱がSAM上限。個人〜小法人には十分、VC型市場ではない</li>
+      </ol>
+    </div>
+  </header>
+
+  <section>
+    <h2><span class="num">01</span>結論 — 収益は3階建てで設計する</h2>
+    <p class="sub">人は1F（無料）から入り、金は2F・3Fで生まれる</p>
+    <figure>
+      <img src="images/concept-01-01.png" alt="収益の3階建て: 1F住民無料、2F自治体B2G、3F工事会社B2B、屋根にデータライセンス">
+      <figcaption>1F: 住民無料（公益・集客・営業材料）／2F: B2G本命／3F: B2B現場課金／屋根: 将来のデータライセンス</figcaption>
+    </figure>
+    <table class="table">
+      <thead><tr><th>階</th><th>誰から</th><th>単価レンジ</th><th>根拠の種類</th></tr></thead>
+      <tbody>
+        <tr><td>1F 住民向けマップ</td><td>無料（課金しない）</td><td>¥0 — 公益・集客・B側への営業材料</td><td>一次情報で「C課金全滅」を確認（セクション02）</td></tr>
+        <tr class="pick"><td>2F B2G（本命）</td><td>自治体（道路管理者）</td><td>初期30〜50万円＋年額50〜100万円</td><td>実在の公表料金表・入札実額（セクション04）</td></tr>
+        <tr><td>3F B2B</td><td>施工会社（現場単位）</td><td>1現場 買い切り1〜3万円 or 月3千〜1万円</td><td>周知実費との比較による推定（セクション05）</td></tr>
+        <tr><td>屋根 データライセンス</td><td>ナビ・地図事業者</td><td>未知数（長期）</td><td>one.networkの発展形 [仮説]</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2><span class="num">02</span>C課金は通行止め — 実例が3件とも同じことを言っている</h2>
+    <p class="sub">これは意見ではなく、一次情報で確認できる事実</p>
+    <figure>
+      <img src="images/concept-02-01.png" alt="C課金ルートの通行止め: Bmaps終了、WheeLog資金難、Waze無償">
+      <figcaption>先行者は全員この道で止まった。迂回路は「業務側から課金」</figcaption>
+    </figure>
+    <ul>
+      <li><b>Bmaps</b>（ミライロ×日本財団のバリアフリーマップ）: 2022年7月にアプリ単体のサービスを終了し、障害者手帳アプリ「ミライロID」に統合。マップ単体では自立しなかった（一次: ミライロ公式発表）</li>
+      <li><b>WheeLog!</b>（車いす歩行者マップ）: 法人スポンサー＋クラウドファンディング＋自治体受託で運営し、資金難を公言（一次: 公式サイト・クラファンページ）</li>
+      <li><b>Waze for Cities</b>: 自治体との工事・規制データ交換は無償でパートナー1,500超（一次: Google公式）。つまり「住民への周知チャネル」自体は無料のものが既に存在し、周知そのものは売り物にならない</li>
+    </ul>
+    <div class="callout"><p><strong>設計への含意:</strong> 売るのは「住民に見せること」ではなく「業務側の仕事が減ること」— 苦情・問い合わせ対応の削減、住民周知の効率化、工事調整のデータ化。おさんぽセーフティの住民向け画面は、無料のまま「B側に売るための実演装置」と位置づける。</p></div>
+  </section>
+
+  <section>
+    <h2><span class="num">03</span>丸ごと先行事例がある — 英国 one.network</h2>
+    <p class="sub">この事業は空想ではない。英国では20年続いている</p>
+    <figure>
+      <img src="images/concept-03-01.png" alt="one.networkの構造: 住民は無料で渡り、自治体とユーティリティ会社が払う橋">
+      <figcaption>橋の通行料モデル: 渡る住民は無料。橋を業務に使う側（自治体・ユーティリティ）が払う</figcaption>
+    </figure>
+    <p>英国の one.network（旧 roadworks.org、2004年発足）は、道路工事情報を住民・自治体・工事事業者に見せるプラットフォームそのもの。<b>払うのは道路管理者（自治体）・ユーティリティ会社・交通事業者のサブスクリプションで、住民向けマップは無料</b>。ベンダー公称で英国のほぼ全ハイウェイ当局が利用、300超の公的機関＋同数のユーティリティが参加。2021年に建設テック大手Causeway Technologiesに買収された（＝事業として売却価値がついた）。売上高は英国の小会社開示免除により非開示 [未確認]。</p>
+    <div class="callout warn"><p><strong>ただし決定的な違いが1つ。</strong>英国はNRSWA法＋交通管理法により、全ての街路工事を政府システム（Street Manager）へ登録することが法的義務で、データ供給を法律が強制している。日本に同等の統一義務はない。つまり日本でこれをやるにはデータ収集を自力で解く必要がある — これが最大のリスクであり、解けた者には最強の参入障壁になる。前回調査の「現場との関係構築が堀になる」という結論と一致する。</p></div>
+    <p style="font-size: 13px; color: var(--ink-2);">※ 出典: us.one.network（ベンダー公称）、Companies House（ROADWORKS INFORMATION LIMITED, 会社番号07589848）、英国政府 街路工事調整実務規範（2026年3月版）。2026-07-10取得。</p>
+  </section>
+
+  <section>
+    <h2><span class="num">04</span>B2Gの値段は既に公表されている — 実勢価格ベンチマーク</h2>
+    <p class="sub">「自治体はいくら払うか」は推測しなくていい。料金表と入札結果がある</p>
+    <table class="table">
+      <thead><tr><th>実例</th><th>金額（実額）</th><th>情報の種類</th></tr></thead>
+      <tbody>
+        <tr class="pick"><td>My City Report（道路通報アプリ。千代田・港・世田谷・大田区、東京都建設局等が導入）</td><td>入会金30万円＋人口別年会費: 5万人以下30万／30万人以下100.8万／100万人以下288万／700万人超960万円</td><td>一次（公式料金表 2026-04-01改定版PDF）</td></tr>
+        <tr><td>横浜市 オープンデータサイト再構築業務</td><td>落札300万円（税抜）</td><td>一次（市の入札結果公表）</td></tr>
+        <tr><td>上三川町 ハザードマップ作成（印刷＋WEB）</td><td>契約上限1,228.9万円（税込）</td><td>一次（町公表の実施要領）</td></tr>
+        <tr><td>千葉市「ちばレポ」構築＋5年運用</td><td>6,600万円 ≒ 年1,320万円</td><td>二次（市発表ベースの報道）</td></tr>
+        <tr><td>GovTech東京 区市町村DX協働運営の負担金</td><td>5,174万円÷62自治体 ≒ 83万円/自治体/年</td><td>一次（2025年度予算書）</td></tr>
+      </tbody>
+    </table>
+    <p>この実測レンジから、工事情報マップのB2G価格は<b>「初期30〜50万円＋年額50〜100万円」</b>が最も通りやすい。自治体側のペインの裏付けも一次情報がある: 道路緊急ダイヤル#9910は関東地方整備局管内だけで年約28,000件の通報、国交省LINE通報は開始3ヶ月で4,253件・うち48.7%が路面異状（国交省執筆資料）。道路の問い合わせ対応は行政の実業務として存在する。</p>
+    <div class="callout"><p><strong>規模の分水嶺はGovTech東京の共同調達。</strong>1自治体ずつ売ると都内62自治体×年80万 ≒ 年5,000万円が上限 [推定]。しかしGovTech東京は62区市町村の共同調達スキームを持っており、ここに乗れれば1契約で面が取れる。都知事杯の実装支援→GovTech東京窓口ルートは、営業チャネルとしても最短。</p></div>
+  </section>
+
+  <section>
+    <h2><span class="num">05</span>B2Bは「ビラより安いか」の天秤 — 単価の根拠</h2>
+    <p class="sub">工事会社が払うかは、代替コストとの比較で決まる</p>
+    <figure>
+      <img src="images/concept-05-01.png" alt="工事会社の支払い判断の天秤: ビラ配布2〜7万円/現場 vs マップ掲載1万円">
+      <figcaption>周知の代替コストの1/3〜1/2以下なら導入判断が成立する [推定]</figcaption>
+    </figure>
+    <ul>
+      <li><b>いまの周知実費</b>: ポスティング単価は都内2〜7円/枚（一次: 業者料金表）。1現場500〜2,000戸なら配布＋印刷＋デザインで<b>2〜7万円/回</b> [推定]。戸別挨拶なら人件費が別途</li>
+      <li><b>ITへの支払い相場</b>: 現場クラウドConne 月1万円〜（一次: 公式料金）、SPIDERPLUS 月3,000円/ID（二次）。会社単位で月1〜5万円が建設SaaSのボリュームゾーン</li>
+      <li><b>→ 支払い許容レンジ [推定]</b>: 1現場あたり買い切り1〜3万円、または月3,000〜10,000円。「看板にQR＋現場ページ＋問い合わせ削減」のパッケージなら、ビラの補完として成立し得る</li>
+      <li><b>政策の追い風（一次）</b>: 国交省資料に「工事銘板等はQRコードを使った情報発信等、業界としての取組が必要」と明記。看板QR化は国の方向性と一致</li>
+      <li><b>競合とチャネル</b>: システムウェーブ社が「現場HP＋QR付き看板」を既に受託販売（一次）。直接競合であると同時に、仙台銘板等の保安用品業界がOEMチャネルになり得る</li>
+    </ul>
+    <div class="callout warn"><p><strong>ここはまだ二次情報＋推定。</strong>「ビラ配布が負担か」はあなた自身の住民体験からも疑義が出ている論点で、実際の支払い意思は9月の現場ヒアリング（工事看板→施工業者ルート）で確かめるまで確定しない。天秤の図は仮説であって検証結果ではない。</p></div>
+  </section>
+
+  <section>
+    <h2><span class="num">06</span>規模感と、まだ埋まっていない一次情報</h2>
+    <p class="sub">数字は全て計算式つき。過大に見せない</p>
+    <table class="table">
+      <thead><tr><th>市場</th><th>概算 [推定]</th><th>計算式</th></tr></thead>
+      <tbody>
+        <tr class="pick"><td>都内 B2G</td><td>年約5,000万円</td><td>62自治体 × 年額中央値80万円（GovTech東京負担金83万・MCR中規模帯と整合）</td></tr>
+        <tr><td>都内 B2B</td><td>年約6,600万円</td><td>都内建設業44,655社 × 土木系25% × 元請5% ≒ 550社 × 月1万 × 12</td></tr>
+        <tr><td>全国 B2G</td><td>年約1億円（保守のみ）</td><td>1,741自治体 × 導入率10% × 年60万円</td></tr>
+        <tr><td>全国 B2B</td><td>年約8億円</td><td>土木系13.2万社 × 5% × 年12万円</td></tr>
+      </tbody>
+    </table>
+    <p>正直な評価: <b>SAM上限で全国年10億弱のニッチ市場</b>。VCが好む規模ではないが、5条件フィルターの「高収入の可能性」「時間の主導権」を個人〜小法人で満たすには十分な大きさ。現実的な最初のマイルストーンは「都内3〜5自治体 × 年80万 ＝ 年商240〜400万円」で、ここまでは個人事業のまま到達し得る（前回B2G調査の3関門と整合）。</p>
+    <table class="table">
+      <thead><tr><th>まだ一次情報でないもの</th><th>どう埋めるか</th></tr></thead>
+      <tbody>
+        <tr><td>都内の工事現場数の実数（分母）</td><td>都オープンデータ「23区内都道の路上工事情報」を実カウント。道路使用許可の件数統計は警察の公表資料に存在しないことを確認済み — 情報公開請求が次の手</td></tr>
+        <tr class="pick"><td>工事側の支払い意思</td><td>9月の現場ヒアリング5件（工事看板→施工業者ルート）で「周知・問い合わせにいくら使っているか」を直接聞く</td></tr>
+        <tr><td>自治体の導入意思</td><td>都知事杯 Final Stage→実装支援→GovTech東京窓口で道路管理課に当てる</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <div class="conclusion">
+    <h2>結論</h2>
+    <ol>
+      <li>収益化の答えは3階建て: 住民は無料（実例が全滅している以上ここで課金しない）、本命は自治体B2Gサブスク（初期30〜50万＋年額50〜100万の実勢価格あり）、2本目が現場単位のB2B課金（ビラとの天秤・要ヒアリング検証）。</li>
+      <li>この型は空想ではない — 英国one.networkが20年やって買収までされた実在モデル。ただし英国は法律がデータ供給を強制しており、日本ではデータ収集を自力で解く必要がある。それが最大のリスクで、解ければ最強の堀。</li>
+      <li>規模はニッチ（全国SAM上限 年10億弱 [推定]）だが個人〜小法人には十分。最初のマイルストーンは都内3〜5自治体・年商240〜400万円。そこへの最短路は今参加中の都知事杯 → 実装支援 → GovTech東京共同調達ルート。まず7/27に提出。</li>
+    </ol>
+  </div>
+
+  <footer>題材: 工事情報マップ事業の収益化調査（リサーチ3系統並列・取得日 2026-07-10）/ [推定] は計算式明示、[未確認] は確証なし。一次情報 = 公式料金表・入札結果公表・予算書・政府資料・Companies House</footer>
+
+</div>
+</body>
+</html>
