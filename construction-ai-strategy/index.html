@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>人脈ゼロから工事の一次情報を獲る — 3段ロケット戦略</title>
+<style>
+  :root {
+    --ink: #1a1a1a;
+    --ink-2: #4a4a4a;
+    --bg: #f7f5ee;
+    --paper: #fbf9f1;
+    --line: #d8d2bf;
+    --accent: #e8590c;
+    --accent-soft: #fde4d3;
+    --warn: #c83a2c;
+    --warn-soft: #f6dcd6;
+    --yellow: #f4d35e;
+    --shadow: 0 1px 0 rgba(0,0,0,.04), 0 8px 24px rgba(0,0,0,.06);
+    --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+    --sans: -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN",
+            "Hiragino Sans", "Noto Sans JP", "Yu Gothic", "Meiryo", sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 56px 28px 96px; }
+
+  /* hero */
+  .hero { margin-bottom: 56px; }
+  .hero .kicker {
+    display: inline-block;
+    background: var(--accent); color: #fff;
+    font-size: 12px; font-weight: 700; letter-spacing: .12em;
+    padding: 6px 12px; border-radius: 999px;
+    margin-bottom: 18px;
+  }
+  .hero h1 {
+    font-size: 40px; line-height: 1.3; margin: 0 0 14px;
+    letter-spacing: -.01em;
+  }
+  .hero h1 b { color: var(--accent); }
+  .hero p.lede {
+    font-size: 18px; color: var(--ink-2); margin: 0; max-width: 780px;
+  }
+  .tldr {
+    margin-top: 28px; padding: 22px 24px;
+    background: var(--paper); border: 1px solid var(--line); border-radius: 12px;
+    box-shadow: var(--shadow);
+  }
+  .tldr h2 { font-size: 13px; letter-spacing: .15em; color: var(--accent); margin: 0 0 10px; }
+  .tldr ol { margin: 0; padding-left: 20px; }
+  .tldr li { margin: 4px 0; }
+
+  /* sections */
+  section { margin: 64px 0 0; }
+  section > h2 {
+    font-size: 28px; line-height: 1.4; margin: 0 0 6px;
+    border-left: 6px solid var(--accent); padding-left: 12px;
+  }
+  section > h2 .num {
+    color: var(--accent); font-variant-numeric: tabular-nums; margin-right: 10px;
+  }
+  section > p.sub { color: var(--ink-2); margin: 0 0 22px; }
+
+  figure {
+    margin: 0 0 24px; padding: 12px;
+    background: var(--paper); border: 1px solid var(--line); border-radius: 14px;
+    box-shadow: var(--shadow);
+  }
+  figure img { display: block; width: 100%; height: auto; border-radius: 8px; }
+  figcaption {
+    font-size: 13px; color: var(--ink-2); margin-top: 10px; text-align: center;
+  }
+
+  /* compare table */
+  .table {
+    width: 100%; border-collapse: collapse; margin: 12px 0 6px;
+    background: var(--paper); border: 1px solid var(--line); border-radius: 12px; overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+  .table th, .table td {
+    text-align: left; padding: 12px 14px; border-bottom: 1px solid var(--line);
+    vertical-align: top; font-size: 14.5px;
+  }
+  .table th { background: #efeadb; font-weight: 700; }
+  .table tr:last-child td { border-bottom: 0; }
+  .table .pick { background: var(--accent-soft); }
+  .table .pick td:first-child { font-weight: 700; color: var(--accent); }
+
+  /* callouts */
+  .callout {
+    margin: 18px 0;
+    padding: 16px 18px;
+    border-left: 4px solid var(--accent);
+    background: var(--accent-soft);
+    border-radius: 0 10px 10px 0;
+  }
+  .callout.warn { border-color: var(--warn); background: var(--warn-soft); }
+  .callout p { margin: 0; }
+  .callout strong { color: var(--accent); }
+  .callout.warn strong { color: var(--warn); }
+
+  /* quote */
+  .quote {
+    border-left: 3px solid var(--line); padding: 6px 16px;
+    color: var(--ink-2); font-size: 14.5px; margin: 18px 0;
+  }
+
+  /* conclusion */
+  .conclusion {
+    margin-top: 56px; padding: 28px 28px 24px;
+    background: var(--ink); color: #f6f3e8; border-radius: 16px;
+  }
+  .conclusion h2 { color: var(--yellow); border: 0; padding: 0; margin: 0 0 12px; }
+  .conclusion ol { margin: 0; padding-left: 20px; }
+  .conclusion li { margin: 6px 0; }
+
+  footer { margin-top: 36px; color: var(--ink-2); font-size: 13px; }
+
+  @media (max-width: 720px) {
+    .wrap { padding: 32px 18px 64px; }
+    .hero h1 { font-size: 30px; }
+    section > h2 { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <span class="kicker">工事AI事業 戦略メモ</span>
+    <h1>人脈ゼロから工事の一次情報を獲る — <b>「聞きに行く」を成功させる3段ロケット</b></h1>
+    <p class="lede">工事の人に話を聞きに行くという直感は正しい。ただし知り合いゼロで現場に突撃するのは打率が低い。オープンデータでギャップを証明し、合法的な接点を3系統つくってから現場に行く順番に組み替えると、費用ほぼゼロ・3ヶ月で一次情報が手に入る。</p>
+    <div class="tldr">
+      <h2>TL;DR</h2>
+      <ol>
+        <li>順番が9割: ①オープンデータでギャップ証明 → ②イベント・行政窓口で5人 → ③現場ヒアリング</li>
+        <li>おさんぽセーフティの実物が名刺代わり。ただし7/27のハッカソン提出完了が先</li>
+        <li>勝ち筋は通行人課金ではなく、工事側の住民周知コスト削減を売る両面市場 [仮説]</li>
+      </ol>
+    </div>
+  </header>
+
+  <section>
+    <h2><span class="num">01</span>結論 — 聞きに行くのは正しい。ただし順番が逆</h2>
+    <p class="sub">突撃は3段目。1段目はデスクでできる</p>
+    <figure>
+      <img src="images/concept-01-01.png" alt="一次情報獲得の3段ロケット: オープンデータ→業界接点→現場ヒアリング">
+      <figcaption>3段ロケット: 下の段を燃やしてから上の段へ。いきなり3段目に点火しない</figcaption>
+    </figure>
+    <p>「実際に工事をしている人に話を聞きに行く」は事業構築の王道で、やるべき。ただし知り合いゼロの状態で現場に行っても、作業中の相手は立ち話に応じられないし、こちらも何を聞くべきかまだ言語化できていない。先にオープンデータを掘って「いま公開されている工事情報はここまで粗い」というギャップを証明すると、それ自体が最初の成果物になり、ヒアリングでの質問リストにもなる。</p>
+    <div class="callout"><p><strong>おさんぽセーフティは最強の名刺。</strong>「都知事杯ハッカソンでこのアプリを作った開発者です。工事情報をもっと役立つ形で載せたい」と言えた瞬間、あなたは『不審な個人』から『取材に来た開発者』に変わる。だからこそ、まず7/27の提出（login→deploy→提出の残り3手）を完了させることが戦略上も最優先。</p></div>
+  </section>
+
+  <section>
+    <h2><span class="num">02</span>公開データの現状 — 空白こそ事業機会</h2>
+    <p class="sub">歩行者 × 生活道路 × リアルタイムは誰も埋めていない</p>
+    <figure>
+      <img src="images/concept-02-01.png" alt="工事情報サービスのポジショニングマップ。歩行者×リアルタイム象限が空白">
+      <figcaption>既存プレイヤーは車・幹線道路・月次更新に固まっている。右上が狙い目</figcaption>
+    </figure>
+    <table class="table">
+      <thead><tr><th>データ源</th><th>対象</th><th>更新頻度</th><th>歩行者目線</th></tr></thead>
+      <tbody>
+        <tr><td>東京都建設局 道路工事情報</td><td>都道のみ（区部約30路線＋多摩約10路線）</td><td>2〜3ヶ月ごと</td><td>✕</td></tr>
+        <tr><td>JARTIC 交通規制オープンデータ</td><td>車向け規制（幹線中心）</td><td>月次・過去データは消える</td><td>✕</td></tr>
+        <tr><td>xROAD / 道路施設点検DB</td><td>インフラ点検データ（工事予定ではない）</td><td>—</td><td>✕</td></tr>
+        <tr class="pick"><td>歩行者向け詳細工事マップ</td><td>生活道路・歩道・迂回案内</td><td>リアルタイム</td><td>◎ ← 空白</td></tr>
+      </tbody>
+    </table>
+    <p>つまり「マップに詳細な工事情報が出る未来」は、既存データを繋ぐだけでは作れない。生活道路レベル・日次以上の鮮度・歩行者への影響（歩道が塞がる、迂回距離、ベビーカー通行可否）という粒度は、現場からの入力がないと成立しない。だからこそ一次情報＝現場との関係構築が参入障壁になる。先に泥臭い収集の仕組みを作った者を、後発は簡単に真似できない。</p>
+    <p style="font-size: 13px; color: var(--ink-2);">※ 出典: 東京都建設局 道路工事情報 (kensetsu.metro.tokyo.lg.jp)、JARTIC オープンデータ (jartic.or.jp)。いずれも2026-07-10取得。</p>
+  </section>
+
+  <section>
+    <h2><span class="num">03</span>人脈ゼロの接点は3系統ある</h2>
+    <p class="sub">知り合いは「いない」のではなく「まだ作っていない」だけ</p>
+    <figure>
+      <img src="images/concept-03-01.png" alt="人脈ゼロから工事業界へつながる3つの接点: イベント・行政窓口・SNS">
+      <figcaption>3本同時に架ける。どれか1本が繋がればそこから紹介が連鎖する</figcaption>
+    </figure>
+    <ul>
+      <li><b>橋A【業界イベント】</b>建設DX系の無料セミナー（例: 建設業振興基金主催、交流会付き）は個人参加可。CSPI-EXPO（国際建設・測量展）は最終日が一般開放・登録無料 — 2026年開催は6月に終了したので次回狙い。まず直近の無料セミナーに1本申し込む</li>
+      <li><b>橋B【行政の正規窓口】</b>区・都の道路管理課に「都知事杯ハッカソン提出者として、工事情報の公開粒度について伺いたい」と問い合わせる。行政はオープンデータ活用事例を欲しがっており、ハッカソン文脈は最高の口実。工事調整会議の仕組みも教えてもらえる</li>
+      <li><b>橋C【SNS建設DX界隈】</b>Xの建設DX界隈は発信者が多く、動くプロトタイプを見せる個人開発者には反応が集まりやすい [仮説]。「歩行者向け工事マップを作っている。現場の方の困りごとを教えてほしい」と実物スクショ付きで投稿する</li>
+    </ul>
+    <div class="callout"><p>目標は「名刺5枚」ではなく<strong>「継続的に質問できる人を2人」</strong>。イベントで会った人に後日『15分だけオンラインで現場の話を聞かせてください』と頼むところまでが1セット。</p></div>
+  </section>
+
+  <section>
+    <h2><span class="num">04</span>現場で聞いていいのか — OK/NGの線引き</h2>
+    <p class="sub">突撃ではなく、看板の連絡先から入る</p>
+    <figure>
+      <img src="images/concept-04-01.png" alt="工事現場アプローチのOK/NGフローチャート">
+      <figcaption>現場の入口は人ではなく「工事看板」。連絡先・工期・発注者が全部書いてある</figcaption>
+    </figure>
+    <p>実は日本の道路工事には、連絡先の公開が仕組みとして組み込まれている。現場に必ず立っている工事看板には、施工業者名・電話番号・工期・発注者（自治体名）が明記されている。これが公式のコンタクトポイントで、電話して「近隣住民向けの工事情報アプリを作っている開発者です。困りごとを15分だけ聞かせてほしい」と言うのは全く正当な行為。業界側も『見られている』ことをイメージアップに使いたいと発信しており、苦情ではない丁寧な関心は歓迎されやすい。</p>
+    <div class="callout warn"><p><strong>NG集:</strong> 作業帯（コーンの内側）に入らない。作業中の交通誘導員を長時間引き留めない（安全に直結する仕事中）。撮影は公道から、作業員の顔が特定される写真をSNSに載せない。最初の一言で「苦情ではなく、開発の相談」と伝える。</p></div>
+    <ul>
+      <li><b>聞くことリスト（初回15分用）:</b> ①住民への周知はどうやっている？何が一番面倒？ ②苦情はどんな内容が多い？ ③工事予定はいつ確定する？直前に変わる？ ④『このマップに現場情報が載る』としたら嬉しい？面倒？</li>
+      <li>現場代理人（現場の責任者）が話し相手のベスト。昼休み明けや作業終了間際が比較的つかまりやすい [仮説]</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2><span class="num">05</span>事業の勝ち筋 — 両面市場として設計する</h2>
+    <p class="sub">通行人から金は取れない。工事側のコストを減らせ</p>
+    <figure>
+      <img src="images/concept-05-01.png" alt="工事側と通行人を仲介する両面市場の構造図">
+      <figcaption>通行人には無料の安全情報、工事側には周知コスト削減。金は B 側から</figcaption>
+    </figure>
+    <p>現場代理人の実負担として文献に明記されているのが、騒音・振動苦情への対応と、事前の住民説明・挨拶回り・書面配布（土木学会事例）。つまり工事側には『近隣にちゃんと知らせる』こと自体に人件費がかかっている。ここに「マップに載せれば周知が済む」という価値を提示できれば、工事側が自らデータを入力する動機が生まれる — データ収集コストの問題と収益源の問題が同時に解ける [仮説]。</p>
+    <div class="quote">通行人向けマップは、工事側から見れば「苦情を減らし、住民説明を代行してくれる装置」。同じデータが両側に別の価値として売れる。これが両面市場。</div>
+    <p>5条件フィルターで見ると: 能力発揮◯（マップ×AIの実装力）・ストック型◯（現場との関係とデータが蓄積）・高収入の可能性△→◯（B側課金が成立すれば）・時間の主導権◯・嫌な人間関係を増やさない◯。4/5前後で「前向き」判定。ただし高収入の可能性はヒアリングで工事側の支払い意思を確認するまで未確定。</p>
+  </section>
+
+  <section>
+    <h2><span class="num">06</span>90日アクションプラン</h2>
+    <p class="sub">7/27の提出が0日目</p>
+    <table class="table">
+      <thead><tr><th>期間</th><th>やること</th><th>成果物</th></tr></thead>
+      <tbody>
+        <tr class="pick"><td>〜7/27（最優先）</td><td>おさんぽセーフティの残作業: login→deploy→提出</td><td>ハッカソン提出完了＝名刺の完成</td></tr>
+        <tr><td>8月前半</td><td>都・JARTIC・区のオープンデータを実際に取り込み、粒度ギャップをおさんぽセーフティ上で可視化</td><td>「公開データではここまでしか分からない」デモ</td></tr>
+        <tr><td>8月後半</td><td>橋を3本架ける: 無料セミナー1本申込・区の道路管理課に問い合わせ・X建設DX界隈に実物投稿</td><td>継続的に質問できる人 2人</td></tr>
+        <tr><td>9月</td><td>工事看板ルートで現場ヒアリング5件（聞くことリスト持参）</td><td>工事側ペインの生の声・支払い意思の有無</td></tr>
+        <tr><td>10月</td><td>工事側向け無料β: 「あなたの現場をマップに載せて周知を代行」を1現場で試す</td><td>両面市場仮説の検証結果</td></tr>
+      </tbody>
+    </table>
+    <div class="callout"><p><strong>確度の整理:</strong> 粒度ギャップの存在は確認済み（確度高）。歩行者向け専業競合の不在は確度70%。工事側がお金を払うかは未検証 — だからこそヒアリングに行く価値がある。</p></div>
+  </section>
+
+  <div class="conclusion">
+    <h2>結論</h2>
+    <ol>
+      <li>「工事の人に話を聞きに行く」は正解。ただし順番は オープンデータ → イベント・行政窓口 → 現場 の3段ロケット。突撃は最後の段。</li>
+      <li>接点はすでに3系統ある（無料セミナー・道路管理課・SNS建設DX界隈）。人脈は「ない」のではなく、おさんぽセーフティという名刺でこれから作れる。</li>
+      <li>事業は両面市場で設計する: 通行人に無料の安全情報、工事側に周知コスト削減。まず7/27に提出を終わらせ、8月からこのプランを回す。</li>
+    </ol>
+  </div>
+
+  <footer>題材: 都知事杯ハッカソン2026「おさんぽセーフティ」→ 工事情報マップ事業構想 / リサーチ取得日 2026-07-10</footer>
+
+</div>
+</body>
+</html>
