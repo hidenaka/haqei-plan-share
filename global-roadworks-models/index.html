@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>世界9カ国の工事情報ビジネス — 4つの型と3つの金脈</title>
+<style>
+  :root {
+    --ink: #1a1a1a;
+    --ink-2: #4a4a4a;
+    --bg: #f7f5ee;
+    --paper: #fbf9f1;
+    --line: #d8d2bf;
+    --accent: #4d7c0f;
+    --accent-soft: #e4eed2;
+    --warn: #c83a2c;
+    --warn-soft: #f6dcd6;
+    --yellow: #f4d35e;
+    --shadow: 0 1px 0 rgba(0,0,0,.04), 0 8px 24px rgba(0,0,0,.06);
+    --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+    --sans: -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN",
+            "Hiragino Sans", "Noto Sans JP", "Yu Gothic", "Meiryo", sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 56px 28px 96px; }
+
+  .hero { margin-bottom: 56px; }
+  .hero .kicker {
+    display: inline-block;
+    background: var(--accent); color: #fff;
+    font-size: 12px; font-weight: 700; letter-spacing: .12em;
+    padding: 6px 12px; border-radius: 999px;
+    margin-bottom: 18px;
+  }
+  .hero h1 {
+    font-size: 40px; line-height: 1.3; margin: 0 0 14px;
+    letter-spacing: -.01em;
+  }
+  .hero h1 b { color: var(--accent); }
+  .hero p.lede {
+    font-size: 18px; color: var(--ink-2); margin: 0; max-width: 780px;
+  }
+  .tldr {
+    margin-top: 28px; padding: 22px 24px;
+    background: var(--paper); border: 1px solid var(--line); border-radius: 12px;
+    box-shadow: var(--shadow);
+  }
+  .tldr h2 { font-size: 13px; letter-spacing: .15em; color: var(--accent); margin: 0 0 10px; }
+  .tldr ol { margin: 0; padding-left: 20px; }
+  .tldr li { margin: 4px 0; }
+
+  section { margin: 64px 0 0; }
+  section > h2 {
+    font-size: 28px; line-height: 1.4; margin: 0 0 6px;
+    border-left: 6px solid var(--accent); padding-left: 12px;
+  }
+  section > h2 .num {
+    color: var(--accent); font-variant-numeric: tabular-nums; margin-right: 10px;
+  }
+  section > p.sub { color: var(--ink-2); margin: 0 0 22px; }
+
+  figure {
+    margin: 0 0 24px; padding: 12px;
+    background: var(--paper); border: 1px solid var(--line); border-radius: 14px;
+    box-shadow: var(--shadow);
+  }
+  figure img { display: block; width: 100%; height: auto; border-radius: 8px; }
+  figcaption {
+    font-size: 13px; color: var(--ink-2); margin-top: 10px; text-align: center;
+  }
+
+  .table {
+    width: 100%; border-collapse: collapse; margin: 12px 0 6px;
+    background: var(--paper); border: 1px solid var(--line); border-radius: 12px; overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+  .table th, .table td {
+    text-align: left; padding: 12px 14px; border-bottom: 1px solid var(--line);
+    vertical-align: top; font-size: 14.5px;
+  }
+  .table th { background: #efeadb; font-weight: 700; }
+  .table tr:last-child td { border-bottom: 0; }
+  .table .pick { background: var(--accent-soft); }
+  .table .pick td:first-child { font-weight: 700; color: var(--accent); }
+
+  .callout {
+    margin: 18px 0;
+    padding: 16px 18px;
+    border-left: 4px solid var(--accent);
+    background: var(--accent-soft);
+    border-radius: 0 10px 10px 0;
+  }
+  .callout.warn { border-color: var(--warn); background: var(--warn-soft); }
+  .callout p { margin: 0; }
+  .callout strong { color: var(--accent); }
+  .callout.warn strong { color: var(--warn); }
+
+  .quote {
+    border-left: 3px solid var(--line); padding: 6px 16px;
+    color: var(--ink-2); font-size: 14.5px; margin: 18px 0;
+  }
+
+  .conclusion {
+    margin-top: 56px; padding: 28px 28px 24px;
+    background: var(--ink); color: #f6f3e8; border-radius: 16px;
+  }
+  .conclusion h2 { color: var(--yellow); border: 0; padding: 0; margin: 0 0 12px; }
+  .conclusion ol { margin: 0; padding-left: 20px; }
+  .conclusion li { margin: 6px 0; }
+
+  footer { margin-top: 36px; color: var(--ink-2); font-size: 13px; }
+
+  @media (max-width: 720px) {
+    .wrap { padding: 32px 18px 64px; }
+    .hero h1 { font-size: 30px; }
+    section > h2 { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <span class="kicker">世界9カ国・地域 横断調査</span>
+    <h1>世界の工事情報ビジネス — <b>4つの型と、3つの金脈</b></h1>
+    <p class="lede">米英に続き、ベルギー・オランダ・フランス・ドイツ・北欧・NZ・豪州・シンガポール・韓国・台湾の同型サービスを調査した。世界共通の発見が1つ: 住民向け公開マップ「単体」で収益化している民間企業は、調査した全地域に存在しない。一方で、この領域で実際に大きく儲けている企業も特定できた — 金脈は例外なく「公開」ではなく「業務」の側にあった。</p>
+    <div class="tldr">
+      <h2>TL;DR</h2>
+      <ol>
+        <li>世界は4型に分かれる: A 政府自前＋義務化＋無料公開（主流）／B 法定義務の事務を民間SaaSが代行（最も儲かる: 仏Sogelink 売上€120M・企業価値€10億超）／C 道路管理者が払い発注契約で義務化（米）／D 罰金回避（英のみ）</li>
+        <li>民間の金脈は3つだけ: ①行政の業務SaaS・受託（蘭MOOR 250自治体） ②法定義務の事務代行（Sogelink） ③アセットオーナー課金（beforeUdig）。全て「業務」側</li>
+        <li>戦略への反映: 売り物を「歩行者向けマップ」から「自治体の工事調整・住民周知の業務SaaS（公開マップ標準装備）」に再定義する。将来の義務化・一元化の波が来た時にSogelinkポジションを取れる位置に立つ</li>
+      </ol>
+    </div>
+  </header>
+
+  <section>
+    <h2><span class="num">01</span>世界は4つの型に分かれる</h2>
+    <p class="sub">9カ国・地域を「誰が払うか」で分類した</p>
+    <figure>
+      <img src="images/concept-01-01.png" alt="世界の工事情報プラットフォーム4類型の勢力図">
+      <figcaption>主流は型A（政府自前・無料公開）。民間が大きく儲かるのは型B（義務の事務代行）</figcaption>
+    </figure>
+    <table class="table">
+      <thead><tr><th>型</th><th>国・実例</th><th>誰が払う</th><th>民間の稼ぎ場</th></tr></thead>
+      <tbody>
+        <tr><td>A 政府自前＋法令義務＋無料公開</td><td>ベルギー（フランダースGIPOD・ブリュッセルOsiris）、オランダMelvin、スウェーデン・デンマーク・ノルウェー、豪NSW/VIC、シンガポールLTA、ソウル、台北</td><td>政府予算（住民・事業者は原則無料）</td><td>構築・運用受託、申請代行のみ</td></tr>
+        <tr class="pick"><td>B 法定義務→民間SaaSが事務代行</td><td>仏Sogelink（DT-DICT）、蘭KLIC周辺、独infrest、NZ Submitica/RAMM</td><td>工事会社とインフラ事業者の双方向、または道路管理者</td><td>義務が生む事務負担の肩代わり — 最も大きく儲かる</td></tr>
+        <tr><td>C 道路管理者1社課金＋発注契約で義務化</td><td>米国（フロリダ・テキサス・ユタ等 one.network）</td><td>州DOT</td><td>調整・配信SaaS</td></tr>
+        <tr><td>D 法定罰金の回避で事業者が自発課金</td><td>英国のみ（S74超過課金・車線レンタル）</td><td>ユーティリティ・施工者</td><td>調整SaaS（日本移植不能・検証済み）</td></tr>
+      </tbody>
+    </table>
+    <div class="callout"><p><strong>世界共通の結論:</strong> 住民向け公開マップは、全地域で「政府の無料サービス」か「業務SaaSの付帯機能」だった。法定義務がある国（仏）ですら、Sogelinkの住民向け地図は無料の付帯機能で、収益源は自治体・事業者の業務側にある。<strong>「住民は無料」は選択ではなく世界共通の必然</strong> — 3階建てモデルの1Fは正しかった。</p></div>
+  </section>
+
+  <section>
+    <h2><span class="num">02</span>各国の詳細 — 一次情報つき</h2>
+    <p class="sub">主要な事実だけ抜粋（全出典は脚注）</p>
+    <ul>
+      <li><b>フランダース GIPOD</b>: 2014年デクレで公共空間の占用・工事の登録を法制化（完全義務化2021年）。政府デジタル庁が運営、データはオープンAPI・コードもGitHub公開。民間の入る隙は受託のみ</li>
+      <li><b>ブリュッセル Osiris</b>: 2018年オルドナンスで全占用に利用義務。地域IT公社CIRBが開発主体、SIerのNSIが実装（公共調達）。周辺に申請代行業者という小さな民間収益点</li>
+      <li><b>オランダ</b>: 国家データポータルNDW（19政府機関の共同体）のMelvinに自治体の85%が参加。一方、掘削届出・許可の業務側は民間SaaSの<b>MOOR</b>が250超の自治体に課金 — 「政府の公開」と「民間の業務SaaS」が共存する構図</li>
+      <li><b>フランス Sogelink</b>: 2012年の埋設物照会義務化（DT-DICT・年270万件・違反罰金€1,500）の事務を、申請側・回答側の双方から課金して代行。フランスの工事届出の70%超を処理し、<b>売上€120M超・EBITDA約€50M・2023年CVC投資で企業価値€10億超</b></li>
+      <li><b>NZ Submitica/RAMM</b>: Utilities Access Act 2010の法定コードで道路占用申請（CAR）手続きを全国統一。RAMM社の資産管理スイートに同梱され<b>NZ全議会＋交通庁が購読</b>。2020年に独Thinkprojectが買収。プラットフォーム利用は無料で、収益は道路管理者側のSaaS購読</li>
+      <li><b>beforeUdig（豪NZ星等・PelicanCorp）</b>: 掘削者は無料、電力・通信・水道などアセットオーナーが会費を払う片面無料モデル</li>
+      <li><b>ソウル roaddig・台北 dig.taipei</b>: 掘削許可から市民向けリアルタイム施工地図まで<b>政府自前</b>。行政が本気を出すと公開レイヤーは無料公共財になる — 日本のxROADリスクと同じ構図の実例</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2><span class="num">03</span>金脈は3つ — 全部「業務」の地下にある</h2>
+    <p class="sub">公開は花畑。人は集まるが、金は出ない</p>
+    <figure>
+      <img src="images/concept-03-01.png" alt="3つの金脈: 行政業務SaaS、法定義務の事務代行、アセットオーナー課金">
+      <figcaption>地表の公開マップは集客装置。収益は地下の業務レイヤーから出る</figcaption>
+    </figure>
+    <table class="table">
+      <thead><tr><th>金脈</th><th>実例と規模</th><th>日本での再現性</th></tr></thead>
+      <tbody>
+        <tr class="pick"><td>① 行政の業務SaaS・受託</td><td>蘭MOOR（250自治体に課金）、NZ RAMM（全議会購読）、Osiris構築のNSI</td><td><b>高</b> — 義務不要で成立している唯一の型。日本の自治体SaaS商習慣（LoGo 800自治体）とも整合</td></tr>
+        <tr><td>② 法定義務の事務代行</td><td>仏Sogelink €120M、蘭KLIC再販層、独infrest（照会650万件超）</td><td><b>低→将来高</b> — 日本に義務・一元窓口が無いため今は不成立。義務化されたら最大の金脈</td></tr>
+        <tr><td>③ アセットオーナー課金</td><td>beforeUdig/PelicanCorp（掘る人無料、インフラ企業が払う）</td><td><b>中</b> — 日本の埋設照会は各社バラバラで、一元化の担い手が不在。単独参入は重い</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2><span class="num">04</span>フランスの教訓 — 義務化の波は「最前列」が独り占めする</h2>
+    <p class="sub">波は自分で起こせない。だが立ち位置は選べる</p>
+    <figure>
+      <img src="images/concept-04-01.png" alt="法制度一元化の波を待つポジショニングの図">
+      <figcaption>Sogelinkは2012年の義務化の「後」に独占した。勝ったのは義務化の前から窓口の最前列にいた者</figcaption>
+    </figure>
+    <p>Sogelinkの€10億は「法定義務が生む事務コスト」の上に建っている。義務が先、SaaSが後 — この順番は変えられない。そして日本にも波の前兆はある: 国交省の道路占用電子申請（直轄国道・GビズID対応）、警察の道路使用許可オンライン化（2025年12月開始・工事新規は未対応）、xROADの工事規制情報API構想。<b>これらが「一元化・義務化」に育った瞬間、その事務代行レイヤーが日本のSogelinkポジションになる。</b></p>
+    <div class="callout"><p><strong>あなたの取るべき立ち位置:</strong> いま自治体の工事調整・周知業務のSaaSで実績と関係を作っておくこと自体が、将来の波の最前列を取る行為になる。前回「xROADは3〜5年軸の公共代替リスク」と評価したが、世界の実例を踏まえると<strong>むしろ逆で、国の一元化はSogelinkポジションが生まれる合図</strong>。監視対象から「待ち構える波」に格上げする。</p></div>
+  </section>
+
+  <section>
+    <h2><span class="num">05</span>戦略への反映 — 売り物の看板を掛け替える</h2>
+    <p class="sub">マップは景品。業務が本体</p>
+    <figure>
+      <img src="images/concept-05-01.png" alt="商品の再定義: 歩行者向けマップから業務SaaS(マップ標準装備)へ">
+      <figcaption>同じプロダクトでも、看板を「業務SaaS」に掛け替えると世界の実例と整合する</figcaption>
+    </figure>
+    <table class="table">
+      <thead><tr><th>項目</th><th>これまで</th><th>世界調査後</th></tr></thead>
+      <tbody>
+        <tr class="pick"><td>商品定義</td><td>歩行者向け工事情報マップ（B2Gで自治体に採用してもらう）</td><td><b>自治体の工事調整・占用・住民周知の業務SaaS</b>。住民向け公開マップは標準装備の成果物（MOOR型＋米国型ハイブリッド）</td></tr>
+        <tr><td>営業の一言目</td><td>「住民に工事情報を見せませんか」</td><td>「道路管理課の工事調整と住民対応の手間を減らします。住民向け公開ページは自動で付いてきます」</td></tr>
+        <tr><td>xROAD・国の動き</td><td>公共代替リスク（3〜5年軸で監視）</td><td>Sogelinkポジションが生まれる波。前兆（占用電子化・警察オンライン化）の進捗をAIが定点監視し、一元化の動きが出たら即、事務代行レイヤーに参入</td></tr>
+        <tr><td>規模の期待値</td><td>全国SAM 年10億弱 [推定]</td><td>義務なしの間はMOOR級（自治体SaaS・数億円）が上限。義務化の波が来ればSogelink級の桁が開く — ただしそれは自分で起こせない外生イベントとして扱う</td></tr>
+      </tbody>
+    </table>
+    <div class="callout warn"><p><strong>変わらないもの:</strong> 7/27提出が起点であること、G0〜G3の関所、並行2レーン、週2〜4時間の対人行動。今回の調査は「何を売るか」の言葉を変えただけで、「誰に会うか・いつ動くか」は1ミリも変わらない。</p></div>
+  </section>
+
+  <div class="conclusion">
+    <h2>結論</h2>
+    <ol>
+      <li>米国以外にも同型サービスは多数実在する。世界は4型に分かれ、民間が大きく儲けているのは「法定義務の事務代行」（仏Sogelink €120M・EV€10億超）と「行政の業務SaaS」（蘭MOOR・NZ RAMM）。住民向け公開マップ単体で儲けた民間例は世界にゼロ — 「住民は無料」は世界共通の必然。</li>
+      <li>日本でいま再現可能なのはMOOR型（義務なしで自治体の業務側に課金）＋米国型（発注契約で入力義務化）のハイブリッド。売り物を「マップ」から「工事調整・住民周知の業務SaaS（公開マップ標準装備）」に再定義する。</li>
+      <li>フランスの教訓: 義務化の波が来た時、独占するのは最前列にいた者。国交省の占用電子化・警察オンライン化はその前兆であり、xROADは「リスク」から「待ち構える波」に格上げ。いま自治体との関係を作ること自体が最前列の場所取りになる。</li>
+    </ol>
+  </div>
+
+  <footer>題材: 世界9カ国・地域の道路工事情報プラットフォーム調査(3系統並列・取得日 2026-07-10) / 主要一次出典: codex.vlaanderen.be、be.brussels、ndw.nu、moorwerkt.nl、kadaster.nl、ecologie.gouv.fr、sogelink.com、CVC発表、legislation.govt.nz、thinkproject.com、pelicancorp.com、transport.nsw.gov.au、lta.gov.sg、roaddig.seoul.go.kr、dig.taipei</footer>
+
+</div>
+</body>
+</html>
