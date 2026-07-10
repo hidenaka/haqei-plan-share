@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>戦略の練り直し — オプション化と資産回収</title>
+<style>
+  :root {
+    --ink: #1a1a1a;
+    --ink-2: #4a4a4a;
+    --bg: #f7f5ee;
+    --paper: #fbf9f1;
+    --line: #d8d2bf;
+    --accent: #be185d;
+    --accent-soft: #f8dce9;
+    --warn: #c83a2c;
+    --warn-soft: #f6dcd6;
+    --yellow: #f4d35e;
+    --shadow: 0 1px 0 rgba(0,0,0,.04), 0 8px 24px rgba(0,0,0,.06);
+    --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+    --sans: -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN",
+            "Hiragino Sans", "Noto Sans JP", "Yu Gothic", "Meiryo", sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 56px 28px 96px; }
+
+  .hero { margin-bottom: 56px; }
+  .hero .kicker {
+    display: inline-block;
+    background: var(--accent); color: #fff;
+    font-size: 12px; font-weight: 700; letter-spacing: .12em;
+    padding: 6px 12px; border-radius: 999px;
+    margin-bottom: 18px;
+  }
+  .hero h1 {
+    font-size: 40px; line-height: 1.3; margin: 0 0 14px;
+    letter-spacing: -.01em;
+  }
+  .hero h1 b { color: var(--accent); }
+  .hero p.lede {
+    font-size: 18px; color: var(--ink-2); margin: 0; max-width: 780px;
+  }
+  .tldr {
+    margin-top: 28px; padding: 22px 24px;
+    background: var(--paper); border: 1px solid var(--line); border-radius: 12px;
+    box-shadow: var(--shadow);
+  }
+  .tldr h2 { font-size: 13px; letter-spacing: .15em; color: var(--accent); margin: 0 0 10px; }
+  .tldr ol { margin: 0; padding-left: 20px; }
+  .tldr li { margin: 4px 0; }
+
+  section { margin: 64px 0 0; }
+  section > h2 {
+    font-size: 28px; line-height: 1.4; margin: 0 0 6px;
+    border-left: 6px solid var(--accent); padding-left: 12px;
+  }
+  section > h2 .num {
+    color: var(--accent); font-variant-numeric: tabular-nums; margin-right: 10px;
+  }
+  section > p.sub { color: var(--ink-2); margin: 0 0 22px; }
+
+  figure {
+    margin: 0 0 24px; padding: 12px;
+    background: var(--paper); border: 1px solid var(--line); border-radius: 14px;
+    box-shadow: var(--shadow);
+  }
+  figure img { display: block; width: 100%; height: auto; border-radius: 8px; }
+  figcaption {
+    font-size: 13px; color: var(--ink-2); margin-top: 10px; text-align: center;
+  }
+
+  .table {
+    width: 100%; border-collapse: collapse; margin: 12px 0 6px;
+    background: var(--paper); border: 1px solid var(--line); border-radius: 12px; overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+  .table th, .table td {
+    text-align: left; padding: 12px 14px; border-bottom: 1px solid var(--line);
+    vertical-align: top; font-size: 14.5px;
+  }
+  .table th { background: #efeadb; font-weight: 700; }
+  .table tr:last-child td { border-bottom: 0; }
+  .table .pick { background: var(--accent-soft); }
+  .table .pick td:first-child { font-weight: 700; color: var(--accent); }
+
+  .callout {
+    margin: 18px 0;
+    padding: 16px 18px;
+    border-left: 4px solid var(--accent);
+    background: var(--accent-soft);
+    border-radius: 0 10px 10px 0;
+  }
+  .callout.warn { border-color: var(--warn); background: var(--warn-soft); }
+  .callout p { margin: 0; }
+  .callout strong { color: var(--accent); }
+  .callout.warn strong { color: var(--warn); }
+
+  .quote {
+    border-left: 3px solid var(--line); padding: 6px 16px;
+    color: var(--ink-2); font-size: 14.5px; margin: 18px 0;
+  }
+
+  .conclusion {
+    margin-top: 56px; padding: 28px 28px 24px;
+    background: var(--ink); color: #f6f3e8; border-radius: 16px;
+  }
+  .conclusion h2 { color: var(--yellow); border: 0; padding: 0; margin: 0 0 12px; }
+  .conclusion ol { margin: 0; padding-left: 20px; }
+  .conclusion li { margin: 6px 0; }
+
+  footer { margin-top: 36px; color: var(--ink-2); font-size: 13px; }
+
+  @media (max-width: 720px) {
+    .wrap { padding: 32px 18px 64px; }
+    .hero h1 { font-size: 30px; }
+    section > h2 { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <span class="kicker">戦略の練り直し</span>
+    <h1>降りるのではなく、<b>棚を並べ替える</b></h1>
+    <p class="lede">「労力の割に儲からない気がする」— この直感は、今日集めた一次情報と完全に一致している。数字で言えば「3年間の対人営業で年商240〜400万・確度3〜4割」で、桁が開く条件（義務化）は自分で起こせない外生イベント。降りるのは合理的判断だ。ただし、この1週間の探究で得た資産は消えない。工事マップを「待ち受けのオプション」に降格し、資産を別の形で回収するポートフォリオに組み替える。</p>
+    <div class="tldr">
+      <h2>TL;DR</h2>
+      <ol>
+        <li>「その気にならない」の正体を特定した: 工事マップの成長の主変数は対人営業と待ち時間で、あなたの最強の道具（AI×実装×探究）が主変数に効かない事業だった</li>
+        <li>新ポートフォリオ: 工事マップ=オプション化（提出＋待ち受けのみ）／おさんぽスコア=主実験に昇格／新実験=「AI事業検証サービス」（今日の探究1日そのものの商品化 [仮説]）</li>
+        <li>7/27の提出だけは全シナリオ共通で最優先。義務的な対人営業の枠は時間割から消える</li>
+      </ol>
+    </div>
+  </header>
+
+  <section>
+    <h2><span class="num">01</span>新ポートフォリオ — 捨てる箱はひとつもない</h2>
+    <p class="sub">「やめる」ではなく「置き場所を変える」</p>
+    <figure>
+      <img src="images/concept-01-01.png" alt="ポートフォリオ再編: オプション化・昇格・新実験の3つの棚">
+      <figcaption>工事マップは奥の棚（待ち受け）へ。中央にはAIで殴れる2つの実験を置く</figcaption>
+    </figure>
+    <table class="table">
+      <thead><tr><th>棚</th><th>中身</th><th>やること / やらないこと</th></tr></thead>
+      <tbody>
+        <tr><td>🎫 オプション化<br>工事情報マップ</td><td>世界調査済みの事業設計一式＋都知事杯の舞台</td><td><b>やる</b>: ①7/27提出（全シナリオで価値）②Final Stage進出時に実装支援の「引き」が来たら再評価 ③義務化前兆（占用電子化・警察オンライン化・xROAD）のAI定点監視。<b>やらない</b>: 自発的な自治体営業、現場ヒアリング5件計画、現場HP受託の電話営業 — 対人が主変数の活動すべて</td></tr>
+        <tr class="pick"><td>🏅 主実験に昇格<br>おさんぽスコア</td><td>歩行者安全スコアの不動産向けAPI（5条件5/5・国内空白・Walk Score実証済み）</td><td>8月試作（AIが主担当）→9月デモ公開→中堅サイトへメール提案。撤退基準は変更なし（2027年3月に有償2社未満で凍結）。対人はメールのみ</td></tr>
+        <tr><td>🧪 新実験<br>AI事業検証サービス</td><td>今日の探究プロセスそのものの商品化 [仮説・要市場テスト]</td><td>「事業アイデアを一次情報つきで1〜3日検証、図解HTMLレポート納品」を1件受けてみる。検証コストほぼゼロ（デモは今日の6本が既にある）</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2><span class="num">02</span>「その気にならない」の正体 — 見落としていた第6条件</h2>
+    <p class="sub">5条件フィルターに1つ足りなかった</p>
+    <figure>
+      <img src="images/concept-02-01.png" alt="対人営業エンジンとAI実装エンジンの対比">
+      <figcaption>どちらの車にも乗れる。だがあなたの燃料が入るのは右だけ</figcaption>
+    </figure>
+    <p>工事マップは5条件フィルターを4/5で通過していた。それでも気が乗らないのは、フィルターに<b>「成長の主変数を、自分の最強の道具で動かせるか」</b>という第6条件が無かったから。工事マップの成長を決めるのは、名刺の枚数・電話の本数・自治体の予算サイクル（12〜18ヶ月）— つまり対人と待ち時間で、AIと実装力は補助輪にしかならない。あなたの強み（Ideation・Learner・Input・Maximizer）は「調べ、着想し、作り、磨く」に向いていて、「同じ相手に通い続ける」には向いていない。今日1日で9カ国の検証と6本のレポートを出したエンジンは、この事業では主機関にならない — それが違和感の正体。</p>
+    <div class="callout"><p><strong>今後の事業選定ルール（固定）:</strong> 主戦に置いていいのは「成長の主変数がAIで殴れる変数（調査・実装・データ・成果物品質）である事業」だけ。対人・待ち時間が主変数の事業は、どれだけ市場が良くてもオプション枠まで。</p></div>
+  </section>
+
+  <section>
+    <h2><span class="num">03</span>この探究は無駄だったのか — 資産の棚卸し</h2>
+    <p class="sub">1週間で得た、消えない資産5つ</p>
+    <table class="table">
+      <thead><tr><th>資産</th><th>使い道</th></tr></thead>
+      <tbody>
+        <tr><td>① おさんぽセーフティ実物＋都知事杯出場実績</td><td>7/27で確定。どの事業に進んでも「動くものを作って公的な場に出した」実績として機能</td></tr>
+        <tr class="pick"><td>② マップ×オープンデータのパイプライン実装力</td><td>おさんぽスコアの土台にそのまま転用（主実験の初期コストが激減している）</td></tr>
+        <tr class="pick"><td>③ AI駆動の高速一次情報検証体制</td><td>本日実績: 9カ国・調査6本・図解レポート6枚を1日で。これ自体が商品になる（セクション04）</td></tr>
+        <tr><td>④ 工事・道路・GovTechのドメイン知識</td><td>オプションが呼ばれた時（Final Stage・義務化の波）に即座に再起動できる</td></tr>
+        <tr><td>⑤ 公開可能な調査レポート6本</td><td>AI事業検証サービスの営業サンプル。ポートフォリオとして今すぐ使える</td></tr>
+      </tbody>
+    </table>
+    <div class="quote">「起点にして他のビジネスに展開する一歩にする」— まさにその通りの構造になっている。工事マップ事業の最大の産出物は、工事マップではなく②③⑤だった。</div>
+  </section>
+
+  <section>
+    <h2><span class="num">04</span>時間割の変化 — 義務の対人枠が消える</h2>
+    <p class="sub">「週2〜4時間の対人行動が3年間の必要条件」から解放される</p>
+    <figure>
+      <img src="images/concept-04-01.png" alt="時間割の前後比較: 義務的な対人営業枠が消え、実装と実験の枠に置き換わる">
+      <figcaption>対人は「やらなければ死ぬ変数」から「やりたければやる選択肢」に変わる</figcaption>
+    </figure>
+    <ul>
+      <li><b>消えるもの</b>: セミナー参加の義務、工事看板への営業電話、自治体アポの追いかけ、18ヶ月の待ち時間を耐える計画</li>
+      <li><b>残るもの</b>: 7/27の提出3手（最優先・不変）、おさんぽスコアの実装（AIと共同・楽しいゾーン）、AI事業検証の1件テスト</li>
+      <li><b>待ち受けに変わるもの</b>: Final Stageの通知、義務化前兆のアラート（AIが監視、動きがあった時だけあなたに上げる）</li>
+    </ul>
+    <div class="callout warn"><p><strong>1つだけ正直な注意:</strong> 「対人が主変数の事業を避ける」は強みへの最適化だが、どの事業でも最後の販売局面には人が出てくる（おさんぽスコアでもメール先の返事の向こうには人がいる）。避けたのは「対人が成長の主変数であること」であって、対人ゼロの事業は存在しない。ここは混同しない。</p></div>
+  </section>
+
+  <section>
+    <h2><span class="num">05</span>新実験 — 今日の1日を、そのまま商品にする</h2>
+    <p class="sub">今日あなたが受け取った物を、明日は誰かに売れる [仮説・要市場テスト]</p>
+    <figure>
+      <img src="images/concept-05-01.png" alt="AI事業検証サービス: 今日の探究プロセスを商品パッケージ化した図">
+      <figcaption>「事業アイデア検証パック」— デモは既に6本ある</figcaption>
+    </figure>
+    <p>今日1日で起きたことを客観的に見ると: 「工事AIという事業アイデア」に対して、類似モデルの世界調査・実勢価格と市場規模の一次情報・リスク台帳・ロードマップ・図解レポート6本が、24時間以内に出てきた。これはコンサル会社が数週間・30〜100万円で売っている簡易市場調査と同じ種類の成果物で、<b>新規事業を考える個人事業主・中小企業・副業検討者に、1本5〜20万円で売れる可能性がある [仮説]</b>。</p>
+    <ul>
+      <li><b>第6条件: ◎</b> — 成長の主変数は調査品質・統合力・成果物。完全にAIで殴れる。毎回テーマが変わるのでIdeation/Learner/Inputが飽きない</li>
+      <li><b>5条件: 3.5〜4/5</b> — 弱点はストック性（労働集約）。テンプレ化・半自動化で改善余地。おさんぽスコア（ストック型）と組むとポートフォリオとして補完的</li>
+      <li><b>検証コストがほぼゼロ</b> — 出品ページ or X投稿を1本作り、1件受けるだけ。断られてもデモ6本は残る</li>
+      <li><b>リスクの正直な開示</b> — AIコモディティ化で単価下落の競争になる可能性。差別化は「一次情報の裏取り＋図解HTML納品＋撤退基準まで書く誠実さ」。市場の支払い意思は完全に未検証なので、まず1件</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2><span class="num">06</span>直近のアクション — 今週は2つだけ</h2>
+    <p class="sub">10月末に新しい判断ゲートを置く</p>
+    <table class="table">
+      <thead><tr><th>いつ</th><th>やること</th><th>担当</th></tr></thead>
+      <tbody>
+        <tr class="pick"><td>今週</td><td>① おさんぽセーフティ提出3手（login→deploy→提出）</td><td>あなた（AI伴走）</td></tr>
+        <tr><td>今週</td><td>② セミナー申込は<b>取り消し</b>（旧計画の義務。行きたければ趣味として行くのは自由）</td><td>—</td></tr>
+        <tr><td>8月</td><td>おさんぽスコア試作＋AI事業検証サービスの出品ページ作成（文面・構成はAI）</td><td>AI主担当</td></tr>
+        <tr><td>9月</td><td>スコアのデモ公開＋検証サービス1件目の受注テスト</td><td>あなたは公開ボタンと返信のみ</td></tr>
+        <tr class="pick"><td>10月末</td><td><b>新ゲートG-P</b>: 2実験の初収益・手応え・楽しさで主戦を決定。両方ダメなら、Project OS全体（BacktraceEngine等）と突き合わせて次の探索テーマを選ぶセッションを持つ</td><td>あなたが判断</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <div class="conclusion">
+    <h2>結論</h2>
+    <ol>
+      <li>直感は正しい。工事マップは「3年の対人営業で年商240〜400万・確度3〜4割・桁が開くのは外生イベント待ち」であり、あなたの最強の道具が成長の主変数に効かない事業だった。主戦からは降ろす。</li>
+      <li>ただし捨てない。7/27提出と待ち受け（Final Stageの引き・義務化のアラート）だけ残すオプションに降格し、コストほぼゼロで「呼ばれたら戻れる」状態を保つ。</li>
+      <li>探究の本当の産出物は、マップ実装力・高速検証体制・レポート6本という資産。これを「おさんぽスコア（ストック型・主実験）」と「AI事業検証サービス（即金型・新実験）」の2つに投下し、10月末の新ゲートで主戦を決める。今週やるのは提出3手だけ。</li>
+    </ol>
+  </div>
+
+  <footer>題材: 工事マップ事業の戦略練り直し（本日の調査6本を前提とした統合判断・2026-07-10）/ [仮説] = 市場テスト前の未検証項目</footer>
+
+</div>
+</body>
+</html>
