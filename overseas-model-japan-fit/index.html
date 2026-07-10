@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>海外モデルは日本で動くか — 商習慣適合性の検証</title>
+<style>
+  :root {
+    --ink: #1a1a1a;
+    --ink-2: #4a4a4a;
+    --bg: #f7f5ee;
+    --paper: #fbf9f1;
+    --line: #d8d2bf;
+    --accent: #b45309;
+    --accent-soft: #f5e6d0;
+    --warn: #c83a2c;
+    --warn-soft: #f6dcd6;
+    --yellow: #f4d35e;
+    --shadow: 0 1px 0 rgba(0,0,0,.04), 0 8px 24px rgba(0,0,0,.06);
+    --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+    --sans: -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN",
+            "Hiragino Sans", "Noto Sans JP", "Yu Gothic", "Meiryo", sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 56px 28px 96px; }
+
+  .hero { margin-bottom: 56px; }
+  .hero .kicker {
+    display: inline-block;
+    background: var(--accent); color: #fff;
+    font-size: 12px; font-weight: 700; letter-spacing: .12em;
+    padding: 6px 12px; border-radius: 999px;
+    margin-bottom: 18px;
+  }
+  .hero h1 {
+    font-size: 40px; line-height: 1.3; margin: 0 0 14px;
+    letter-spacing: -.01em;
+  }
+  .hero h1 b { color: var(--accent); }
+  .hero p.lede {
+    font-size: 18px; color: var(--ink-2); margin: 0; max-width: 780px;
+  }
+  .tldr {
+    margin-top: 28px; padding: 22px 24px;
+    background: var(--paper); border: 1px solid var(--line); border-radius: 12px;
+    box-shadow: var(--shadow);
+  }
+  .tldr h2 { font-size: 13px; letter-spacing: .15em; color: var(--accent); margin: 0 0 10px; }
+  .tldr ol { margin: 0; padding-left: 20px; }
+  .tldr li { margin: 4px 0; }
+
+  section { margin: 64px 0 0; }
+  section > h2 {
+    font-size: 28px; line-height: 1.4; margin: 0 0 6px;
+    border-left: 6px solid var(--accent); padding-left: 12px;
+  }
+  section > h2 .num {
+    color: var(--accent); font-variant-numeric: tabular-nums; margin-right: 10px;
+  }
+  section > p.sub { color: var(--ink-2); margin: 0 0 22px; }
+
+  figure {
+    margin: 0 0 24px; padding: 12px;
+    background: var(--paper); border: 1px solid var(--line); border-radius: 14px;
+    box-shadow: var(--shadow);
+  }
+  figure img { display: block; width: 100%; height: auto; border-radius: 8px; }
+  figcaption {
+    font-size: 13px; color: var(--ink-2); margin-top: 10px; text-align: center;
+  }
+
+  .table {
+    width: 100%; border-collapse: collapse; margin: 12px 0 6px;
+    background: var(--paper); border: 1px solid var(--line); border-radius: 12px; overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+  .table th, .table td {
+    text-align: left; padding: 12px 14px; border-bottom: 1px solid var(--line);
+    vertical-align: top; font-size: 14.5px;
+  }
+  .table th { background: #efeadb; font-weight: 700; }
+  .table tr:last-child td { border-bottom: 0; }
+  .table .pick { background: var(--accent-soft); }
+  .table .pick td:first-child { font-weight: 700; color: var(--accent); }
+
+  .callout {
+    margin: 18px 0;
+    padding: 16px 18px;
+    border-left: 4px solid var(--accent);
+    background: var(--accent-soft);
+    border-radius: 0 10px 10px 0;
+  }
+  .callout.warn { border-color: var(--warn); background: var(--warn-soft); }
+  .callout p { margin: 0; }
+  .callout strong { color: var(--accent); }
+  .callout.warn strong { color: var(--warn); }
+
+  .quote {
+    border-left: 3px solid var(--line); padding: 6px 16px;
+    color: var(--ink-2); font-size: 14.5px; margin: 18px 0;
+  }
+
+  .conclusion {
+    margin-top: 56px; padding: 28px 28px 24px;
+    background: var(--ink); color: #f6f3e8; border-radius: 16px;
+  }
+  .conclusion h2 { color: var(--yellow); border: 0; padding: 0; margin: 0 0 12px; }
+  .conclusion ol { margin: 0; padding-left: 20px; }
+  .conclusion li { margin: 6px 0; }
+
+  footer { margin-top: 36px; color: var(--ink-2); font-size: 13px; }
+
+  @media (max-width: 720px) {
+    .wrap { padding: 32px 18px 64px; }
+    .hero h1 { font-size: 30px; }
+    section > h2 { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <span class="kicker">海外モデル × 日本商習慣 検証</span>
+    <h1>そのままでは動かない。<b>だが「動く形」は米国が実証済み</b></h1>
+    <p class="lede">one.network（英）とWalk Score（米）の成功要因を一次情報で分解し、日本の商習慣で再現するかを検証した。結論: 英国型の「工事事業者が自発的に払う」は法定罰金が作った動機で日本では再現しない。しかし法義務のない米国でone.networkが見つけた売り方 — 道路管理者が1社で払い、発注契約で受注業者に入力を義務化 — は、発注者主導の日本の建設商習慣とむしろ相性が良い。</p>
+    <div class="tldr">
+      <h2>TL;DR</h2>
+      <ol>
+        <li>英国の秘密は罰金（工期超過 £5,000〜10,000/日）。日本に同じ金銭動機は無く、B2B自発課金の期待値は下方修正が必要</li>
+        <li>米国が「法律なしで成立させる方法」を実証: フロリダ州は発注契約の一文で受注業者2,000人・5万件超のデータを集めた。法律の代替＝調達仕様</li>
+        <li>日本側の受け皿は整備済み: 自治体SaaSは800自治体規模で商習慣として成立、単年度会計も制度解決済み、DMPには個人事業主も登録可。壁は制度ではなく初回実績</li>
+      </ol>
+    </div>
+  </header>
+
+  <section>
+    <h2><span class="num">01</span>検証結果の全体像 — 渡れる橋はどれか</h2>
+    <p class="sub">3つのモデルを個別に判定した</p>
+    <figure>
+      <img src="images/concept-01-01.png" alt="海外モデル移植検証: 英国型は崩落、米国型は通行可、Walk Score型は条件付き">
+      <figcaption>英国型✕（罰金前提）／米国型◯（調達仕様で義務化）／Walk Score型△（治安と切り離せば可）</figcaption>
+    </figure>
+    <table class="table">
+      <thead><tr><th>モデル</th><th>日本移植の判定</th><th>根拠</th></tr></thead>
+      <tbody>
+        <tr><td>英国型: 工事事業者・ユーティリティが自発的にサブスク</td><td>✕ 再現しない</td><td>支払い動機は法定罰金の回避（セクション02）。日本の道路占用制度に遅延課金は無い</td></tr>
+        <tr class="pick"><td>米国型: 道路管理者が払い、発注契約で受注業者に義務化</td><td>◯ 再現可能性高</td><td>法義務なしのフロリダ・テキサス・ユタで実証済み（セクション03）。発注者主導は日本の建設業の基本構造</td></tr>
+        <tr><td>Walk Score型: 住所スコアの不動産向けAPI販売</td><td>△ 条件付き成立</td><td>「地域スコアのB2Bデータ販売」は国内でマンションレビューが既に実証。ただし治安データと完全に切り離すことが条件（セクション05）</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2><span class="num">02</span>英国の秘密は罰金だった — B2B自発課金仮説の下方修正</h2>
+    <p class="sub">ここは正直に認める: 前提が一つ崩れた</p>
+    <figure>
+      <img src="images/concept-02-01.png" alt="英国のユーティリティは罰金回避のためにone.networkに払っていた">
+      <figcaption>「自発的に払っていた」のではない。罰金から逃げるために払っていた</figcaption>
+    </figure>
+    <p>英国では法定の金銭ペナルティが工事事業者を直撃する: <b>Section 74 工期超過課金は交通重要路線で最初の3日£5,000/日、以降£10,000/日（約200万円/日）</b>（一次: 英国法令 UKSI 2012/2272）。<b>車線レンタル制は占用1日£2,500</b>で、ロンドン交通局にはユーティリティ各社が2022年度だけで計約£700万を支払った（一次: TfL）。つまり「工事を1日早く終える調整ツール」は英国では罰金回避装置であり、one.networkの営業資料自身が「規制インセンティブ」を売り文句にしている。</p>
+    <div class="callout warn"><p><strong>日本への含意:</strong> 日本の道路占用料に遅延課金はなく、この支払い動機は存在しない。つまり「施工会社が自発的にマップ掲載料を払う」というB2B仮説は、英国の実例を根拠にはできない（米国でもユーティリティの自発課金は確認されなかった）。現場HP＋QR受託は「小口の周知・イメージアップ受託」として残すが、B2BのSaaS的な継続課金の期待値は下げる。9月ヒアリングの検証項目はこの残存仮説に絞る。</p></div>
+  </section>
+
+  <section>
+    <h2><span class="num">03</span>米国の実証 — 法律の代わりは「発注契約の一文」</h2>
+    <p class="sub">日本と同じ「法義務なし」の市場で、実際に動いた方法</p>
+    <figure>
+      <img src="images/concept-03-01.png" alt="フロリダ州: DOTが払い、発注契約で受注業者にツール使用を義務化するフロー">
+      <figcaption>上流の一滴（契約書の一文）が下流の大河（5万件の工事データ）になる</figcaption>
+    </figure>
+    <p>米国にはNRSWA相当の統一法義務がない。その米国でone.networkは2020年参入以降、フロリダDOT（2023年全州パイロット→2024年3年契約）、テキサスNCTCOG（230超自治体の共同調達で選定）、ユタDOT（2025年全州契約）等を獲得した。核心は<b>フロリダDOTが新規道路工事の全受注業者に対し、車線閉鎖のツール登録を発注契約で義務化した</b>こと — 受注業者2,000人超が累計5万件超を登録した（一次: 企業発表／二次: 業界誌）。売り文句は「作業員の安全（2023年の米国work zone死者899人）」と「Waze・Google・Apple・TomTomへのリアルタイム配信」。</p>
+    <ul>
+      <li><b>買い手は工事事業者ではなく道路管理者（州DOT）1社</b>。多数の事業者に売り歩く必要がない</li>
+      <li><b>共同調達（テキサスTXShare）</b>で個別営業コストを消した — GovTech東京の共同調達と同じ構造が米国でも規模の鍵だった</li>
+      <li>参考: 任意規格（WZDx）の普及だけでは弱く、稼働フィードは5機関のみ。「標準化の推進」は義務の代替にならなかった</li>
+    </ul>
+    <div class="callout"><p><strong>これは3層データ戦略L2の実証そのもの。</strong>「自治体がB2G契約時に、受注者への工事情報入力を仕様化する」という日本向けの設計は、思いつきではなく英米両方で動いている唯一のパターンだと確認できた。しかも「発注者の仕様に従う」のは日本の建設業界の最も強い商習慣 — 移植先の土壌はむしろ英米より適している可能性がある。</p></div>
+  </section>
+
+  <section>
+    <h2><span class="num">04</span>日本側の受け皿 — 商習慣の壁は既に低くなっている</h2>
+    <p class="sub">「自治体はSaaSを買わない」は2026年時点ではもう古い</p>
+    <table class="table">
+      <thead><tr><th>懸念された商習慣</th><th>2026年の実態（一次情報）</th></tr></thead>
+      <tbody>
+        <tr class="pick"><td>自治体はサブスクを買わない</td><td>LoGoフォーム800自治体超（全体の約45%）、Graffer190自治体超・政令市の70%以上。人口規模別月額課金モデルが普通に通っている</td></tr>
+        <tr><td>単年度会計で複数年契約できない</td><td>地方自治法234条の3「長期継続契約」＋債務負担行為で制度解決済み。総務省が2010年にSaaS契約ひな形まで提示</td></tr>
+        <tr><td>実績のない事業者は入れない</td><td>SBIR認定なら納入実績不問で入札参加可。トライアル発注制度、神戸市の実証→随契制度。PoC→本契約の転換率は約53%（Urban Innovation JAPAN実績）</td></tr>
+        <tr><td>調達手続きが個人に開かれていない</td><td>デジタル庁DMP（日本版G-Cloud）が2025年3月から調達機能稼働。363社441SaaS、中小55%＋スタートアップ20%超。個人事業主の規模制限なし</td></tr>
+      </tbody>
+    </table>
+    <div class="callout warn"><p><strong>工事情報マップに特有の残る壁は2つ。</strong>①データ管理者の分断: 国道は国交省の電子申請があるが、警察の道路使用許可は工事の新規申請が未オンライン化で、網羅的な電子データがまだ揃わない。②「無料の公的公開が既にある」問題: 都は都道の工事情報を無料公開しており（粗いとはいえ）、「なぜ有料か」の説明責任が通常のGovTechより重い。答えは「粒度と歩行者UX」で作るしかない — L1デモがそのまま説明資料になる。</p></div>
+    <p style="font-size: 13px; color: var(--ink-2);">※ 出典: デジタル庁DMP公式、トラストバンク発表、Graffer公式、総務省ガイドライン、内閣府調達ガイドブック、UIJ発表。2026-07-10取得。</p>
+  </section>
+
+  <section>
+    <h2><span class="num">05</span>Walk Score型の日本適合 — 防御線を引けば成立する</h2>
+    <p class="sub">規制はむしろ追い風。地雷は1つだけ</p>
+    <figure>
+      <img src="images/concept-05-01.png" alt="おさんぽスコアの防御線: 歩行環境の安全は載せる、犯罪データは混ぜない">
+      <figcaption>事故は載る、犯罪は載らない。一度でも混ぜたら商品全体が燃える</figcaption>
+    </figure>
+    <ul>
+      <li><b>表示規制は敵ではない（一次）</b>: 不動産の表示規約が禁じるのは「治安が良い」「閑静」等の根拠なき優良表示。客観データ＋算出根拠を開示するスコアはむしろ規約適合的</li>
+      <li><b>制度の風向きが変わっている（一次）</b>: 2020年8月に水害ハザードマップの重要事項説明が義務化、2021年に事故物件ガイドライン。「リスク情報は取引前に示す義務がある」への転換が進行中で、安全スコアは「重説補助・接客ツール」として売れる文脈ができた</li>
+      <li><b>商流も実証あり（一次）</b>: マンションレビュー社が「メディア＋法人向けデータ販売」の2本柱を明言 — 地域・物件スコアのB2B販売は日本で既に成立している。ただし大手ポータルは無償公的データ＋内製主義なので、売り先は中堅仲介・賃貸管理SaaSへの組込み</li>
+      <li><b>唯一の地雷 — 犯罪データ</b>: 治安スコア化は地域差別・地価への配慮で不動産サイトは誰も載せない。「歩行環境の安全（事故・歩道・信号・街灯）」に限定し、犯罪と完全に切り離すことが商品設計の絶対条件。なおWalk Scoreは「事故率を織り込んでいない」という学術批判があり、事故データベースの日本版はそこが差別化になる</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2><span class="num">06</span>戦略への反映 — 何が変わり、何が強まったか</h2>
+    <p class="sub">検証は仮説を壊すためにやる。今回は1つ壊れて2つ強まった</p>
+    <table class="table">
+      <thead><tr><th>項目</th><th>検証前</th><th>検証後</th></tr></thead>
+      <tbody>
+        <tr><td>B2B（施工会社の自発課金）</td><td>ビラとの天秤で払うかも [仮説]</td><td><b>下方修正</b>。英米とも自発課金の実例なし。現場HP受託は小口受託として維持、SaaS化はB2G仕様化の後</td></tr>
+        <tr class="pick"><td>B2G（3層戦略L2: 発注仕様で入力義務化）</td><td>英国の法律の「代替案」[仮説]</td><td><b>強化</b>。フロリダが同じ構造で実証済み。日本の発注者主導文化とも整合。これが本命中の本命</td></tr>
+        <tr class="pick"><td>おさんぽスコア</td><td>国内空白 [仮説]</td><td><b>強化＋設計条件確定</b>。重説義務化の追い風・B2Bデータ販売の国内実証あり。「犯罪と混ぜない」を設計原則として固定</td></tr>
+        <tr><td>新アクション</td><td>—</td><td>①DMPへの事業者登録（個人可・8月）②UIJ型実証プログラムの応募検討 ③9月ヒアリングの質問を「発注者から求められる周知・報告」中心に再設計</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <div class="conclusion">
+    <h2>結論</h2>
+    <ol>
+      <li>「海外でうまくいったから日本でも」は半分誤り: 英国型の事業者自発課金は法定罰金の産物で移植不能。B2B課金の期待値は正直に下げた。</li>
+      <li>しかし「法義務のない市場での成立方法」は米国が実証済み — 道路管理者が1社で払い、発注契約の一文で受注業者にデータ入力を義務化する。これは日本の発注者主導の商習慣と最も相性が良い形であり、B2G＋3層データ戦略の裏付けが強化された。</li>
+      <li>日本側の受け皿（自治体SaaS 800自治体・長期継続契約・DMP・実証→随契制度）は既に開通しており、壁は商習慣ではなく初回実績。おさんぽスコアは「犯罪と完全分離」を条件に成立可能。次の一手は変わらず7/27提出 → 8月にDMP登録とL1デモ。</li>
+    </ol>
+  </div>
+
+  <footer>題材: one.network / Walk Score の日本商習慣適合性検証（3系統並列調査・取得日 2026-07-10）/ 主要一次出典: legislation.gov.uk、TfL、one.network企業発表、FHWA、デジタル庁、総務省、国交省、不動産公正取引協議会</footer>
+
+</div>
+</body>
+</html>
