@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>ep38 企画承認 — コードギアス × 夬</title>
+<style>
+  :root{
+    --ink:#2b2620; --paper:#faf6ef; --accent:#1e5aa8; --gold:#b8860b; --red:#c0392b;
+    --green:#1e7e34; --soft:#efe8db; --line:#d8cfbf;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Hiragino Kaku Gothic ProN",Meiryo,sans-serif;
+       background:var(--paper);color:var(--ink);line-height:1.75;font-size:16px}
+  .wrap{max-width:860px;margin:0 auto;padding:28px 20px 80px}
+  .kicker{color:var(--accent);font-weight:700;letter-spacing:.12em;font-size:13px}
+  h1{font-size:28px;line-height:1.35;margin:6px 0 10px}
+  .lede{color:#5a5348;font-size:15px}
+  .tldr{background:#fff;border-left:5px solid var(--accent);padding:14px 18px;margin:18px 0;border-radius:0 8px 8px 0;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+  .tldr b{color:var(--accent)}
+  figure{margin:26px 0}
+  figure img{width:100%;border-radius:10px;border:1px solid var(--line);box-shadow:0 2px 10px rgba(0,0,0,.08)}
+  figcaption{font-size:12.5px;color:#7a7263;margin-top:6px;text-align:center}
+  h2{font-size:20px;margin:40px 0 12px;padding-bottom:6px;border-bottom:2px solid var(--line)}
+  h2 .num{display:inline-block;background:var(--accent);color:#fff;border-radius:6px;padding:0 9px;font-size:14px;margin-right:8px;vertical-align:2px}
+  h3{font-size:16px;margin:20px 0 8px;color:var(--accent)}
+  p{margin:10px 0}
+  table{width:100%;border-collapse:collapse;margin:14px 0;font-size:14px;background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.05)}
+  th{background:var(--soft);text-align:left;padding:9px 12px;font-size:13px;border-bottom:2px solid var(--line)}
+  td{padding:9px 12px;border-bottom:1px solid #eee6d8;vertical-align:top}
+  tr:last-child td{border-bottom:none}
+  .tag{display:inline-block;background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:1px 10px;font-size:12px;margin:0 4px 4px 0}
+  .callout{background:#fff8e6;border:1px solid #e8d9a8;border-radius:8px;padding:12px 16px;margin:14px 0;font-size:14px}
+  .callout.warn{background:#fdf0ee;border-color:#eac5bf}
+  .callout.ok{background:#eef7ef;border-color:#bfe0c5}
+  .src{font-size:11.5px;color:#8a8172}
+  .decision{background:#fff;border:2px solid var(--accent);border-radius:12px;padding:20px 22px;margin:44px 0 20px;box-shadow:0 3px 12px rgba(30,90,168,.12)}
+  .decision h2{border:none;margin-top:0;color:var(--accent)}
+  .opt{display:flex;gap:12px;align-items:flex-start;padding:12px 0;border-bottom:1px dashed var(--line)}
+  .opt:last-child{border-bottom:none}
+  .opt .key{flex:0 0 34px;height:34px;border-radius:8px;background:var(--soft);border:1px solid var(--line);
+            display:flex;align-items:center;justify-content:center;font-weight:800;font-size:16px}
+  .opt.rec .key{background:var(--accent);color:#fff;border-color:var(--accent)}
+  .opt .body b{display:block}
+  .opt .body span{font-size:13.5px;color:#5a5348}
+  .conclusion{margin-top:36px;padding:16px 20px;background:var(--soft);border-radius:10px;font-size:15px}
+  .yao{display:grid;grid-template-columns:110px 1fr 1fr;gap:0;font-size:13.5px}
+  .small{font-size:13px;color:#6a6355}
+  @media(max-width:640px){ h1{font-size:23px} .yao{grid-template-columns:88px 1fr 1fr;font-size:12.5px} }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="kicker">EP38 企画承認ゲート（essay-episode Step 1）｜2026-07-10</div>
+  <h1>第38話 企画案<br>コードギアス（ルルーシュ）× 夬<span style="font-size:17px;color:#6a6355">（かい・沢天夬）</span></h1>
+  <p class="lede">「みんなのために動くほど、自分の居場所が消える」——溜まった膿を、誰が・どう出し切るのか。仮面の反逆者を、易経43番「夬＝決壊」で読む回。公開枠 2026-07-17（金）4:00 JST（claim済・content/058）。</p>
+
+  <div class="tldr">
+    <b>TL;DR</b><br>
+    ① 題材=<b>コードギアス</b>: topic-radar<b>未使用IPの最上位（スコア67.0）</b>。大型IP戦略・H39学びに合致（出典: analytics/topic-radar.json 実行結果）<br>
+    ② 卦=<b>夬</b>: radar付与の「革」はep06使用済のため、未使用27卦から選定。「王庭で膿を告げて出し切る決壊」がルルーシュ（嘘の積み上げ→ゼロレクイエム）と構造一致（出典: db/hexagrams.json #43）<br>
+    ③ 作中事実は<b>10項目をWebSearchで裏取り済✅</b>（fact_check.md作成済）。タイトルは規約どおり台本確定後（Step 8.5）に決定
+  </div>
+
+  <figure>
+    <img src="images/overview-01.png" alt="ep38企画の全体俯瞰図（題材データ・6幕構成・夬の六爻階段・比較作品）">
+    <figcaption>企画の全体俯瞰: 左=題材選定データ / 中央=6幕の流れ / 右=夬の六爻階段 / 下=比較作品の対比。<b>数値・仕様の正は本文</b>（画像内の「尺20〜25分」等の装飾メモは不正確。実際の尺は5〜15分規定）</figcaption>
+  </figure>
+
+  <h2><span class="num">0</span>Step 0 出力 — PDCA判定と今回反映した学び</h2>
+  <table>
+    <tr><th style="width:32%">実測スナップショット（yt-stats.mjs 2026-07-10）</th><td>登録<b>77人（+7）</b>・総再生61,246（+8,978）。ショートはトトロ(需)182再生/h・ONE PIECE(師)1,583が牽引。<b>ロングは初速弱＝CTR律速が継続</b>（確度: API実測）</td></tr>
+    <tr><th>H39（確定済）→反映</th><td>ショートの勝敗は「<b>IP規模×具体キャラ×逆説</b>」（大型IP中央値1479 vs ニッチ337）。→ <b>radar未使用で最上位の大型IPを機械的に採用</b>。ニッチ探索はしない</td></tr>
+    <tr><th>H5（確定運用）→反映</th><td>同一題材ショート2本の近接投稿は初速激減 → ep38の刃/Hook 2本は別日設計（Step 11で枠取り）</td></tr>
+    <tr><th>H40（検証中・n=1）→反映</th><td>ロングは問い先頭型タイトルがCTR良い可能性 → Step 8.5のタイトル候補に「問い型」を必ず含める（今は決めない）</td></tr>
+    <tr><th>新仮説 <b>H48</b>（claim済・058）</th><td>「radar未使用最上位の大型IP（コードギアス×夬）は、直近ロング5本と同等以上の48h初速＋ショート初速中央値超を出す」。判定=公開後3日（1日データで断定しない）</td></tr>
+  </table>
+
+  <h2><span class="num">1</span>題材選定の根拠 — データが指す唯一の未使用大型IP</h2>
+  <p>topic-radar（anime_entry・score降順）の上位12件のうち、<b>未使用作品はコードギアス（4位・67.0）ただ一つ</b>。5位以下はすべて使用済み・制作中でした。radarの機微アングルは「みんなのために動くほど、自分の居場所が消える」。</p>
+  <table>
+    <tr><th>順位</th><th>score</th><th>作品</th><th>状態</th></tr>
+    <tr><td>1〜3</td><td>70〜68.3</td><td>エヴァ／スラムダンク／フリーレン</td><td>使用済（ep08/03/07）</td></tr>
+    <tr><td><b>4</b></td><td><b>67.0</b></td><td><b>コードギアス</b></td><td><b>◎ 未使用</b></td></tr>
+    <tr><td>5〜12</td><td>63.9〜57.5</td><td>進撃／秒速／ナウシカ／約ネバ／BLEACH／千尋／黄泉のツガイ／H×H</td><td>すべて使用済・制作中</td></tr>
+  </table>
+  <p class="small">※ 2006-08年サンライズ制作・全50話の社会現象級オリジナルロボットアニメ（WP確認済）。放送から18年でも「ゼロレクイエム」は考察系の定番＝結末まで共有知、というチャンネルコンセプト（現代の寓話）の条件を満たす。</p>
+
+  <h2><span class="num">2</span>卦の選定 — なぜ夬（かい）か</h2>
+  <p>radarが付けた「革」は<b>ep06進撃で使用済み</b>。未使用27卦と物語構造を突き合わせた結果が夬です（db/hexagrams.json #43 接地）。</p>
+  <table>
+    <tr><th style="width:30%">夬のかたち</th><td>下から5本の陽が、最上位に残った<b>最後の1本の陰</b>を押し切る形。象は「沢（湖）の水が天まで昇った」＝<b>決壊寸前</b>。溜まった膿を出し切る局面の卦</td></tr>
+    <tr><th>卦辞</th><td>「<b>王庭で真実を告げよ。危うさを伴う。自分の街にも知らせよ。武力に頼るな</b>」——匿名の告発ではなく、名乗って、身内の澱みにも刃を向け、返り血を覚悟して膿を出す</td></tr>
+    <tr><th>ルルーシュとの構造一致</th><td>ブリタニアという膿を「ゼロ」の仮面（＝匿名）で断とうとして失敗を重ね、最後は<b>皇帝として王庭のど真ん中に立ち、世界の憎しみ＝膿を自分一人に集めて出し切る</b>（ゼロレクイエム）。「最後の一陰」が自分自身になる逆転が、この回の種明かし</td></tr>
+    <tr><th>幕1の違和感（普遍の入口）</th><td>「間違っているとみんな分かっているのに、誰も止められないものがある」——会社の慣習・空気・制度。決壊寸前の湖を見て見ぬふりする私たちから入る（作品名は幕2で名乗る・ep03/34型）</td></tr>
+  </table>
+
+  <h3>処方箋（幕5）の背骨 — 夬の六爻を「膿の出し方の階段」に</h3>
+  <table class="small">
+    <tr><th style="width:14%">爻</th><th style="width:43%">db卦辞の要点</th><th>ルルーシュへの着地（案）</th></tr>
+    <tr><td>初爻</td><td>勇み足のつま先。力を測らず進めば敗れる</td><td>ブラックリベリオン——勝勢でも足場（私情）が崩れれば総崩れ</td></tr>
+    <tr><td>二爻</td><td>夜も鎧を忘れなければ、恐れることはない</td><td>告発は周到な備えとセット。ゼロの仮面は「備え」でもあった</td></tr>
+    <tr><td>三爻</td><td>独り行き雨に濡れ、非難される。それでも咎なし</td><td>膿の側に立っているように見られる孤独な役回りが、誰かに要る</td></tr>
+    <tr><td>四爻</td><td>意地で進むな。人の言を聞かないのが病</td><td>スザクの「過程の正しさ」を退け続けた代償（ユフィ事件の意図せぬ暴走）</td></tr>
+    <tr><td>五爻</td><td>根深い草は「断ちつつ、中道」。一気に抜こうとしない</td><td>憎しみの根は制度でなく人の心にある——だから配り直す設計にした</td></tr>
+    <tr><td>上爻</td><td>声を上げねば、終に凶。最後の一つを見逃すな</td><td>やり残した膿は必ず戻る。自分という最後の一陰まで出し切った</td></tr>
+  </table>
+  <p class="small">※ 象辞「君子は富を下に施し、徳に安住しない」＝溜め込む者から崩れる、が幕5の締め。各爻の読み下しはStep 2でdb再参照して精緻化します（上表は企画段階の設計図）。</p>
+
+  <h2><span class="num">3</span>6幕アウトライン（v2.2）</h2>
+  <table>
+    <tr><th style="width:26%">幕</th><th>内容</th></tr>
+    <tr><td><b>1 違和感の提示</b> 30秒</td><td>「間違っていると全員分かっているのに、続いていくものがある」。易経はその状態に名前をつけている——今日はその話です（卦名teaser）</td></tr>
+    <tr><td><b>2 観察</b> 3-5分</td><td>ルルーシュを名指しで積む: ①第1話「撃っていいのは、撃たれる覚悟のある奴だけだ」②C.C.との契約＝絶対遵守のギアス（同一人物に一度きり）③ゼロの仮面と黒の騎士団——動機は妹ナナリーの「優しい世界」④ユフィ事件＝ギアス暴走（意図せぬ命令）でも「利用する」と決めた⑤ブラックリベリオン＝ナナリー優先で指揮放棄→総崩れ。<b>嘘と犠牲が湖のように溜まっていく</b>観察</td></tr>
+    <tr><td><b>3 種明かし</b> 2-3分</td><td>夬の提示（GUA6六爻図・決定論描画）。決壊寸前の湖。5陽が1陰を押し切る形。そしてこの物語の「最後の一陰」は誰だったのか——ブリタニアではなく、嘘を積み上げた自分自身</td></tr>
+    <tr><td><b>4 風刺の刃</b> 30秒-1分</td><td>私たちは膿の告発が大好きだ。SNSでは毎日誰かが燃えている。だが夬の条件は「王庭で・名乗って・自分の街にも知らせて」。<b>匿名の石投げは夬ではない。正義の消費と、膿を出す決断は別物</b>——撃っていいのは、撃たれる覚悟のある奴だけ</td></tr>
+    <tr><td><b>5 処方箋</b> 1.5-3分</td><td>六爻の階段（上表）＋象辞「富を下に施し、徳に安住しない」。日常サイズに落とす: 職場・家庭の「溜まった膿」をどの段から出すか</td></tr>
+    <tr><td><b>6 余韻</b> 30秒</td><td>膿を出すとは、正しさを主張することではなく、引き受けること——断言で立って終わる（定型の問いかけ禁止）</td></tr>
+  </table>
+
+  <h3>比較作品（同じ入口・違う出口）</h3>
+  <table>
+    <tr><th style="width:30%">作品</th><th>対比軸</th></tr>
+    <tr><td><b>DEATH NOTE 夜神月</b>（ep02使用済・比較再登場）</td><td>同じ入口=「退屈な天才学生が、偶然世界を変える力を拾う」。出口が正反対: 月は最後まで<b>自分を裁く側に置いた</b>（自分という膿に気づかない）。ルルーシュは自分ごと出し切った。第1話同士の対比が鮮烈</td></tr>
+    <tr><td><b>進撃の巨人 エレン</b>（ep06使用済・軽く）</td><td>「自分が悪になって終わらせる」同型。ただし地鳴らし=<b>武力に頼った夬</b>（卦辞違反の形）として対置</td></tr>
+  </table>
+
+  <h2><span class="num">4</span>事実裏取り（ハルシネーション・ゲート）</h2>
+  <div class="callout ok">✅ 企画に使う作中事実<b>10項目＋比較2項目をWebSearch一次確認済み</b>（ja.wikipedia / pixiv百科 / 公式geass.jp）→ <b>content/058/fact_check.md 作成済</b></div>
+  <div class="callout warn">⚠️ 台本執筆時の地雷（裏取りで判明した「よくある誤解」）: ①ギアスは<b>同一人物に一度きり</b>・直接目を見た相手のみ ②ユフィ事件は<b>暴走（意図せぬ命令）</b>——「わざと命じた」は誤り ③ゼロレクイエムは「二人だけの秘密」ではない（C.C.・ジェレミアら少数は知っていた）④CLAMP=原案・木村貴宏=キャラデザ</div>
+  <p class="small">タイトルは規約（2026-06-27本人ルール）どおり<b>ここでは決めません</b>。方向性メモのみ: 名前先出し（ルルーシュ/コードギアス）＋問い型を候補に含める（H40）＋結末ネタバレ禁止＋【第38話・夬】。決定はStep 8.5で3案提示。</p>
+
+  <div class="decision">
+    <h2>🎯 判断ポイント — この企画でGOしますか？</h2>
+    <div class="opt rec">
+      <div class="key">A</div>
+      <div class="body"><b>承認 — コードギアス × 夬 で台本（Step 2）へ進む（推奨）</b>
+      <span>データ上の最有力（未使用大型IP1位×構造一致の未使用卦）。承認後: 台本執筆 → preflight → creative-loop独立採点≧90 → 台本レビューHTMLで再度ゲート</span></div>
+    </div>
+    <div class="opt">
+      <div class="key">B</div>
+      <div class="body"><b>題材はコードギアスのまま、卦を変える</b>
+      <span>次点候補: 姤（こう・C.C.との「不意の出会い」が人生を乗っ取る軸）／噬嗑（ぜいごう・障害を噛み砕く裁きの軸）。指定があれば構成を組み直して再提示</span></div>
+    </div>
+    <div class="opt">
+      <div class="key">C</div>
+      <div class="body"><b>別題材にする</b>
+      <span>radar上位の未使用は他にないため、radar外の大型IP（例: ジョジョ／もののけ姫／天気の子 等）から指定してください。データ根拠は弱くなります</span></div>
+    </div>
+    <div class="opt">
+      <div class="key">D</div>
+      <div class="body"><b>保留・質問</b>
+      <span>気になる点をそのまま返信してください（例: 6幕の刃の向き・処方箋の粒度・比較作品の入れ替え）</span></div>
+    </div>
+  </div>
+
+  <div class="conclusion">
+    <b>まとめ（3行）</b><br>
+    ① ep38 = コードギアス（ルルーシュ）× 夬。データ（radar未使用1位）と構造（決壊＝膿を出し切る）の両方が揃った案です。<br>
+    ② 事実裏取り10項目✅・公開枠7/17claim済・H48採番済——承認さえ出ればすぐ台本に入れます。<br>
+    ③ A（承認）なら次のゲートは「台本レビューHTML」。タイトルはStep 8.5で3案お見せします。
+  </div>
+
+</div>
+</body>
+</html>
