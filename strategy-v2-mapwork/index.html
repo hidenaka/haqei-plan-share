@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>戦略v2 — 3回接触モデル×地図化パックの統合評価</title>
+<style>
+  :root {
+    --ink: #1a1a1a;
+    --ink-2: #4a4a4a;
+    --bg: #f7f5ee;
+    --paper: #fbf9f1;
+    --line: #d8d2bf;
+    --accent: #0d9488;
+    --accent-soft: #d3ece9;
+    --warn: #c83a2c;
+    --warn-soft: #f6dcd6;
+    --yellow: #f4d35e;
+    --shadow: 0 1px 0 rgba(0,0,0,.04), 0 8px 24px rgba(0,0,0,.06);
+    --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+    --sans: -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN",
+            "Hiragino Sans", "Noto Sans JP", "Yu Gothic", "Meiryo", sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 56px 28px 96px; }
+
+  .hero { margin-bottom: 56px; }
+  .hero .kicker {
+    display: inline-block;
+    background: var(--accent); color: #fff;
+    font-size: 12px; font-weight: 700; letter-spacing: .12em;
+    padding: 6px 12px; border-radius: 999px;
+    margin-bottom: 18px;
+  }
+  .hero h1 {
+    font-size: 40px; line-height: 1.3; margin: 0 0 14px;
+    letter-spacing: -.01em;
+  }
+  .hero h1 b { color: var(--accent); }
+  .hero p.lede {
+    font-size: 18px; color: var(--ink-2); margin: 0; max-width: 780px;
+  }
+  .tldr {
+    margin-top: 28px; padding: 22px 24px;
+    background: var(--paper); border: 1px solid var(--line); border-radius: 12px;
+    box-shadow: var(--shadow);
+  }
+  .tldr h2 { font-size: 13px; letter-spacing: .15em; color: var(--accent); margin: 0 0 10px; }
+  .tldr ol { margin: 0; padding-left: 20px; }
+  .tldr li { margin: 4px 0; }
+
+  section { margin: 64px 0 0; }
+  section > h2 {
+    font-size: 28px; line-height: 1.4; margin: 0 0 6px;
+    border-left: 6px solid var(--accent); padding-left: 12px;
+  }
+  section > h2 .num {
+    color: var(--accent); font-variant-numeric: tabular-nums; margin-right: 10px;
+  }
+  section > p.sub { color: var(--ink-2); margin: 0 0 22px; }
+
+  figure {
+    margin: 0 0 24px; padding: 12px;
+    background: var(--paper); border: 1px solid var(--line); border-radius: 14px;
+    box-shadow: var(--shadow);
+  }
+  figure img { display: block; width: 100%; height: auto; border-radius: 8px; }
+  figcaption {
+    font-size: 13px; color: var(--ink-2); margin-top: 10px; text-align: center;
+  }
+
+  .table {
+    width: 100%; border-collapse: collapse; margin: 12px 0 6px;
+    background: var(--paper); border: 1px solid var(--line); border-radius: 12px; overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+  .table th, .table td {
+    text-align: left; padding: 12px 14px; border-bottom: 1px solid var(--line);
+    vertical-align: top; font-size: 14.5px;
+  }
+  .table th { background: #efeadb; font-weight: 700; }
+  .table tr:last-child td { border-bottom: 0; }
+  .table .pick { background: var(--accent-soft); }
+  .table .pick td:first-child { font-weight: 700; color: var(--accent); }
+
+  .callout {
+    margin: 18px 0;
+    padding: 16px 18px;
+    border-left: 4px solid var(--accent);
+    background: var(--accent-soft);
+    border-radius: 0 10px 10px 0;
+  }
+  .callout.warn { border-color: var(--warn); background: var(--warn-soft); }
+  .callout p { margin: 0; }
+  .callout strong { color: var(--accent); }
+  .callout.warn strong { color: var(--warn); }
+
+  .quote {
+    border-left: 3px solid var(--line); padding: 6px 16px;
+    color: var(--ink-2); font-size: 14.5px; margin: 18px 0;
+  }
+
+  .conclusion {
+    margin-top: 56px; padding: 28px 28px 24px;
+    background: var(--ink); color: #f6f3e8; border-radius: 16px;
+  }
+  .conclusion h2 { color: var(--yellow); border: 0; padding: 0; margin: 0 0 12px; }
+  .conclusion ol { margin: 0; padding-left: 20px; }
+  .conclusion li { margin: 6px 0; }
+
+  footer { margin-top: 36px; color: var(--ink-2); font-size: 13px; }
+
+  @media (max-width: 720px) {
+    .wrap { padding: 32px 18px 64px; }
+    .hero h1 { font-size: 30px; }
+    section > h2 { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <span class="kicker">戦略v2 — あなたの案の統合評価</span>
+    <h1>入れるべき。<b>この接触設計は前回の弱点を直している</b></h1>
+    <p class="lede">持ち込まれた「同じ5人と自然に3回会う」設計を評価した。結論: 採用。前回資料には「AI事業検証サービスも結局は客が要る」という未解決の穴があったが、この案は対人を「コールド営業」から「共同作業の場での作品見せ＋相手の募集への反応」に再発明しており、穴を塞いでいる。ただし統合前に修正が2つ — 商品の一本化と、順番・AI分担の調整。</p>
+    <div class="tldr">
+      <h2>TL;DR</h2>
+      <ol>
+        <li>採用。3回接触モデルは「数回会うと打ち解ける」というあなたの実証済み特性のプロセス化であり、第6条件（成長の主変数はデモの質＝AIで殴れる）にも通る</li>
+        <li>修正1: 商品は「地図化パック」に一本化。あなたの自己紹介文が実質それ。AI事業検証レポートは捨てずに裏メニュー（SKU2）へ</li>
+        <li>修正2: デモ整理は7/27提出の後ろへ（提出がデモ1号）。60分試作の40分ぶん・接触履歴CRM・案件監視はAIが裏で持つ</li>
+      </ol>
+    </div>
+  </header>
+
+  <section>
+    <h2><span class="num">01</span>統合後の全体図 — 戦略v2</h2>
+    <p class="sub">2レーン＋裏メニュー＋待ち受け。10月末のゲートは不変</p>
+    <figure>
+      <img src="images/concept-01-01.png" alt="戦略v2の全体図: ストックレーンと即金レーン、SKU2、工事マップの待ち受け">
+      <figcaption>走る車は2台まで。工事マップは待合所で「引き」を待つ</figcaption>
+    </figure>
+    <table class="table">
+      <thead><tr><th>枠</th><th>中身</th><th>変更点</th></tr></thead>
+      <tbody>
+        <tr class="pick"><td>ストックレーン（主実験）</td><td>おさんぽスコア — 不動産向け歩行安全スコアAPI</td><td>変更なし。8月試作→9月デモ公開→メール提案</td></tr>
+        <tr class="pick"><td>即金・需要発見レーン</td><td><b>地図化パック</b> — 埋もれたPDF/Excelの地域情報をWeb地図に。3回接触モデルで販売</td><td><b>新設</b>。「AI検証サービスのコールド出品」と「現場HPの電話営業」の両方を置き換える上位互換</td></tr>
+        <tr><td>裏メニュー（SKU2）</td><td>AI事業検証レポート（1〜3日・一次情報つき）</td><td>出品はしない。地図化の顧客が「次の事業をどうしよう」と言った時に会話から出す</td></tr>
+        <tr><td>待ち受け（オプション）</td><td>工事マップ — 7/27提出＋Final Stage・義務化の波の監視</td><td>変更なし</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2><span class="num">02</span>なぜ採用か — この設計は3つの点で正しい</h2>
+    <p class="sub">お世辞ではなく、前回資料の穴を具体的に塞いでいる</p>
+    <figure>
+      <img src="images/concept-02-01.png" alt="3回接触モデル: 見せる→試作を渡す→棚卸しヒアリングの3段階">
+      <figcaption>売るのは3回目だけ。1回目と2回目は「見せる」と「渡す」</figcaption>
+    </figure>
+    <ul>
+      <li><b>① 対人の再発明</b>: 前回「対人が主変数の事業は避ける」と整理したが、実はAI事業検証サービスにも「どうやって客を見つけるか」という穴が残っていた。この案は接触をすべて「共同作業の場（ハッカソン・マッピングパーティー）」「相手からの募集（ビジネスチャンス・ナビ）」に限定しており、コールド営業がゼロ。あなたの「数回接触すると仲良くなりヒアリングできる」という性質の上に営業プロセスを建てている</li>
+      <li><b>② 第6条件に通る</b>: 3回接触の成否を決めるのは「1回目に見せる作品」と「2回目に渡す60分試作」の質 — つまり成長の主変数はデモの質と速度で、AIで殴れる。対人は導線であって主変数ではない。週3時間上限も前回の時間割と整合</li>
+      <li><b>③ 数の設計</b>: コア5人（制作系2・地域データ系2・行政系1）×3回 > 一度きりの100人。目標が「フォロワー数」でなく「有料試行1件」なのも正しい</li>
+    </ul>
+    <div class="callout"><p><strong>前回の「セミナー申込取り消し」との整合:</strong> 矛盾しない。取り消したのは「売るための義務的対人」（名刺配り・営業電話）。今回入れるのは「作るための共同作業接触」。同じ「人に会う」でも、あなたにとっての消耗度がまったく違う — 立食交流会ではなく作業のある場を選ぶ、という本人案の指定がまさにその区別。</p></div>
+  </section>
+
+  <section>
+    <h2><span class="num">03</span>修正1: 売り物は「地図化パック」に一本化する</h2>
+    <p class="sub">あなたの自己紹介文は、実はもう商品定義になっている</p>
+    <figure>
+      <img src="images/concept-03-01.png" alt="商品の一本化: 地図化パックが本体、AI事業検証レポートは裏メニュー">
+      <figcaption>食堂の看板メニューは1つ。裏メニューは常連にだけ</figcaption>
+    </figure>
+    <p>「PDFやExcelに埋もれた地域情報を、AIと公共データで使えるWeb地図に変えています」— この一文は自己紹介であると同時に商品定義で、前回の「AI事業検証サービス」とは別物。比べると<b>地図化の方が強い</b>: ①マップ×オープンデータの実装資産に直結する ②見せた瞬間に伝わる（検証レポートは読ませる必要がある）③「うちにも似た資料がある」という反応がそのまま買いの入口になる。検証レポートは捨てない — 地図化の顧客との3回目以降の会話で「次の事業どうしよう」が出た時の裏メニュー（SKU2）に回す。</p>
+    <div class="callout"><p><strong>先に決めておくこと（2回目接触で聞かれた瞬間に即答するため）:</strong> 地図化パック = 初回制作5〜15万円＋更新が要るなら月額1万円 [仮説・最初の1件で調整]。「20分の棚卸しヒアリング」の場で出す1枚ものの料金表はAIが作っておく。</p></div>
+  </section>
+
+  <section>
+    <h2><span class="num">04</span>修正2: 順番の調整 — 90日プランv2</h2>
+    <p class="sub">7/27提出がデモ1号を兼ねる。デモ整理は8月へ</p>
+    <table class="table">
+      <thead><tr><th>期間</th><th>あなたの行動（週3h上限）</th><th>AIの裏方作業</th></tr></thead>
+      <tbody>
+        <tr class="pick"><td>〜7/27</td><td>提出3手のみ（＝デモ1号の完成）</td><td>提出の伴走</td></tr>
+        <tr><td>8月前半</td><td>ビジネスチャンス・ナビ登録／Code for Japan Slackに参加（コミュニティは1つだけ。OSMマッピングパーティーは四半期1回の現場体験枠）</td><td>デモ3点の整理（工事案内・イベント案内・施設情報）／固定自己紹介文の最終化</td></tr>
+        <tr><td>8月後半</td><td>ハッカソン交流会・実装支援の場で3人と会話（売らない）</td><td>会った人の接触履歴CRM開始（誰に・何を見せた・次の一手）</td></tr>
+        <tr><td>9月</td><td>2回目接触×3件（軽い連絡＋小さな地図例を渡す）／おさんぽスコアのデモ公開ボタン</td><td>相手の公開資料から地図例の下ごしらえ（60分の内40分ぶん）／スコア試作の実装</td></tr>
+        <tr><td>10月</td><td>棚卸しヒアリング3件（20分×3）→ 有料試行1件</td><td>質問リスト・料金表・提案書／ナビ案件の監視と要約</td></tr>
+        <tr class="pick"><td>10月末</td><td><b>G-Pゲート判定</b>: 有料試行の有無・スコアの手応え・楽しさで主戦を決める</td><td>判定材料の整理（この資料の形式で提出）</td></tr>
+      </tbody>
+    </table>
+    <div class="callout warn"><p><strong>撤退基準もあなたの案に合わせて更新:</strong> 90日で有料試行が0件なら、3回接触モデル自体は維持したまま商品定義だけを作り直す（接触の仕組みと商品の当たり外れは別の変数として扱う）。おさんぽスコアの撤退基準（2027年3月に有償2社未満で凍結）は変更なし。</p></div>
+  </section>
+
+  <section>
+    <h2><span class="num">05</span>あなたは会うだけ — 3回接触のAI分担</h2>
+    <p class="sub">週3時間の表舞台の裏に、AIの下ごしらえを敷く</p>
+    <figure>
+      <img src="images/concept-05-01.png" alt="3回接触の裏でAIが下ごしらえするリレー図">
+      <figcaption>表舞台（会って話す）はあなた、舞台裏（仕込み・記録・監視）はAI</figcaption>
+    </figure>
+    <ul>
+      <li><b>1回目の前</b>: 見せる作品（おさんぽセーフティ＋デモ3点）と固定自己紹介文をAIが準備。あなたは会場で見せて話すだけ</li>
+      <li><b>2回目の前</b>: 相手の公開資料（PDF・Excel）をAIに渡せば、60分試作のうち40分ぶん（データ整形・ベース地図）はAIが作る。あなたは仕上げと「違えば無視してください」の一文を送るだけ</li>
+      <li><b>3回目の前</b>: 棚卸しヒアリングの質問リスト・1枚料金表・その場で見せられる提案例をAIが用意</li>
+      <li><b>常時</b>: 接触履歴のCRM（次の一手のリマインド付き）、ビジネスチャンス・ナビの案件監視・要約、G-P判定材料の蓄積</li>
+    </ul>
+    <div class="quote">この分担なら、90日プランの成否を決める変数は「あなたが場に行った回数（週1回）」と「デモの質（AI）」の2つだけに絞られる。どちらも実行可能性が高い。</div>
+  </section>
+
+  <div class="conclusion">
+    <h2>結論</h2>
+    <ol>
+      <li>あなたの接触設計は採用。「人脈を作る」を「同じ5人と自然に3回会う」に再定義したこの案は、前回資料に残っていた「検証サービスも客が要る」という穴を、コールド営業ゼロの導線3本で塞いでいる。</li>
+      <li>修正は2つ: ①売り物は「地図化パック」（初回5〜15万＋月1万 [仮説]）に一本化し、AI事業検証レポートは裏メニューへ ②デモ整理は7/27提出の後ろに置き、60分試作の下ごしらえ・CRM・案件監視はAIが持つ。</li>
+      <li>これで戦略v2が確定: ストック=おさんぽスコア、即金・需要発見=地図化パック×3回接触、待ち受け=工事マップ。10月末のG-Pゲートで主戦を決める。今週やることは変わらず提出3手だけ — それがデモ1号になる。</li>
+    </ol>
+  </div>
+
+  <footer>題材: ユーザー持ち込みの接触設計案の評価と戦略v2への統合（2026-07-10）/ 本人案の出典（都知事杯1,327人・ナビ登録5.5万件等）は本人提供リンクに依拠・未再検証 / [仮説] = 最初の1件で調整する項目</footer>
+
+</div>
+</body>
+</html>
