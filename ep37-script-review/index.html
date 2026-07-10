@@ -1,0 +1,528 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta name="robots" content="noindex,nofollow,noarchive">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>第37話 台本レビュー — 震×BLEACH（改稿v2・採点92）</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f6f1e7;
+      --paper: #fffaf1;
+      --ink: #17202a;
+      --muted: #657080;
+      --line: #d7c8b4;
+      --blue: #173f66;
+      --red: #ae3b32;
+      --gold: #b8872f;
+      --green: #2f6d5d;
+      --amber: #8f6418;
+      --new-bg: #eef6f0;
+      --edit-bg: #fff7e6;
+      --del-bg: #fbeceb;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", sans-serif;
+      line-height: 1.72;
+    }
+    main {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 28px 0 58px;
+    }
+    header {
+      border-bottom: 2px solid var(--line);
+      padding: 16px 0 22px;
+    }
+    .eyebrow {
+      color: var(--blue);
+      font-size: 14px;
+      font-weight: 800;
+    }
+    h1 {
+      margin: 8px 0 8px;
+      font-size: clamp(26px, 4.4vw, 44px);
+      line-height: 1.2;
+      letter-spacing: 0;
+    }
+    .lead {
+      max-width: 900px;
+      margin: 0;
+      color: var(--muted);
+      font-size: 17px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 14px;
+      margin-top: 18px;
+    }
+    section {
+      grid-column: span 12;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 18px;
+    }
+    .span-4 { grid-column: span 4; }
+    .span-6 { grid-column: span 6; }
+    .span-8 { grid-column: span 8; }
+    h2 {
+      margin: 0 0 10px;
+      font-size: 20px;
+      line-height: 1.35;
+      letter-spacing: 0;
+    }
+    h3 {
+      margin: 18px 0 8px;
+      font-size: 16px;
+      color: var(--blue);
+      border-left: 5px solid var(--gold);
+      padding-left: 8px;
+    }
+    h3:first-child { margin-top: 0; }
+    p { margin: 0 0 10px; }
+    ul { margin: 8px 0 0; padding-left: 1.2em; }
+    li { margin: 6px 0; }
+    .pill {
+      display: inline-block;
+      margin: 3px 5px 3px 0;
+      padding: 2px 8px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: #fffdf8;
+      color: var(--blue);
+      font-weight: 800;
+      font-size: 13px;
+    }
+    .ok { color: var(--green); font-weight: 800; }
+    .warn { color: var(--amber); font-weight: 800; }
+    .bad { color: var(--red); font-weight: 800; }
+    .meta {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+    .meta div {
+      background: rgba(184, 135, 47, 0.08);
+      border-left: 4px solid var(--gold);
+      padding: 7px 9px;
+      min-height: 54px;
+    }
+    .thesis {
+      border-left: 6px solid var(--red);
+      background: #fff4ee;
+      padding: 14px 16px;
+      font-size: 20px;
+      font-weight: 900;
+    }
+    .tldr {
+      border-left: 6px solid var(--blue);
+      background: #eef3f8;
+      padding: 14px 16px;
+    }
+    .tldr ul { margin-top: 4px; }
+    .tldr li { font-size: 15px; }
+    .tag-new { color: var(--green); font-weight: 900; }
+    .tag-edit { color: var(--amber); font-weight: 900; }
+    .tag-del { color: var(--red); font-weight: 900; }
+
+    table.score {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+      margin-top: 8px;
+    }
+    table.score th, table.score td {
+      border: 1px solid var(--line);
+      padding: 7px 8px;
+      text-align: left;
+      vertical-align: top;
+    }
+    table.score th { background: #f3ead9; }
+    .score-cell { font-weight: 900; font-size: 16px; }
+    .score-pass { color: var(--green); }
+    .score-fail { color: var(--red); }
+
+    .breakdown-bar-row { display: flex; align-items: center; gap: 8px; margin: 5px 0; font-size: 13px; }
+    .breakdown-label { width: 150px; flex-shrink: 0; color: var(--muted); }
+    .breakdown-track { flex: 1; background: #efe6d3; border-radius: 4px; height: 10px; overflow: hidden; }
+    .breakdown-fill { background: var(--blue); height: 100%; }
+    .breakdown-val { width: 46px; text-align: right; font-weight: 800; flex-shrink: 0; }
+
+    .preflight-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .preflight-item {
+      background: #f0f7f2;
+      border: 1px solid #d3e6d8;
+      border-radius: 6px;
+      padding: 8px 10px;
+      font-size: 13px;
+    }
+    .preflight-item .v { font-size: 17px; font-weight: 900; color: var(--green); }
+    .preflight-item.warn-item { background: #fdf6e6; border-color: #ecd9a3; }
+    .preflight-item.warn-item .v { color: var(--amber); }
+
+    .scene {
+      border-top: 1px solid var(--line);
+      padding: 13px 0;
+    }
+    .scene:first-child { border-top: 0; }
+    .scene.is-edit { background: var(--edit-bg); margin: 0 -18px; padding: 13px 18px; }
+    .scene.is-del { background: var(--del-bg); margin: 0 -18px; padding: 13px 18px; opacity: 0.85; }
+    .scene-head {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 5px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 800;
+    }
+    .diffmark {
+      padding: 1px 7px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 900;
+    }
+    .diffmark.edit { background: #f6dfa0; color: #6b4d0a; }
+    .diffmark.del { background: #f0bcb7; color: #7a231c; }
+    .scene-text {
+      font-size: 16px;
+      margin: 0;
+    }
+    .scene-text.strike { text-decoration: line-through; color: var(--muted); }
+    .diff-note {
+      margin-top: 6px;
+      font-size: 13.5px;
+      color: var(--amber);
+      background: #fff9ec;
+      border: 1px dashed #e2c581;
+      border-radius: 6px;
+      padding: 6px 9px;
+    }
+    .diff-note.del-note { color: var(--red); background: #fff2f1; border-color: #e6b3ae; }
+
+    .decision-box {
+      border: 2px solid var(--blue);
+      border-radius: 8px;
+      padding: 4px 16px 12px;
+    }
+    .decision-item {
+      border-top: 1px solid var(--line);
+      padding: 12px 0;
+    }
+    .decision-item:first-of-type { border-top: 0; }
+    .decision-key {
+      display: inline-block;
+      width: 26px; height: 26px;
+      border-radius: 50%;
+      background: var(--blue);
+      color: #fff;
+      text-align: center;
+      line-height: 26px;
+      font-weight: 900;
+      margin-right: 8px;
+    }
+    .decision-title { font-weight: 900; font-size: 16px; }
+    .decision-desc { color: var(--muted); margin: 4px 0 0 34px; font-size: 14px; }
+
+    .memo-box {
+      background: #f7f4ed;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 10px 14px;
+      font-size: 14px;
+      color: #4a4034;
+    }
+    details {
+      border-top: 1px solid var(--line);
+      padding-top: 12px;
+      margin-top: 12px;
+    }
+    summary {
+      cursor: pointer;
+      color: var(--blue);
+      font-weight: 900;
+    }
+    pre {
+      white-space: pre-wrap;
+      word-break: break-word;
+      background: #fffdf8;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 12px;
+      color: #25313d;
+      overflow: auto;
+      font-size: 13px;
+    }
+    table.fact {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    table.fact th, table.fact td {
+      border: 1px solid var(--line);
+      padding: 6px 7px;
+      text-align: left;
+      vertical-align: top;
+    }
+    table.fact th { background: #f3ead9; }
+    @media (max-width: 820px) {
+      main { width: min(100% - 22px, 1180px); padding-top: 16px; }
+      .grid { display: block; }
+      section { margin-top: 12px; padding: 15px; }
+      .meta { grid-template-columns: 1fr; }
+      .scene.is-edit, .scene.is-del { margin: 0 -15px; padding: 13px 15px; }
+      .breakdown-label { width: 110px; font-size: 12px; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <div class="eyebrow">第37話 / 台本レビュー（人間ゲート）</div>
+      <h1>第37話 台本レビュー — 震 × BLEACH 黒崎一護（改稿v2・採点92）</h1>
+      <p class="lead">content/057・dir057・公開枠 2026-07-16 04:00 JST・仮説H47。fork独立採点3周（84→88→92）で90点閾値を通過した現行台本（2026-07-10版）です。以下で07-06版からの変更点を確認し、A〜Dで判断してください。</p>
+    </header>
+
+    <div class="grid">
+      <section class="tldr">
+        <h2>🆕 TL;DR — 07-06版から何が変わったか</h2>
+        <ul>
+          <li><span class="tag-edit">✏️</span> <strong>①preflight基準強化への対応</strong> — 幕1を圧縮（推定34s・36s基準内）、対比（碇シンジ/竈門炭治郎）を幕2の中に前倒しで挟み込み、act2_story の連続シーンを最大3まで分断（基準4以内・旧版は4連続でNG判定）。</li>
+          <li><span class="tag-new">🆕</span> <strong>②幕2を「あらすじ要約」から「場面化」へ</strong> — 母・真咲が亡くなった9歳の雨の日を場面として深掘り（V_02_04）。旧V_02_06〜08の要約3シーンを2シーンに統合し、V_02_08を削除。</li>
+          <li><span class="tag-edit">✏️</span> <strong>③冒頭一文を損得断定に書き換え</strong> — 旧「急に電話が鳴る…」という状況描写の開始から、新「衝撃の直後に責められるのは、あなたの反応が遅いからではありません」という断定フックへ（V_01_01）。</li>
+          <li><span class="tag-new">🆕</span> <strong>④綜卦（震↔艮）の構造分析を追加</strong> — 震を上下反転すると艮（じっと動かない山の卦）になる、というDB根拠（binary_le）に基づく一文をV_04_01に追加。</li>
+          <li><span class="tag-edit">✏️</span> <strong>⑤45字超の一文を分割・文末表現を分散</strong> — 旧版で45字超だったV_02_02/04/06の一文を分割し、「〜んです／〜です」で均一だった文末を言い切り・体言止めへ一部変更。</li>
+        </ul>
+      </section>
+
+      <section class="span-4">
+        <h2>状態</h2>
+        <div class="meta">
+          <div><strong>dir</strong><br>content/057</div>
+          <div><strong>status</strong><br>in_production</div>
+          <div><strong>公開枠</strong><br>2026-07-16 04:00 JST</div>
+          <div><strong>仮説</strong><br>H47</div>
+        </div>
+      </section>
+
+      <section class="span-8">
+        <h2>採点サマリ — fork独立採点3周</h2>
+        <table class="score">
+          <thead><tr><th>周</th><th>スコア</th><th>結果</th><th>フィードバック要旨</th></tr></thead>
+          <tbody>
+            <tr>
+              <td>iter-1</td>
+              <td class="score-cell score-fail">84</td>
+              <td class="score-fail">FAIL</td>
+              <td>幕2があらすじ要約寄り（V_02_02/06/07）。総尺5.8分と短い。DB根拠の構造分析（互卦・変爻・綜卦）が無い。冒頭一文が断定でない。</td>
+            </tr>
+            <tr>
+              <td>iter-2</td>
+              <td class="score-cell score-fail">88</td>
+              <td class="score-fail">FAIL</td>
+              <td>act2_story 8シーンが離脱帯。45字超の一文がV_02_02/04/06に残る。文末が〜んです/〜ですで均一。</td>
+            </tr>
+            <tr>
+              <td>iter-3（採用・現行）</td>
+              <td class="score-cell score-pass">92</td>
+              <td class="score-pass">PASS（閾値90）</td>
+              <td>強い台本・致命傷なし。DB整合精密（綜卦震↔艮・卦辞・象辞・六爻）。処方箋は実測最強ホールド型。</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3 style="margin-top:16px;">iter-3 breakdown</h3>
+        <div class="breakdown-bar-row"><div class="breakdown-label">hook_open</div><div class="breakdown-track"><div class="breakdown-fill" style="width:93%"></div></div><div class="breakdown-val">14/15</div></div>
+        <div class="breakdown-bar-row"><div class="breakdown-label">prescription_depth</div><div class="breakdown-track"><div class="breakdown-fill" style="width:96%"></div></div><div class="breakdown-val">24/25</div></div>
+        <div class="breakdown-bar-row"><div class="breakdown-label">concrete_beats</div><div class="breakdown-track"><div class="breakdown-fill" style="width:87%"></div></div><div class="breakdown-val">13/15</div></div>
+        <div class="breakdown-bar-row"><div class="breakdown-label">satire_direction</div><div class="breakdown-track"><div class="breakdown-fill" style="width:93%"></div></div><div class="breakdown-val">14/15</div></div>
+        <div class="breakdown-bar-row"><div class="breakdown-label">natural_voice</div><div class="breakdown-track"><div class="breakdown-fill" style="width:90%"></div></div><div class="breakdown-val">18/20</div></div>
+        <div class="breakdown-bar-row"><div class="breakdown-label">structure_balance</div><div class="breakdown-track"><div class="breakdown-fill" style="width:90%"></div></div><div class="breakdown-val">9/10</div></div>
+      </section>
+
+      <section>
+        <h2>preflight（機械ゲート）— PASS</h2>
+        <p><span class="ok">script preflight: PASS</span>（警告1件・後述）。<code>python3 scripts/essay-preflight.py script 057</code> 実行結果に基づく実測値です。</p>
+        <div class="preflight-grid">
+          <div class="preflight-item"><div class="v">31</div>シーン数（基準20-32）</div>
+          <div class="preflight-item"><div class="v">3,294字</div>合計文字数</div>
+          <div class="preflight-item"><div class="v">34秒</div>幕1(act1_hook)尺（36秒以内）</div>
+          <div class="preflight-item"><div class="v">81秒</div>対比(act2_compare)投入（90秒以内）</div>
+          <div class="preflight-item"><div class="v">最大3</div>act2_story連続シーン（4以内）</div>
+          <div class="preflight-item"><div class="v">471秒</div>推定総尺（目標480秒±10%）</div>
+          <div class="preflight-item"><div class="v">14件✅</div>アニメ事実チェック（fact_check.md 一次確認済み）</div>
+          <div class="preflight-item warn-item"><div class="v">18.8/100</div>過剰演出スコア（警告：同型構文の反復3回・文長stdev8.6）</div>
+        </div>
+        <p style="margin-top:10px;" class="warn">⚠ 唯一の警告は「過剰演出スコア」の同型構文反復・文長均一。致命ではないが、任意改善メモ③（三段対句の近接）と同根の指摘です。</p>
+      </section>
+
+      <section>
+        <h2>核（この話の一文）</h2>
+        <p class="thesis">すぐ動ける人が強いのではない。最初の一撃で、自分の器を落とさない人が強い。</p>
+      </section>
+
+      <section>
+        <h2>台本全文（差分マーク付き・全31シーン）</h2>
+        <p style="font-size:13px; color:var(--muted);">凡例: <span class="diffmark edit">✏️変更</span> 今回の改稿で書き換えたシーン／<span class="diffmark del">🗑削除</span> 07-06版に存在し今回削除したシーン。無印は07-06版から実質変更なし。</p>
+        <div id="script"></div>
+      </section>
+
+      <section>
+        <h2>本人判断メモ（採点者が残した任意改善・3点／致命傷ではない）</h2>
+        <div class="memo-box">
+          <p style="margin-bottom:6px;"><strong>iter-3コメント原文：</strong>「強い台本・致命傷なし。DB整合精密（綜卦震↔艮・卦辞・象辞・六爻）。処方箋は実測最強ホールド型。任意改善: 幕1のV_01_03がやや抽象（33s&gt;30s目安）・幕2 storyの要約密度・V_03_02〜04の三段対句の近接。」</p>
+          <ul>
+            <li><strong>①V_01_03がやや抽象</strong>（33秒＞30秒目安）— 「強い人は、揺れない人だと思われています…」がやや概念的。時間はpreflightの34秒枠内に収まっているため許容範囲。</li>
+            <li><strong>②幕2 story の要約密度</strong> — V_02_06/07で複数エピソード（処刑・出生の秘密）を圧縮しているため、駆け足感が残る可能性。</li>
+            <li><strong>③V_03_02〜04の三段対句が近接</strong> — 「シンジは凍り、一護は刃を取り、炭治郎は背負う」の対句リズムが3シーン続けて近い位置に出る。</li>
+          </ul>
+        </div>
+      </section>
+
+      <section>
+        <h2>根拠（fact_check・14件すべて一次確認済み）</h2>
+        <details>
+          <summary>fact_check.md を表示</summary>
+          <table class="fact">
+            <thead><tr><th>シーン</th><th>作中事実の主張</th><th>出典</th><th>判定</th></tr></thead>
+            <tbody>
+              <tr><td>V_02_01</td><td>黒崎一護はBLEACHの主人公で、幽霊が見える高校生</td><td>公式CHARACTER 黒崎一護</td><td>✅</td></tr>
+              <tr><td>V_02_02</td><td>朽木ルキアは死神で、一護は出会いで死神の力を得て死神代行になる</td><td>公式CHARACTER／Wikipedia</td><td>✅</td></tr>
+              <tr><td>V_02_02</td><td>ルキアは虚の攻撃で重傷を負い、一護に力を移して家族を救わせる展開がある</td><td>Wikipedia "Ichigo Kurosaki"／"Rukia Kuchiki"</td><td>✅</td></tr>
+              <tr><td>V_02_04</td><td>黒崎真咲は一護が九歳の雨の日に虚グランドフィッシャーと遭遇し、一護を護ろうとして命を落とした</td><td>公式CHARACTER 黒崎真咲</td><td>✅</td></tr>
+              <tr><td>V_02_04</td><td>真咲の死にはユーハバッハの聖別が関わっていた</td><td>公式CHARACTER 黒崎真咲</td><td>✅</td></tr>
+              <tr><td>V_02_06</td><td>ルキアは処刑されそうになり、一護が救出へ向かう物語がある</td><td>Wikipedia "Rukia Kuchiki"</td><td>✅</td></tr>
+              <tr><td>V_02_06</td><td>一護はルキア救出のため友人たちとソウル・ソサエティへ向かい、白哉や剣八と戦う</td><td>Wikipedia "Ichigo Kurosaki"</td><td>✅</td></tr>
+              <tr><td>V_02_06</td><td>一護は出生の秘密に直面した後も、護るために再び斬月を手にする</td><td>公式CHARACTER 黒崎一護</td><td>✅</td></tr>
+              <tr><td>V_02_07</td><td>千年血戦篇で一護は母がクインシーであることを含む出生の秘密に直面し、斬月を手にする</td><td>公式CHARACTER 黒崎一護・黒崎真咲</td><td>✅</td></tr>
+              <tr><td>（旧V_02_08）</td><td>家族襲撃、母の記憶、ルキア救出、出生の秘密を「異なる衝撃でも護るへ戻る」と要約する</td><td>上記事実からの構造解釈（V_02_06/07へ統合）</td><td>✅</td></tr>
+              <tr><td>V_03_01</td><td>碇シンジは突然エヴァに乗ることを求められる主人公として描かれる</td><td>Wikipedia "Shinji Ikari"</td><td>✅</td></tr>
+              <tr><td>V_03_02</td><td>竈門炭治郎は家族を鬼に殺され、鬼になった妹の禰豆子と旅立つ</td><td>Wikipedia "Tanjiro Kamado"</td><td>✅</td></tr>
+              <tr><td>V_04_01〜V_04_05</td><td>第51卦「震」は上下とも雷で、卦辞・象辞のとおりの記述がある</td><td>db/hexagrams.json kw_number:51</td><td>✅</td></tr>
+              <tr><td>V_06_01〜V_06_07</td><td>震の初九〜上六の六爻すべて</td><td>db/hexagrams.json lines[0-5]</td><td>✅</td></tr>
+            </tbody>
+          </table>
+        </details>
+      </section>
+
+      <section>
+        <h2>判断</h2>
+        <div class="decision-box">
+          <div class="decision-item">
+            <span class="decision-key">A</span><span class="decision-title">このまま承認</span>
+            <p class="decision-desc">現行台本（採点92・preflight PASS）をそのまま確定し、次工程（音声生成・絵コンテStep2.5）へ進む。</p>
+          </div>
+          <div class="decision-item">
+            <span class="decision-key">B</span><span class="decision-title">指摘箇所を直してから</span>
+            <p class="decision-desc">上の差分マーク（✏️/🗑）箇所のうち、気になる部分だけ本人指示で追加修正してから承認する。</p>
+          </div>
+          <div class="decision-item">
+            <span class="decision-key">C</span><span class="decision-title">任意改善3点も直してから</span>
+            <p class="decision-desc">上の「本人判断メモ」3点（V_01_03の抽象さ・幕2要約密度・三段対句の近接）も含めて磨いてから承認する。</p>
+          </div>
+          <div class="decision-item">
+            <span class="decision-key">D</span><span class="decision-title">大きく方針変更</span>
+            <p class="decision-desc">企画・作品選定・対比作品・核の一文など、構成レベルから練り直す。</p>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    const actNames = {
+      act1_hook: '幕1 違和感',
+      act2_story: '幕2 観察',
+      act2_compare: '幕2 比較',
+      act3_reveal: '幕3 種明かし',
+      act4_blade: '幕4 風刺の刃',
+      act4_practice: '幕5 処方箋',
+      act5_end: '幕6 余韻'
+    };
+    const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+    const scenes = [
+      {id:'V_01_01', type:'act1_hook', text:'衝撃の直後に責められるのは、あなたの反応が遅いからではありません。電話が鳴り、名前が出ただけで、胸の奥が固まる。その数秒の震えまで、遅い、と責められます。', diff:'edit', note:'冒頭一文を損得断定化。旧版は「急に電話が鳴る。病院からかもしれない…」という状況描写から始まり、責められる主語も曖昧だった。新版は「あなたの反応が遅いからではありません」という断定で開始（TL;DR③）。'},
+      {id:'V_01_02', type:'act1_hook', text:'でも、衝撃の直後に大事なのは、すぐ動けることではありません。怖がったままでも、手元だけは離さないことです。今日はその、雷の後の手元の話です。'},
+      {id:'V_01_03', type:'act1_hook', text:'強い人は、揺れない人だと思われています。けれど本当は、揺れたあとに何を拾い直すかのほうが大事です。雷は避けられない。だから今日は、雷を止める話ではなく、崩れない器の話をします。'},
+      {id:'V_02_01', type:'act2_story', text:'黒崎一護という人がいます。BLEACHの主人公です。幽霊が見える高校生で、最初から世界を救う英雄として立っていたわけではありません。父と妹たちのいる家に帰る、少し変わった、でも日常の中の少年でした。'},
+      {id:'V_02_02', type:'act2_story', text:'そこへ、朽木ルキアという死神が現れます。次の瞬間、家の壁が破られ、妹たちが虚に狙われる。さっきまで当たり前だった家の中が、目の前で戦場に変わる。一護は考える時間をもらえないまま、ルキアから死神の力を受け取る。そして死神代行として、虚の前に立ちます。', diff:'edit', note:'あらすじ要約→場面化（TL;DR②）。旧版「そこへ朽木ルキアが現れます。死神です。家族が虚に襲われ…」の要約調から、「家の壁が破られ」「戦場に変わる」という場面の具体描写へ。45字超の一文も分割（TL;DR⑤）。'},
+      {id:'V_02_03', type:'act2_story', text:'ここで一護を、ただの熱血主人公として見るのは、少しもったいない。彼は落ち着いていたから動けたのではありません。むしろ突然すぎる。説明も足りない。けれど、目の前の人を護るという器だけは、落とさなかった。', diff:'edit', note:'文末表現を微調整（「見ると、少しもったいないんです」→「見るのは、少しもったいない」）。文末の均一化（〜んです連発）を崩すための言い切り化（TL;DR⑤）。'},
+      {id:'V_03_01', type:'act2_compare', text:'同じ突然の呼び出しで、碇シンジを思い出す人もいると思います。彼は急にエヴァに乗れと言われ、逃げたい気持ちと戦う。あの硬直は弱さではありません。雷の直後に身体が止まるのは、人間の普通の反応です。'},
+      {id:'V_02_04', type:'act2_story', text:'一護の底には、もっと古い雷があります。九歳の、雨の日でした。母の真咲は、虚グランドフィッシャーと遭遇し、一護を護ろうとして命を落とす。目の前で母を失い、それでも生き残ってしまったのは、自分だ。雨の音と、守られた側にだけ残る負い目。護る、はその傷の上に立つ言葉なんです。', diff:'edit', note:'母の雨の日を場面として深掘り（TL;DR②）。旧版は「一護の底には、もっと古い雷があります。母の真咲は、一護が九歳の雨の日に…」と説明順だったが、新版は「九歳の、雨の日でした。」と場面から入り、「それでも生き残ってしまったのは、自分だ」という負い目の言語化を追加。45字超の一文も分割（TL;DR⑤）。'},
+      {id:'V_02_05', type:'act2_story', text:'母を守れなかった記憶がある。なのに今度は、自分が守る側に立たされる。これ、かなり残酷です。人は、傷が癒えたから動ける、と思いがちです。でも一護は、癒えきってから始めたわけではない。傷が残ったまま、同じ方向へ手を伸ばすんです。'},
+      {id:'V_03_02', type:'act2_compare', text:'竈門炭治郎も、家族を失った朝に、鬼になった妹を背負って歩き出します。シンジは凍り、一護は刃を取り、炭治郎は背負う。同じ雷でも、最初の姿は違う。見るべきなのは、震え方ではなく、何を落とさなかったかです。'},
+      {id:'V_02_06', type:'act2_story', text:'ルキアがソウル・ソサエティで処刑されると知った時、一護は迷いませんでした。母を守れなかった記憶を持つ彼には、目の前で誰かを見捨てることが怖い。それは、あの痛みを繰り返すことに思えたからです。だから勝てる保証がなくても、一護は友人たちと敵地へ乗り込む。白哉や剣八という格上の前に、たった体一つで立ちふさがります。', diff:'edit', note:'旧V_02_06と旧V_02_08（要約シーン）を統合・拡張（TL;DR②）。旧版は「一護は動きます」で理由の説明が薄かったが、新版は「母を守れなかった記憶を持つ彼には、目の前で誰かを見捨てることが怖い」と、動機を母の記憶に明示的に接続。45字超の一文も分割（TL;DR⑤）。'},
+      {id:'V_02_07', type:'act2_story', text:'千年血戦篇では、自分の出生そのものが揺れます。母がクインシーだったと知り、足場ごと崩れる。自分は何者なのか。それでも護るために、斬月を握り直す。家族襲撃、母の記憶、ルキアの処刑、自分の正体。浴びる雷は毎回違う。でも一護は、そのたびに護るへ戻る。迷わない人ではなく、迷ったあとに同じ預かりものを拾い直す人なんです。', diff:'edit', note:'旧V_02_08の要約フレーズ（「一護は毎回、違う雷を浴びています。でもそのたびに、護る、へ戻る。だから彼は、迷わない人ではなく、迷ったあとに同じ器を拾う人なんです」）をこのシーンへ統合。act2_storyの連続シーン数を4→3へ圧縮（TL;DR①）。'},
+      {id:'DEL_V_02_08', type:'act2_story', text:'家族の前、母の記憶の前、ルキアの処刑の前、自分の正体の前。一護は毎回、違う雷を浴びています。でもそのたびに、護る、へ戻る。だから彼は、迷わない人ではなく、迷ったあとに同じ器を拾う人なんです。', diff:'del', note:'削除。内容はV_02_06/V_02_07へ統合。act2_storyが連続4シーン（preflightの「連続4以内」基準に抵触）だったのを最大3シーンへ圧縮するための統廃合（TL;DR①）。'},
+      {id:'V_03_03', type:'act2_compare', text:'一護の面白さは、怖くなかったことではありません。怖い出来事のたびに、護るという一点へ戻ってくるところにあります。雷が鳴るたびに、同じ約束へ帰ってくる人なんです。', diff:'edit', note:'「護るという芯へ」→「護るという一点へ」、「同じ器を握り直す人」→「同じ約束へ帰ってくる人」に言い換え。「器」「落とさない」語の反復を避けるための語彙置換（iter-1指摘への対応）。'},
+      {id:'V_03_04', type:'act2_compare', text:'だからこの話は、勇気の量を比べる話ではありません。固まる人、背負う人、刃を取る人。それぞれの反応の奥に、何を失いたくなかったのかがある。物語はそこを見ると、急に現実の話になります。'},
+      {id:'V_04_01', type:'act3_reveal', text:'ここで、三千年前の本を開きます。易経です。人間に起きる変化を六十四の形で記録した、古代中国の、意思決定の地図のようなものです。その中に、震、しん、という卦があります。上も下も雷が重なる形です。面白いのは、この震を上下ひっくり返すと、艮、ごん、じっと動かない山の卦になること。動くことと止まることは、表と裏なんです。', diff:'edit', note:'綜卦（震↔艮）の構造分析を追加（TL;DR④）。旧版は「上も雷、下も雷。雷が重なる形です。」で終わっていたが、新版は「この震を上下ひっくり返すと、艮、じっと動かない山の卦になること。動くことと止まることは、表と裏なんです」と、db/hexagrams.json のbinary_leに基づく綜卦構造を追加。iter-1で指摘された「DB根拠の構造分析が無い」への対応。'},
+      {id:'V_04_02', type:'act3_reveal', text:'震の卦辞は、かなり生々しいです。雷が百里を驚かせる。人々は、ああ、と怯える。でも、その人は祭りの匙と杯を落とさない。怖くない、とは書いていない。怖いけれど、預かったものを落とさないんです。'},
+      {id:'V_04_03', type:'act3_reveal', text:'象辞には、もっと実務的なことが書かれています。雷が重なる。だから君子は、恐れ慎んで、生活を整え、自分を省みる。勢いで飛び出せ、ではないんです。まず整えろ。ここが、震の処方箋の背骨です。'},
+      {id:'V_04_04', type:'act3_reveal', text:'一護の、護る、という言葉も、ここに重なります。あれは派手な決め台詞というより、雷が鳴るたびに彼が戻る場所です。匙と杯のように、手から離してはいけないものなんです。'},
+      {id:'V_04_05', type:'act3_reveal', text:'ここを間違えると、震はただの根性論になります。雷が来た、さあ走れ、ではない。雷が来たから、まず手元を見る。自分が何を預かっていて、何を落としてはいけないのかを、いったん確認する卦なんです。'},
+      {id:'V_05_01', type:'act4_blade', text:'この目で今の社会を見ると、衝撃の直後ほど、なぜか速さが求められます。炎上したらすぐ声明。事故が起きたらすぐ原因。別れたらすぐ前向き。泣く時間より、反応の速さが評価される。'},
+      {id:'V_05_02', type:'act4_blade', text:'でも速い反応は、強さとは限りません。まだ読めていないのに、確認します、と返したことがあるなら、たぶんわかると思います。あの、ええと、手だけ動いている状態。器を守っているようで、中身をこぼしていることがあるんです。'},
+      {id:'V_05_03', type:'act4_blade', text:'私たちは、揺れている人を待つのが下手です。自分に対してもそうです。怖いなら怖いで、一度座ればいいのに、平気なふりをして次の返信を打つ。急ぎのチャットに返して、家族への一言を後回しにする。そうやって、本当に守りたかったものをこぼしてしまう。'},
+      {id:'V_06_01', type:'act4_practice', text:'では、雷が落ちた時、どうすればいいのか。震の最初の行は、震えが来て、ああ、と怯え、その後に笑いが来る、と言います。まず怯え、それからやっと笑える。順番が逆になることはない。だから最初の処方箋は、怖がった自分を失敗扱いしないことです。震えは、始まりの音です。', diff:'edit', note:'「まず怯え、それからやっと笑える。順番が逆になることはない。」を追加。震・初九の「震えの後に笑いが来る」という爻辞の順序構造をより明確化。'},
+      {id:'V_06_02', type:'act4_practice', text:'だから、まず名前をつける。怖い、混乱している、腹が立っている。会議の直前なら、メモに一語だけ書く。家庭の連絡なら、今すぐ決めない、と送る。ここを飛ばすと雑になります。一護で言えば、刃を取る前に、何を護りたいのかを思い出す時間です。'},
+      {id:'V_06_03', type:'act4_practice', text:'次の行では、宝を失っても追うな、高い丘へ退け、と言います。失った直後は、取り返したくなる。でもそこが泥沼です。SNSで誤解された時ほど、すぐ説明しない。スマホを閉じる。返事を遅らせる。まず高い場所から見る。追うのをやめると、視界が戻ります。'},
+      {id:'V_06_04', type:'act4_practice', text:'三番目の行は、震えが行動を促すなら災いはない、と言います。大きな決断ではなくていい。水を飲む、人に一言だけ送る、玄関まで行く。家族の問題なら、結論ではなく、今日話せるかだけ聞く。震えをゼロにしてから動くのではなく、小さな動きに変える。'},
+      {id:'V_06_05', type:'act4_practice', text:'ただし、九四には、震い、泥む、とあります。動こうとしているのに足が泥にはまって進まない。そういう時は、根性ではなく足場を変える。場所を移し、人を変え、時間を置く。仕事なら、同じ画面を睨むより、紙に戻す。動けない自分を責める前に、地面を見る。'},
+      {id:'V_06_06', type:'act4_practice', text:'五番目では、震えが行ったり来たりして危ういが、やることはある、と言います。衝撃が続く時ほど、中心の仕事を一つに絞る。全部を同時に守る、をやめる。子ども、締切、体調、全部ではなく、今日は一つだけ、落とさない器を決める。'},
+      {id:'V_06_07', type:'act4_practice', text:'最後の行は、無理に進めば凶、とかなり厳しいです。震えが自分ではなく隣に来ている時なら、備えればいい。でも自分の視界がもう恐れて見回すだけになっているなら、退く。助けを呼ぶ。強がらない。震の完成形は、無茶ではありません。'},
+      {id:'V_07_01', type:'act5_end', text:'黒崎一護は、怖くないから刃を取ったのではないと思います。怖いことを知っているから、落としてはいけないものが分かっていた。護る、という言葉は、彼にとって武器というより、祭器だったんです。'},
+      {id:'V_07_02', type:'act5_end', text:'雷は、人を強くするとは限りません。ただ、自分が何を握って生きていたかを、一瞬で照らします。その時に落とさなかったものが、たぶん、その人の名前になります。'}
+    ];
+
+    const actOrder = ['act1_hook', 'act2_story_compare', 'act3_reveal', 'act4_blade', 'act4_practice', 'act5_end'];
+    const actGroupNames = {
+      act1_hook: '幕1 違和感',
+      act2_story_compare: '幕2 観察（黒崎一護のストーリー＋対比）',
+      act3_reveal: '幕3 種明かし（震の卦辞・象辞・綜卦）',
+      act4_blade: '幕4 風刺の刃',
+      act4_practice: '幕5 処方箋（震・六爻）',
+      act5_end: '幕6 余韻'
+    };
+    const groupOf = (t) => (t === 'act2_story' || t === 'act2_compare') ? 'act2_story_compare' : t;
+
+    let html = '';
+    for (const g of actOrder) {
+      const inGroup = scenes.filter((s) => groupOf(s.type) === g);
+      if (!inGroup.length) continue;
+      html += `<h3>${esc(actGroupNames[g])}</h3>`;
+      html += inGroup.map((s) => {
+        const label = actNames[s.type] || s.type;
+        const len = Array.from(s.text).length;
+        const cls = s.diff === 'edit' ? ' is-edit' : (s.diff === 'del' ? ' is-del' : '');
+        const mark = s.diff === 'edit'
+          ? '<span class="diffmark edit">✏️変更</span>'
+          : (s.diff === 'del' ? '<span class="diffmark del">🗑削除（07-06版のみ存在）</span>' : '');
+        const textCls = s.diff === 'del' ? ' strike' : '';
+        const note = s.note ? `<div class="diff-note${s.diff === 'del' ? ' del-note' : ''}">${esc(s.note)}</div>` : '';
+        const idLabel = s.id.startsWith('DEL_') ? s.id.replace('DEL_', '（旧）') : s.id;
+        return `<div class="scene${cls}">
+          <div class="scene-head"><span>${esc(idLabel)}</span><span>${esc(label)}</span><span>${len}字</span>${mark}</div>
+          <p class="scene-text${textCls}">${esc(s.text)}</p>
+          ${note}
+        </div>`;
+      }).join('');
+    }
+    document.getElementById('script').innerHTML = html;
+  </script>
+</body>
+</html>
