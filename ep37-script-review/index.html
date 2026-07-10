@@ -4,7 +4,7 @@
 <meta name="robots" content="noindex,nofollow,noarchive">
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>第37話 台本レビュー — 震×BLEACH（改稿v2・採点92）</title>
+  <title>第37話 台本レビュー — 震×BLEACH（改稿v2.1・採点92）</title>
   <style>
     :root {
       color-scheme: light;
@@ -131,6 +131,7 @@
     .tag-new { color: var(--green); font-weight: 900; }
     .tag-edit { color: var(--amber); font-weight: 900; }
     .tag-del { color: var(--red); font-weight: 900; }
+    .tag-personal { color: var(--blue); font-weight: 900; }
 
     table.score {
       width: 100%;
@@ -197,6 +198,7 @@
     }
     .diffmark.edit { background: #f6dfa0; color: #6b4d0a; }
     .diffmark.del { background: #f0bcb7; color: #7a231c; }
+    .diffmark.personal { background: #cfe0f2; color: #123456; }
     .scene-text {
       font-size: 16px;
       margin: 0;
@@ -212,6 +214,7 @@
       padding: 6px 9px;
     }
     .diff-note.del-note { color: var(--red); background: #fff2f1; border-color: #e6b3ae; }
+    .diff-note.personal-note { color: var(--blue); background: #eef4fb; border-color: #b7cde3; }
 
     .decision-box {
       border: 2px solid var(--blue);
@@ -292,7 +295,7 @@
   <main>
     <header>
       <div class="eyebrow">第37話 / 台本レビュー（人間ゲート）</div>
-      <h1>第37話 台本レビュー — 震 × BLEACH 黒崎一護（改稿v2・採点92）</h1>
+      <h1>第37話 台本レビュー — 震 × BLEACH 黒崎一護（改稿v2.1・採点92）</h1>
       <p class="lead">content/057・dir057・公開枠 2026-07-16 04:00 JST・仮説H47。fork独立採点3周（84→88→92）で90点閾値を通過した現行台本（2026-07-10版）です。以下で07-06版からの変更点を確認し、A〜Dで判断してください。</p>
     </header>
 
@@ -305,7 +308,9 @@
           <li><span class="tag-edit">✏️</span> <strong>③冒頭一文を損得断定に書き換え</strong> — 旧「急に電話が鳴る…」という状況描写の開始から、新「衝撃の直後に責められるのは、あなたの反応が遅いからではありません」という断定フックへ（V_01_01）。</li>
           <li><span class="tag-new">🆕</span> <strong>④綜卦（震↔艮）の構造分析を追加</strong> — 震を上下反転すると艮（じっと動かない山の卦）になる、というDB根拠（binary_le）に基づく一文をV_04_01に追加。</li>
           <li><span class="tag-edit">✏️</span> <strong>⑤45字超の一文を分割・文末表現を分散</strong> — 旧版で45字超だったV_02_02/04/06の一文を分割し、「〜んです／〜です」で均一だった文末を言い切り・体言止めへ一部変更。</li>
+          <li><span class="tag-personal">✏️👤</span> <strong>本人指摘反映(07-10)</strong> — 冒頭の「衝撃」を日常語へ（悪い知らせ／その一瞬 等）。「衝撃」は幕3種明かしで震の定義語として初導入する橋渡し構成に。</li>
         </ul>
+        <p style="margin-top:10px; font-size:14px;"><strong>冒頭一文 ビフォー→アフター：</strong>「衝撃の直後に責められるのは…」→「悪い知らせの直後に責められるのは…」</p>
       </section>
 
       <section class="span-4">
@@ -360,9 +365,9 @@
           <div class="preflight-item"><div class="v">31</div>シーン数（基準20-32）</div>
           <div class="preflight-item"><div class="v">3,294字</div>合計文字数</div>
           <div class="preflight-item"><div class="v">34秒</div>幕1(act1_hook)尺（36秒以内）</div>
-          <div class="preflight-item"><div class="v">81秒</div>対比(act2_compare)投入（90秒以内）</div>
+          <div class="preflight-item"><div class="v">82秒</div>対比(act2_compare)投入（90秒以内）</div>
           <div class="preflight-item"><div class="v">最大3</div>act2_story連続シーン（4以内）</div>
-          <div class="preflight-item"><div class="v">471秒</div>推定総尺（目標480秒±10%）</div>
+          <div class="preflight-item"><div class="v">475秒</div>推定総尺（目標480秒±10%）</div>
           <div class="preflight-item"><div class="v">14件✅</div>アニメ事実チェック（fact_check.md 一次確認済み）</div>
           <div class="preflight-item warn-item"><div class="v">18.8/100</div>過剰演出スコア（警告：同型構文の反復3回・文長stdev8.6）</div>
         </div>
@@ -376,7 +381,7 @@
 
       <section>
         <h2>台本全文（差分マーク付き・全31シーン）</h2>
-        <p style="font-size:13px; color:var(--muted);">凡例: <span class="diffmark edit">✏️変更</span> 今回の改稿で書き換えたシーン／<span class="diffmark del">🗑削除</span> 07-06版に存在し今回削除したシーン。無印は07-06版から実質変更なし。</p>
+        <p style="font-size:13px; color:var(--muted);">凡例: <span class="diffmark edit">✏️変更</span> 今回の改稿で書き換えたシーン／<span class="diffmark del">🗑削除</span> 07-06版に存在し今回削除したシーン／<span class="diffmark personal">✏️👤本人指摘対応</span> 07-10の本人指摘で語彙を差し替えたシーン。無印は実質変更なし。</p>
         <div id="script"></div>
       </section>
 
@@ -455,8 +460,8 @@
     const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
     const scenes = [
-      {id:'V_01_01', type:'act1_hook', text:'衝撃の直後に責められるのは、あなたの反応が遅いからではありません。電話が鳴り、名前が出ただけで、胸の奥が固まる。その数秒の震えまで、遅い、と責められます。', diff:'edit', note:'冒頭一文を損得断定化。旧版は「急に電話が鳴る。病院からかもしれない…」という状況描写から始まり、責められる主語も曖昧だった。新版は「あなたの反応が遅いからではありません」という断定で開始（TL;DR③）。'},
-      {id:'V_01_02', type:'act1_hook', text:'でも、衝撃の直後に大事なのは、すぐ動けることではありません。怖がったままでも、手元だけは離さないことです。今日はその、雷の後の手元の話です。'},
+      {id:'V_01_01', type:'act1_hook', text:'悪い知らせの直後に責められるのは、あなたの反応が遅いからではありません。電話が鳴り、名前が出ただけで、胸の奥が固まる。その数秒の震えまで、遅い、と責められます。', diff:'edit', note:'冒頭一文を損得断定化。旧版は「急に電話が鳴る。病院からかもしれない…」という状況描写から始まり、責められる主語も曖昧だった。新版は「あなたの反応が遅いからではありません」という断定で開始（TL;DR③）。', personal:true, personalNote:'「衝撃の直後に」→「悪い知らせの直後に」。冒頭で先に「衝撃」を使うと幕3の卦辞導入が二番煎じになるため口語表現へ差し替え、「衝撃」は震の定義語としてV_04_02で初導入する構成に統一（本人指摘 07-10）。'},
+      {id:'V_01_02', type:'act1_hook', text:'でも、その一瞬のあとに大事なのは、すぐ動けることではありません。怖がったままでも、手元だけは離さないことです。今日はその、雷の後の手元の話です。', personal:true, personalNote:'「衝撃の直後に大事なのは」→「その一瞬のあとに大事なのは」。同じ理由で「衝撃」語を冒頭から除去（本人指摘 07-10）。'},
       {id:'V_01_03', type:'act1_hook', text:'強い人は、揺れない人だと思われています。けれど本当は、揺れたあとに何を拾い直すかのほうが大事です。雷は避けられない。だから今日は、雷を止める話ではなく、崩れない器の話をします。'},
       {id:'V_02_01', type:'act2_story', text:'黒崎一護という人がいます。BLEACHの主人公です。幽霊が見える高校生で、最初から世界を救う英雄として立っていたわけではありません。父と妹たちのいる家に帰る、少し変わった、でも日常の中の少年でした。'},
       {id:'V_02_02', type:'act2_story', text:'そこへ、朽木ルキアという死神が現れます。次の瞬間、家の壁が破られ、妹たちが虚に狙われる。さっきまで当たり前だった家の中が、目の前で戦場に変わる。一護は考える時間をもらえないまま、ルキアから死神の力を受け取る。そして死神代行として、虚の前に立ちます。', diff:'edit', note:'あらすじ要約→場面化（TL;DR②）。旧版「そこへ朽木ルキアが現れます。死神です。家族が虚に襲われ…」の要約調から、「家の壁が破られ」「戦場に変わる」という場面の具体描写へ。45字超の一文も分割（TL;DR⑤）。'},
@@ -471,11 +476,11 @@
       {id:'V_03_03', type:'act2_compare', text:'一護の面白さは、怖くなかったことではありません。怖い出来事のたびに、護るという一点へ戻ってくるところにあります。雷が鳴るたびに、同じ約束へ帰ってくる人なんです。', diff:'edit', note:'「護るという芯へ」→「護るという一点へ」、「同じ器を握り直す人」→「同じ約束へ帰ってくる人」に言い換え。「器」「落とさない」語の反復を避けるための語彙置換（iter-1指摘への対応）。'},
       {id:'V_03_04', type:'act2_compare', text:'だからこの話は、勇気の量を比べる話ではありません。固まる人、背負う人、刃を取る人。それぞれの反応の奥に、何を失いたくなかったのかがある。物語はそこを見ると、急に現実の話になります。'},
       {id:'V_04_01', type:'act3_reveal', text:'ここで、三千年前の本を開きます。易経です。人間に起きる変化を六十四の形で記録した、古代中国の、意思決定の地図のようなものです。その中に、震、しん、という卦があります。上も下も雷が重なる形です。面白いのは、この震を上下ひっくり返すと、艮、ごん、じっと動かない山の卦になること。動くことと止まることは、表と裏なんです。', diff:'edit', note:'綜卦（震↔艮）の構造分析を追加（TL;DR④）。旧版は「上も雷、下も雷。雷が重なる形です。」で終わっていたが、新版は「この震を上下ひっくり返すと、艮、じっと動かない山の卦になること。動くことと止まることは、表と裏なんです」と、db/hexagrams.json のbinary_leに基づく綜卦構造を追加。iter-1で指摘された「DB根拠の構造分析が無い」への対応。'},
-      {id:'V_04_02', type:'act3_reveal', text:'震の卦辞は、かなり生々しいです。雷が百里を驚かせる。人々は、ああ、と怯える。でも、その人は祭りの匙と杯を落とさない。怖くない、とは書いていない。怖いけれど、預かったものを落とさないんです。'},
+      {id:'V_04_02', type:'act3_reveal', text:'震の卦辞は、かなり生々しいです。突然どんと来て身体が固まる、あの衝撃を言葉にしたのが、この卦です。雷が百里を驚かせる。人々は、ああ、と怯える。でも、その人は祭りの匙と杯を落とさない。怖くない、とは書いていない。怖いけれど、預かったものを落とさないんです。', personal:true, personalNote:'「突然どんと来て身体が固まる、あの衝撃を言葉にしたのが、この卦です。」を追加。本編で「衝撃」という語が初めて登場する場所とし、幕1の日常語（悪い知らせ／その一瞬）から震の定義語への橋渡しとして機能させる（本人指摘 07-10）。'},
       {id:'V_04_03', type:'act3_reveal', text:'象辞には、もっと実務的なことが書かれています。雷が重なる。だから君子は、恐れ慎んで、生活を整え、自分を省みる。勢いで飛び出せ、ではないんです。まず整えろ。ここが、震の処方箋の背骨です。'},
       {id:'V_04_04', type:'act3_reveal', text:'一護の、護る、という言葉も、ここに重なります。あれは派手な決め台詞というより、雷が鳴るたびに彼が戻る場所です。匙と杯のように、手から離してはいけないものなんです。'},
       {id:'V_04_05', type:'act3_reveal', text:'ここを間違えると、震はただの根性論になります。雷が来た、さあ走れ、ではない。雷が来たから、まず手元を見る。自分が何を預かっていて、何を落としてはいけないのかを、いったん確認する卦なんです。'},
-      {id:'V_05_01', type:'act4_blade', text:'この目で今の社会を見ると、衝撃の直後ほど、なぜか速さが求められます。炎上したらすぐ声明。事故が起きたらすぐ原因。別れたらすぐ前向き。泣く時間より、反応の速さが評価される。'},
+      {id:'V_05_01', type:'act4_blade', text:'この目で今の社会を見ると、何かが起きた直後ほど、なぜか速さが求められます。炎上したらすぐ声明。事故が起きたらすぐ原因。別れたらすぐ前向き。泣く時間より、反応の速さが評価される。', personal:true, personalNote:'「衝撃の直後ほど」→「何かが起きた直後ほど」。幕3で初導入した「衝撃」の重みを保つため、幕4でも口語表現へ統一（本人指摘 07-10）。'},
       {id:'V_05_02', type:'act4_blade', text:'でも速い反応は、強さとは限りません。まだ読めていないのに、確認します、と返したことがあるなら、たぶんわかると思います。あの、ええと、手だけ動いている状態。器を守っているようで、中身をこぼしていることがあるんです。'},
       {id:'V_05_03', type:'act4_blade', text:'私たちは、揺れている人を待つのが下手です。自分に対してもそうです。怖いなら怖いで、一度座ればいいのに、平気なふりをして次の返信を打つ。急ぎのチャットに返して、家族への一言を後回しにする。そうやって、本当に守りたかったものをこぼしてしまう。'},
       {id:'V_06_01', type:'act4_practice', text:'では、雷が落ちた時、どうすればいいのか。震の最初の行は、震えが来て、ああ、と怯え、その後に笑いが来る、と言います。まず怯え、それからやっと笑える。順番が逆になることはない。だから最初の処方箋は、怖がった自分を失敗扱いしないことです。震えは、始まりの音です。', diff:'edit', note:'「まず怯え、それからやっと笑える。順番が逆になることはない。」を追加。震・初九の「震えの後に笑いが来る」という爻辞の順序構造をより明確化。'},
@@ -483,7 +488,7 @@
       {id:'V_06_03', type:'act4_practice', text:'次の行では、宝を失っても追うな、高い丘へ退け、と言います。失った直後は、取り返したくなる。でもそこが泥沼です。SNSで誤解された時ほど、すぐ説明しない。スマホを閉じる。返事を遅らせる。まず高い場所から見る。追うのをやめると、視界が戻ります。'},
       {id:'V_06_04', type:'act4_practice', text:'三番目の行は、震えが行動を促すなら災いはない、と言います。大きな決断ではなくていい。水を飲む、人に一言だけ送る、玄関まで行く。家族の問題なら、結論ではなく、今日話せるかだけ聞く。震えをゼロにしてから動くのではなく、小さな動きに変える。'},
       {id:'V_06_05', type:'act4_practice', text:'ただし、九四には、震い、泥む、とあります。動こうとしているのに足が泥にはまって進まない。そういう時は、根性ではなく足場を変える。場所を移し、人を変え、時間を置く。仕事なら、同じ画面を睨むより、紙に戻す。動けない自分を責める前に、地面を見る。'},
-      {id:'V_06_06', type:'act4_practice', text:'五番目では、震えが行ったり来たりして危ういが、やることはある、と言います。衝撃が続く時ほど、中心の仕事を一つに絞る。全部を同時に守る、をやめる。子ども、締切、体調、全部ではなく、今日は一つだけ、落とさない器を決める。'},
+      {id:'V_06_06', type:'act4_practice', text:'五番目では、震えが行ったり来たりして危ういが、やることはある、と言います。揺れが続く時ほど、中心の仕事を一つに絞る。全部を同時に守る、をやめる。子ども、締切、体調、全部ではなく、今日は一つだけ、落とさない器を決める。', personal:true, personalNote:'「衝撃が続く時ほど」→「揺れが続く時ほど」。処方箋パートも「衝撃」語を避け、震の語彙（揺れ）へ統一（本人指摘 07-10）。'},
       {id:'V_06_07', type:'act4_practice', text:'最後の行は、無理に進めば凶、とかなり厳しいです。震えが自分ではなく隣に来ている時なら、備えればいい。でも自分の視界がもう恐れて見回すだけになっているなら、退く。助けを呼ぶ。強がらない。震の完成形は、無茶ではありません。'},
       {id:'V_07_01', type:'act5_end', text:'黒崎一護は、怖くないから刃を取ったのではないと思います。怖いことを知っているから、落としてはいけないものが分かっていた。護る、という言葉は、彼にとって武器というより、祭器だったんです。'},
       {id:'V_07_02', type:'act5_end', text:'雷は、人を強くするとは限りません。ただ、自分が何を握って生きていたかを、一瞬で照らします。その時に落とさなかったものが、たぶん、その人の名前になります。'}
@@ -508,17 +513,20 @@
       html += inGroup.map((s) => {
         const label = actNames[s.type] || s.type;
         const len = Array.from(s.text).length;
-        const cls = s.diff === 'edit' ? ' is-edit' : (s.diff === 'del' ? ' is-del' : '');
-        const mark = s.diff === 'edit'
+        const cls = (s.diff === 'edit' ? ' is-edit' : (s.diff === 'del' ? ' is-del' : (s.personal ? ' is-edit' : '')));
+        let mark = s.diff === 'edit'
           ? '<span class="diffmark edit">✏️変更</span>'
           : (s.diff === 'del' ? '<span class="diffmark del">🗑削除（07-06版のみ存在）</span>' : '');
+        if (s.personal) mark += '<span class="diffmark personal">✏️👤本人指摘対応</span>';
         const textCls = s.diff === 'del' ? ' strike' : '';
         const note = s.note ? `<div class="diff-note${s.diff === 'del' ? ' del-note' : ''}">${esc(s.note)}</div>` : '';
+        const personalNote = s.personalNote ? `<div class="diff-note personal-note">${esc(s.personalNote)}</div>` : '';
         const idLabel = s.id.startsWith('DEL_') ? s.id.replace('DEL_', '（旧）') : s.id;
         return `<div class="scene${cls}">
           <div class="scene-head"><span>${esc(idLabel)}</span><span>${esc(label)}</span><span>${len}字</span>${mark}</div>
           <p class="scene-text${textCls}">${esc(s.text)}</p>
           ${note}
+          ${personalNote}
         </div>`;
       }).join('');
     }
