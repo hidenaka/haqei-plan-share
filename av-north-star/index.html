@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>北極星 — 人と自動運転が安全に共存する街の情報基盤</title>
+<style>
+  :root {
+    --ink: #1a1a1a;
+    --ink-2: #4a4a4a;
+    --bg: #f7f5ee;
+    --paper: #fbf9f1;
+    --line: #d8d2bf;
+    --accent: #1e40af;
+    --accent-soft: #dbe4f8;
+    --warn: #c83a2c;
+    --warn-soft: #f6dcd6;
+    --yellow: #f4d35e;
+    --shadow: 0 1px 0 rgba(0,0,0,.04), 0 8px 24px rgba(0,0,0,.06);
+    --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+    --sans: -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN",
+            "Hiragino Sans", "Noto Sans JP", "Yu Gothic", "Meiryo", sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 56px 28px 96px; }
+
+  .hero { margin-bottom: 56px; }
+  .hero .kicker {
+    display: inline-block;
+    background: var(--accent); color: #fff;
+    font-size: 12px; font-weight: 700; letter-spacing: .12em;
+    padding: 6px 12px; border-radius: 999px;
+    margin-bottom: 18px;
+  }
+  .hero h1 {
+    font-size: 40px; line-height: 1.3; margin: 0 0 14px;
+    letter-spacing: -.01em;
+  }
+  .hero h1 b { color: var(--accent); }
+  .hero p.lede {
+    font-size: 18px; color: var(--ink-2); margin: 0; max-width: 780px;
+  }
+  .tldr {
+    margin-top: 28px; padding: 22px 24px;
+    background: var(--paper); border: 1px solid var(--line); border-radius: 12px;
+    box-shadow: var(--shadow);
+  }
+  .tldr h2 { font-size: 13px; letter-spacing: .15em; color: var(--accent); margin: 0 0 10px; }
+  .tldr ol { margin: 0; padding-left: 20px; }
+  .tldr li { margin: 4px 0; }
+
+  section { margin: 64px 0 0; }
+  section > h2 {
+    font-size: 28px; line-height: 1.4; margin: 0 0 6px;
+    border-left: 6px solid var(--accent); padding-left: 12px;
+  }
+  section > h2 .num {
+    color: var(--accent); font-variant-numeric: tabular-nums; margin-right: 10px;
+  }
+  section > p.sub { color: var(--ink-2); margin: 0 0 22px; }
+
+  figure {
+    margin: 0 0 24px; padding: 12px;
+    background: var(--paper); border: 1px solid var(--line); border-radius: 14px;
+    box-shadow: var(--shadow);
+  }
+  figure img { display: block; width: 100%; height: auto; border-radius: 8px; }
+  figcaption {
+    font-size: 13px; color: var(--ink-2); margin-top: 10px; text-align: center;
+  }
+
+  .table {
+    width: 100%; border-collapse: collapse; margin: 12px 0 6px;
+    background: var(--paper); border: 1px solid var(--line); border-radius: 12px; overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+  .table th, .table td {
+    text-align: left; padding: 12px 14px; border-bottom: 1px solid var(--line);
+    vertical-align: top; font-size: 14.5px;
+  }
+  .table th { background: #efeadb; font-weight: 700; }
+  .table tr:last-child td { border-bottom: 0; }
+  .table .pick { background: var(--accent-soft); }
+  .table .pick td:first-child { font-weight: 700; color: var(--accent); }
+
+  .callout {
+    margin: 18px 0;
+    padding: 16px 18px;
+    border-left: 4px solid var(--accent);
+    background: var(--accent-soft);
+    border-radius: 0 10px 10px 0;
+  }
+  .callout.warn { border-color: var(--warn); background: var(--warn-soft); }
+  .callout p { margin: 0; }
+  .callout strong { color: var(--accent); }
+  .callout.warn strong { color: var(--warn); }
+
+  .quote {
+    border-left: 3px solid var(--line); padding: 6px 16px;
+    color: var(--ink-2); font-size: 14.5px; margin: 18px 0;
+  }
+
+  .conclusion {
+    margin-top: 56px; padding: 28px 28px 24px;
+    background: var(--ink); color: #f6f3e8; border-radius: 16px;
+  }
+  .conclusion h2 { color: var(--yellow); border: 0; padding: 0; margin: 0 0 12px; }
+  .conclusion ol { margin: 0; padding-left: 20px; }
+  .conclusion li { margin: 6px 0; }
+
+  footer { margin-top: 36px; color: var(--ink-2); font-size: 13px; }
+
+  @media (max-width: 720px) {
+    .wrap { padding: 32px 18px 64px; }
+    .hero h1 { font-size: 30px; }
+    section > h2 { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <span class="kicker">北極星の検証と組み込み</span>
+    <h1>人と自動運転が安全に共存する街 — <b>あなたの仮説は一次情報で立証された</b></h1>
+    <p class="lede">「自動運転は周辺しか見ていない。事前の工事情報でルートを選ばせれば、歩行者と車の物理リスクを減らせる」— タクシードライバーとして路上で得たこの直感を、米国のリコール文書・政府標準・日本の政策資料で検証した。結論: 仮説の核心は正しく、言い方を一箇所直すとさらに強くなり、そして日本の生活道路はこの分野で完全な空白だった。これを事業の北極星として戦略に組み込む。</p>
+    <div class="tldr">
+      <h2>TL;DR</h2>
+      <ol>
+        <li>立証: Waymoは2026年6月「工事帯に進入する欠陥」で約3,900台をリコール（米当局文書に明記）。米政府はWZDxの目的に「自動運転への事前配信」を明記。事前警告で急ブレーキ80%減の実証あり</li>
+        <li>修正1点: AV各社は既に事前データを併用している。欠けているのは「行政・現場発の公式データ、特に生活道路の粒度」— あなたの歩行者起点はまさにそこを突いている</li>
+        <li>組み込み: 北極星「人と自動運転が安全に共存する街の道路イベント情報基盤」を確定。3レーン戦略は不変のまま、全事業がこの資産に積み上がる。最初の実験場候補は地元・大田区（L4目標の自動運転バス実証中）</li>
+      </ol>
+    </div>
+  </header>
+
+  <section>
+    <h2><span class="num">01</span>北極星 — 3つの事業は全部この灯台に向かっている</h2>
+    <p class="sub">大目標は事業を増やさない。既存の3レーンを1本の物語に束ねる</p>
+    <figure>
+      <img src="images/concept-01-01.png" alt="北極星: 人と自動運転が安全に共存する街の情報基盤。3事業が同じ灯台に向かう">
+      <figcaption>船（事業）は替わっても灯台（北極星）は変わらない。航跡が道路イベントデータ資産として積もる</figcaption>
+    </figure>
+    <div class="callout"><p><strong>北極星（確定）:</strong> 「人と自動運転車が安全に共存する街のための、道路イベント情報基盤」。具体的に取れるポジションは<strong>「一般道版WZDx」の先行実装者</strong> — 区市町村の工事・占用データを機械可読フィードに変換し、自動運転事業者・地図会社へ配信する役。おさんぽスコア（歩行者安全データ）も地図化パック（現場データ収集の筋肉）も工事マップ待ち受け（B2G関係）も、すべて同じ資産に積み上がる — 現戦略と完全に整合し、変更は不要。</p></div>
+    <p>そしてこの北極星の語り手として、あなたには他の誰にもない資格がある: <b>現役タクシードライバーとして毎日東京の路上で物理リスクを観察している人間が、地図とAIを自分で作れる</b>。「地図を作る人」という発信の軸ともそのまま重なる。</p>
+  </section>
+
+  <section>
+    <h2><span class="num">02</span>仮説の立証 — 3つの証拠（海外一次情報）</h2>
+    <p class="sub">直感が、リコール文書と政府標準で裏付けられた</p>
+    <figure>
+      <img src="images/concept-02-01.png" alt="3つの証拠: Waymoリコール3,900台・WZDx23州・急ブレーキ80%減">
+      <figcaption>最新センサー＋HDマップでも工事帯は苦手。事前情報が安全に効くのは定量実証済み</figcaption>
+    </figure>
+    <table class="table">
+      <thead><tr><th>証拠</th><th>内容</th><th>出典（一次）</th></tr></thead>
+      <tbody>
+        <tr class="pick"><td>Waymoリコール<br>(2026年6月)</td><td>高速道路の工事帯にコーンを越えて進入する事案13件（Phoenix 6・SF 7）→ 第5世代3,871台をリコール。当局届出に「ソフトウェアが工事帯を認識できない、または他のハザード回避を優先する場合がある」と明記</td><td>NHTSA Part 573 Report 26E035</td></tr>
+        <tr><td>Cruise生コン事件<br>(2023年8月)</td><td>SFの舗装工事帯に進入し生コンに前輪埋没。営業拡大承認の1週間後で規制強化の引き金に</td><td>報道（Forbes・SF Standard）</td></tr>
+        <tr class="pick"><td>米政府WZDx</td><td>連邦道路庁の公式目的: 「工事帯データを車両に届け、<b>自動運転システム(ADS)</b>と人間ドライバーがより安全に走行できるようにする」。掲載場所自体が transportation.gov の自動運転セクション配下。23州分のフィード</td><td>FHWA / USDOT公式</td></tr>
+        <tr><td>効果の定量実証</td><td>Purdue大の実証: Waze等への事前デジタル警告で工事帯手前の急ブレーキが<b>80%減</b>。米国の工事帯死者は2023年899人（うち歩行者176人）で10年間に+50%</td><td>FHWA統計（一次）・Purdue研究（二次）</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2><span class="num">03</span>日本の現在地 — 生活道路は完全な空白</h2>
+    <p class="sub">制度の定義はある。実装が無い。この差が機会</p>
+    <figure>
+      <img src="images/concept-03-01.png" alt="日本の整備状況: 高速は実証済み・一般道は検討段階・生活道路は完全空白">
+      <figcaption>整備されているのは上の細い部分（高速）だけ。人とAVが共存する広い土台（生活道路）が空白</figcaption>
+    </figure>
+    <table class="table">
+      <thead><tr><th>階層</th><th>現状（一次情報）</th><th>評価</th></tr></thead>
+      <tbody>
+        <tr><td>🛣️ 高速道路</td><td>新東名で工事規制・落下物の「先読み情報」をV2I配信する実証済み（2025年3月〜）。国交省資料に「規制事象への車線変更の一連の流れを確認」。2026年は東北道へ拡大</td><td>国とNEXCOの領域 — 参入余地なし・ただし国が「事前配信は効く」と自ら実証してくれた</td></tr>
+        <tr><td>🚦 一般道（幹線）</td><td>SIP-adusダイナミックマップで工事(予定)情報は「準静的層＝事前配信すべき情報」と制度定義済み（内閣府一次）。しかし配信の枠組みは国交省資料で「収集・提供の枠組みを<b>検討</b>」＝実装ゼロ。HD地図も高速中心から拡張中の段階</td><td>制度と実装のギャップ — 3〜5年の時間差</td></tr>
+        <tr class="pick"><td>🚶 生活道路・歩行者空間</td><td>掘削・占用工事を機械可読で事前取得する仕組みが<b>存在しない</b>。WZDx相当の標準も無い。現場のAVは「検知して停止・手動介入」が実態（BOLDLY境町は路上駐車を住民に控えてもらう運用）。Waymo東京は都心7区でデータ収集中・近くローンチ報道</td><td><b>完全空白 — ここが北極星のポジション</b>。人とAVが共存する空間こそ、歩行者起点の粒度が必要</td></tr>
+      </tbody>
+    </table>
+    <div class="callout"><p><strong>タイミングの意味:</strong> Waymo東京の面的走行が始まる2026年、生活道路の工事事前データの不在がボトルネックとして顕在化する。国の枠組み検討が進む前の今が、実装で先行できる時間帯。</p></div>
+  </section>
+
+  <section>
+    <h2><span class="num">04</span>1つだけ修正 — 「センサーだけ」ではなく「公式データの欠落」</h2>
+    <p class="sub">言い方を直すと、仮説はもっと強くなる</p>
+    <p>正確に言うと、AV各社は既に「事前データ＋センサーの二段構え」で設計している。WaymoはHDマップと実走の差分を全車で共有し、Mobileyeは150万台超の市販車から工事標識をクラウド収集して「工事帯を事前に知り動的にルート調整する」と公式に説明している。<b>それでもWaymoのリコールは起きた</b> — 自前のクラウドソースだけでは、現場で今日始まった掘削や歩道閉鎖を確実には拾えないから。</p>
+    <div class="quote">つまり欠けているのは「事前データ」そのものではなく、<b>行政・現場発の、正確で機械可読な公式データ — 特に生活道路の歩行者目線の粒度</b>。あなたの「歩行者起点」という切り口は、飾りではなくこの空白の核心を突いている。人とAVが物理的に共存するのは幹線ではなく生活道路であり、そこの情報を持つ者がいない。</div>
+    <p>ピッチや発信でこの言い方を使うこと: 「自動運転はセンサーを磨いてきたが、<b>現場で今日変わったこと</b>は路上を走る前には分からない。私はその『今日変わったこと』を、現場・行政・住民から集めて機械が読める形にする側をやる」。</p>
+  </section>
+
+  <section>
+    <h2><span class="num">05</span>戦略への組み込み — 変えるのは判断基準と物語だけ</h2>
+    <p class="sub">3レーンもG-Pゲートも90日プランも不変</p>
+    <figure>
+      <img src="images/concept-05-01.png" alt="大田区が最初の実験場: 区民・都知事杯提出者・区はAV実証中の三重接点">
+      <figcaption>地元・大田区は天空橋〜萩中公園でL4目標の自動運転バス実証中（区公式・2025年1月〜）</figcaption>
+    </figure>
+    <table class="table">
+      <thead><tr><th>変更点</th><th>内容</th></tr></thead>
+      <tbody>
+        <tr class="pick"><td>① 北極星条件（第7条件）を追加</td><td>事業選定の基準に「道路イベント／歩行者安全データが資産として積み上がるか」を追加。現3レーンはすべて適合済みなので選び直しは不要 — 今後の新規実験の選定にだけ効く</td></tr>
+        <tr class="pick"><td>② 8月の行政接点を大田区に設定</td><td>3回接触モデルの橋B（行政窓口）の具体化: 大田区の道路管理課へ「区民×都知事杯提出者」として問い合わせ。区はL4目標の自動運転バス実証中なので、「工事情報の機械可読化はAV実証にも効く」という提案の受け皿が既にある。あなたの読み（住民の連絡には対応してくれる）とも整合</td></tr>
+        <tr><td>③ 待ち受けトリガーを3つ追加（AI監視）</td><td>(a) 国交省「自動運転向け道路交通情報の収集・提供枠組み」検討の進展 (b) Waymo東京の面的展開 (c) 大田区実証の拡大。動きがあれば即あなたに上げる</td></tr>
+        <tr><td>④ ハッカソン原稿に将来展望を1〜2文追記</td><td>entry原稿の備考へ: 「将来的には工事情報を機械可読フィード化し、自動運転時代に人と車が安全に共存する街の情報基盤を目指す（米国ではWZDxとして政府標準化済み・国内の生活道路は空白）」。Waymoリコール・大田区実証という時事性は審査に刺さる</td></tr>
+        <tr><td>⑤ 変えないもの</td><td>3レーン・G-Pゲート（10月末）・撤退基準・週3時間上限・今週フォーム提出。北極星は「今日やることリスト」を1行も増やさない — 判断基準と物語の背骨として機能する</td></tr>
+      </tbody>
+    </table>
+    <div class="callout warn"><p><strong>期待値の正直な整理:</strong> 一般道の自動運転が面的に普及するのは2020年代末〜2030年代で、北極星から今すぐ売上は生まれない。だからこそ「事業」ではなく「北極星」— 稼ぐのは3レーン、向かう先はこの灯台、という役割分担を崩さないこと。焦って「AV向けデータ事業」を今の主戦にしないのが、この組み込みの最重要ルール。</p></div>
+  </section>
+
+  <div class="conclusion">
+    <h2>結論</h2>
+    <ol>
+      <li>仮説は立証された: 最新のAVでも工事帯は苦手（Waymo 3,871台リコール・一次文書）で、事前情報は安全に効く（急ブレーキ80%減）。米政府はまさにその目的でWZDxを標準化済み。修正は1点 — 欠けているのはセンサーの代替ではなく「行政・現場発の公式データ、特に生活道路の歩行者目線の粒度」。</li>
+      <li>日本は制度定義（準静的層）だけあって実装ゼロ、生活道路は完全空白。「一般道版WZDxの先行実装者」を北極星のポジションとして確定。語り手としての資格は、地図とAIを作れる現役タクシードライバーという唯一性そのもの。</li>
+      <li>戦略の変更は判断基準と物語だけ: 第7条件（道路イベントデータが積み上がるか）を追加し、8月の行政接点を大田区（AV実証中の地元）に設定し、entry原稿に将来展望を1〜2文足す。3レーン・ゲート・今週フォーム提出は不変。</li>
+    </ol>
+  </div>
+
+  <footer>北極星の検証と戦略組み込み（2026-07-11・海外/日本 2系統並列調査）/ 主要一次出典: NHTSA 26E035、FHWA WZDx・Facts&Stats、内閣府SIP-adus、国交省 路車協調実証・自動運転インフラ検討会、経産省デジタルライフライン計画、大田区公式、東京都報道発表</footer>
+
+</div>
+</body>
+</html>
