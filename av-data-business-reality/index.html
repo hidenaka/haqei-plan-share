@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>北極星の収益性 — 正直な評価と時間差の設計</title>
+<style>
+  :root {
+    --ink: #1a1a1a;
+    --ink-2: #4a4a4a;
+    --bg: #f7f5ee;
+    --paper: #fbf9f1;
+    --line: #d8d2bf;
+    --accent: #a16207;
+    --accent-soft: #f3e8cd;
+    --warn: #c83a2c;
+    --warn-soft: #f6dcd6;
+    --yellow: #f4d35e;
+    --shadow: 0 1px 0 rgba(0,0,0,.04), 0 8px 24px rgba(0,0,0,.06);
+    --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+    --sans: -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN",
+            "Hiragino Sans", "Noto Sans JP", "Yu Gothic", "Meiryo", sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 56px 28px 96px; }
+
+  .hero { margin-bottom: 56px; }
+  .hero .kicker {
+    display: inline-block;
+    background: var(--accent); color: #fff;
+    font-size: 12px; font-weight: 700; letter-spacing: .12em;
+    padding: 6px 12px; border-radius: 999px;
+    margin-bottom: 18px;
+  }
+  .hero h1 {
+    font-size: 40px; line-height: 1.3; margin: 0 0 14px;
+    letter-spacing: -.01em;
+  }
+  .hero h1 b { color: var(--accent); }
+  .hero p.lede {
+    font-size: 18px; color: var(--ink-2); margin: 0; max-width: 780px;
+  }
+  .tldr {
+    margin-top: 28px; padding: 22px 24px;
+    background: var(--paper); border: 1px solid var(--line); border-radius: 12px;
+    box-shadow: var(--shadow);
+  }
+  .tldr h2 { font-size: 13px; letter-spacing: .15em; color: var(--accent); margin: 0 0 10px; }
+  .tldr ol { margin: 0; padding-left: 20px; }
+  .tldr li { margin: 4px 0; }
+
+  section { margin: 64px 0 0; }
+  section > h2 {
+    font-size: 28px; line-height: 1.4; margin: 0 0 6px;
+    border-left: 6px solid var(--accent); padding-left: 12px;
+  }
+  section > h2 .num {
+    color: var(--accent); font-variant-numeric: tabular-nums; margin-right: 10px;
+  }
+  section > p.sub { color: var(--ink-2); margin: 0 0 22px; }
+
+  figure {
+    margin: 0 0 24px; padding: 12px;
+    background: var(--paper); border: 1px solid var(--line); border-radius: 14px;
+    box-shadow: var(--shadow);
+  }
+  figure img { display: block; width: 100%; height: auto; border-radius: 8px; }
+  figcaption {
+    font-size: 13px; color: var(--ink-2); margin-top: 10px; text-align: center;
+  }
+
+  .table {
+    width: 100%; border-collapse: collapse; margin: 12px 0 6px;
+    background: var(--paper); border: 1px solid var(--line); border-radius: 12px; overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+  .table th, .table td {
+    text-align: left; padding: 12px 14px; border-bottom: 1px solid var(--line);
+    vertical-align: top; font-size: 14.5px;
+  }
+  .table th { background: #efeadb; font-weight: 700; }
+  .table tr:last-child td { border-bottom: 0; }
+  .table .pick { background: var(--accent-soft); }
+  .table .pick td:first-child { font-weight: 700; color: var(--accent); }
+
+  .callout {
+    margin: 18px 0;
+    padding: 16px 18px;
+    border-left: 4px solid var(--accent);
+    background: var(--accent-soft);
+    border-radius: 0 10px 10px 0;
+  }
+  .callout.warn { border-color: var(--warn); background: var(--warn-soft); }
+  .callout p { margin: 0; }
+  .callout strong { color: var(--accent); }
+  .callout.warn strong { color: var(--warn); }
+
+  .quote {
+    border-left: 3px solid var(--line); padding: 6px 16px;
+    color: var(--ink-2); font-size: 14.5px; margin: 18px 0;
+  }
+
+  .conclusion {
+    margin-top: 56px; padding: 28px 28px 24px;
+    background: var(--ink); color: #f6f3e8; border-radius: 16px;
+  }
+  .conclusion h2 { color: var(--yellow); border: 0; padding: 0; margin: 0 0 12px; }
+  .conclusion ol { margin: 0; padding-left: 20px; }
+  .conclusion li { margin: 6px 0; }
+
+  footer { margin-top: 36px; color: var(--ink-2); font-size: 13px; }
+
+  @media (max-width: 720px) {
+    .wrap { padding: 32px 18px 64px; }
+    .hero h1 { font-size: 30px; }
+    section > h2 { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <span class="kicker">北極星の収益性 — 正直な評価</span>
+    <h1>価値は今、金は後 — <b>間を階段で埋める設計にする</b></h1>
+    <p class="lede">「金にならないと続けられない」— その通りなので、世界で実際に誰がいくら払っているかを調べて正直に答える。結論: 北極星（一般道版WZDxフィード事業）そのものは5年以内に生活可能な収益にならない（確度80%）。しかし「続けるための金」の細い道は3本実在し、最有力は『自動運転バス運行事業者向けのルート監視SaaS』への読み替え。北極星は金のなる木ではなく方角 — 金は手前の階段から出す構造にすれば、「金にならないから続かない」は回避できる。</p>
+    <div class="tldr">
+      <h2>TL;DR</h2>
+      <ol>
+        <li>直球: フィード販売単体は食えない。買い手は日本に5社未満、高速HDマップの本命DMP（上場）ですら売上57億で営業赤字18.8億円。ナビは無料でデータを貰う側</li>
+        <li>細い道3本: ①SBIR・実証補助（年500〜1,000万・法人化前提）②AVバス運行者向け「ルート上工事監視」SaaS（ODD維持はL4許可要件＝払う理由がある。米HAASが$399/車・年で先行実証）③B2G本線・大田区への営業材料</li>
+        <li>設計: 2026-27は3レーンで食う → 2028-30にAVバスが数百ルート化したらルート監視SaaS参入 → 2030sの標準化でSogelinkポジション。分岐がNOでも北極星は維持コストゼロの物語として残る＝損しない</li>
+      </ol>
+    </div>
+  </header>
+
+  <section>
+    <h2><span class="num">01</span>結論の構造 — 社会的価値と収益の時間差</h2>
+    <p class="sub">あなたの直感（ニッチで規模は大きくない）は正しい。問題は規模より時間差</p>
+    <figure>
+      <img src="images/concept-01-01.png" alt="社会的価値は今から高いが収益は2028年以降。間を階段で埋める">
+      <figcaption>価値の線と収益の線の間の谷に、階段（3レーン→SBIR→ルート監視SaaS→標準化）を架ける</figcaption>
+    </figure>
+    <p>社会的価値は今すでに実在する（工事帯の死者・Waymoのリコール）。しかし「その価値に金を払う買い手」が日本の一般道にはまだいない — AVの面的走行が始まっていないから。つまりこれは「価値がない事業」ではなく<b>「価値と収益に2〜4年の時間差がある事業」</b>。続けられるかどうかは、この時間差を何で食いつなぐかの設計問題で、答えは既に持っている: 3レーン（おさんぽスコア・地図化パック）が食い扶持、北極星は方角。</p>
+  </section>
+
+  <section>
+    <h2><span class="num">02</span>世界の実勢 — 誰がいくら払っているか</h2>
+    <p class="sub">金は動いている。ただし細いか、参入不能かのどちらか</p>
+    <figure>
+      <img src="images/concept-02-01.png" alt="道路イベントデータの金の流れ: HAAS $399/車年、TomTom €482M横ばい、DMP赤字18.8億、VICS参入不能">
+      <figcaption>実在する金脈の全体図。太い流れは既存プレイヤーの内側にある</figcaption>
+    </figure>
+    <table class="table">
+      <thead><tr><th>事例</th><th>誰が→誰に</th><th>金額（実勢）</th><th>示唆</th></tr></thead>
+      <tbody>
+        <tr class="pick"><td>HAAS Alert（米）</td><td>消防・レッカー・施工会社 → HAAS（警告を発したい側が払う）</td><td>Road Pro $399/年/車両＋機器$399。累計調達約$5.1M</td><td>work zoneデータで金が動く最重要実証。ただし市場はまだ小さい</td></tr>
+        <tr><td>one.network（米）</td><td>州道路局 → アグリゲータ</td><td>FDOT 3年契約（16,600閉鎖登録）・UDOT州全域 — 金額非公表</td><td>払うのは行政。B2G構造は日本の本線と同じ</td></tr>
+        <tr><td>TomTom（欧）</td><td>自動車OEM → 地図会社</td><td>Location Technology €482M/年（前年比-3%と横ばい）</td><td>OEM向けフィードは実在するが成長市場ではない</td></tr>
+        <tr class="pick"><td>DMP（日・上場336A）</td><td>OEM → HDマップ会社</td><td>2026/3期 売上56.9億円・<b>営業損失18.8億円</b></td><td><b>高速HDマップの本命ですら赤字</b>。データ整備コスト＞ライセンス収入。個人がフィード販売で食う道はない</td></tr>
+        <tr><td>VICS / JARTIC（日）</td><td>カーナビメーカーの台数比例技術料／警察・国交省の委託費</td><td>30年続く商流（規模非公表）</td><td>「道路データに払う」日本の既存商流はすべて参入障壁の内側</td></tr>
+      </tbody>
+    </table>
+    <div class="callout warn"><p><strong>きつい事実を3行で:</strong> ①フィードの買い手は日本に5社未満 ②その本命ですら赤字 ③ナビ（Waze/Google）は行政からデータを無料で貰う側で、あなたに払う理由がない。「一般道版WZDxのフィードを売る」を直接の事業計画にしてはいけない。</p></div>
+  </section>
+
+  <section>
+    <h2><span class="num">03</span>それでも残る3つの入口 — 本命は「ルート監視SaaS」への読み替え</h2>
+    <p class="sub">フィード販売の直登は崖。登れる巻き道が3本ある</p>
+    <figure>
+      <img src="images/concept-04-01.png" alt="3つの入口: SBIR実証補助・AVバス運行者向けルート監視SaaS・B2G加点">
+      <figcaption>一番太い道は「AVバス運行事業者向けのルート上工事監視」</figcaption>
+    </figure>
+    <table class="table">
+      <thead><tr><th>入口</th><th>実勢の根拠（一次）</th><th>金額感</th></tr></thead>
+      <tbody>
+        <tr><td>① SBIR・実証補助</td><td>国交省SBIR建設技術（中小SUタイプ）2025年度42件採択。自動運転社会実装推進事業は2024年度99件・補助上限1〜3億円（補助率4/5）</td><td>年500〜1,000万円（SBIR）。法人化が切符 — G3ゲート（法人化判断）の新しい判断材料</td></tr>
+        <tr class="pick"><td>② AVバス運行者向け「ルート上工事監視」SaaS</td><td>境町のAVバスは3台5年で5.2億円、うち初期のマップ・ルート設定だけで0.52億円。現場は「障害物検知で停止・路駐は住民にお願い」の運用＝ルート上の変化を事前に知る手段がない。<b>ODD（運行設計領域）の維持はレベル4許可の要件</b>＝払う業務上の理由がある。米HAASが$399/車・年で同型を実証済み</td><td>1ルート月数万円 [推定]。全国実証は年67〜99件→2028-30に数百ルート化すれば年数千万円の市場。<b>北極星が初めて売上になる読み替え</b></td></tr>
+        <tr><td>③ B2G本線への加点</td><td>大田区は天空橋〜萩中公園でL4目標のAVバス実証中（区公式）。「工事情報の機械可読化はAV実証にも効く」は道路管理課への提案を一段強くする</td><td>直接の売上ではなく、地図化パック・工事マップ待ち受けの成約率を上げる営業材料</td></tr>
+      </tbody>
+    </table>
+    <div class="quote">読み替えの本質: 「データを売る」（買い手5社・全員強者）から「運行者の業務の手間を減らす」（買い手数百・中小の運行受託者含む）へ。世界調査の結論 — 金脈は常にデータではなく業務の側にある — と同じ法則がここでも成り立つ。</div>
+  </section>
+
+  <section>
+    <h2><span class="num">04</span>時間軸の設計 — どの段でも食える形にする</h2>
+    <p class="sub">分岐がNOでも損しない構造</p>
+    <figure>
+      <img src="images/concept-05-01.png" alt="2026-27は3レーン、2028-30に分岐点、2030sに標準化の波">
+      <figcaption>各段に収益源を置き、分岐がNOなら北極星は維持コストゼロの物語として残す</figcaption>
+    </figure>
+    <table class="table">
+      <thead><tr><th>時期</th><th>食い扶持</th><th>北極星まわりでやること</th></tr></thead>
+      <tbody>
+        <tr class="pick"><td>2026-27</td><td>3レーン（おさんぽスコア・地図化パック）＋G-Pゲートで主戦決定</td><td>コストゼロの範囲のみ: 大田区接点（8月・予定通り）・発信の物語に使う・SBIRの応募要件をAIが調査。<b>新しい実装はしない</b></td></tr>
+        <tr><td>2028-30<br>（分岐点）</td><td>主戦＋必要ならSBIR（年500〜1,000万）</td><td>監視シグナルが点灯したら（AVバス数百ルート化 or Waymo東京面的展開 or 国の枠組み始動）→ ルート監視SaaSに参入。ここで初めて北極星が売上になる</td></tr>
+        <tr><td>2030s</td><td>ルート監視SaaS＋標準化後の事務代行</td><td>国が一般道版WZDx相当を動かした時、先行実装者としてSogelinkポジション（義務の事務代行）の桁が視野に入る</td></tr>
+      </tbody>
+    </table>
+    <div class="callout"><p><strong>セーフティネット:</strong> もしAVバスが増えず、国が全部官製でやってしまったら？ — 北極星は「物語」のまま維持する。維持コストはほぼゼロ（AI監視と発信の軸に使うだけ）なので、外れても失うものがない。これが「社会的価値はあるが金になるか不明なもの」の正しい持ち方: <b>今日の金は求めない、今日のコストもかけない、シグナルが点いたら最前列から動く</b>。</p></div>
+  </section>
+
+  <div class="conclusion">
+    <h2>結論</h2>
+    <ol>
+      <li>あなたの懸念は正しい: フィード販売単体は5年内に食えない（確度80%）。買い手5社未満・本命DMPすら営業赤字18.8億・ナビは無料で貰う側 — 数字がそう言っている。</li>
+      <li>しかし「続けるための金」の道は3本実在する。本命は『AVバス運行事業者向けルート上工事監視SaaS』への読み替え（ODD維持はL4許可要件＝払う理由がある。HAAS $399/車・年が先行実証、国内は年67〜99件の実証が分母）。SBIR年500〜1,000万が繋ぎ、B2G加点が今すぐの使い道。</li>
+      <li>設計はこう: 今日の金は3レーンから、北極星は今日コストゼロで持ち、2028-30の分岐シグナル（AVバス数百ルート化・Waymo東京・国の枠組み）が点いたら最前列から参入。分岐がNOでも損しない。「金にならないから続かない」は、この構造なら起きない。</li>
+    </ol>
+  </div>
+
+  <footer>北極星の収益性評価（2026-07-11・実勢調査）/ 主要出典: HAAS Alert公式pricing、TomTom決算、ダイナミックマップPF IR・決算報道、VICS公式、国交省 自動運転社会実装推進事業・SBIR、境町運行報道 / [推定] は分岐後に実勢で更新</footer>
+
+</div>
+</body>
+</html>
