@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>近接ビジネス調査 — 並行できる3レーン戦略</title>
+<style>
+  :root {
+    --ink: #1a1a1a;
+    --ink-2: #4a4a4a;
+    --bg: #f7f5ee;
+    --paper: #fbf9f1;
+    --line: #d8d2bf;
+    --accent: #0e7490;
+    --accent-soft: #d6ecf2;
+    --warn: #c83a2c;
+    --warn-soft: #f6dcd6;
+    --yellow: #f4d35e;
+    --shadow: 0 1px 0 rgba(0,0,0,.04), 0 8px 24px rgba(0,0,0,.06);
+    --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+    --sans: -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN",
+            "Hiragino Sans", "Noto Sans JP", "Yu Gothic", "Meiryo", sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 56px 28px 96px; }
+
+  .hero { margin-bottom: 56px; }
+  .hero .kicker {
+    display: inline-block;
+    background: var(--accent); color: #fff;
+    font-size: 12px; font-weight: 700; letter-spacing: .12em;
+    padding: 6px 12px; border-radius: 999px;
+    margin-bottom: 18px;
+  }
+  .hero h1 {
+    font-size: 40px; line-height: 1.3; margin: 0 0 14px;
+    letter-spacing: -.01em;
+  }
+  .hero h1 b { color: var(--accent); }
+  .hero p.lede {
+    font-size: 18px; color: var(--ink-2); margin: 0; max-width: 780px;
+  }
+  .tldr {
+    margin-top: 28px; padding: 22px 24px;
+    background: var(--paper); border: 1px solid var(--line); border-radius: 12px;
+    box-shadow: var(--shadow);
+  }
+  .tldr h2 { font-size: 13px; letter-spacing: .15em; color: var(--accent); margin: 0 0 10px; }
+  .tldr ol { margin: 0; padding-left: 20px; }
+  .tldr li { margin: 4px 0; }
+
+  section { margin: 64px 0 0; }
+  section > h2 {
+    font-size: 28px; line-height: 1.4; margin: 0 0 6px;
+    border-left: 6px solid var(--accent); padding-left: 12px;
+  }
+  section > h2 .num {
+    color: var(--accent); font-variant-numeric: tabular-nums; margin-right: 10px;
+  }
+  section > p.sub { color: var(--ink-2); margin: 0 0 22px; }
+
+  figure {
+    margin: 0 0 24px; padding: 12px;
+    background: var(--paper); border: 1px solid var(--line); border-radius: 14px;
+    box-shadow: var(--shadow);
+  }
+  figure img { display: block; width: 100%; height: auto; border-radius: 8px; }
+  figcaption {
+    font-size: 13px; color: var(--ink-2); margin-top: 10px; text-align: center;
+  }
+
+  .table {
+    width: 100%; border-collapse: collapse; margin: 12px 0 6px;
+    background: var(--paper); border: 1px solid var(--line); border-radius: 12px; overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+  .table th, .table td {
+    text-align: left; padding: 12px 14px; border-bottom: 1px solid var(--line);
+    vertical-align: top; font-size: 14.5px;
+  }
+  .table th { background: #efeadb; font-weight: 700; }
+  .table tr:last-child td { border-bottom: 0; }
+  .table .pick { background: var(--accent-soft); }
+  .table .pick td:first-child { font-weight: 700; color: var(--accent); }
+
+  .callout {
+    margin: 18px 0;
+    padding: 16px 18px;
+    border-left: 4px solid var(--accent);
+    background: var(--accent-soft);
+    border-radius: 0 10px 10px 0;
+  }
+  .callout.warn { border-color: var(--warn); background: var(--warn-soft); }
+  .callout p { margin: 0; }
+  .callout strong { color: var(--accent); }
+  .callout.warn strong { color: var(--warn); }
+
+  .quote {
+    border-left: 3px solid var(--line); padding: 6px 16px;
+    color: var(--ink-2); font-size: 14.5px; margin: 18px 0;
+  }
+
+  .conclusion {
+    margin-top: 56px; padding: 28px 28px 24px;
+    background: var(--ink); color: #f6f3e8; border-radius: 16px;
+  }
+  .conclusion h2 { color: var(--yellow); border: 0; padding: 0; margin: 0 0 12px; }
+  .conclusion ol { margin: 0; padding-left: 20px; }
+  .conclusion li { margin: 6px 0; }
+
+  footer { margin-top: 36px; color: var(--ink-2); font-size: 13px; }
+
+  @media (max-width: 720px) {
+    .wrap { padding: 32px 18px 64px; }
+    .hero h1 { font-size: 30px; }
+    section > h2 { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <span class="kicker">近接ビジネス調査 ＋ 並行戦略</span>
+    <h1>同じ資産で早く稼ぐ — <b>並行できる3レーン戦略</b></h1>
+    <p class="lede">「近接性が高い」を『技術資産・顧客・営業行動のうち2つ以上を本命（工事マップ）と共有する』と定義し、6候補を調査した。結論: 並行するのは2本 — 即金の「現場HP＋QR受託」と、ストック型の「おさんぽスコアAPI」。前者は営業電話が本命のヒアリングと同一行動になり、後者は米国で実証済みのモデルが国内空白のまま残っている。</p>
+    <div class="tldr">
+      <h2>TL;DR</h2>
+      <ol>
+        <li>🥇 現場HP＋QR看板受託（初期10〜30万＋月1〜2万）: 今すぐ営業でき、営業先が本命のヒアリング先と同一。1本の電話で受託営業とリサーチが同時に終わる</li>
+        <li>🥈 おさんぽスコア（歩行者安全スコアの不動産向けAPI）: 米Walk Scoreが実証（API月$115〜、Redfinが買収）。国内に外販APIは無く空白。おさんぽセーフティのデータをそのまま転用できる 5条件5/5</li>
+        <li>受託系（ダッシュボード272万・LINE構築220万・ハザードWeb化400〜1,200万）は「来たら取る」— 案件監視はAIが常時実行。観光受託600万は個人に不利で見送り</li>
+      </ol>
+    </div>
+  </header>
+
+  <section>
+    <h2><span class="num">01</span>戦略 — 速さの違う3本の川を並走させる</h2>
+    <p class="sub">1人でも回るのは、レーン間で行動が共有されているから</p>
+    <figure>
+      <img src="images/concept-01-01.png" alt="3レーンポートフォリオ: 即金レーン・資産レーン・本命レーン">
+      <figcaption>即金（現場HP受託）・資産（おさんぽスコア）・本命（工事マップB2G）。川の間に橋＝シナジーがある</figcaption>
+    </figure>
+    <table class="table">
+      <thead><tr><th>レーン</th><th>中身</th><th>金になる速さ</th><th>本命とのシナジー</th></tr></thead>
+      <tbody>
+        <tr class="pick"><td>💵 即金レーン</td><td>現場HP＋QR看板の受託（工事会社向け）</td><td>最速（営業即日、初受注は数週間単位で可能）</td><td>顧客＝工事会社＝本命のヒアリング先・将来のデータ入力者（L3）</td></tr>
+        <tr><td>📈 資産レーン</td><td>おさんぽスコア: 歩行者安全スコアの不動産向けウィジェット/API</td><td>中（実装1〜2ヶ月＋営業リード）</td><td>データ基盤（都オープンデータ取込）が本命L1と完全共通</td></tr>
+        <tr><td>🏛️ 本命レーン</td><td>工事情報マップB2G（既存ロードマップ通り）</td><td>遅（2027年度〜）</td><td>—</td></tr>
+      </tbody>
+    </table>
+    <div class="callout"><p><strong>並行の原則:</strong> 一人運営で並行が成立するのは「対人時間を共有できる組み合わせ」だけ。即金レーンの営業は本命のPhase 2ヒアリングと同じ電話なので、対人時間の増分はほぼゼロ。資産レーンは実装中心（AIレーン）で対人は週1時間以内。<strong>これ以上増やさない</strong>。</p></div>
+  </section>
+
+  <section>
+    <h2><span class="num">02</span>候補6件の全体マップ — どれから取るか</h2>
+    <p class="sub">右上（速い×資産共有が高い）から取る</p>
+    <figure>
+      <img src="images/concept-02-01.png" alt="近接6候補を資産共有度×収益速度の2軸に配置したマップ">
+      <figcaption>🥇現場HP受託、🥈おさんぽスコア。観光受託は✕（個人に不利）</figcaption>
+    </figure>
+    <table class="table">
+      <thead><tr><th>候補</th><th>単価（実額・出典つき）</th><th>受注の現実性</th><th>判定</th></tr></thead>
+      <tbody>
+        <tr class="pick"><td>🥇 現場HP＋QR看板受託</td><td>初期10〜30万＋運用月1〜2万（Web制作相場・二次）。システムウェーブが同型を販売中（一次）</td><td>高 — 営業即日可、法人格・実績要件なし</td><td>今すぐ着手</td></tr>
+        <tr class="pick"><td>🥈 おさんぽスコアAPI（不動産向け）</td><td>Walk Score実勢: API $115/月〜のSaaS課金（一次: 公式料金）。Redfinが2014年買収</td><td>中 — 実装は可能、不動産側の営業リードが未知数</td><td>8月から実装着手</td></tr>
+        <tr><td>オープンデータダッシュボード受託</td><td>実例272万円・内訳明記（e-stat事例集）。GovTech東京が「TokyoMap構築」を公募（一次）＝同領域発注が実在</td><td>中〜高 — ビジネスチャンス・ナビ登録が入口</td><td>来たら取る（監視はAI）</td></tr>
+        <tr><td>自治体LINE配信構築</td><td>千葉市実例220万円（一次: 市公表）</td><td>高 — 単価が個人規模に適合、競合SaaS多い</td><td>来たら取る（監視はAI）</td></tr>
+        <tr><td>ハザードマップWeb化受託</td><td>上三川町1,229万（一次）。かすみがうら市がWeb版単独発注（一次: 仕様書）</td><td>中 — プロポーザルの実績要件が壁</td><td>実績2件できてから挑戦</td></tr>
+        <tr><td>観光マップ受託（DMO）</td><td>大東市600万円（一次: 公募）</td><td>低 — 法人・実績要求＋納期負荷が一人運営と最悪の相性</td><td>見送り</td></tr>
+      </tbody>
+    </table>
+    <p style="font-size: 13px; color: var(--ink-2);">※ 調査で否定された候補も記録: 歩行空間ネットワークデータ整備（実額非公開・測量要件重い→本命の差別化素材へ回す）、通学路マップ単独のWeb化（発注市場が薄い）、治安データ販売（国内は各社自前加工で購入市場なし）。2026-07-10取得。</p>
+  </section>
+
+  <section>
+    <h2><span class="num">03</span>🥇 現場HP＋QR受託 — 1本の電話で二毛作</h2>
+    <p class="sub">これが「並行してできるとなおいい」への直接の答え</p>
+    <figure>
+      <img src="images/concept-03-01.png" alt="1本の営業電話から受託の成果と本命のヒアリング成果の両方が出る構造">
+      <figcaption>受託営業＝本命ヒアリング。断られてもリサーチとしては成立する</figcaption>
+    </figure>
+    <p>本命ロードマップのPhase 2は「工事看板の連絡先に電話して現場の話を聞く」だった。この電話に<b>売り物を1つ持たせる</b>のがこの受託。「工事期間中だけの現場ページ（工事概要・期間・迂回路・問い合わせフォーム）＋看板に貼るQRコード」を初期10〜30万＋運用月1〜2万で提供する。国交省が「工事銘板等はQRコードを使った情報発信を」と業界に求める資料を出しており（一次・既調査）、営業トークの後ろ盾も国の方針にある。</p>
+    <ul>
+      <li><b>受託が取れた場合</b>: 即金＋月額のストック＋その現場が本命マップの最初のL3データ供給者になる</li>
+      <li><b>断られた場合</b>: そのままヒアリングに切り替える。「ちなみに住民対応で一番手間なことは？」— 本命のG1検証データが貯まる。<b>営業の失敗がリサーチの成功になる</b>ため、この電話に無駄な結果が存在しない</li>
+      <li><b>価格の妥当性</b>: ビラ配布の実費2〜7万円/現場（既調査）と同水準〜やや上。「ビラ＋看板QR＋Webページ」のセットで周知の証拠が残る、という売り方ができる</li>
+    </ul>
+    <div class="callout"><p><strong>注意 — 受託の沼に注意:</strong> このレーンの目的はキャッシュと現場関係であって、Web制作業への転身ではない。月5現場・月商10万円程度を上限とし、それ以上の需要が来たらテンプレート化・値上げで対応する（時間を売らない）。</p></div>
+  </section>
+
+  <section>
+    <h2><span class="num">04</span>🥈 おさんぽスコア — 実証済みモデル×国内空白×手持ち資産</h2>
+    <p class="sub">おさんぽセーフティの副産物が、そのまま2本目の事業になる</p>
+    <figure>
+      <img src="images/concept-04-01.png" alt="Walk Scoreモデルの日本展開: 歩行者安全スコアを不動産サイトに埋め込む">
+      <figcaption>米国で実証済みの種を、空いている日本の畑に植える</figcaption>
+    </figure>
+    <p>米Walk Scoreは「住所の歩きやすさを0〜100点にして不動産サイトに埋め込む」だけの事業で、API課金（現行$115/月〜・一次確認）でスケールし、2014年にRedfinに買収された。日本ではLIFULLが2020年に「Walkability Index」を自社掲載用に作ったが（東大CSIS共同研究・一次）、<b>外販APIとして売っている国内事業者は調査で見つからなかった</b> — つまり空白。おさんぽセーフティが既に扱う事故・工事・道路環境データで「住所ごとの歩行安全スコア」を算出し、不動産サイト・保育園検索・シニア向け住み替えサービスにウィジェット/APIで売る。</p>
+    <ul>
+      <li><b>5条件フィルター: 5/5</b> — 能力発揮◯・ストック型◎（データとスコアが蓄積）・高収入の可能性◯（Walk Scoreが実証）・時間の主導権◎（API は寝てても動く）・嫌な人間関係を増やさない◯</li>
+      <li><b>本命とのシナジー</b>: データ取込基盤（L1）が完全共通。工事マップ用に作るパイプラインの副産物としてスコアが出る</li>
+      <li><b>リスクの正直な開示</b>: LIFULL級のポータルは自前で作れてしまう（実際作った）。売り先は大手ポータルではなく、自前でデータ整備できない中堅以下の不動産サイト・特化型サービス。単価は月数千〜数万円×多数の薄利多売型 [仮説・要検証]</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2><span class="num">05</span>統合ロードマップ — 既存の関所はそのまま、レーンを重ねる</h2>
+    <p class="sub">本命のロードマップは変更しない。並行レーンを追記するだけ</p>
+    <table class="table">
+      <thead><tr><th>時期</th><th>本命（変更なし）</th><th>💵 即金レーン</th><th>📈 資産レーン</th></tr></thead>
+      <tbody>
+        <tr class="pick"><td>今〜7/27</td><td>提出3手のみ（G0）</td><td>何もしない</td><td>何もしない</td></tr>
+        <tr><td>8月</td><td>L1デモ＋接点3本</td><td>現場ページのテンプレ1式をAIと作る（商品化）</td><td>スコア算出ロジックの試作（AI主担当・L1の副産物）</td></tr>
+        <tr><td>9月</td><td>ヒアリング5件（G1）</td><td><b>同じ電話で受託営業</b>。目標: 初受注1件</td><td>スコアのデモページ公開</td></tr>
+        <tr><td>10〜12月</td><td>実装支援→無償β（G2）</td><td>2〜5現場に拡大（月商上限10万）</td><td>中堅不動産サイト3社にメール提案</td></tr>
+        <tr><td>2027〜</td><td>有償化打診（G3）</td><td>テンプレ化・値上げ or 縮小判断</td><td>API有償化 or 撤退判断（利用2社未満なら撤退）</td></tr>
+      </tbody>
+    </table>
+    <div class="callout warn"><p><strong>並行の撤退基準もいま決める:</strong> 即金レーンは「9〜10月で受注0件なら価格・売り方を1回だけ変えて再試行、それでも0なら純ヒアリングに戻す」。資産レーンは「2027年3月までに有償利用2社未満なら凍結」。本命のG1・G2には影響させない — レーンはあくまで従属変数。</p></div>
+  </section>
+
+  <section>
+    <h2><span class="num">06</span>あなたの追加負担 — 週1時間だけ</h2>
+    <p class="sub">並行しても対人時間はほぼ増えない設計</p>
+    <ul>
+      <li><b>あなたの追加作業</b>: ①9月の電話に「売り物の一言」を足す（台本はAIが用意）②不動産向け提案メールの送信ボタンを押す（月2〜3通・文面はAI）— 合計週1時間以内</li>
+      <li><b>AIの追加作業</b>: 現場ページテンプレの実装、スコア算出ロジック、営業台本・提案書・料金表、ビジネスチャンス・ナビと官公需ポータルの案件監視（ダッシュボード/LINE/ハザードの「来たら取る」案件検知）</li>
+      <li><b>今週やることは変わらない</b>: 提出3手＋セミナー申込1本。並行レーンの仕込みはすべて8月から</li>
+    </ul>
+  </section>
+
+  <div class="conclusion">
+    <h2>結論</h2>
+    <ol>
+      <li>並行するのは2本だけ: 🥇現場HP＋QR受託（即金・営業＝本命ヒアリングと同一行動・追加時間ゼロ）と 🥈おさんぽスコアAPI（Walk Scoreで実証済み・国内空白・5条件5/5・データ基盤は本命と共通）。</li>
+      <li>受託系（ダッシュボード272万・LINE 220万・ハザード400〜1,200万）は取りに行かず「来たら取る」— 案件監視はAIが常時実行。観光600万は見送り。歩行空間データ整備は本命の差別化素材に回す。</li>
+      <li>本命のロードマップと関所（G0〜G3）は一切変更しない。並行レーンには独自の撤退基準（受注0なら再試行1回まで・利用2社未満なら凍結）を付け、今週やることは変わらず「提出3手＋セミナー申込」。</li>
+    </ol>
+  </div>
+
+  <footer>題材: 工事情報マップの近接ビジネス調査（B2G・B2B 2系統並列・取得日 2026-07-10）/ 出典: Walk Score公式料金・Redfin発表・LIFULL発表・GovTech東京公募・千葉市/上三川町/大東市の調達公表・e-stat事例集ほか</footer>
+
+</div>
+</body>
+</html>
