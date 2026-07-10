@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>ep38 台本レビュー — コードギアス × 夬</title>
+<style>
+  :root{--ink:#2b2620;--paper:#faf6ef;--accent:#1e5aa8;--soft:#efe8db;--line:#d8cfbf;--green:#1e7e34}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Hiragino Kaku Gothic ProN",Meiryo,sans-serif;
+       background:var(--paper);color:var(--ink);line-height:1.8;font-size:16px}
+  .wrap{max-width:840px;margin:0 auto;padding:28px 20px 80px}
+  .kicker{color:var(--accent);font-weight:700;letter-spacing:.12em;font-size:13px}
+  h1{font-size:26px;line-height:1.35;margin:6px 0 10px}
+  .tldr{background:#fff;border-left:5px solid var(--green);padding:14px 18px;margin:16px 0;border-radius:0 8px 8px 0;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+  figure{margin:24px 0} figure img{width:100%;border-radius:10px;border:1px solid var(--line)}
+  figcaption{font-size:12.5px;color:#7a7263;margin-top:6px;text-align:center}
+  h2{font-size:19px;margin:36px 0 12px;padding-bottom:6px;border-bottom:2px solid var(--line)}
+  table{width:100%;border-collapse:collapse;margin:12px 0;font-size:14px;background:#fff;border-radius:8px;overflow:hidden}
+  th{background:var(--soft);text-align:left;padding:8px 12px;font-size:13px;border-bottom:2px solid var(--line)}
+  td{padding:8px 12px;border-bottom:1px solid #eee6d8;vertical-align:top}
+  .acthead{margin:26px 0 8px;font-weight:800;font-size:16px;color:#fff;background:var(--accent);
+           display:inline-block;padding:3px 14px;border-radius:999px}
+  .scene{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin:8px 0}
+  .scene .meta{font-size:11.5px;color:#8a8172;margin-bottom:4px;display:flex;gap:12px}
+  .scene .txt{font-size:15.5px}
+  .callout{background:#fff8e6;border:1px solid #e8d9a8;border-radius:8px;padding:12px 16px;margin:14px 0;font-size:14px}
+  .decision{background:#fff;border:2px solid var(--accent);border-radius:12px;padding:20px 22px;margin:40px 0 20px}
+  .decision h2{border:none;margin-top:0;color:var(--accent)}
+  .opt{display:flex;gap:12px;align-items:flex-start;padding:11px 0;border-bottom:1px dashed var(--line)}
+  .opt:last-child{border-bottom:none}
+  .opt .key{flex:0 0 34px;height:34px;border-radius:8px;background:var(--soft);border:1px solid var(--line);
+            display:flex;align-items:center;justify-content:center;font-weight:800}
+  .opt.rec .key{background:var(--accent);color:#fff}
+  .opt .body b{display:block} .opt .body span{font-size:13.5px;color:#5a5348}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="kicker">EP38 台本レビューゲート（essay-episode Step 2）｜2026-07-10</div>
+  <h1>第38話 台本 — コードギアス（ルルーシュ）× 夬</h1>
+
+  <div class="tldr">
+    <b>検品サマリ</b><br>
+    ✅ 機械ゲート: essay-preflight <b>PASS・警告0件</b>（過剰演出スコア0.0）<br>
+    ✅ 事実: 作中事実<b>15件すべてWebSearch一次確認済み</b>（fact_check.md）・夬の卦辞/象辞/六爻は<b>db/hexagrams.jsonと完全一致</b>（fork採点者が独立突合）<br>
+    ✅ 独立採点: fork採点 <b>90点・合格</b>（threshold 90 / 1周目84→改稿→2周目90）<br>
+    📏 全<b>30シーン・3111字 ≒ <b>約6〜8分</b>（文字数推定・確定尺はStep3音声合成後）。承認条件だった「ep06との重複回避」= エレン相互参照1文のみ・種明かしの重心は「膿の出し方のプロセス」でクリア
+  </div>
+
+  <figure>
+    <img src="images/overview-01.png" alt="ep38台本の全体俯瞰">
+    <figcaption>台本の全体俯瞰イメージ。<b>数値・本文の正はこのページの本文</b>（画像内の「合格ライン70点」「ep39乾案」等の装飾メモは不正確＝合格ラインは90点・ep39は未企画）</figcaption>
+  </figure>
+
+  <h2>fork採点の内訳（90点）</h2>
+  <table>
+    <tr><th>軸</th><th>点</th><th>採点者コメント要旨</th></tr>
+    <tr><td>hook_open</td><td>13/15</td><td>前置きなし・普遍違和感で良質。冒頭一文はやや独白調（軽微）</td></tr>
+    <tr><td>prescription_depth</td><td>24/25</td><td>六爻をdb通り引き「何をやめ/何をするか」へ翻訳。象辞まで着地＝最強ホールド型</td></tr>
+    <tr><td>concrete_beats</td><td>14/15</td><td>名場面ビート濃い（学園の二面性・結成宣言・ユフィ・ブラックリベリオン）</td></tr>
+    <tr><td>satire_direction</td><td>13/15</td><td>刃は「匿名の石投げは夬ではない」＝社会と自分へ。第1話台詞の回収が効く</td></tr>
+    <tr><td>natural_voice</td><td>17/20</td><td>V_07_02/V_08_01の54字級長文は読点分割推奨（軽微・下記D参照）</td></tr>
+    <tr><td>structure_balance</td><td>9/10</td><td>6幕揃い・30シーン・卦の構造読み（五陽一陰）正確</td></tr>
+  </table>
+
+  <h2>台本全文（30シーン）</h2>
+  <div class="acthead">幕1 違和感の提示</div>
+<div class="scene"><div class="meta">V_01_01<span>act1_hook</span><span>—</span></div><div class="txt">これ、たぶんもう要らないよね、と思いながら続けているものが、職場にも家にもあります。誰も聞いていない毎週の報告会。形だけのハンコ。読まれない日報。</div></div>
+<div class="scene"><div class="meta">V_01_02<span>act1_hook</span><span>—</span></div><div class="txt">やめようと言えば早いのに、言い出すと角が立つ。だから黙って付き合う。そのあいだに削られていくのは、こちらの時間と気力のほうなんですよね。</div></div>
+<div class="scene"><div class="meta">V_01_03<span>act1_hook</span><span>—</span></div><div class="txt">そういう澱みは、決壊する直前が、いちばん静かなんです。水がダムの上まで昇りきった湖みたいに。3000年前の本に、そのぎりぎりの状態を名指しした形があります。夬、決壊と読みます。今日はその話です。</div></div>
+<div class="acthead">幕2 観察</div>
+<div class="scene"><div class="meta">V_02_01<span>act2_story</span><span>—</span></div><div class="txt">コードギアスというアニメがあります。主人公のルルーシュは、退屈をもてあました天才の学生でした。ある日偶然、人を絶対に従わせる力を拾ってしまう。第1話、銃を向けられた彼が、逆に敵を追い詰めてこう言います。撃っていいのは、撃たれる覚悟のある奴だけだ、と。</div></div>
+<div class="scene"><div class="meta">V_02_02<span>act2_story</span><span>—</span></div><div class="txt">この力の正体が、面白いんです。シンジュクという戦場で、彼はC.C.という少女に命を救われます。願いを一つ叶える、という契約の代わりに授かったのが、王の力、ギアス。人を絶対に従わせる、取り消しのきかない命令の力でした。</div></div>
+<div class="scene"><div class="meta">V_02_03<span>act2_story</span><span>—</span></div><div class="txt">ただしこの力、万能ではないんです。同じ相手に使えるのは、一度きり。しかも、直接その目を見た相手にしか効かない。やり直しのきかない力を、一人の学生が持ってしまった。ここから、彼の二重生活が始まります。</div></div>
+<div class="scene"><div class="meta">V_02_04<span>act2_story</span><span>—</span></div><div class="txt">ルルーシュは素顔を仮面で隠し、ゼロと名乗ります。占拠されたホテルから人質を救い出したその夜、彼は世界に向けて宣言する。力ある者よ、我を恐れよ。力なき者よ、我を求めよ。黒の騎士団という組織が、こうして生まれました。</div></div>
+<div class="acthead">幕2 観察（対比）</div>
+<div class="scene"><div class="meta">V_03_01<span>act2_compare</span><span>—</span></div><div class="txt">ここで、そっくりな入口から入った別の学生を思い出します。デスノートの、夜神月です。あちらも退屈な天才で、ある日ノートという力を偶然拾う。第1話の入り口は、ルルーシュとほとんど同じなんです。</div></div>
+<div class="scene"><div class="meta">V_03_02<span>act2_compare</span><span>—</span></div><div class="txt">二人とも、昼の顔まで似ています。月は全国模試1位の優等生。ルルーシュはアッシュフォード学園の生徒会副会長で、文化祭の準備をして、友人と笑っている。その同じ手で、夜は世界を裁いていた。ただ、二人が最後に立った場所は、正反対でした。</div></div>
+<div class="acthead">幕2 観察</div>
+<div class="scene"><div class="meta">V_04_01<span>act2_story</span><span>—</span></div><div class="txt">ルルーシュが世界を敵に回した動機は、驚くほど個人的なんです。妹のナナリー。銃弾で歩く力を奪われ、目も見えなくなった妹が、安心して笑える優しい世界。仮面の下で欲しかったのは、それだけでした。</div></div>
+<div class="scene"><div class="meta">V_04_02<span>act2_story</span><span>—</span></div><div class="txt">けれど力は、少しずつ彼の手に負えなくなっていきます。ある日、ギアスが制御を失い、左目に宿った力が、切れなくなった。冗談のつもりで口にした一言が、そのまま絶対の命令に変わってしまうんです。</div></div>
+<div class="scene"><div class="meta">V_04_03<span>act2_story</span><span>—</span></div><div class="txt">その一言を受けてしまったのが、心を通わせたはずの皇女、ユーフェミアでした。本人の意思とは裏腹に、虐殺を指示する側に回ってしまう。わざとではない。誰も望んでいない。それでも彼は、その悲劇すら利用すると決めました。</div></div>
+<div class="scene"><div class="meta">V_04_04<span>act2_story</span><span>—</span></div><div class="txt">決定的だったのは、ブラックリベリオンと呼ばれる反乱です。あと一歩で勝てる、というところで、妹のナナリーが何者かに連れ去られる。彼は指揮を放り出して妹を追い、指揮官を失った騎士団は、総崩れになりました。嘘と、切り捨てた犠牲が、あの静かな湖のように、水位を上げていきます。</div></div>
+<div class="acthead">幕3 種明かし</div>
+<div class="scene"><div class="meta">V_05_01<span>act3_reveal</span><span>—</span></div><div class="txt">ここで、3000年前の本の話をさせてください。易経という、人に起きる変化のパターンを64通り、順番に並べて記録した古い本があります。その並びのどこかに、水位が限界まで昇りきった、まさにあの湖の状態が置かれています。夬。決壊、という意味の形です。</div></div>
+<div class="scene"><div class="meta">V_05_02<span>act3_reveal</span><span>—</span></div><div class="txt">絵にすると、こうなんです。沢天夬。上に沢、つまり湖があって、下に天がある。下から五本の力強い線が伸びて、いちばん上に残った、たった一本の弱い線を、押し上げていく。天まで昇りきった水が、最後のひと押しで、堤を破ろうとしている形なんです。</div></div>
+<div class="scene"><div class="meta">V_05_03<span>act3_reveal</span><span>—</span></div><div class="txt">その夬に、短い言葉が添えられています。王の庭で、はっきりと真実を告げよ。ただし、危うさを伴う。自分の街にも知らせよ。そして、武力に頼るな。膿を出すときの、守るべき作法のようなものが、そこに書き残されているんです。</div></div>
+<div class="scene"><div class="meta">V_05_04<span>act3_reveal</span><span>—</span></div><div class="txt">ここが、夬のいちばん大事なところだと私は思っています。ゼロという仮面、つまり匿名の告発では、膿は出きらないんです。夬が言うのは、名乗って、王の庭のど真ん中で告げよ、ということ。そしてルルーシュが最後に選んだのは、仮面を捨てて、その真ん中に立つことでした。</div></div>
+<div class="scene"><div class="meta">V_05_05<span>act3_reveal</span><span>—</span></div><div class="txt">彼は皇帝の座につき、世界中の憎しみを、わざと自分ひとりに集めます。そして親友のスザクに、ゼロとして自分を討たせ、憎しみの連鎖ごと断ち切ろうとした。ゼロレクイエムと呼ばれる計画です。</div></div>
+<div class="scene"><div class="meta">V_05_06<span>act3_reveal</span><span>—</span></div><div class="txt">世界の敵をひとりで演じて、仲間に自分を討たせる。この幕引き、革の回で語った進撃のエレンの話には、実は続きがあったわけです。深追いはしませんが、同じ形が、ここにもある。</div></div>
+<div class="acthead">幕4 風刺の刃</div>
+<div class="scene"><div class="meta">V_06_01<span>act4_blade</span><span>—</span></div><div class="txt">この目で今の世の中を見ると、私たちは膿の告発が、実は大好きなんです。SNSでは毎日、誰かが燃えている。正しさを掲げて、石を投げる。でも夬の条件は、けっこう厳しい。王の庭で、名乗って、しかも自分の街、つまり身内の澱みにも知らせよ、なんです。</div></div>
+<div class="scene"><div class="meta">V_06_02<span>act4_blade</span><span>—</span></div><div class="txt">顔を隠して遠くから石を投げるのは、夬ではありません。正義を消費して気持ちよくなることと、腹をくくって膿を出すことは、まったく別ものなんです。撃っていいのは、撃たれる覚悟のある奴だけ。ルルーシュがあの第1話で言った言葉は、そのまま、告発する私たち自身に返ってきます。</div></div>
+<div class="acthead">幕5 処方箋（価値の本体）</div>
+<div class="scene"><div class="meta">V_07_01<span>act4_practice</span><span>—</span></div><div class="txt">じゃあ、どう膿を出せばいいのか。夬には、下から上へ、六本の段が書かれています。決壊させずに水を抜く、その順番のようなものです。ひとつずつ、職場や家の、溜まってしまった澱みに置きかえてみます。</div></div>
+<div class="scene"><div class="meta">V_07_02<span>act4_practice</span><span>—</span></div><div class="txt">初めの段は、勇み足のつま先。勝てる見込みもないのに飛び出すと、しくじる。指揮を捨てたあの総崩れが、まさにそれです。次の段は、夜になっても鎧を脱ぐな。私は言い出す前に、同じ違和感の人がもう一人いるか確かめて、聞かれそうな数字を先にそろえておくようにしています。</div></div>
+<div class="scene"><div class="meta">V_07_03<span>act4_practice</span><span>—</span></div><div class="txt">三つ目の段は、少し切ないんです。ひとり雨に濡れ、泥をはねられ、まわりから非難される。それでも、咎はない、と書いてある。膿を出す役回りは、たいてい孤独なんです。だから私は、匿名の目安箱には入れず、名前を出して一言添えることにしています。筋が通っているなら、それでいい。</div></div>
+<div class="scene"><div class="meta">V_07_04<span>act4_practice</span><span>—</span></div><div class="txt">四つ目の段は、耳の痛い警告です。腿の皮がむけるほど進みたくても、意地を張って進むな。人の言うことが聞けなくなるのが、いちばんの病だ、と。</div></div>
+<div class="scene"><div class="meta">V_07_05<span>act4_practice</span><span>—</span></div><div class="txt">ルルーシュはスザクの、間違ったやり方で得た結果に意味はない、という言葉を、最後まで退けました。その代償は、たしかにあった。なので私は、反対意見だけは遮らずに、最後まで言わせる時間を一つ設けるようにしています。耳が痛いときほど、です。</div></div>
+<div class="scene"><div class="meta">V_07_06<span>act4_practice</span><span>—</span></div><div class="txt">五つ目は、根深い雑草を断ちつつ、真ん中の道を外すな。相手の人格ではなく、仕組みの話だけをする、と決めておくくらいで、ちょうどいいんです。そして最後の段が、いちばん怖い。声を上げなければ、終いには凶。直った、で終わらせず、ひと月後にもう一度だけ見に行く。抜き残した膿は、戻ってくるんです。</div></div>
+<div class="scene"><div class="meta">V_07_07<span>act4_practice</span><span>—</span></div><div class="txt">夬の全体を貫く言葉が、ひとつあります。すぐれた人は、富を独り占めせず、下へ配りながら、自分の徳にあぐらをかかない。溜め込む者から、崩れる。決壊する湖は、いつも、水をどこにも流さずに、ぜんぶ抱え込んだ湖なんです。</div></div>
+<div class="acthead">幕6 余韻</div>
+<div class="scene"><div class="meta">V_08_01<span>act5_end</span><span>—</span></div><div class="txt">膿を出すというのは、正しさを声高に主張することではなくて、その結果を、自分で引き受けることなんだと思います。</div></div>
+<div class="scene"><div class="meta">V_08_02<span>act5_end</span><span>—</span></div><div class="txt">仮面を外して、いちばん見られたくない真ん中に、自分から立てるかどうか。決壊させる前に、水を抜けるかどうか。それだけなんです。</div></div>
+
+  <div class="decision">
+    <h2>🎯 判断ポイント — この台本でGOしますか？</h2>
+    <div class="opt rec"><div class="key">A</div><div class="body"><b>承認 — 絵コンテ（Step 2.5）へ進む（推奨）</b>
+      <span>次: 立ち絵設計表（誰/アングル/象徴小道具/象徴色）の絵コンテHTMLを提示→承認後に音声・画像へ</span></div></div>
+    <div class="opt"><div class="key">B</div><div class="body"><b>修正指示あり</b>
+      <span>気になるシーン番号と直したい方向をそのまま返信してください（該当箇所だけ直して再提示）</span></div></div>
+    <div class="opt"><div class="key">C</div><div class="body"><b>採点者の軽微指摘も反映してから進む</b>
+      <span>冒頭一文の断定強化＋長文2シーン（V_07_02/V_08_01）の読点分割を適用して絵コンテへ（再採点はしない・機械ゲートのみ再実行）</span></div></div>
+    <div class="opt"><div class="key">D</div><div class="body"><b>保留・通しで音声を先に聞きたい等</b>
+      <span>要望をそのまま返信してください</span></div></div>
+  </div>
+</div>
+</body>
+</html>
