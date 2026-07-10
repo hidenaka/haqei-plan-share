@@ -1,0 +1,285 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>全体報告 2026-07-11 — 提出物・調査資料・戦略v2ポータル</title>
+<style>
+  :root {
+    --ink: #1a1a1a;
+    --ink-2: #4a4a4a;
+    --bg: #f7f5ee;
+    --paper: #fbf9f1;
+    --line: #d8d2bf;
+    --accent: #166534;
+    --accent-soft: #dcecdd;
+    --warn: #c83a2c;
+    --warn-soft: #f6dcd6;
+    --yellow: #f4d35e;
+    --shadow: 0 1px 0 rgba(0,0,0,.04), 0 8px 24px rgba(0,0,0,.06);
+    --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+    --sans: -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN",
+            "Hiragino Sans", "Noto Sans JP", "Yu Gothic", "Meiryo", sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 56px 28px 96px; }
+
+  .hero { margin-bottom: 56px; }
+  .hero .kicker {
+    display: inline-block;
+    background: var(--accent); color: #fff;
+    font-size: 12px; font-weight: 700; letter-spacing: .12em;
+    padding: 6px 12px; border-radius: 999px;
+    margin-bottom: 18px;
+  }
+  .hero h1 {
+    font-size: 40px; line-height: 1.3; margin: 0 0 14px;
+    letter-spacing: -.01em;
+  }
+  .hero h1 b { color: var(--accent); }
+  .hero p.lede {
+    font-size: 18px; color: var(--ink-2); margin: 0; max-width: 780px;
+  }
+  .tldr {
+    margin-top: 28px; padding: 22px 24px;
+    background: var(--paper); border: 1px solid var(--line); border-radius: 12px;
+    box-shadow: var(--shadow);
+  }
+  .tldr h2 { font-size: 13px; letter-spacing: .15em; color: var(--accent); margin: 0 0 10px; }
+  .tldr ol { margin: 0; padding-left: 20px; }
+  .tldr li { margin: 4px 0; }
+
+  section { margin: 64px 0 0; }
+  section > h2 {
+    font-size: 28px; line-height: 1.4; margin: 0 0 6px;
+    border-left: 6px solid var(--accent); padding-left: 12px;
+  }
+  section > h2 .num {
+    color: var(--accent); font-variant-numeric: tabular-nums; margin-right: 10px;
+  }
+  section > p.sub { color: var(--ink-2); margin: 0 0 22px; }
+
+  figure {
+    margin: 0 0 24px; padding: 12px;
+    background: var(--paper); border: 1px solid var(--line); border-radius: 14px;
+    box-shadow: var(--shadow);
+  }
+  figure img { display: block; width: 100%; height: auto; border-radius: 8px; }
+  figcaption {
+    font-size: 13px; color: var(--ink-2); margin-top: 10px; text-align: center;
+  }
+
+  .table {
+    width: 100%; border-collapse: collapse; margin: 12px 0 6px;
+    background: var(--paper); border: 1px solid var(--line); border-radius: 12px; overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+  .table th, .table td {
+    text-align: left; padding: 12px 14px; border-bottom: 1px solid var(--line);
+    vertical-align: top; font-size: 14.5px;
+  }
+  .table th { background: #efeadb; font-weight: 700; }
+  .table tr:last-child td { border-bottom: 0; }
+  .table .pick { background: var(--accent-soft); }
+  .table .pick td:first-child { font-weight: 700; color: var(--accent); }
+  .table a { color: var(--accent); font-weight: 700; word-break: break-all; }
+
+  .callout {
+    margin: 18px 0;
+    padding: 16px 18px;
+    border-left: 4px solid var(--accent);
+    background: var(--accent-soft);
+    border-radius: 0 10px 10px 0;
+  }
+  .callout.warn { border-color: var(--warn); background: var(--warn-soft); }
+  .callout p { margin: 0; }
+  .callout strong { color: var(--accent); }
+  .callout.warn strong { color: var(--warn); }
+
+  .captures { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .captures figure { margin: 0; }
+  @media (max-width: 720px) { .captures { grid-template-columns: 1fr; } }
+
+  .conclusion {
+    margin-top: 56px; padding: 28px 28px 24px;
+    background: var(--ink); color: #f6f3e8; border-radius: 16px;
+  }
+  .conclusion h2 { color: var(--yellow); border: 0; padding: 0; margin: 0 0 12px; }
+  .conclusion ol { margin: 0; padding-left: 20px; }
+  .conclusion li { margin: 6px 0; }
+
+  footer { margin-top: 36px; color: var(--ink-2); font-size: 13px; }
+
+  @media (max-width: 720px) {
+    .wrap { padding: 32px 18px 64px; }
+    .hero h1 { font-size: 30px; }
+    section > h2 { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <span class="kicker">全体報告 2026-07-11</span>
+    <h1>提出物・調査8本・戦略v2 — <b>全成果ポータル</b></h1>
+    <p class="lede">この2日間の全成果を1枚に整理した。ハッカソン提出物は本番稼働済みで残りはフォーム提出のみ。調査・戦略資料は8本すべてリンクから読める。そして全体は「工事マップは待ち受けオプション、主戦候補はおさんぽスコアと地図化パック」という戦略v2に束ねられている。</p>
+    <div class="tldr">
+      <h2>TL;DR</h2>
+      <ol>
+        <li>🏗️ 提出物「工事お知らせAI」: 本番E2E全線確認済み（自作OCR・QR・発注者報告）。残作業は<b>フォーム提出のみ</b>（締切7/27 17:00）</li>
+        <li>📚 調査・戦略資料8本: 一次情報獲得→B2G実例→収益→リスク→英米検証→世界9カ国→練り直し→戦略v2。すべて本ページからリンク</li>
+        <li>🧭 戦略v2: ハッカソン提出は「終わり」ではなく、待ち受けオプションの名刺＋3回接触モデルの最初の場。10月末G-Pゲートで主戦決定</li>
+      </ol>
+    </div>
+  </header>
+
+  <section>
+    <h2><span class="num">01</span>全体像 — 3つの柱は1本に繋がっている</h2>
+    <p class="sub">提出物・資料・戦略は別々の作業ではない</p>
+    <figure>
+      <img src="images/concept-01-01.png" alt="3つの柱: ハッカソン提出物・調査戦略資料8本・戦略v2">
+      <figcaption>土台は7/27の提出。提出物が名刺になり、資料が判断を支え、戦略v2が次の90日を決める</figcaption>
+    </figure>
+    <table class="table">
+      <thead><tr><th>柱</th><th>状態</th><th>残作業</th></tr></thead>
+      <tbody>
+        <tr class="pick"><td>🏗️ ハッカソン提出物</td><td>本番稼働・E2E確認済み・キャプチャ4点撮影済み</td><td><b>フォーム提出のみ</b>（あなたの送信ボタン）</td></tr>
+        <tr><td>📚 調査・戦略資料</td><td>8本完成（セクション04にリンク集）</td><td>なし（読んで判断に使う）</td></tr>
+        <tr><td>🧭 戦略v2</td><td>確定・メモリ保存済み</td><td>8月から実行（仕込みはAI主担当）</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2><span class="num">02</span>ハッカソン提出物の理解 — 何を出すのか</h2>
+    <p class="sub">「工事お知らせAI」— 既存書類が5分で住民向けQRと発注者報告になる</p>
+    <figure>
+      <img src="images/concept-03-01.png" alt="工事お知らせAIのパイプライン: 書類→OCR→確認→公開→QR/チラシ/報告">
+      <figcaption>提出主題は「工事お知らせAI」。おさんぽセーフティは同一コードベースの住民側ユースケース</figcaption>
+    </figure>
+    <table class="table">
+      <thead><tr><th>項目</th><th>内容・URL</th></tr></thead>
+      <tbody>
+        <tr class="pick"><td>本番アプリ</td><td><a href="https://osanpo-safety.haqei64384.workers.dev/">osanpo-safety.haqei64384.workers.dev</a>（ランディング）／<a href="https://osanpo-safety.haqei64384.workers.dev/trace.html">/trace.html</a>（書類読取の本線デモ）</td></tr>
+        <tr><td>審査員が触れる実デモ</td><td><a href="https://osanpo-safety.haqei64384.workers.dev/notice.html?id=86c36c0e-425b-4752-abe9-a0b02acc758f">住民向けQRページ（新宿西口・サンプル工事）</a> — 昨日の通し操作で実際に公開したもの</td></tr>
+        <tr><td>技術構成</td><td>Cloudflare Workers ＋ D1（都オープンデータ実データ765件）＋ <b>自作OCR（PP-OCRv5）を Cloud Run で本番稼働</b>（8Gi/2CPU・トークン認証・ANTHROPICキー不要）。テスト225件パス</td></tr>
+        <tr><td>実証済みの本線フロー</td><td>書類アップ → OCR（和暦→西暦・年またぎ対応）→ 低信頼項目だけ確認（誤情報ガードレール）→ 地図で区間確認 → 公開 → QRページ・A4チラシ・発注者報告が同時生成</td></tr>
+        <tr><td>昨日直した実バグ</td><td>OCRが「要確認」にした項目を手入力で直しても公開が永久にブロックされる問題 → 修正・本番デプロイ・E2Eで公開成功を確認</td></tr>
+        <tr><td>提出フォーム</td><td>form.jotform.com/261468325066056（締切 <b>7/27(月) 17:00</b>）。原稿は docs/entry/entry-application.md に準備済み</td></tr>
+      </tbody>
+    </table>
+    <div class="callout"><p><strong>審査での見せ方（entry原稿の骨子）:</strong> 「工事周知を『紙を作って終わり』にしない。住民が見られるQR地図・変更履歴・発注者報告・再利用できるオープンデータまで同じ流れで作る」。検証データも実測で載せる: サンプル書類10件で必須項目抽出率80%（合否ゲートPASS）。</p></div>
+  </section>
+
+  <section>
+    <h2><span class="num">03</span>提出キャプチャ4点（実物）</h2>
+    <p class="sub">昨夜、本番環境を実際に操作して撮影したもの。フォームには最大3点 — 推奨は 1・2・3b</p>
+    <div class="captures">
+      <figure>
+        <img src="images/capture-1-document-intake.png" alt="キャプチャ1: 書類読取画面">
+        <figcaption>① 書類読取 — sample-1から工事名・工期・規制をAI下書き</figcaption>
+      </figure>
+      <figure>
+        <img src="images/capture-2-map-candidate.png" alt="キャプチャ2: 地図候補確認画面">
+        <figcaption>② 地図候補確認 — 区間144m・低信頼1項目・GTFS徒歩影響9停留所</figcaption>
+      </figure>
+      <figure>
+        <img src="images/capture-3-publish-report.png" alt="キャプチャ3: 公開と発注者報告">
+        <figcaption>③ 公開＋発注者報告プレビュー（代替候補）</figcaption>
+      </figure>
+      <figure>
+        <img src="images/capture-3b-notice-qr.png" alt="キャプチャ3b: 住民向けQRページ">
+        <figcaption>③b 住民向けQRページ — 「看板にこのQRを貼ると通行者がスマホで確認」（推奨）</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="num">04</span>調査・戦略資料 8本 — リンク集</h2>
+    <p class="sub">すべて一次情報ベース・図解つき・スマホ閲覧可</p>
+    <table class="table">
+      <thead><tr><th>#</th><th>資料（リンク）</th><th>1行サマリ</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td><a href="https://hidenaka.github.io/haqei-plan-share/construction-ai-strategy/">一次情報獲得の3段ロケット</a></td><td>人脈ゼロから工事の一次情報を獲る順番: オープンデータ→接点→現場。現場の入口は工事看板</td></tr>
+        <tr><td>2</td><td><a href="https://hidenaka.github.io/haqei-plan-share/b2g-solo-dev-cases/">個人のB2G採用実例</a></td><td>実例6件（台湾マスクマップ〜ふるさとチョイス）。公認までは個人可、金が動くと法人格の3関門</td></tr>
+        <tr><td>3</td><td><a href="https://hidenaka.github.io/haqei-plan-share/monetization-construction-map/">収益化調査 — 3階建て</a></td><td>C課金は全滅実証。B2G実勢価格（MCR料金表）と規模感（全国SAM10億弱のニッチ）</td></tr>
+        <tr><td>4</td><td><a href="https://hidenaka.github.io/haqei-plan-share/koji-map-risks-roadmap/">リスク台帳＋ロードマップ</a></td><td>リスク8項目の本丸は「データ鶏卵」と「実行停止」。関所4つ・撤退基準つき</td></tr>
+        <tr><td>5</td><td><a href="https://hidenaka.github.io/haqei-plan-share/overseas-model-japan-fit/">英米モデルの日本検証</a></td><td>英国型は罰金前提で移植不能。米国型「発注契約で義務化」が唯一動く形。B2B期待値は下方修正</td></tr>
+        <tr><td>6</td><td><a href="https://hidenaka.github.io/haqei-plan-share/global-roadworks-models/">世界9カ国・4つの型</a></td><td>住民向け公開単体で儲けた民間はゼロ。金脈は業務側（仏Sogelink €120M・蘭MOOR 250自治体）</td></tr>
+        <tr><td>7</td><td><a href="https://hidenaka.github.io/haqei-plan-share/strategy-pivot-portfolio/">戦略練り直し — オプション化</a></td><td>「労力の割に儲からない」直感をデータで裏付け、第6条件を新設。工事マップを待ち受けに降格</td></tr>
+        <tr class="pick"><td>8</td><td><a href="https://hidenaka.github.io/haqei-plan-share/strategy-v2-mapwork/">戦略v2 — 現行版</a></td><td>あなた発案の3回接触モデル×地図化パックを統合。これが今の公式戦略</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2><span class="num">05</span>戦略v2の現在地 — ハッカソンは戦略の起点</h2>
+    <p class="sub">提出物は「終わったら次」ではなく、待ち受けオプションの名刺＋最初のコミュニティ</p>
+    <table class="table">
+      <thead><tr><th>枠</th><th>中身</th><th>ハッカソン提出物との関係</th></tr></thead>
+      <tbody>
+        <tr class="pick"><td>🏅 ストック主実験</td><td>おさんぽスコア（歩行者安全スコアの不動産向けAPI。Walk Score実証・国内空白・5条件5/5）</td><td>おさんぽセーフティのデータ基盤（L1パイプライン）の副産物として8月に試作</td></tr>
+        <tr class="pick"><td>🗺️ 即金・需要発見</td><td>地図化パック「PDFやExcelに埋もれた地域情報をWeb地図に」（初回5〜15万＋月1万 [仮説]）。3回接触モデルで販売: コールド営業ゼロ・週3h上限・コア5人×3回</td><td>提出物がデモ1号＝1回目接触で「見せる作品」。ハッカソンの交流会・実装支援が最初の場</td></tr>
+        <tr><td>🔍 裏メニュー</td><td>AI事業検証レポート（今回の調査8本がそのままデモ）</td><td>顧客が「次の事業どうしよう」と言った時に会話から出す</td></tr>
+        <tr><td>🎫 待ち受け</td><td>工事マップ事業（自治体業務SaaS再定義済み）</td><td>提出→Final Stage進出なら実装支援の「引き」で再評価。義務化の波はAIが監視</td></tr>
+      </tbody>
+    </table>
+    <div class="callout warn"><p><strong>撤退基準（決定済み・動かさない）:</strong> 地図化パック=90日で有料試行0件なら商品だけ再定義／おさんぽスコア=2027年3月に有償2社未満で凍結／G-Pゲート（10月末）=有料試行・手応え・楽しさで主戦を決定。</p></div>
+  </section>
+
+  <section>
+    <h2><span class="num">06</span>今後の時間割</h2>
+    <p class="sub">今週はフォーム提出だけ。8月から仕込み</p>
+    <figure>
+      <img src="images/concept-06-01.png" alt="7月提出→8月仕込み→9月接触→10月ゲートの時間割">
+      <figcaption>あなたの実働は週3時間の対人＋判断。作る・調べる・監視はAI</figcaption>
+    </figure>
+    <table class="table">
+      <thead><tr><th>時期</th><th>あなた</th><th>AI</th></tr></thead>
+      <tbody>
+        <tr class="pick"><td>今週〜7/27</td><td><b>フォーム提出</b>（「フォーム提出の準備をして」と言えば入力内容一式を用意。送信ボタンだけあなた）</td><td>原稿・キャプチャ・URL一式の照合と最終チェックリスト作成</td></tr>
+        <tr><td>8月前半</td><td>ビジネスチャンス・ナビ登録／Code for Japan Slack参加</td><td>デモ3点整理・固定自己紹介文・おさんぽスコア試作開始</td></tr>
+        <tr><td>8月後半〜9月</td><td>ハッカソン交流で3人と会話→2回目接触×3件／スコアデモ公開ボタン</td><td>地図例の下ごしらえ・接触履歴CRM・ナビ案件監視</td></tr>
+        <tr><td>10月</td><td>棚卸しヒアリング3件→有料試行1件→<b>G-Pゲート判断</b></td><td>質問リスト・料金表・判定材料の整理</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2><span class="num">07</span>未処理の確認事項（あなたの指示待ち）</h2>
+    <p class="sub">どれも1行の返事で動ける</p>
+    <table class="table">
+      <thead><tr><th>#</th><th>事項</th><th>返事の例</th></tr></thead>
+      <tbody>
+        <tr class="pick"><td>1</td><td>フォーム提出の準備開始</td><td>「フォーム提出の準備をして」</td></tr>
+        <tr><td>2</td><td>未コミット変更のコミット（ocr-node/Dockerfile・trace.jsバグ修正・DEPLOY.md・キャプチャ）</td><td>「コミットして」</td></tr>
+        <tr><td>3</td><td>キャプチャ3点の最終選定（推奨: 1・2・3b。発注者報告を推すなら3と差し替え）</td><td>「1・2・3bでいい」</td></tr>
+        <tr><td>4</td><td>デモ公開notice（新宿西口サンプル）の扱い — 審査用に残置が推奨</td><td>「残しておいて」or「消して」</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <div class="conclusion">
+    <h2>結論</h2>
+    <ol>
+      <li>ハッカソン提出物は完成状態: 自作OCRの本番稼働・E2E全線確認・実バグ修正・キャプチャ4点まで済み、残りはフォーム提出のみ（締切7/27 17:00・余裕あり）。</li>
+      <li>2日間の調査8本はすべてリンクから読める。結論の要点: 工事マップ単独は儲からない（世界実証）→ 待ち受けオプション化 → 主戦候補は「おさんぽスコア」と「地図化パック×3回接触」。</li>
+      <li>提出物は戦略v2の起点そのもの — 名刺・デモ1号・最初のコミュニティの3役。今週フォームを出し、8月から仕込みに入る。判断が必要な4点はセクション07に整理済み。</li>
+    </ol>
+  </div>
+
+  <footer>全体報告 2026-07-11 06時 / 対象期間: 2026-07-10〜11 / 資料8本: hidenaka.github.io/haqei-plan-share 配下 / 本番: osanpo-safety.haqei64384.workers.dev</footer>
+
+</div>
+</body>
+</html>
