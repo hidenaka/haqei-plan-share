@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>路駐戦略 — 予測を売るな、路線の面倒を見ろ</title>
+<style>
+  :root {
+    --ink: #1a1a1a; --ink-2: #4a4a4a; --bg: #f7f5ee; --paper: #fbf9f1; --line: #d8d2bf;
+    --accent: #92400e; --accent-soft: #f6e4d1;
+    --warn: #c83a2c; --warn-soft: #f6dcd6; --yellow: #f4d35e;
+    --shadow: 0 1px 0 rgba(0,0,0,.04), 0 8px 24px rgba(0,0,0,.06);
+    --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+    --sans: -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Noto Sans JP", "Yu Gothic", "Meiryo", sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { font-family: var(--sans); background: var(--bg); color: var(--ink); line-height: 1.7; -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 56px 28px 96px; }
+  .hero { margin-bottom: 56px; }
+  .hero .kicker { display: inline-block; background: var(--accent); color: #fff; font-size: 12px; font-weight: 700; letter-spacing: .12em; padding: 6px 12px; border-radius: 999px; margin-bottom: 18px; }
+  .hero h1 { font-size: 40px; line-height: 1.3; margin: 0 0 14px; letter-spacing: -.01em; }
+  .hero h1 b { color: var(--accent); }
+  .hero p.lede { font-size: 18px; color: var(--ink-2); margin: 0; max-width: 780px; }
+  .tldr { margin-top: 28px; padding: 22px 24px; background: var(--paper); border: 1px solid var(--line); border-radius: 12px; box-shadow: var(--shadow); }
+  .tldr h2 { font-size: 13px; letter-spacing: .15em; color: var(--accent); margin: 0 0 10px; }
+  .tldr ol { margin: 0; padding-left: 20px; }
+  .tldr li { margin: 4px 0; }
+  section { margin: 64px 0 0; }
+  section > h2 { font-size: 28px; line-height: 1.4; margin: 0 0 6px; border-left: 6px solid var(--accent); padding-left: 12px; }
+  section > h2 .num { color: var(--accent); font-variant-numeric: tabular-nums; margin-right: 10px; }
+  section > p.sub { color: var(--ink-2); margin: 0 0 22px; }
+  figure { margin: 0 0 24px; padding: 12px; background: var(--paper); border: 1px solid var(--line); border-radius: 14px; box-shadow: var(--shadow); }
+  figure img { display: block; width: 100%; height: auto; border-radius: 8px; }
+  figcaption { font-size: 13px; color: var(--ink-2); margin-top: 10px; text-align: center; }
+  .table { width: 100%; border-collapse: collapse; margin: 12px 0 6px; background: var(--paper); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; box-shadow: var(--shadow); }
+  .table th, .table td { text-align: left; padding: 12px 14px; border-bottom: 1px solid var(--line); vertical-align: top; font-size: 14.5px; }
+  .table th { background: #efeadb; font-weight: 700; }
+  .table tr:last-child td { border-bottom: 0; }
+  .table .pick { background: var(--accent-soft); }
+  .table .pick td:first-child { font-weight: 700; color: var(--accent); }
+  .callout { margin: 18px 0; padding: 16px 18px; border-left: 4px solid var(--accent); background: var(--accent-soft); border-radius: 0 10px 10px 0; }
+  .callout.warn { border-color: var(--warn); background: var(--warn-soft); }
+  .callout p { margin: 0; }
+  .callout strong { color: var(--accent); }
+  .callout.warn strong { color: var(--warn); }
+  .quote { border-left: 3px solid var(--line); padding: 6px 16px; color: var(--ink-2); font-size: 14.5px; margin: 18px 0; }
+  .gpt { background: #1f2226; color: #e8e6df; border-radius: 12px; padding: 16px 18px; margin: 14px 0; font-size: 14px; line-height: 1.85; }
+  .gpt .t { color: var(--yellow); font-weight: 700; font-size: 12.5px; letter-spacing: .1em; display: block; margin-bottom: 6px; }
+  .conclusion { margin-top: 56px; padding: 28px 28px 24px; background: var(--ink); color: #f6f3e8; border-radius: 16px; }
+  .conclusion h2 { color: var(--yellow); border: 0; padding: 0; margin: 0 0 12px; }
+  .conclusion ol { margin: 0; padding-left: 20px; }
+  .conclusion li { margin: 6px 0; }
+  footer { margin-top: 36px; color: var(--ink-2); font-size: 13px; }
+  @media (max-width: 720px) { .wrap { padding: 32px 18px 64px; } .hero h1 { font-size: 30px; } section > h2 { font-size: 22px; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <span class="kicker">路駐戦略 — 三者協議の結論</span>
+    <h1>予測を売るな。<b>路線の面倒を見ろ</b></h1>
+    <p class="lede">「路駐が最大の課題」— その通りだったので、①誰がどう解決しようとしているかを一次情報で調査し、②その材料で外部AI（GPT-5.5/codex）に私の仮説を批判させ、③批判に現場の非対称で反撃して統合した。結論: 売り物は「路駐予測API」ではなく「特定路線の運行阻害リスク監査＋毎朝の変化予報（人力込み）」。そして個人には作れないとされた正解データは、タクシー乗務そのもので自作できる。</p>
+    <div class="tldr">
+      <h2>TL;DR</h2>
+      <ol>
+        <li>調査: 路駐対策の主流は「回避技術・ルートで逃げる・路側カメラのリアルタイム検知」。<b>「予測・事前情報」（どこで・いつ起きやすいか）は国内ほぼ完全な空白</b>（確度85%）。境町は技術でなく住民自粛依頼で解決した</li>
+        <li>GPT-5.5の批判: 予測単体は「作れるが売れない」— 個人には精度の客観証明が不可能。ただし<b>「路線監査＋毎朝の予報を人力込みで、対象を路駐・工事・占用・ごみ収集・イベントまで広げて」売るなら筋が良い</b>。買い手はAV企業より自治体・交通事業者</li>
+        <li>私の反撃と統合: 正解データは<b>タクシー・シャドー運用</b>で自作する（予報を前夜に登録→翌日の乗務で答え合わせ→適中率レポートが営業資料になる）。90日・週30分・コストほぼゼロで検証可能</li>
+      </ol>
+    </div>
+  </header>
+
+  <section>
+    <h2><span class="num">01</span>三者協議の構図と結論</h2>
+    <p class="sub">調査（事実）× GPT-5.5（批判）× 現場知（反撃）</p>
+    <figure>
+      <img src="images/concept-01-01.png" alt="調査・GPT-5.5・タクシードライバーの三者協議の結論">
+      <figcaption>批判を通った結論だけが残った: 「特定路線の運行阻害リスク監査＋毎朝の変化予報」</figcaption>
+    </figure>
+    <table class="table">
+      <thead><tr><th>席</th><th>持ち込んだもの</th><th>結論への寄与</th></tr></thead>
+      <tbody>
+        <tr><td>🔍 調査（一次情報）</td><td>対策全景と空白の特定（下記02）</td><td>「明日を見るレイヤーは誰もやっていない」＝機会の存在証明</td></tr>
+        <tr><td>🤖 GPT-5.5（独立レビュー・忖度なし指示）</td><td>仮説「路駐予測レイヤー」への批判と代替案</td><td>予測単体の商品化を棄却。「人力込みの路線監査」へ転換。検証設計（シャドー運用）を提示</td></tr>
+        <tr class="pick"><td>🚕 現場知（あなた）</td><td>毎日路上にいる非対称</td><td>「個人に正解データは作れない」への唯一の反例＝乗務での答え合わせ</td></tr>
+      </tbody>
+    </table>
+    <p class="note" style="font-size:13px;color:var(--ink-2);">※ GPT-5.6（oracle・重量版）はChromeのChatGPT未ログインで今回接続不可。ログイン後に同じ相談文で追加協議し、結論が変わればこの資料を改訂する。</p>
+  </section>
+
+  <section>
+    <h2><span class="num">02</span>調査 — 世界は「今」を見ていて「明日」を見ていない</h2>
+    <p class="sub">対策の全景マップ（一次情報）</p>
+    <figure>
+      <img src="images/concept-02-01.png" alt="路駐対策の全景: 検知・回避・社会的解決は進むが、予測レイヤーは空白">
+      <figcaption>リアルタイム検知（現在）は混雑、予測（明日）は無人</figcaption>
+    </figure>
+    <table class="table">
+      <thead><tr><th>対策</th><th>実例（一次情報）</th><th>性質</th></tr></thead>
+      <tbody>
+        <tr><td>車両の自動回避</td><td>鳥取: システム更新＋狭路を外すルート再選定＋信号連携＋路側カメラで介入47%→23%に半減。ティアフォーは塩尻で介入なし回避も実現</td><td>「今」への対応。対向車が多い区間・はみ出し禁止線では依然介入が残る</td></tr>
+        <tr><td>路側カメラのリアルタイム検知配信</td><td>国交省が7地域で実証公募、NECはローカル5Gで5自治体</td><td>「今」を知らせる路車協調。設置コストが高くカメラのある場所しか見えない</td></tr>
+        <tr><td>社会側の解決</td><td>境町: 町＋運行事業者が住民に自粛依頼→ルート上の路駐が「皆無」に</td><td>最も効いた対策が技術ではなかったという重要な実例</td></tr>
+        <tr class="pick"><td>予測・事前情報（明日）</td><td><b>国内サービス不在（確度85%）</b>。取締りデータのオープン化もなし。ルート選定の路駐調査は人手・目視（足立区）</td><td>空白。ここが入り口</td></tr>
+      </tbody>
+    </table>
+    <div class="callout"><p><strong>重要な整理 — カメラが普及しても予測は死なない:</strong> カメラは「現在」を見る装置で、予測は「配車・ダイヤ・監視員配置を数時間〜前日に変える」ための別物。ただし裏返しの条件もある: <b>先行時間で運行を実際に変えられない相手には価値ゼロ</b>。だから買い手選びが商品設計そのものになる。</p></div>
+  </section>
+
+  <section>
+    <h2><span class="num">03</span>GPT-5.5の批判 — 原文の要旨をそのまま残す</h2>
+    <p class="sub">耳が痛い順。これを通ったものだけを採用した</p>
+    <div class="gpt"><span class="t">批判1 — 精度の客観証明が個人には無理</span>公開報告＋自身の観測は地点・時間・曜日・天候の偏りが強く、希少事象の正解データが不足する。誤報は迂回・遅延を増やし、見逃しは介入を防げない。買い手が要求する地点別再現率と費用効果に届く保証がない。最大の壁は合法性ではなく「網羅的な教師データと、介入との対応データを個人では持てないこと」。</div>
+    <div class="gpt"><span class="t">批判2 — だから商品を変えろ</span>筋が良いのは「路駐予測API」ではなく、特定路線の「運行阻害リスク監査＋毎朝の変更情報」を<b>人力込みで</b>売ること。対象を路駐だけでなく工事・占用・搬出入・ごみ収集・イベント・植栽作業まで広げ、<b>予測可能な道路イベントから始める</b>。買い手はAV企業より、運行責任と道路調整権を持つ自治体・交通事業者。成果物は危険地点・時間窓・迂回案・関係者への改善要請（境町型の社会側介入まで含む）。</div>
+    <div class="gpt"><span class="t">批判3 — 90日で検証すべきはこれ1つ</span>「予報が実際の運行判断を変え、手動介入を減らすか」。1路線で事前登録した予報を30日以上シャドー運用し、現地正解・適中率・先行時間・回避可能だった介入数を測る。合格条件は精度ではなく、<b>事業者が「この情報なら迂回・時刻変更・監視配置変更を行い、有償継続する」と判断すること</b>。</div>
+  </section>
+
+  <section>
+    <h2><span class="num">04</span>私の反撃 — 正解データは乗務で自作できる</h2>
+    <p class="sub">「個人には持てない」の唯一の反例が、あなたの職業</p>
+    <figure>
+      <img src="images/concept-03-01.png" alt="タクシー・シャドー運用: 予報を前夜登録し、翌日の乗務で答え合わせ、30日で適中率レポート">
+      <figcaption>天気予報士が自分の足で答え合わせする。毎日路上にいる者だけの検証方法</figcaption>
+    </figure>
+    <p>GPT-5.5の批判1は一般論として正しい——普通の個人には。しかしあなたは<b>週5万km級の路上観測を給料をもらいながら行う職業</b>にいる。「網羅的な教師データ」は確かに持てないが、codex自身が言う通り商品は「特定路線」限定。特定路線＋その近傍なら、正解データは乗務で自作できる:</p>
+    <ul>
+      <li><b>前夜</b>: 明日の予報を先に登録する（「この区間、10時台は荷さばきで1車線潰れる」「金曜夕方はこの角に客待ちが並ぶ」）。予報は後出しできない形でタイムスタンプ保存 — これが検証の誠実性の担保</li>
+      <li><b>翌日の乗務中</b>: 通ったときに○×を音声メモ（「雷門通り、予報どおり3台」→ AIが構造化・集計）。<b>追加の労働時間ほぼゼロ</b></li>
+      <li><b>30日後</b>: 適中率レポートが完成。「先月の予報、7割当たっていました」は、どんな営業資料より強い — GPT-5.5の合格条件（事業者の行動が変わるか）を試す入場券になる</li>
+      <li><b>プライバシー設計</b>: ナンバー・顔は一切記録しない。場所×時間帯×台数の集計値のみ（世界調査の「犯罪データと混ぜない」防御線と同じ規律）</li>
+    </ul>
+    <div class="callout"><p><strong>さらにcodexの「予測可能イベントから始めろ」は実装コストほぼゼロで着手できる:</strong> ごみ収集の曜日・時間帯は区の公開情報。イベント・祭りの占用は工事お知らせAIが既に扱う領域。搬出入・客待ちのパターンはあなたの頭の中に既にある。「予測の難しい路駐」は最後でいい — 予報の当たる部分から信頼を作る。</p></div>
+  </section>
+
+  <section>
+    <h2><span class="num">05</span>90日検証プラン — 買い手ゼロでも始められる</h2>
+    <p class="sub">週30分以内・主戦を侵さない</p>
+    <figure>
+      <img src="images/concept-05-01.png" alt="90日検証: 8月仕込み・9月シャドー運用30日・10月適中率レポートを持ってヒアリング">
+      <figcaption>合格条件は精度ではなく「事業者の行動が変わるか」（GPT-5.5の指摘を採用）</figcaption>
+    </figure>
+    <table class="table">
+      <thead><tr><th>月</th><th>やること</th><th>担当</th></tr></thead>
+      <tbody>
+        <tr><td>8月</td><td>観測プロトコル整備（乗務中の音声メモ→AIが構造化する仕組み）／ごみ収集・イベント・工事の公開データを「予測可能イベント台帳」に統合／シャドー運用の対象路線を1本選定（乗務で頻繁に通る道）</td><td>仕組みはAI、路線選定はあなた</td></tr>
+        <tr class="pick"><td>9月</td><td><b>シャドー運用30日</b>: 前夜に予報登録→乗務中に○×→週次で適中率集計。週30分以内</td><td>記録はあなた（乗務のついで）、集計・改善はAI</td></tr>
+        <tr><td>10月</td><td>適中率レポート完成→大田区ヒアリング／運行事業者・自治体1件に「1ルート無料の答え合わせ」を提案（3分トーク台本と接続）</td><td>資料はAI、対面はあなた</td></tr>
+      </tbody>
+    </table>
+    <div class="callout warn"><p><strong>ガードレール:</strong> ①週30分以内 — 超えたら縮小（主戦はおさんぽスコアと地図化パック） ②合格条件は適中率の高さではなく「レポートを見た事業者が行動（迂回・時刻変更・配置変更・有償継続）を変えるか」 ③ナンバー・顔・個人特定情報は記録しない ④G-Pゲート（10月末）の判断材料の一つとして扱い、これ自体を主戦に昇格させるのはゲートを通してから。</p></div>
+  </section>
+
+  <div class="conclusion">
+    <h2>結論</h2>
+    <ol>
+      <li>路駐対策の世界は「今を見る」技術（回避・カメラ検知）に集中しており、「明日を見る」予測・事前情報はほぼ無人の空白。ただしGPT-5.5の批判どおり、予測を単体のAPIとして売るのは個人には筋が悪い。</li>
+      <li>統合戦略: 商品は「特定路線の運行阻害リスク監査＋毎朝の変化予報（人力込み・予測可能イベントから）」。買い手は運行責任と道路調整権を持つ自治体・交通事業者。これは既存の「ルートの変化予報」構想の精緻化であり、路駐はその1レイヤーに位置づけ直す。</li>
+      <li>個人に正解データは作れないという批判への答えが「タクシー・シャドー運用」— 前夜予報→乗務で答え合わせ→30日で適中率レポート。買い手ゼロ・週30分・コストほぼゼロで始められ、10月のヒアリングに「当たった実績」を持って行ける。これはあなたにしかできない検証方法。</li>
+    </ol>
+  </div>
+
+  <footer>路駐戦略 三者協議（2026-07-11）/ 調査出典: 鳥取市検証・国交省中間とりまとめ/7地域実証・NEC・境町/警察庁資料・足立区 / 独立レビュー: codex(GPT-5.5) 実施済み・oracle(GPT-5.6)はChatGPTログイン後に追加協議予定 / [仮説][推定] はシャドー運用で更新</footer>
+
+</div>
+</body>
+</html>
