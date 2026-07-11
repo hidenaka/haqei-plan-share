@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ルート・インテリジェンス — 中期の狙いと事業者に刺さる話法</title>
+<style>
+  :root {
+    --ink: #1a1a1a; --ink-2: #4a4a4a; --bg: #f7f5ee; --paper: #fbf9f1; --line: #d8d2bf;
+    --accent: #115e59; --accent-soft: #d5e8e5;
+    --warn: #c83a2c; --warn-soft: #f6dcd6; --yellow: #f4d35e;
+    --shadow: 0 1px 0 rgba(0,0,0,.04), 0 8px 24px rgba(0,0,0,.06);
+    --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+    --sans: -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Noto Sans JP", "Yu Gothic", "Meiryo", sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { font-family: var(--sans); background: var(--bg); color: var(--ink); line-height: 1.7; -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 56px 28px 96px; }
+  .hero { margin-bottom: 56px; }
+  .hero .kicker { display: inline-block; background: var(--accent); color: #fff; font-size: 12px; font-weight: 700; letter-spacing: .12em; padding: 6px 12px; border-radius: 999px; margin-bottom: 18px; }
+  .hero h1 { font-size: 40px; line-height: 1.3; margin: 0 0 14px; letter-spacing: -.01em; }
+  .hero h1 b { color: var(--accent); }
+  .hero p.lede { font-size: 18px; color: var(--ink-2); margin: 0; max-width: 780px; }
+  .tldr { margin-top: 28px; padding: 22px 24px; background: var(--paper); border: 1px solid var(--line); border-radius: 12px; box-shadow: var(--shadow); }
+  .tldr h2 { font-size: 13px; letter-spacing: .15em; color: var(--accent); margin: 0 0 10px; }
+  .tldr ol { margin: 0; padding-left: 20px; }
+  .tldr li { margin: 4px 0; }
+  section { margin: 64px 0 0; }
+  section > h2 { font-size: 28px; line-height: 1.4; margin: 0 0 6px; border-left: 6px solid var(--accent); padding-left: 12px; }
+  section > h2 .num { color: var(--accent); font-variant-numeric: tabular-nums; margin-right: 10px; }
+  section > p.sub { color: var(--ink-2); margin: 0 0 22px; }
+  figure { margin: 0 0 24px; padding: 12px; background: var(--paper); border: 1px solid var(--line); border-radius: 14px; box-shadow: var(--shadow); }
+  figure img { display: block; width: 100%; height: auto; border-radius: 8px; }
+  figcaption { font-size: 13px; color: var(--ink-2); margin-top: 10px; text-align: center; }
+  .table { width: 100%; border-collapse: collapse; margin: 12px 0 6px; background: var(--paper); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; box-shadow: var(--shadow); }
+  .table th, .table td { text-align: left; padding: 12px 14px; border-bottom: 1px solid var(--line); vertical-align: top; font-size: 14.5px; }
+  .table th { background: #efeadb; font-weight: 700; }
+  .table tr:last-child td { border-bottom: 0; }
+  .table .pick { background: var(--accent-soft); }
+  .table .pick td:first-child { font-weight: 700; color: var(--accent); }
+  .callout { margin: 18px 0; padding: 16px 18px; border-left: 4px solid var(--accent); background: var(--accent-soft); border-radius: 0 10px 10px 0; }
+  .callout.warn { border-color: var(--warn); background: var(--warn-soft); }
+  .callout p { margin: 0; }
+  .callout strong { color: var(--accent); }
+  .callout.warn strong { color: var(--warn); }
+  .quote { border-left: 3px solid var(--line); padding: 6px 16px; color: var(--ink-2); font-size: 14.5px; margin: 18px 0; }
+  .talk { background: #1f2226; color: #e8e6df; border-radius: 12px; padding: 18px 20px; margin: 14px 0; font-size: 15px; line-height: 1.9; }
+  .talk .t { color: var(--yellow); font-weight: 700; font-size: 12.5px; letter-spacing: .1em; display: block; margin-bottom: 4px; }
+  .conclusion { margin-top: 56px; padding: 28px 28px 24px; background: var(--ink); color: #f6f3e8; border-radius: 16px; }
+  .conclusion h2 { color: var(--yellow); border: 0; padding: 0; margin: 0 0 12px; }
+  .conclusion ol { margin: 0; padding-left: 20px; }
+  .conclusion li { margin: 6px 0; }
+  footer { margin-top: 36px; color: var(--ink-2); font-size: 13px; }
+  @media (max-width: 720px) { .wrap { padding: 32px 18px 64px; } .hero h1 { font-size: 30px; } section > h2 { font-size: 22px; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <span class="kicker">中期戦略の深掘り — ルート・インテリジェンス</span>
+    <h1>売るのは工事情報ではない。<b>「1人で監視できる台数」を増やすレバー</b></h1>
+    <p class="lede">自動運転バス事業者に刺さる話を作るため、彼らの金の痛点を一次情報で掘った。答えははっきりしていた: 運行費の半分近くが人件費で、無人化しても遠隔監視員が残り、国内実績の上限は1人3台。ルート上の変化（工事・路駐・占用）の事前情報は、監視を「例外対応」から「計画運行」に変え、この1:Nの分母を上げる——事業者の損益計算書に直接触る唯一の語り方がこれだ。</p>
+    <div class="tldr">
+      <h2>TL;DR</h2>
+      <ol>
+        <li>事業者の最大の痛み: 人件費が運行費の半分近く（境町3台5年5.2億円・BOLDLY社長発言）。レベル4でも遠隔監視員は残り、実績上限は<b>1人3台</b>（永平寺）。介入の47%は路駐、停車の54%はバス停周辺の駐停車</li>
+        <li>商品の再定義: 「ルートの変化予報」— 工事・イベント占用・路駐多発時間帯を前日に運行管理へ配信。既存システム（Dispatcher等）に<b>無い機能だけを足す補完ピース</b>。競合しない</li>
+        <li>中期市場: 国の目標は2027年度に100か所以上。1ルート月3〜5万円 [仮説] × 数百ルート化（2028-30）＝年1億円規模 [推定]。国の「先読み情報」は高速先行で、一般道のバスルートは空白のまま</li>
+      </ol>
+    </div>
+  </header>
+
+  <section>
+    <h2><span class="num">01</span>採算の鍵は1:N — 事業者の損益に直接触る語り方</h2>
+    <p class="sub">「工事マップいかがですか」ではなく「監視の分母を増やしませんか」</p>
+    <figure>
+      <img src="images/concept-01-01.png" alt="1人あたり監視台数を増やすと監視人件費が割り算で下がる構造">
+      <figcaption>監視人件費 ÷ 台数 ＝ 1台あたりコスト。分母を上げる材料が「ルート上の変化の事前情報」</figcaption>
+    </figure>
+    <p>2023年施行の改正道交法で、レベル4（特定自動運行）には遠隔監視装置と特定自動運行主任者の配置が義務づけられた。つまり<b>「無人」バスにも監視の人件費は必ず残る</b>。1人が何台まで見られるかの明文上限は無く許可審査ごとの判断で、国内実績の上限は永平寺の1人3台。警察庁の委託調査も「1人複数台監視では常時モニタリング・臨機応変対応が監視台数に大きく影響する」と、<b>例外対応の多さこそが1:Nの天井</b>だと指摘している。</p>
+    <div class="callout"><p><strong>ロジックの核心:</strong> 例外対応の中身は何か——手動介入の47%が路上駐車（鳥取・691件）、停車の54%がバス停周辺の駐停車（池袋）、そして工事・道路状況の変化。<b>これらは全部「ルート上の変化」であり、大半は前日に知り得る</b>。知っていれば監視員は臨機応変ではなく計画で処理できる＝1人あたり台数を上げられる＝人件費が割り算で下がる。</p></div>
+  </section>
+
+  <section>
+    <h2><span class="num">02</span>痛みの実数 — 話に使う数字はこれ</h2>
+    <p class="sub">全部一次情報。事業者の前で言い切れる</p>
+    <figure>
+      <img src="images/concept-02-01.png" alt="事業者のコスト構造: 人件費半分・路駐47%・バス停54%・情報収集は人力">
+      <figcaption>無人バスの裏側は、人力の情報収集で支えられている</figcaption>
+    </figure>
+    <table class="table">
+      <thead><tr><th>数字</th><th>出典</th><th>話法での使い方</th></tr></thead>
+      <tbody>
+        <tr class="pick"><td>運行費の半分近くが人件費（境町3台5年5.2億円）</td><td>BOLDLY社長発言（日経）</td><td>「御社の損益の最大項目の話です」</td></tr>
+        <tr><td>レベル4でも遠隔監視員は残る。実績上限 1人3台</td><td>改正道交法・永平寺（RoAD to the L4）</td><td>「無人化してもここは消えない費用ですよね」</td></tr>
+        <tr class="pick"><td>手動介入の47%が路上駐車／停車の54%がバス停周辺の駐停車</td><td>鳥取市検証・国交省池袋実証</td><td>「介入の半分はセンサーの問題ではなく、路上の変化の問題です」</td></tr>
+        <tr><td>ルート選定時の路駐調査は人手・目視（足立区）。運休・経路変更の判断も人が前日に道路状況を見て決めている</td><td>足立区公式・Dispatcher運用</td><td>「その目視、うちが予報として毎朝届けます」</td></tr>
+        <tr><td>国は「先読み情報」をインフラ連携の中核に明記 — ただし新東名など高速道路が先行</td><td>国交省・経産省（2025年実証）</td><td>「国も同じ結論です。ただ一般道の御社のルートは誰もやっていない」</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2><span class="num">03</span>商品像 — 運行管理に欠けている1ピース</h2>
+    <p class="sub">既存システムと戦わない。差し込む</p>
+    <figure>
+      <img src="images/concept-03-01.png" alt="ルート・インテリジェンス: 工事・占用・路駐情報を既存の運行管理システムにAPIで差し込む">
+      <figcaption>Dispatcher等の運行管理は「車両」を見ている。「路上」の事前情報だけが欠けている</figcaption>
+    </figure>
+    <p>BOLDLYの運行管理システムDispatcher（約30車種接続・GeoJSON/API連携あり）の機能は走行指示・車両状態監視・乗客検知・走行可否判断——<b>ルート上の道路環境変化を事前に取り込む機能は公式ページに存在しない</b>。ここが差し込み口。商品は「<b>ルートの変化予報</b>」: そのルートと停留所周りに限定して、①道路工事・占用（区市町村データ＋現地確認） ②イベント・お祭りの通行止め ③路駐多発の場所と時間帯 [現場観測] を、前日夕方と当日朝に運行管理へAPI/帳票で届ける。</p>
+    <ul>
+      <li><b>競合ではなく補完</b>: 車両を見る既存システムに、路上を見るフィードを足す。GeoJSON連携が既にあるので技術的な接続は軽い</li>
+      <li><b>ルート限定だから個人で成立</b>: 監視対象は「そのバスが通る数kmと停留所数十か所」だけ。全網羅が要らない — 固定ルートという構造があなたに味方する</li>
+      <li><b>価格イメージ [仮説]</b>: 1ルート月3〜5万円。遠隔オペレーター人件費（小規模試算で年160万円）の数%で、1:N改善と運休判断の前倒しが買えるなら事業者の計算は合う</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2><span class="num">04</span>事業者向け3分トーク — そのまま話せる台本</h2>
+    <p class="sub">大田区・BOLDLY・運行受託者、誰に会っても背骨は同じ</p>
+    <div class="talk"><span class="t">フック（30秒）— 相手の損益から入る</span>自動運転バスって、無人になっても運行費の半分は人件費のままなんですよね。遠隔監視の方が法律上必ず要るので。いま国内で1人が見られるのは実績で3台まで——つまり<b>採算は「1人で何台見られるか」でほぼ決まる</b>と思っていて。</div>
+    <div class="talk"><span class="t">問題（40秒）— 数字で言い切る</span>で、監視員の仕事を増やしてる犯人を調べたら、手動介入の半分近くが路上駐車、停車の半分がバス停前の駐停車、あとは工事や祭りの通行止めなんです。要するに<b>「ルート上の変化」。しかもその大半は前日に分かることなのに、いまはルート調査も運休判断も人が目で見て決めている</b>。</div>
+    <div class="talk"><span class="t">提案（40秒）— 商品を一言で</span>そこで、御社のルートと停留所まわりに限定した「<b>変化予報</b>」を毎朝届ける仕組みを作っています。工事・占用・イベント・路駐が多い場所と時間帯。運行管理システムにAPIで入れられます。監視が例外対応じゃなく計画になるので、1人あたりの台数を上げる材料になります。</div>
+    <div class="talk"><span class="t">証拠（30秒）— 実物と唯一性</span>工事情報の読み取りと住民向け配信はもう本番で動いていて、都知事杯ハッカソンに提出済みです（実物を見せる）。私自身、現役のタクシードライバーで、路駐と工事が道をどう変えるかを毎日路上で見ているので、予報の「現場の答え合わせ」が自分でできます。</div>
+    <div class="talk"><span class="t">クローズ（20秒）— 軽いお願い</span>いきなり売る話ではなくて——まず御社の運行で、介入や運休判断が実際どこで起きているか、15分だけ聞かせてもらえませんか。1ルートぶんの変化予報を無料で作って答え合わせさせてもらえたら最高です。</div>
+    <table class="table">
+      <thead><tr><th>想定問答</th><th>返し</th></tr></thead>
+      <tbody>
+        <tr><td>「Dispatcherと何が違うの？」</td><td>「競合じゃなく補完です。Dispatcherは車両を見る仕組みで、路上の明日の変化を入れる口が無い。そこにGeoJSONで差し込むだけです」</td></tr>
+        <tr><td>「データはどこから？」</td><td>「区市町村の工事・占用データとオープンデータが土台。ルート限定なので、足りない分は現地確認で埋めます。全東京は無理でも、御社の4kmなら確実にできます」</td></tr>
+        <tr class="pick"><td>「いくら？」</td><td>「実証中は無料で答え合わせをさせてください。本採用の目安は1ルート月3〜5万円——遠隔オペレーター人件費の数%です」</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2><span class="num">05</span>中期（2028-30）の市場 — 100か所時代の監視効率</h2>
+    <p class="sub">国の目標が分母を作ってくれる</p>
+    <figure>
+      <img src="images/concept-05-01.png" alt="2027年度100か所以上の国目標と、1ルートごとの月額市場">
+      <figcaption>路線が増えるほど「1ルートずつの採算問題」が生まれる — それが市場</figcaption>
+    </figure>
+    <table class="table">
+      <thead><tr><th>時期</th><th>市場の状態</th><th>あなたの動き</th></tr></thead>
+      <tbody>
+        <tr><td>2026-27</td><td>実証67〜99か所/年。国の目標「2027年度に100か所以上」。事前情報の収集はまだ人力</td><td>大田区ヒアリング（8月・質問に1:N/介入/事前情報の価値を追加済み）。売らない。実態を知る</td></tr>
+        <tr class="pick"><td>2028-30（分岐点）</td><td>定常運行が数百ルートへ。1ルートごとに監視採算の問題が顕在化。1ルート月3〜5万 [仮説] × 300ルート ＝ 年1億円規模 [推定]</td><td>分岐シグナル点灯（ルート数の急増・Waymo東京面的展開・国の一般道枠組み）でルート監視SaaS参入。無料の答え合わせ実績を持って最前列から</td></tr>
+        <tr><td>2030s</td><td>国の一般道「先読み情報」枠組みが動けば、供給側の標準ポジション（Sogelink型）が開く</td><td>北極星のポジションへ</td></tr>
+      </tbody>
+    </table>
+    <div class="callout warn"><p><strong>変わらないもの:</strong> これは2028-30の分岐待ちの深掘りであり、今の主戦（おさんぽスコア・地図化パック）とG-Pゲートは不変。今すぐやるのは大田区の15分ヒアリングと、この話法を頭に入れておくことだけ。新しい実装はしない。</p></div>
+  </section>
+
+  <div class="conclusion">
+    <h2>結論</h2>
+    <ol>
+      <li>事業者に魅力的な話とは「工事情報があります」ではなく「<b>監視1人あたりの台数を増やす材料があります</b>」。運行費の半分＝人件費、1:3の天井、介入の半分が路上の変化——全部一次情報で言い切れる。</li>
+      <li>商品は「ルートの変化予報」: 固定ルート限定・既存運行管理への補完ピース・前日配信。ルートが固定だから個人でも成立し、タクシーの現場知が答え合わせの武器になる。</li>
+      <li>中期市場は国の「100か所以上」目標が作ってくれる（2028-30に年1億規模 [推定]）。今日やることは増えない — 8月の大田区15分ヒアリングと、この3分トークだけ持って行く。</li>
+    </ol>
+  </div>
+
+  <footer>ルート・インテリジェンス深掘り（2026-07-11）/ 主要一次出典: 警察庁・国交省（改正道交法/池袋実証/インフラ連携）、RoAD to the L4（永平寺1:3）、鳥取市検証、足立区、BOLDLY公式・日経、境町 / [仮説][推定] は大田区ヒアリングと実証で更新</footer>
+
+</div>
+</body>
+</html>
