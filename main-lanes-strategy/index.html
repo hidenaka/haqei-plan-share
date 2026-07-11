@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>主戦2レーン確定版 — おさんぽスコアと地図化パックの商品仕様・展開戦略</title>
+<style>
+  :root {
+    --ink: #1a1a1a; --ink-2: #4a4a4a; --bg: #f7f5ee; --paper: #fbf9f1; --line: #d8d2bf;
+    --accent: #a21caf; --accent-soft: #f7ddf4;
+    --warn: #c83a2c; --warn-soft: #f6dcd6; --yellow: #f4d35e;
+    --shadow: 0 1px 0 rgba(0,0,0,.04), 0 8px 24px rgba(0,0,0,.06);
+    --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+    --sans: -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Noto Sans JP", "Yu Gothic", "Meiryo", sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { font-family: var(--sans); background: var(--bg); color: var(--ink); line-height: 1.7; -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 56px 28px 96px; }
+  .hero { margin-bottom: 56px; }
+  .hero .kicker { display: inline-block; background: var(--accent); color: #fff; font-size: 12px; font-weight: 700; letter-spacing: .12em; padding: 6px 12px; border-radius: 999px; margin-bottom: 18px; }
+  .hero h1 { font-size: 40px; line-height: 1.3; margin: 0 0 14px; letter-spacing: -.01em; }
+  .hero h1 b { color: var(--accent); }
+  .hero p.lede { font-size: 18px; color: var(--ink-2); margin: 0; max-width: 780px; }
+  .tldr { margin-top: 28px; padding: 22px 24px; background: var(--paper); border: 1px solid var(--line); border-radius: 12px; box-shadow: var(--shadow); }
+  .tldr h2 { font-size: 13px; letter-spacing: .15em; color: var(--accent); margin: 0 0 10px; }
+  .tldr ol { margin: 0; padding-left: 20px; }
+  .tldr li { margin: 4px 0; }
+  section { margin: 64px 0 0; }
+  section > h2 { font-size: 28px; line-height: 1.4; margin: 0 0 6px; border-left: 6px solid var(--accent); padding-left: 12px; }
+  section > h2 .num { color: var(--accent); font-variant-numeric: tabular-nums; margin-right: 10px; }
+  section > p.sub { color: var(--ink-2); margin: 0 0 22px; }
+  figure { margin: 0 0 24px; padding: 12px; background: var(--paper); border: 1px solid var(--line); border-radius: 14px; box-shadow: var(--shadow); }
+  figure img { display: block; width: 100%; height: auto; border-radius: 8px; }
+  figcaption { font-size: 13px; color: var(--ink-2); margin-top: 10px; text-align: center; }
+  .table { width: 100%; border-collapse: collapse; margin: 12px 0 6px; background: var(--paper); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; box-shadow: var(--shadow); }
+  .table th, .table td { text-align: left; padding: 12px 14px; border-bottom: 1px solid var(--line); vertical-align: top; font-size: 14.5px; }
+  .table th { background: #efeadb; font-weight: 700; }
+  .table tr:last-child td { border-bottom: 0; }
+  .table .pick { background: var(--accent-soft); }
+  .table .pick td:first-child { font-weight: 700; color: var(--accent); }
+  .callout { margin: 18px 0; padding: 16px 18px; border-left: 4px solid var(--accent); background: var(--accent-soft); border-radius: 0 10px 10px 0; }
+  .callout.warn { border-color: var(--warn); background: var(--warn-soft); }
+  .callout p { margin: 0; }
+  .callout strong { color: var(--accent); }
+  .callout.warn strong { color: var(--warn); }
+  .quote { border-left: 3px solid var(--line); padding: 6px 16px; color: var(--ink-2); font-size: 14.5px; margin: 18px 0; }
+  .gpt { background: #1f2226; color: #e8e6df; border-radius: 12px; padding: 16px 18px; margin: 14px 0; font-size: 14px; line-height: 1.85; }
+  .gpt .t { color: var(--yellow); font-weight: 700; font-size: 12.5px; letter-spacing: .1em; display: block; margin-bottom: 6px; }
+  .conclusion { margin-top: 56px; padding: 28px 28px 24px; background: var(--ink); color: #f6f3e8; border-radius: 16px; }
+  .conclusion h2 { color: var(--yellow); border: 0; padding: 0; margin: 0 0 12px; }
+  .conclusion ol { margin: 0; padding-left: 20px; }
+  .conclusion li { margin: 6px 0; }
+  footer { margin-top: 36px; color: var(--ink-2); font-size: 13px; }
+  @media (max-width: 720px) { .wrap { padding: 32px 18px 64px; } .hero h1 { font-size: 30px; } section > h2 { font-size: 22px; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <span class="kicker">主戦2レーン — ultracode協議の確定版</span>
+    <h1>二兎を追わない。<b>地図化で売上、スコアは覚書1社</b></h1>
+    <p class="lede">主戦2レーン（おさんぽスコア・地図化パック）のサービス内容と展開戦略を、並列調査3本→商品仕様ドラフト→codex（gpt-5.6-sol）の敵対的批判→統合、の順で確定した。最重要の判定は「週20時間で実装重と営業重の同時主戦は非現実的」— 90日は地図化パックが主(週14h)で売上を実証し、スコアは「事故リスクAPI」に絞って有償条件付きPoC覚書1社を取る(週6h)。</p>
+    <div class="tldr">
+      <h2>TL;DR</h2>
+      <ol>
+        <li>競合事実の確定: Walk Score APIは米国・カナダのみで日本非対応（一次確認）＝Walk Score型の歩行系スコアに正面競合は不在。買い手候補10社を実名で特定済み（下記02）</li>
+        <li>codexの主要判定を採用: 配分は地図化14h/スコア6h。スコア価格は月1万はPoC入口のみ（本番は月3〜5万＋従量）。低スコア物件の非表示オプションは信頼を壊す悪手。「事故＋OSMだけで歩行安全と断定」は過大表示——MVPは「事故リスク」と正確に名乗る</li>
+        <li>90日の必達: 地図化=有償顧客1件・10万円以上・更新契約付き ／ スコア=実データを持つ買い手1社と有償条件付きPoC覚書</li>
+      </ol>
+    </div>
+  </header>
+
+  <section>
+    <h2><span class="num">01</span>結論 — 配分と必達</h2>
+    <p class="sub">二本柱は同格ではない。90日は地図化が主、スコアは覚書まで</p>
+    <figure>
+      <img src="images/concept-01-01.png" alt="地図化パックとおさんぽスコアの配分・90日必達の全体像">
+      <figcaption>二本柱は同格ではない。90日は地図化が主、スコアは覚書まで</figcaption>
+    </figure>
+    <p>週20時間の中の主戦partは、地図化パック14時間（営業・納品・定型化）＋おさんぽスコア6時間（MVP実装と覚書交渉）。理由はcodexの指摘どおり「実装重と営業重の同時主戦は非現実的」で、金の実証が先。ハッカソン日程（8/22-23本体・8/26-30動画収録）とは別枠で、その週は主戦を一時停止してよい。</p>
+    <table class="table">
+      <thead><tr><th>レーン</th><th>90日の必達</th><th>撤退・継続基準</th></tr></thead>
+      <tbody>
+        <tr class="pick"><td>地図化パック(主・週14h)</td><td>有償顧客1件・10万円以上・更新契約付き</td><td>達成でG-P通過候補、未達なら商品定義を再設計（接触モデルは維持）</td></tr>
+        <tr><td>おさんぽスコア(従・週6h)</td><td>実データを持つ買い手1社と有償条件付きPoC覚書に合意</td><td>覚書ゼロなら2027年3月凍結基準を前倒し検討</td></tr>
+        <tr><td>工事マップ・路駐(待ち受け)</td><td>なし（分岐シグナル監視のみ）</td><td>変更なし</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2><span class="num">02</span>おさんぽスコア 商品仕様v2</h2>
+    <p class="sub">MVPは「事故リスク」と正確に名乗る。フルスコア化はデータが揃った区から</p>
+    <figure>
+      <img src="images/concept-02-01.png" alt="おさんぽスコアMVPの表示ルールと価格3層">
+      <figcaption>MVPは「事故リスク」と正確に名乗る。フルスコア化はデータが揃った区から</figcaption>
+    </figure>
+    <p>Walk Scoreが日本非対応と確定した空白に、正面から入る。ただしcodexの過大表示警告を全面採用し、MVPの名乗りは「歩行事故リスクスコア」— 使うデータ（警察庁交通事故オープンデータ2019-2024・緯度経度付き＋OSMの信号・横断歩道タグ、50mメッシュ）で証明できる範囲だけを言う。歩道幅員・街灯は整備区から順次追加し、揃った区だけ「歩行環境スコア」へ拡張表示する。</p>
+    <ul>
+      <li><b>表示ルール（信頼の設計）</b>: 全物件共通で「総合点＋内訳（事故・信号等）＋データ信頼度」を表示。閾値以下の非表示オプションは作らない（恣意的選別は商品の信頼を壊す—codex判定）</li>
+      <li><b>価格3層</b>: PoC=月1万円・4週間・対象100物件限定、開始前に有償価格・決裁者・評価指標（掲載率/利用率/問い合わせ増減）・転換判定日を覚書で合意 → 本番=月3〜5万円＋物件数/API量の従量 → OEM=個別見積</li>
+      <li><b>買い手の攻め順</b>: ①事業者向け分析ツール系（ヤモリ=投資家向け地域分析・国交省採択）— 消費者向けバッジと違い低スコア忌避が起きない ②ガッコム（学区データ・安全ナビ運営）— 連携提案 ③中堅賃貸管理SaaS・API事業者（いえらぶGROUP・日本情報クリエイト・ITANDI・いい生活・GMO賃貸DX・ミカタ・アットホーム(パーツ提供)・Geolonia=API組込みに慣れた層。不動産テック協会経由の一括アプローチも）— ①②と合わせ実名10社</li>
+      <li><b>封印事項</b>: 重説補助PDFは責任境界（免責・現地優先）を設計するまで出さない。犯罪データは永久に混ぜない（既定）</li>
+    </ul>
+    <div class="callout"><p><strong>命名の規律:</strong> ブランド名「おさんぽスコア」は維持するが、営業・表示上はβ期間中「歩行事故リスク」と名乗る。看板が実力を超えた瞬間に信頼商売は終わる — 工事お知らせAIの誤情報ガードレールと同じ思想。</p></div>
+  </section>
+
+  <section>
+    <h2><span class="num">03</span>地図化パック 商品仕様v2</h2>
+    <p class="sub">「単発画像2.5万円」と「開発数百万円」の間の空白＝更新され続ける軽いWeb地図</p>
+    <figure>
+      <img src="images/concept-03-01.png" alt="地図化パックの価格ポジションと定型商品の構成">
+      <figcaption>「単発画像2.5万円」と「開発数百万円」の間の空白＝更新され続ける軽いWeb地図</figcaption>
+    </figure>
+    <p>調査で価格ポジションが確定した。単発の地図画像はココナラで2千〜2.5万円のコモディティ、業務地図SaaSはkintone連携で月1〜5万円、自治体の観光マップ受託は250〜600万円。初回5〜15万円＋更新月1万円は「kintone相場の月額下限と整合」する妥当な設定（codexも価格自体は妥当と判定）。</p>
+    <ul>
+      <li><b>パック内容の明文化</b>: 資料1種（目安500行相当まで）のデータ整形＋検索・絞り込み付きWeb地図＋公開ページ＋QR＋スマホ対応。更新プラン月1万円=月1回の更新＋ホスティング＋引き継ぎ資料</li>
+      <li><b>定型商品第1号は「商店街・会員組織の名簿マップ」</b>: 調査で事例が薄い＝先行事例化できる空白。防災（社協・町会）・空き家がそれに続く</li>
+      <li><b>ココナラの扱い（codex判定を採用）</b>: 「Web地図一式」の汎用出品はしない（価格競争に巻き込まれる）。出品するなら「商店街名簿→更新・引き継ぎ・QR公開込みの定型商品」1本のみ</li>
+      <li><b>自治体筋</b>: 観光マップ元請け（250〜600万・法人向け）は狙わず、既存プロポーザル案件の「データ整備パート」下請けと、ビジネスチャンス・ナビの小型案件[要ログイン確認]を拾う</li>
+      <li><b>3回接触モデルとの接続</b>: 1回目=工事マップ実物を見せる → 2回目=相手の公開資料でミニ地図（60分・AIが下ごしらえ） → 3回目=このパック料金表を出す</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2><span class="num">04</span>codex協議の原文要旨</h2>
+    <p class="sub">耳が痛い順。これを通ったものだけを採用した</p>
+    <div class="gpt"><span class="t">判定1 — 配分と価格</span>二兎は追わず、90日は地図化で売上実証、スコアは「事故リスクAPI」に絞って検証すべき。月1万円はPoC入口なら妥当、本番のサイト定額は安すぎる。月3〜5万円＋物件数/API量の従量、OEMは個別見積りが妥当。PoCは4週間・対象100物件等に限定し、開始前に有償価格、決裁者、評価指標（掲載率・利用率・問い合わせ増減）、転換判定日を合意せよ。</div>
+    <div class="gpt"><span class="t">判定2 — 信頼の設計</span>閾値以下の非表示は恣意的な選別になり、商品への信頼を壊すので悪手。全物件共通ルールで「総合点＋事故・信号等の内訳＋データ信頼度」を表示すべき。低評価忌避が強いなら、消費者向けバッジではなく事業者向けリスク確認・安全経路提案・改善説明ツールへ転換する方が商流に合う。事故＋OSMだけで「歩行安全」を断定し歩道・街灯を仕様に掲げるのは過大表示。重説補助PDFも責任境界を明示するまで封印が妥当。</div>
+    <div class="gpt"><span class="t">判定3 — 集客と必達</span>ココナラは悪手寄り。定型商品としてのみ出品。週20時間で実装重と営業重の同時主戦は非現実的—地図化14時間、スコア6時間で受注・顧客理解を先行。90日必達: 地図化=有償顧客1件・10万円以上・更新契約付き／スコア=実データを持つ買い手1社が有償条件付きPoC覚書に合意。</div>
+  </section>
+
+  <section>
+    <h2><span class="num">05</span>90日統合ロードマップ</h2>
+    <p class="sub">ハッカソン週は主戦を止めてよい。二重稼働を設計に織り込む</p>
+    <figure>
+      <img src="images/concept-05-01.png" alt="90日統合ロードマップ: 地図化パックとおさんぽスコアの週次進行">
+      <figcaption>ハッカソン週は主戦を止めてよい。二重稼働を設計に織り込む</figcaption>
+    </figure>
+    <table class="table">
+      <thead><tr><th>週</th><th>地図化パック(週14h)</th><th>おさんぽスコア(週6h)</th><th>固定イベント</th></tr></thead>
+      <tbody>
+        <tr><td>7月残り</td><td>商品ページ・料金表1枚の確定（AI）</td><td>—</td><td>Slack案内待ち</td></tr>
+        <tr><td>8月前半</td><td>デモ3点整理・名簿マップ定型商品の雛形</td><td>警察庁事故データ+OSMでMVP実装開始（AI主導）</td><td>ナビ登録・Code for Japan参加・GovTech東京パートナーズ登録</td></tr>
+        <tr><td>8月後半</td><td>—（ハッカソン優先で一時停止）</td><td>—（同）</td><td>8/22-23ハッカソン本体・8/26-30動画収録</td></tr>
+        <tr><td>9月</td><td>2回目接触×3件（ミニ地図）・見積提示</td><td>都内デモ公開・ヤモリ/ガッコムへ連携打診メール</td><td>PLATEAU AWARDエントリー判断</td></tr>
+        <tr class="pick"><td>10月</td><td>3回目接触→有償試行クローズ（10万円以上+更新契約）</td><td>PoC覚書交渉（価格・指標・判定日を文面で）</td><td>月末G-Pゲート判定</td></tr>
+      </tbody>
+    </table>
+    <div class="callout warn"><p><strong>ガードレール:</strong> ①主戦合計は週20h以内・ハッカソン週はゼロでよい ②スコアの営業文言は「事故リスク」から逸脱しない（HARNESS.md変更禁止6の数字規律と同様に扱う） ③地図化の値引きは初回のみ・5万円を下回る案件は受けない（コモディティ回避） ④どちらも達成できない場合はG-Pゲートで「接触モデルは維持・商品を再設計」</p></div>
+  </section>
+
+  <div class="conclusion">
+    <h2>結論</h2>
+    <ol>
+      <li>サービス内容が確定した: おさんぽスコアは「歩行事故リスクスコア」として正確に名乗るMVP（全物件共通表示・PoC月1万→本番月3〜5万＋従量）、地図化パックは「更新され続ける軽いWeb地図」（初回5〜15万＋月1万・第1号定型は商店街名簿マップ）。</li>
+      <li>展開戦略は非対称配分: 地図化14h/スコア6h。売上の実証が先、実装の夢は後。ハッカソン週は主戦を止める設計まで含めて現実に合わせた。</li>
+      <li>90日の必達は2つだけ: 地図化=有償1件（10万円以上・更新契約付き）、スコア=有償条件付きPoC覚書1社。この2つがG-Pゲート（10月末）の判定材料になる。</li>
+    </ol>
+  </div>
+
+  <footer>主戦2レーン確定版（2026-07-11・ultracode協議: 並列調査3本×codex gpt-5.6-sol×統合）/ 出典: walkscore.com・警察庁オープンデータ・各社公式・ココナラ/ランサーズ実勢・kintone連携価格 ほか（詳細は調査ログ）/ [推定][未確認]ラベルは本文中に明記</footer>
+
+</div>
+</body>
+</html>
