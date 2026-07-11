@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex,nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ep37「震」最終検証・通し視聴ゲート</title>
+<style>
+  :root {
+    --ink: #1a1f2b;
+    --paper: #f7f3ea;
+    --navy: #16233f;
+    --gold: #b8862f;
+    --vermillion: #c0432b;
+    --line: #d8cfb8;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", sans-serif;
+    line-height: 1.7;
+  }
+  .wrap { max-width: 980px; margin: 0 auto; padding: 24px 20px 80px; }
+  header {
+    background: var(--navy);
+    color: var(--paper);
+    padding: 28px 24px;
+    border-radius: 10px;
+    margin-bottom: 24px;
+    border-left: 6px solid var(--gold);
+  }
+  header h1 { margin: 0 0 6px; font-size: 1.5rem; }
+  header .sub { color: #cbb98a; font-size: 0.9rem; }
+  .tldr {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-left: 5px solid var(--vermillion);
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin-bottom: 24px;
+  }
+  .tldr b { color: var(--vermillion); }
+  section {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 20px 22px;
+    margin-bottom: 20px;
+  }
+  h2 {
+    font-size: 1.1rem;
+    margin: 0 0 14px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--gold);
+    color: var(--navy);
+  }
+  .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 10px;
+    margin-top: 8px;
+  }
+  .stat {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 10px 12px;
+    text-align: center;
+  }
+  .stat .v { font-size: 1.3rem; font-weight: 700; color: var(--navy); }
+  .stat .l { font-size: 0.75rem; color: #7a7263; }
+  .filepath {
+    font-family: ui-monospace, monospace;
+    background: var(--navy);
+    color: #e8d9b0;
+    padding: 10px 14px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    overflow-x: auto;
+    margin-top: 10px;
+  }
+  .contact-img { width: 100%; border-radius: 8px; border: 1px solid var(--line); display: block; margin-top: 6px; }
+  .note {
+    font-size: 0.85rem;
+    color: #7a7263;
+    margin-top: 8px;
+  }
+  .titles {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .title-card {
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 14px 16px;
+    position: relative;
+  }
+  .title-card.recommended {
+    border-color: var(--gold);
+    background: #fdf7e8;
+  }
+  .title-card .badge {
+    position: absolute;
+    top: -10px;
+    right: 14px;
+    background: var(--gold);
+    color: #fff;
+    font-size: 0.7rem;
+    padding: 2px 10px;
+    border-radius: 10px;
+  }
+  .title-card .label {
+    font-weight: 700;
+    color: var(--navy);
+    margin-right: 8px;
+  }
+  .title-card .text {
+    font-size: 0.98rem;
+  }
+  .checklist {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .checklist li {
+    padding: 10px 0;
+    border-bottom: 1px dashed var(--line);
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .checklist li:last-child { border-bottom: none; }
+  .checklist .num {
+    background: var(--navy);
+    color: #fff;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .verdict-box {
+    background: var(--paper);
+    border: 2px dashed var(--gold);
+    border-radius: 8px;
+    padding: 16px;
+    margin-top: 16px;
+    text-align: center;
+    font-size: 0.9rem;
+    color: #7a7263;
+  }
+  .next-steps {
+    font-size: 0.9rem;
+    color: #4a4536;
+  }
+  .next-steps ol { padding-left: 20px; margin: 8px 0 0; }
+  .next-steps li { margin-bottom: 4px; }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ink: #ece6d6;
+      --paper: #1c2029;
+      --navy: #2a3450;
+      --gold: #d4a94c;
+      --vermillion: #e2664a;
+      --line: #3a3f4d;
+    }
+    section, .title-card { background: #232733; }
+    .title-card.recommended { background: #2c2818; }
+    .tldr { background: #232733; }
+    .stat { background: #1c2029; }
+    header { border-left-color: var(--gold); }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <h1>第三十七話「震」— 最終検証・通し視聴ゲート</h1>
+    <div class="sub">BLEACH × 黒崎一護 ／ content/057 ／ releases/057/ep37_shin.mp4</div>
+  </header>
+
+  <div class="tldr">
+    <b>TL;DR</b> ep37 全工程完了。機械ゲート4種（script / visuals / timing / mix）全PASS・fork採点=台本92点／タイトル94点・identity監査=一護 7/7・尺 543秒（9:03）・公開枠 2026-07-16 4:00 JST。
+    コンタクトシート30枚を目視確認済み — 黒フレーム・字幕欠落・映像崩れなし。このページで通し視聴の合否とタイトル最終決定をお願いします。
+  </div>
+
+  <section>
+    <h2>ステータス</h2>
+    <div class="stat-grid">
+      <div class="stat"><div class="v">PASS×4</div><div class="l">script/visuals/timing/mix</div></div>
+      <div class="stat"><div class="v">92点</div><div class="l">台本 fork採点</div></div>
+      <div class="stat"><div class="v">94点</div><div class="l">タイトル fork採点</div></div>
+      <div class="stat"><div class="v">7/7</div><div class="l">一護 identity監査</div></div>
+      <div class="stat"><div class="v">9:03</div><div class="l">尺（543秒）</div></div>
+      <div class="stat"><div class="v">07-16 4:00</div><div class="l">公開枠(JST)</div></div>
+    </div>
+    <div class="filepath">releases/057/ep37_shin.mp4 （通し視聴はローカルで再生してください）</div>
+  </section>
+
+  <section>
+    <h2>コンタクトシート（30枚・18秒間隔・機械+目視検証済み）</h2>
+    <img class="contact-img" src="images/contact.jpg" alt="ep37 contact sheet 30 frames">
+    <div class="note">目視結果: 黒フレーム・字幕欠落・映像崩れなし。00:00は意図的な暗転タイトルカット（フック台詞入り）。一護のオレンジ髪シルエットは全編で一貫、07:30に六爻図（震の卦）を確認。Cフラット配色（紺/金/朱/生成り）も崩れなく安定。</div>
+  </section>
+
+  <section>
+    <h2>タイトル3案（fork採点94点・推奨=B）</h2>
+    <div class="titles">
+      <div class="title-card">
+        <span class="label">A</span>
+        <span class="text">BLEACH黒崎一護は、怖くないから刀を取ったのではない【第三十七話・震】</span>
+      </div>
+      <div class="title-card recommended">
+        <span class="badge">採点者推奨</span>
+        <span class="label">B</span>
+        <span class="text">BLEACH黒崎一護が、家の壁が壊された夜に落とさなかったもの【第三十七話・震】</span>
+      </div>
+      <div class="title-card">
+        <span class="label">C</span>
+        <span class="text">BLEACH黒崎一護は、震えを止めないまま刀を握れた【第三十七話・震】</span>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>判断してください</h2>
+    <ul class="checklist">
+      <li><span class="num">1</span><div><b>通し視聴の合否</b> — 品質ゲート5項目で確認: 冒頭30秒の緊張／「へえ」ポイント3つ／ビジュアル一貫性／自然な日本語（AI臭なし）／締めの余韻。OK / NG（要修正）でお答えください。</div></li>
+      <li><span class="num">2</span><div><b>タイトルはどれにするか</b> — A / B（推奨） / C、または別案。</div></li>
+      <li><span class="num">3</span><div><b>NGの場合の箇所指摘</b> — タイムコード（コンタクトシートの秒数ラベル基準でOK）を添えて指摘してください。</div></li>
+    </ul>
+    <div class="verdict-box">通し視聴後、この3点を本人にご回答いただき次第、残工程へ進みます。</div>
+  </section>
+
+  <section>
+    <h2>承認後の残工程</h2>
+    <div class="next-steps">
+      <ol>
+        <li>サムネイル Tier A 生成</li>
+        <li>概要欄（description.txt / publish_kit.md）</li>
+        <li>ショート2本切り出し（幕4「風刺の刃」＋冒頭Hook）</li>
+        <li>公開キット一式（タグ・シリーズ行・本編リンク）</li>
+        <li>まとめて予約投稿（coord.sh claim-slot → yt-publish.mjs --publish-at）</li>
+      </ol>
+      <div class="note">essay-episode Step9〜11に対応。</div>
+    </div>
+  </section>
+
+</div>
+</body>
+</html>
