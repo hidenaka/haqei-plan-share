@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>道路の「今日変わったこと」を、みんなに届く形に — 協力者を探しています</title>
+<style>
+  :root {
+    --ink: #1a1a1a; --ink-2: #4a4a4a; --bg: #f7f5ee; --paper: #fbf9f1; --line: #d8d2bf;
+    --accent: #c2410c; --accent-soft: #fbe3d4; --yellow: #f4d35e;
+    --shadow: 0 1px 0 rgba(0,0,0,.04), 0 8px 24px rgba(0,0,0,.06);
+    --sans: -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Noto Sans JP", "Yu Gothic", "Meiryo", sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { font-family: var(--sans); background: var(--bg); color: var(--ink); line-height: 1.75; }
+  .wrap { max-width: 860px; margin: 0 auto; padding: 48px 24px 80px; }
+  .kicker { display: inline-block; background: var(--accent); color: #fff; font-size: 12px; font-weight: 700; letter-spacing: .12em; padding: 6px 12px; border-radius: 999px; margin-bottom: 16px; }
+  h1 { font-size: 30px; line-height: 1.4; margin: 0 0 12px; }
+  h1 b { color: var(--accent); }
+  .lede { font-size: 16px; color: var(--ink-2); margin: 0 0 8px; }
+  h2 { font-size: 21px; border-left: 6px solid var(--accent); padding-left: 12px; margin: 44px 0 12px; }
+  figure { margin: 0 0 18px; padding: 10px; background: var(--paper); border: 1px solid var(--line); border-radius: 14px; box-shadow: var(--shadow); }
+  figure img { display: block; width: 100%; height: auto; border-radius: 8px; }
+  figcaption { font-size: 13px; color: var(--ink-2); margin-top: 8px; text-align: center; }
+  .table { width: 100%; border-collapse: collapse; background: var(--paper); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; box-shadow: var(--shadow); }
+  .table th, .table td { text-align: left; padding: 11px 13px; border-bottom: 1px solid var(--line); vertical-align: top; font-size: 14.5px; }
+  .table th { background: #efeadb; }
+  .table tr:last-child td { border-bottom: 0; }
+  .callout { margin: 16px 0; padding: 14px 16px; border-left: 4px solid var(--accent); background: var(--accent-soft); border-radius: 0 10px 10px 0; }
+  .callout p { margin: 0; }
+  a { color: var(--accent); font-weight: 700; word-break: break-all; }
+  .big { font-size: 18px; font-weight: 700; }
+  .note { font-size: 13px; color: var(--ink-2); }
+  footer { margin-top: 36px; color: var(--ink-2); font-size: 13px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <span class="kicker">はじめまして — 1分で読めます</span>
+  <h1>道路の「今日変わったこと」を、<b>みんなに届く形に</b>する仕事をしています</h1>
+  <p class="lede">東京でタクシーを運転しながら、地図とAIのサービスを個人で作っています。毎日路上を走っていると、突然始まる工事に困る歩行者・ドライバー・そして工事の人たち自身をたくさん見ます。その「困った」を小さく解決するところから始めて、大きな未来につなげようとしています。</p>
+
+  <h2>いま作っているもの</h2>
+  <figure>
+    <img src="images/concept-01-01.png" alt="工事の書類を入れると、住民向けの地図つきお知らせページ・チラシ・報告書が同時にできる図">
+    <figcaption>工事の書類を入れるだけで、住民向けの地図つきお知らせ（QR）・チラシ・役所への報告が同時にできる</figcaption>
+  </figure>
+  <p>「<b>工事お知らせAI</b>」— 工事のいつもの書類をAIが読み取り、住民がスマホで見られる地図つきお知らせページ・貼り紙・報告書を自動で作るサービスです。東京都のオープンデータ（都内の路上工事765件）も取り込んで、すでに本番で動いています。今年の<b>都知事杯オープンデータ・ハッカソン2026に提出</b>します。</p>
+  <p class="note">実物: <a href="https://osanpo-safety.haqei64384.workers.dev/">osanpo-safety.haqei64384.workers.dev</a> ／ 住民向けページの例: <a href="https://osanpo-safety.haqei64384.workers.dev/notice.html?id=86c36c0e-425b-4752-abe9-a0b02acc758f">工事のお知らせ（デモ）</a></p>
+
+  <h2>目指している未来（逆算で動いています）</h2>
+  <figure>
+    <img src="images/concept-02-01.png" alt="2030年代の未来から逆算したロードマップ">
+    <figcaption>未来から逆算: 自動運転と人が安全に共存する街には「工事を事前に知らせる情報の土台」が要る</figcaption>
+  </figure>
+  <p>自動運転の車は、カメラで工事を「見つけて止まる」ことはできても、<b>事前に知って避ける</b>ことがまだできません（米国では大手の自動運転車が工事現場に入り込んでリコールになったばかりです）。歩く人と自動運転が安全に共存する街には、「今日どこで道路が変わったか」を人にも機械にも届ける情報の土台が必要になります。私はタクシードライバーとして毎日その現場を見ている当事者として、この土台を東京から作りたい。工事お知らせAIはその第一歩です。</p>
+
+  <h2>探している人・お願いしたいこと</h2>
+  <figure>
+    <img src="images/concept-03-01.png" alt="探している協力者: 工事現場の人・自治体の人・不動産系・モビリティ関係・地域の人">
+    <figcaption>売り込みではありません。話を15分聞かせてもらえるだけで十分です</figcaption>
+  </figure>
+  <table class="table">
+    <thead><tr><th>こんな方</th><th>お願いしたいこと</th></tr></thead>
+    <tbody>
+      <tr><td>👷 工事・建設の現場にいる方（監督さん・職人さん・警備の方）</td><td>住民へのお知らせや問い合わせ対応の実際を15分聞かせてください</td></tr>
+      <tr><td>🏛️ 区役所・都庁・自治体で働く方</td><td>道路や工事の情報がどう扱われているか教えてください</td></tr>
+      <tr><td>🏠 不動産・住まい系の仕事の方</td><td>「歩きやすさ・道路の安全」の情報に興味があれば話をさせてください</td></tr>
+      <tr><td>🚌 自動運転・交通・モビリティ関係の方</td><td>実証の現場で困っていることを聞かせてください</td></tr>
+      <tr><td>👵 町会・地域活動をされている方</td><td>工事のお知らせページを試しに使ってみてください（無料です）</td></tr>
+    </tbody>
+  </table>
+  <div class="callout"><p class="big">一番嬉しいのは「この人に会うといいよ」のひと言です。🤝</p><p class="note">紹介していただいた方に売り込みはしません。まず話を聞くところからやっています。</p></div>
+
+  <h2>私について</h2>
+  <p>東京・大田区在住。現役のタクシードライバーで、AIを使った開発を一人でやっています。「地図が好きで、PDFやExcelに埋もれた地域の情報を、AIと公共データで使えるWeb地図に変える」のが得意分野です。工事情報のほかにも、地域のイベント案内や施設情報の地図化などもやっています — 「うちにもこういう埋もれた資料がある」があれば、それもぜひ見せてください。</p>
+
+  <footer>2026年7月 / このページはAIと共同で作成しています / 連絡はこのページを見せてくれた本人まで</footer>
+</div>
+</body>
+</html>
