@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>建設書類のExcel台帳化サービス（試験提供中）— PDF・写真を送るだけ、3営業日</title>
+<style>
+  :root {
+    --ink: #1a1a1a; --ink-2: #4a4a4a; --bg: #f7f5ee; --paper: #ffffff; --line: #d8d2bf;
+    --accent: #1d4ed8; --accent-soft: #dde7fb; --yellow: #f4d35e;
+    --shadow: 0 1px 0 rgba(0,0,0,.04), 0 8px 24px rgba(0,0,0,.06);
+    --sans: -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Noto Sans JP", "Yu Gothic", "Meiryo", sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { font-family: var(--sans); background: var(--bg); color: var(--ink); line-height: 1.8; }
+  .wrap { max-width: 760px; margin: 0 auto; padding: 40px 22px 80px; }
+  .badge { display: inline-block; background: var(--yellow); color: #1a1a1a; font-size: 13px; font-weight: 700; padding: 5px 12px; border-radius: 999px; margin-bottom: 14px; }
+  h1 { font-size: 28px; line-height: 1.45; margin: 0 0 10px; }
+  h1 b { color: var(--accent); }
+  .lede { font-size: 16px; color: var(--ink-2); margin: 0 0 22px; }
+  h2 { font-size: 20px; border-left: 5px solid var(--accent); padding-left: 10px; margin: 40px 0 12px; }
+  .card { background: var(--paper); border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px; box-shadow: var(--shadow); margin: 14px 0; }
+  .price { font-size: 26px; font-weight: 800; color: var(--accent); }
+  .price small { font-size: 14px; color: var(--ink-2); font-weight: 400; }
+  table { width: 100%; border-collapse: collapse; font-size: 12.5px; background: #fff; }
+  th, td { border: 1px solid var(--line); padding: 6px 8px; text-align: left; vertical-align: top; }
+  th { background: #eef2fb; white-space: nowrap; }
+  .beforeafter { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin: 10px 0; }
+  .beforeafter img { width: 100%; border: 1px solid var(--line); border-radius: 8px; }
+  .arrow { text-align: center; font-size: 28px; color: var(--accent); margin: 6px 0; }
+  .steps li { margin: 6px 0; }
+  .cta { display: block; text-align: center; background: var(--accent); color: #fff; font-size: 18px; font-weight: 700; padding: 16px; border-radius: 12px; text-decoration: none; margin: 26px 0 8px; }
+  .note { font-size: 12.5px; color: var(--ink-2); }
+  .scroll { overflow-x: auto; }
+  footer { margin-top: 40px; font-size: 12.5px; color: var(--ink-2); border-top: 1px solid var(--line); padding-top: 14px; }
+  @media (max-width: 620px) { .beforeafter { grid-template-columns: 1fr; } h1 { font-size: 23px; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <span class="badge">試験提供中・初回モニター3社限定</span>
+  <h1>建設書類の山、<b>Excel台帳にします</b><br>PDF・写真を送るだけ、3営業日</h1>
+  <p class="lede">道路使用許可申請書・安全書類・点検記録・作業日報——紙とPDFのままでは、探せない・集計できない・引き継げない。建設書類の様式を読み取るAIシステム（本番運用中・都知事杯オープンデータ・ハッカソン2026提出）を使い、人の目の確認込みで台帳化して納品します。</p>
+
+  <h2>Before → After（サンプル・架空データ）</h2>
+  <div class="card">
+    <p style="margin:0 0 6px;"><b>Before:</b> 道路使用許可申請書 3枚（PDF/写真のまま）</p>
+    <div class="beforeafter">
+      <img src="images/sample-1-corp-roadwork.png" alt="申請書サンプル1">
+      <img src="images/sample-2-corp-yearcross.png" alt="申請書サンプル2">
+      <img src="images/sample-3-individual-festival.png" alt="申請書サンプル3">
+    </div>
+    <div class="arrow">↓ 3営業日</div>
+    <p style="margin:0 0 6px;"><b>After:</b> 検索・集計できるExcel台帳（<a href="sample-daicho.csv">CSVサンプルをダウンロード</a>）</p>
+    <div class="scroll">
+    <table>
+      <tr><th>No</th><th>書類種別</th><th>工事・行事名</th><th>申請者</th><th>施工場所</th><th>期間</th><th>時間帯</th><th>規制内容</th><th>備考</th></tr>
+      <tr><td>1</td><td>道路使用許可申請書</td><td>電線共同溝敷設工事に伴う片側交互通行規制</td><td>㈱大江戸道路工業</td><td>新宿区西新宿三丁目地内</td><td>2026-08-01〜08-31</td><td>08:00-18:00</td><td>片側交互通行</td><td>和暦→西暦を自動変換</td></tr>
+      <tr><td>2</td><td>道路使用許可申請書</td><td>橋梁補修工事に伴う歩道通行止め</td><td>㈱都心橋梁工業</td><td>渋谷区渋谷三丁目地内</td><td>2026-12-20〜2027-01-10</td><td>—</td><td>歩道通行止め</td><td>年またぎ工期を自動判定</td></tr>
+      <tr><td>3</td><td>道路使用許可申請書</td><td>浅草夏祭り 露店設置・歩行者天国</td><td>個人申請</td><td>台東区 雷門通り</td><td>2026-07-20</td><td>10:00-18:00</td><td>歩行者天国</td><td>個人様式にも対応</td></tr>
+    </table>
+    </div>
+    <p class="note">※ サンプルはすべて架空データです。列構成（台帳のフォーマット）は貴社の指定に合わせます。</p>
+  </div>
+
+  <h2>対象書類の例</h2>
+  <div class="card">
+    道路使用・道路占用許可申請書／安全書類（作業員名簿・車両届・持込機械届など）／点検記録・是正報告／作業日報／完成図書の目次台帳／名刺・取引先リスト——<b>手書き・スキャン・スマホ写真でも可</b>。様式が混ざっていても仕分けから行います。
+  </div>
+
+  <h2>料金・納期</h2>
+  <div class="card">
+    <p class="price">初回モニター 3,000円 <small>／ 書類50枚まで・3社限定・翌々営業日納品</small></p>
+    <p style="margin:6px 0 0;">通常料金: <b>100枚まで 9,800円</b>（3営業日）／ 以降100枚ごと +8,000円 ／ 毎月の定期台帳化は月額でお見積り</p>
+    <p class="note">モニターの条件は「実務で使えたか・使えなかったか」のご感想を1通いただくことだけです。修正は1回無料。</p>
+  </div>
+
+  <h2>ご利用の流れ（メールだけで完結）</h2>
+  <div class="card">
+    <ol class="steps">
+      <li>下のボタンからメールで「書類の種類・枚数・希望の列」をご連絡（PDF/写真をそのまま添付でOK）</li>
+      <li>当方でAI読み取り＋<b>人の目で全件確認</b>（AIまかせにしません）</li>
+      <li>Excel（またはCSV/スプレッドシート）で納品。修正1回無料</li>
+    </ol>
+  </div>
+
+  <h2>セキュリティ</h2>
+  <div class="card">
+    お預かりしたデータは納品後14日で削除します。再委託はしません。機密保持の覚書が必要な場合は雛形をご用意しています。
+  </div>
+
+  <a class="cta" href="mailto:haqei64384@gmail.com?subject=%E3%80%90%E5%8F%B0%E5%B8%B3%E5%8C%96%E3%83%A2%E3%83%8B%E3%82%BF%E3%83%BC%E7%94%B3%E8%BE%BC%E3%80%91&body=%E4%BC%9A%E7%A4%BE%E5%90%8D%EF%BC%9A%0A%E6%9B%B8%E9%A1%9E%E3%81%AE%E7%A8%AE%E9%A1%9E%EF%BC%9A%0A%E3%81%8A%E3%81%8A%E3%82%88%E3%81%9D%E3%81%AE%E6%9E%9A%E6%95%B0%EF%BC%9A%0A%E3%81%BB%E3%81%97%E3%81%84%E5%88%97%EF%BC%88%E3%82%8F%E3%81%8B%E3%82%8C%E3%81%B0%EF%BC%89%EF%BC%9A">メールで申し込む（モニター残り3枠）</a>
+  <p class="note" style="text-align:center;">件名・本文は自動で入ります。書類を添付して送るだけ。</p>
+
+  <footer>
+    運営: 地図とAIの個人開発者（東京・大田区）。建設書類のAI読み取りシステムを本番運用中（都知事杯オープンデータ・ハッカソン2026提出済み）。<br>
+    本ページは試験提供のご案内です。営業メールが不要な方はその旨ご返信ください。以後お送りしません。
+  </footer>
+
+</div>
+</body>
+</html>
