@@ -1,6 +1,6 @@
 <!doctype html><html lang="ja"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex">
-<title>growth-tick 2026-07-12</title>
+<title>growth-tick 2026-07-13</title>
 <style>
 body{font-family:-apple-system,"Hiragino Sans",sans-serif;background:#f7f5ee;color:#1a1a1a;margin:0;padding:18px;line-height:1.6}
 h1{font-size:20px;margin:0 0 4px} .sub{color:#4a4a4a;font-size:13px;margin:0 0 14px}
@@ -10,15 +10,15 @@ h1{font-size:20px;margin:0 0 4px} .sub{color:#4a4a4a;font-size:13px;margin:0 0 1
 .badge{display:inline-block;background:#c83a2c;color:#fff;border-radius:999px;font-size:12px;font-weight:700;padding:1px 10px;margin-left:6px}
 .pace{font-size:15px}.small{font-size:12px;color:#4a4a4a}
 </style></head><body>
-<h1>🔄 growth-tick <span class="small">2026-07-12 自動実行</span><span class="badge">WARN 11</span></h1>
-<p class="sub">第一律速: 本編CTR（中央値0.9%・健全4-6%の1/4） — サムネ視認性（巨大極太短句・明るい焦点・象徴1点）。インプレは出ている(最大6512)のにクリックされない</p>
-<div class="card ok"><div class="pace">📈 登録 <b>83</b>/1000（残り917）
- / 直近6日 +13（2.17/日）
- / 到達まで約424日</div></div>
-<div class="card warn"><div class="k">🚩 停滞・規律フラグ</div><div class="item">[coord-tasks-overdue] coordタスク10件が期日超過 → 棚卸し（実行 or coord.sh task-done で消化）</div><div class="item">[ctr-stale-for-judge] CTRが12日前のまま判定期日が3日以内に迫っている → 判定前に yt-ctr.mjs を回せ（古い値でjudgeしない）</div><div class="item">[measure-stalled] M1「H42勝ち様式を即日横展開できるサムネ在庫の事前生産」が実装中のまま10日 → 分割するか捨てる</div><div class="item">[measure-judge-overdue] M5「公開前ショート2本の本編リンク欠落+シリーズ行漏れ修正」の効果判定期日を3日超過 → metricで判定しmeasuredへ</div><div class="item">[measure-judge-overdue] M6「CTAオーナーコメント付与を日次スイープへ組込」の効果判定期日を7日超過 → metricで判定しmeasuredへ</div><div class="item">[measure-judge-overdue] M13「growth-tickの無人日次実行＋スマホ通知（ループの心臓）」の効果判定期日を3日超過 → metricで判定しmeasuredへ</div><div class="item">[measure-judge-overdue] M14「2台間analyticsの還流同期（SSOTの物理分裂を解消）」の効果判定期日を3日超過 → metricで判定しmeasuredへ</div><div class="item">[measure-judge-overdue] M17「自動化ジョブのハートビート監視（沈黙する死の検出）」の効果判定期日を7日超過 → metricで判定しmeasuredへ</div><div class="item">[measure-judge-overdue] M18「共有JSON台帳のロック導入（並行セッション書込消失の防止）」の効果判定期日を3日超過 → metricで判定しmeasuredへ</div><div class="item">[cta-comment-missing] 公開ショート7本にCTAコメント未付与 → node scripts/shorts-cta-comment.mjs（先頭: aA3jmJRpbas D_QyediFGjE jRERA37mH_0）</div><div class="item">[job-silent-death] ジョブ relink-sweep が66時間 成功していない（許容48h）→ 沈黙死。ログ/Chromeログイン/トークンを確認</div></div>
+<h1>🔄 growth-tick <span class="small">2026-07-13 自動実行</span><span class="badge">WARN 3</span></h1>
+<p class="sub">第一律速: ショート視聴→登録の変換（subs/view 0.036%・唯一の大流量63,500再生がほぼ登録に変わっていない） — 登録CTA配線（上部登録バッジ「全64話 連載中」/キャプション登録行/オーナーコメント）を、公開後コホートで判定する。⚠️実測により、バッジが実際に載っているのは **2026-07-08公開分から（11本のみ）** で、07-01〜07-07・07-11は旧バッジ（在庫クリップの後日公開）。judge_due=2026-07-21（d7窓が11本すべて確定）。効かなければ『動画内で登録を口頭+画面で求める』設計（末尾ループ内CTA）へ進む</p>
+<div class="card ok"><div class="pace">📈 登録 <b>84</b>/1000（残り916）
+ / 直近7日 +14（2/日）
+ / 到達まで約458日</div></div>
+<div class="card warn"><div class="k">🚩 停滞・規律フラグ</div><div class="item">[coord-tasks-overdue] coordタスク5件が期日超過 → 棚卸し（実行 or coord.sh task-done で消化）</div><div class="item">[measure-stalled] M1「H42勝ち様式を即日横展開できるサムネ在庫の事前生産」が実装中のまま11日 → 分割するか捨てる</div><div class="item">[cta-comment-missing] 公開ショート1本にCTAコメント未付与 → node scripts/shorts-cta-comment.mjs（先頭: jsZ8UCEzN4w）</div></div>
 <div class="card"><div class="k">📌 今日のアクション（実験・施策）</div>
-<div class="item">🛠 今日の実装対象: M1「H42勝ち様式を即日横展開できるサムネ在庫の事前生産」(ICE 13.5・in_progress)</div><div class="item">⏳ H42: 判定まで残り3日（2026-07-15）</div><div class="item">⏳ H44: 判定まで残り11日（2026-07-23）</div><div class="item">⏳ SH-CONTENT-1: コホート成立(5本)。計測窓（2026-07-14まで）待ち</div><div class="item">🧪 H35: コホート素材成立(3本・script_ready) → 公開/予約後に judge_due=最終公開日+7日を設定</div><div class="item">🧪 H37: コホート素材成立(4本・script_ready) → 公開/予約後に judge_due=最終公開日+7日を設定</div><div class="item">⏳ TT-EXP-051-longvsshort: 判定まで残り5日（2026-07-17）</div><div class="item">⏳ TT-H43-caption-transfer: 判定まで残り8日（2026-07-20）</div><div class="item">🔁 反復期日: weekly-review（前回2026-07-02・周期7日） ⚠️遅れ3日 → 実行後 recurring.mjs done weekly-review</div><div class="item">🔁 反復期日: weekly-growth-loop（前回2026-07-03・周期7日） → 実行後 recurring.mjs done weekly-growth-loop</div><div class="item">🔁 反復期日: daily-comment-reply（初回） → 実行後 recurring.mjs done daily-comment-reply</div><div class="item">🔁 反復期日: community-post（初回） → 実行後 recurring.mjs done community-post</div><div class="item">🔁 反復期日: shorts-cohort-check（前回2026-07-02・周期3日） ⚠️遅れ7日 → 実行後 recurring.mjs done shorts-cohort-check</div>
-<div class="item small">📋 coordタスク期日 11件（詳細はセッションで）</div></div>
-
+<div class="item">🛠 今日の実装対象: M1「H42勝ち様式を即日横展開できるサムネ在庫の事前生産」(ICE 13.5・in_progress)</div><div class="item">⏳ H-CTR-051: 判定まで残り11日（2026-07-24）</div><div class="item">⏳ H45: 判定まで残り14日（2026-07-27）</div><div class="item">⏳ H42: 判定まで残り2日（2026-07-15）</div><div class="item">⏳ H44: 判定まで残り10日（2026-07-23）</div><div class="item">⏳ H49: 判定まで残り171日（2026-12-31）</div><div class="item">⏳ H50: 判定まで残り171日（2026-12-31）</div><div class="item">⏳ SH-CONTENT-1: コホート成立(5本)。計測窓（2026-07-14まで）待ち</div><div class="item">⏳ H35: コホート成立(11本)。計測窓（2026-07-21まで）待ち</div><div class="item">🧪 H37: コホート素材成立(4本・script_ready) → 公開/予約後に judge_due=最終公開日+7日を設定</div><div class="item">⏳ TT-EXP-051-longvsshort: 判定まで残り4日（2026-07-17）</div><div class="item">⏳ TT-H43-caption-transfer: 判定まで残り7日（2026-07-20）</div><div class="item">🔁 反復期日: weekly-review（前回2026-07-02・周期7日） ⚠️遅れ4日 → 実行後 recurring.mjs done weekly-review</div><div class="item">🔁 反復期日: weekly-growth-loop（前回2026-07-03・周期7日） ⚠️遅れ3日 → 実行後 recurring.mjs done weekly-growth-loop</div><div class="item">🔁 反復期日: daily-comment-reply（初回） → 実行後 recurring.mjs done daily-comment-reply</div><div class="item">🔁 反復期日: community-post（初回） → 実行後 recurring.mjs done community-post</div><div class="item">🔁 反復期日: shorts-cohort-check（前回2026-07-02・周期3日） ⚠️遅れ8日 → 実行後 recurring.mjs done shorts-cohort-check</div>
+<div class="item small">📋 coordタスク期日 7件（詳細はセッションで）</div></div>
+<div class="card"><div class="k">ℹ️ 情報</div><div class="item">承認待ち施策 3件（人間ゲート1）→ 判断HTMLで本人に提示する</div></div>
 <p class="small">対応するには: リモートコントロールで HaQei-Mac セッションを開き「growth-tickの続きをやって」</p>
 </body></html>
