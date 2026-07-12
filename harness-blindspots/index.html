@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>マルチモデル・ハーネスの未知 — あなたが考えたこともない11の論点</title>
+<style>
+  :root {
+    --ink: #1a1a1a;
+    --ink-2: #4a4a4a;
+    --bg: #f7f5ee;
+    --paper: #fbf9f1;
+    --line: #d8d2bf;
+    --accent: #cc785c;
+    --accent-soft: #f5e0d6;
+    --warn: #c83a2c;
+    --warn-soft: #f6dcd6;
+    --yellow: #f4d35e;
+    --shadow: 0 1px 0 rgba(0,0,0,.04), 0 8px 24px rgba(0,0,0,.06);
+    --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+    --sans: -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN",
+            "Hiragino Sans", "Noto Sans JP", "Yu Gothic", "Meiryo", sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 56px 28px 96px; }
+
+  .hero { margin-bottom: 56px; }
+  .hero .kicker {
+    display: inline-block;
+    background: var(--accent); color: #fff;
+    font-size: 12px; font-weight: 700; letter-spacing: .12em;
+    padding: 6px 12px; border-radius: 999px;
+    margin-bottom: 18px;
+  }
+  .hero h1 {
+    font-size: 40px; line-height: 1.3; margin: 0 0 14px;
+    letter-spacing: -.01em;
+  }
+  .hero h1 b { color: var(--accent); }
+  .hero p.lede {
+    font-size: 18px; color: var(--ink-2); margin: 0; max-width: 780px;
+  }
+  .tldr {
+    margin-top: 28px; padding: 22px 24px;
+    background: var(--paper); border: 1px solid var(--line); border-radius: 12px;
+    box-shadow: var(--shadow);
+  }
+  .tldr h2 { font-size: 13px; letter-spacing: .15em; color: var(--accent); margin: 0 0 10px; }
+  .tldr ol { margin: 0; padding-left: 20px; }
+  .tldr li { margin: 4px 0; }
+
+  section { margin: 64px 0 0; }
+  section > h2 {
+    font-size: 28px; line-height: 1.4; margin: 0 0 6px;
+    border-left: 6px solid var(--accent); padding-left: 12px;
+  }
+  section > h2 .num {
+    color: var(--accent); font-variant-numeric: tabular-nums; margin-right: 10px;
+  }
+  section > p.sub { color: var(--ink-2); margin: 0 0 22px; }
+  h3 { font-size: 18px; margin: 26px 0 6px; }
+
+  figure {
+    margin: 0 0 24px; padding: 12px;
+    background: var(--paper); border: 1px solid var(--line); border-radius: 14px;
+    box-shadow: var(--shadow);
+  }
+  figure img { display: block; width: 100%; height: auto; border-radius: 8px; }
+  figcaption {
+    font-size: 13px; color: var(--ink-2); margin-top: 10px; text-align: center;
+  }
+
+  .table {
+    width: 100%; border-collapse: collapse; margin: 12px 0 6px;
+    background: var(--paper); border: 1px solid var(--line); border-radius: 12px; overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+  .table th, .table td {
+    text-align: left; padding: 12px 14px; border-bottom: 1px solid var(--line);
+    vertical-align: top; font-size: 14.5px;
+  }
+  .table th { background: #efeadb; font-weight: 700; }
+  .table tr:last-child td { border-bottom: 0; }
+  .table .pick { background: var(--accent-soft); }
+  .table .pick td:first-child { font-weight: 700; color: var(--accent); }
+  .scroll { overflow-x: auto; }
+
+  code.inline {
+    font-family: var(--mono); font-size: .92em;
+    background: #efeadb; padding: 1px 6px; border-radius: 4px;
+  }
+
+  .callout {
+    margin: 18px 0;
+    padding: 16px 18px;
+    border-left: 4px solid var(--accent);
+    background: var(--accent-soft);
+    border-radius: 0 10px 10px 0;
+  }
+  .callout.warn { border-color: var(--warn); background: var(--warn-soft); }
+  .callout p { margin: 0; }
+  .callout strong { color: var(--accent); }
+  .callout.warn strong { color: var(--warn); }
+
+  .quote {
+    border-left: 3px solid var(--line); padding: 6px 16px;
+    color: var(--ink-2); font-size: 14.5px; margin: 18px 0;
+  }
+
+  .conclusion {
+    margin-top: 56px; padding: 28px 28px 24px;
+    background: var(--ink); color: #f6f3e8; border-radius: 16px;
+  }
+  .conclusion h2 { color: var(--yellow); border: 0; padding: 0; margin: 0 0 12px; font-size: 26px; }
+  .conclusion ol { margin: 0; padding-left: 20px; }
+  .conclusion li { margin: 6px 0; }
+
+  footer { margin-top: 36px; color: var(--ink-2); font-size: 13px; }
+
+  @media (max-width: 720px) {
+    .wrap { padding: 32px 18px 64px; }
+    .hero h1 { font-size: 28px; }
+    section > h2 { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <span class="kicker">未知の棚卸し — 2026-07-12</span>
+    <h1>マルチモデル・ハーネスの<b>未知</b><br>あなたが考えたこともない11の論点</h1>
+    <p class="lede">対象は「ハッカソン/ ディレクトリを Opus でも codex でも同品質で回す」ためのハーネス（PROJECT.md / AGENTS.md / CLAUDE.md / ops/consult.sh）。Claude Opus 4.8 の分析に、codex(gpt-5.6-sol) の独立敵対レビューをぶつけて統合した。一般論（「ドキュメントは陳腐化する」等）は排除してある。</p>
+    <div class="tldr">
+      <h2>TL;DR</h2>
+      <ol>
+        <li><b>ハーネスは「実行の品質」を上げるが、「着手の確率」は1ミリも上げない。</b>むしろ整備作業は進捗感が強く、最も心地よい先延ばしになる。</li>
+        <li>技術面の最大の穴は<b>「PROJECT.md が git管理外の iCloud 上にあり、consult.sh がそれを外部モデルへ自動送信する」</b>設計。顧客の建設書類を扱った瞬間、NDA雛形を配る側が自分で機密を外に流す。</li>
+        <li>codex の指摘の核心は<b>「全モデルが同じ誤った前提と壊れた検証器を共有し、全員一致・全件greenになる」</b>こと。一貫性は品質ではない。</li>
+      </ol>
+    </div>
+  </header>
+
+  <section>
+    <h2><span class="num">01</span>ハーネスは着手に効かない（最重要）</h2>
+    <p class="sub">品質プロトコルは全部、作業を「始めた後」にしか効かない。</p>
+    <figure>
+      <img src="images/concept-01-01.png" alt="完璧に整備された発射台に、ロケットが載っていない図">
+      <figcaption>発射台は完璧。だがロケットが載っていない。</figcaption>
+    </figure>
+    <p>接地・独立レビュー・完了前verify——AGENTS.md の品質プロトコル5項目は、すべて「作業を始めた後」の話だ。<b>着手のトリガーはどこにも書かれていない。</b>しかも変更禁止#3「催促しない・締切を作らない」により、誰も引き金を引かない設計が明文化されている。これは本人の意思で決めたことであり、正しい。だが引き金の設計が空欄のままなのは、意図ではなく単なる抜けだ。</p>
+    <div class="callout warn">
+      <p><strong>発現シナリオ:</strong> 台帳化営業の送信（キット完成済・氏名記入のみ残）が「保留中」のまま PROJECT.md に常駐する。毎セッション、全モデルが冒頭でそれを読む。<b>停滞が「前提」として毎回再注入される。</b>半年後も同じ行が残っている。</p>
+    </div>
+    <h3>最小の対策</h3>
+    <p>「保留中」の各項目に、<b>保留した日付と「再判断する条件」</b>を必ず書く。期日ではなく条件（何が起きたら / 何を知ったら再開するか）。<b>条件を書けない項目は「保留」ではなく「棄却」に落とす</b>——リストから消す。ゾンビ項目を状態ファイルに住まわせない。</p>
+  </section>
+
+  <section>
+    <h2><span class="num">02</span>相談は、決断を遅らせる合法的な武器になる</h2>
+    <p class="sub">AIに聞くほど改善点が増える。そして永遠に発射しない。</p>
+    <figure>
+      <img src="images/concept-02-01.png" alt="相談ループの図。出口はあるが誰も通らない">
+      <figcaption>出口はある。だが誰も通らない。</figcaption>
+    </figure>
+    <p><code class="inline">consult.sh</code> は「品質のための仕組み」に見える。だが決裁権は本人にしかない。迷う → codex に聞く → 7点返ってくる → 改善点が増える → また直す → まだ送らない。従量課金でコストだけが増える。</p>
+    <p>これは <b>codex を「敵対的レビュアー」に固定した設計の副作用</b>でもある。常に否定を出力するインセンティブが生まれ、「7点挙げろ」と言えば必ず7点出る。実際には十分な成果物に対して、ノイズレベルの指摘が「発見」として扱われ、修正ループが無限に伸びる。<b>批判の偽陽性</b>だ。</p>
+    <h3>最小の対策（2つ）</h3>
+    <ul>
+      <li><b>可逆な行動には相談しない。</b>メール送信・出品・PoC提案は取り返しがつく。相談は不可逆な判断（契約・公開・撤退）だけに使う。consult は「発射するか否か」ではなく「発射後の検証」に使う。</li>
+      <li><b>指摘に重大度3段階を強制する。</b>「出荷停止級 / 直すべき / 好みの問題」。<b>出荷停止級ゼロなら出荷を許可する</b>ルールにする。指摘の「数」ではなく「重大度」で判断する。</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2><span class="num">03</span>自動添付という穴 — 状態ファイルは、いつか機密を持つ</h2>
+    <p class="sub">技術的にクリティカル。顧客が付いてから考えるのでは遅い。</p>
+    <figure>
+      <img src="images/concept-03-01.png" alt="PROJECT.mdの内容が外部モデルへ自動送信される図">
+      <figcaption>「再委託しません」と約束した紙を持ったまま、裏口から封筒を投函している。</figcaption>
+    </figure>
+    <p>今の PROJECT.md には公開可能な情報しか入っていない。だから見えない。<b>だが状態ファイルは成長する。</b></p>
+    <div class="callout warn">
+      <p><strong>発現シナリオ:</strong> 台帳化のモニター客がつく → 顧客名・書類の内容・単価が PROJECT.md に書かれる → <code class="inline">consult.sh</code> が毎回それを丸ごと外部モデルへ送信する。販売ページには<b>「再委託しません／データは14日で削除します」</b>と明記してある。運用がその約束と矛盾する。</p>
+    </div>
+    <h3>最小の対策</h3>
+    <ul>
+      <li>PROJECT.md「変更禁止」に <b>「顧客の実データ・氏名・書類内容は状態ファイルに書かない」</b>を<b>いま</b>追加する（顧客ゼロの今なら5分）。</li>
+      <li>consult.sh 側で、送信前に固有名詞スキャン（会社名・メールアドレス・電話番号の正規表現）を掛けて警告を出す。</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2><span class="num">04</span>土台が版管理されていない（実地確認済み）</h2>
+    <p class="sub">変更禁止を守る仕組みが、変更禁止を守れない場所に置かれている。</p>
+    <figure>
+      <img src="images/concept-04-01.png" alt="砂の上に置かれた石板と、二重に存在する写本">
+      <figcaption>石板（変更禁止7か条）が、砂（iCloud）の上に置かれている。しかも写本が別にある。</figcaption>
+    </figure>
+    <p>今日その場で確認した事実を2つ。</p>
+    <ul>
+      <li><b><code class="inline">ハッカソン/</code> は git リポジトリではない</b>（<code class="inline">fatal: not a git repository</code>）。履歴がゼロ。どのモデルが善意で「変更禁止」を書き換えても、<b>誰がいつ変えたか検証できない</b>。加えて iCloud Drive 上なので、同期競合による破損・巻き戻り、別端末での未ダウンロード（dataless）ファイルを空として読む事故があり得る。</li>
+      <li><b>状態が二重に存在している。</b>Claudeメモリ側に6ファイル（<code class="inline">koji-map-business.md</code> / <code class="inline">sell-before-build-strategy.md</code> / <code class="inline">tochijihai-hackathon-2026.md</code> 他）が状態を保持している。PROJECT.md は「唯一の状態ファイル」を名乗るが、<b>codex はメモリ側を読めない</b>。乖離を検知する手段もない。「独立レビュー」ではなく「情報が欠けたレビュー」になる。</li>
+    </ul>
+    <div class="callout">
+      <p><strong>最小の対策:</strong> <code class="inline">git init</code> して PROJECT.md / AGENTS.md / ops/ だけをコミット対象にする（osanpo-safety等は別管理）。<b>1コマンドで終わる。</b>さらに、セッション終了時に「メモリとPROJECT.mdの差分チェック」を AGENTS.md に1行手順として固定する。</p>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="num">05</span>codex(gpt-5.6-sol) の独立レビュー — 7点</h2>
+    <p class="sub">「最大の敵はモデル性能ではなく、全モデルが同じ誤った前提と壊れた検証器を共有して『全員一致・全件green』になること」</p>
+    <div class="scroll">
+    <table class="table">
+      <thead><tr><th>#</th><th>盲点</th><th>なぜ気づかないか</th><th>発現シナリオ</th><th>最小の対策</th></tr></thead>
+      <tbody>
+        <tr class="pick"><td>1</td><td>単一状態＝単一障害点</td><td>一貫性を品質と誤認する</td><td>PROJECT.md の誤記が自動添付され、全モデルの独立性を消す</td><td>状態を添付しない「盲検レビュー」を定期実施</td></tr>
+        <tr><td>2</td><td>合意の出来レース化</td><td>後手モデルが先手の論理にアンカーされる</td><td>codex が Claude 案の欠陥探索ではなく「説明の補強」をする</td><td>双方の初稿を封印し、後から差分照合</td></tr>
+        <tr><td>3</td><td>変更禁止の憲法化</td><td>過去の事故防止が「永続的な正義」に見える</td><td>前提が消えても迂回実装だけが累積する</td><td>各項目に根拠・期限・解除試験を必須化</td></tr>
+        <tr><td>4</td><td>検証器との共進化</td><td>green が安心を生む</td><td>実装とverifyが同じ誤解を符号化し、旧版やキャッシュだけを正常判定</td><td>外部カナリア、nonce、意図的破壊による検証器テスト</td></tr>
+        <tr class="pick"><td>5</td><td>事実台帳の推論ロンダリング</td><td>要約の反復で、仮説が「事実の文体」になる</td><td>出典・観測日を失った市場判断が、全戦略を拘束する</td><td>出典・観測日・確度・失効日なしは「事実」登録禁止</td></tr>
+        <tr class="pick"><td>6</td><td>ハーネスが可処分時間を捕食</td><td>整備作業は進捗感が強い</td><td>週20hのうち協議・記録・同期に5h以上消え、出荷量が落ちる</td><td>運用税を計測し15%超で機能凍結。3回繰り返す作業だけ自動化</td></tr>
+        <tr><td>7</td><td>サイレント劣化が観測不能</td><td>同じモデル名・終了コードなら同等だと思う</td><td>alias更新・添付切断・コンテキスト圧縮で consult 品質だけ低下</td><td>model ID / prompt hash / 添付byte数を記録し、固定課題の週次差分を警報化</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p style="font-size:13px;color:var(--ink-2);">※ codex CLI（<code class="inline">model=gpt-5.6-sol</code>）に PROJECT.md / AGENTS.md の要約を添付して 2026-07-12 に実施。原文要旨は <code class="inline">output/explainer-harness-blindspots/context.md</code> に保存。</p>
+    <div class="callout">
+      <p><strong>#6 が痛い:</strong> 週20hのうち、ハーネス整備そのものに何時間使ったか。これは「運用税」であり、出荷量とトレードオフの関係にある。<b>ハーネスは薄いほど良い</b>——という前提が、ハーネスを作っている最中は一番見えなくなる。</p>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="num">06</span>いま実際に手を打つべき5つ（コスト順）</h2>
+    <p class="sub">全部やっても1時間かからない。逆に、これ以上ハーネスを厚くしない。</p>
+    <div class="scroll">
+    <table class="table">
+      <thead><tr><th>#</th><th>打ち手</th><th>コスト</th><th>効く盲点</th></tr></thead>
+      <tbody>
+        <tr class="pick"><td>1</td><td><code class="inline">git init</code> して PROJECT.md / AGENTS.md / ops/ をコミット</td><td>5分</td><td>04・codex#3（履歴があれば「解除試験」が可能になる）</td></tr>
+        <tr class="pick"><td>2</td><td>変更禁止に「顧客実データを状態ファイルに書かない」を追加</td><td>5分</td><td>03</td></tr>
+        <tr class="pick"><td>3</td><td>「保留中」の各項に <b>保留日＋再判断条件</b> を付ける。条件を書けないものは棄却</td><td>15分</td><td>01</td></tr>
+        <tr><td>4</td><td>consult の定型に <b>重大度3段階</b> を組み込む（出荷停止級ゼロ＝出荷可）</td><td>10分</td><td>02・codex#6</td></tr>
+        <tr><td>5</td><td>事実台帳の各行に <b>観測日と失効日</b> を付ける</td><td>20分</td><td>codex#5</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <h3>設計として効くが、今すぐでなくていいもの</h3>
+    <ul>
+      <li><b>盲検レビュー</b>: 月1回、PROJECT.md を添付せず「成果物だけ」を codex に見せる回を作る（codex#1・#2）</li>
+      <li><b>consultログ</b>: model ID / 送信byte数 / 日付を <code class="inline">ops/consult.log</code> に自動追記（codex#7）</li>
+      <li><b>変更禁止7項目に「根拠」と「解除条件」を併記</b>（codex#3）</li>
+    </ul>
+  </section>
+
+  <div class="conclusion">
+    <h2>一番痛い問い</h2>
+    <ol>
+      <li><b>ハーネスを完璧にしても、営業メールは1通も送られない。</b>着手の引き金は誰が引くのか？</li>
+      <li>「催促しない」と決めたのは本人。ならば<b>引き金の設計も本人にしか作れない</b>。AIができるのは、「保留中」の行を、条件付きの<b>「棄却」か「実行」のどちらかに変換する手伝い</b>まで。</li>
+      <li>今日やる価値があるのは、上の <b>1・2・3</b>（合計25分）。それ以上ハーネスを厚くするのは、codex#6 の言う「可処分時間の捕食」に入る。<b>ハーネスは薄いほど良い。</b></li>
+    </ol>
+  </div>
+
+  <footer>
+    題材: <code class="inline">ハッカソン/PROJECT.md</code> ・ <code class="inline">ハッカソン/AGENTS.md</code> ／ 分析: Claude Opus 4.8 ＋ codex(gpt-5.6-sol) 独立レビュー（2026-07-12）<br>
+    ※ git未管理・メモリ二重化の指摘は、当日その場でコマンド実行して確認した事実に基づく（推測ではない）。
+  </footer>
+
+</div>
+</body>
+</html>
