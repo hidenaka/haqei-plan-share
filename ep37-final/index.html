@@ -1,259 +1,223 @@
-<!doctype html>
-<html lang="ja">
-<head>
-<meta charset="utf-8">
+<title>ep37 最終検証（大改稿版）— BLEACH黒崎一護 × 震</title>
 <meta name="robots" content="noindex,nofollow">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ep37「震」最終検証・通し視聴ゲート</title>
 <style>
-  :root {
-    --ink: #1a1f2b;
-    --paper: #f7f3ea;
-    --navy: #16233f;
-    --gold: #b8862f;
-    --vermillion: #c0432b;
-    --line: #d8cfb8;
+  :root{
+    --bg:#0f1216; --panel:#171b20; --ink:#eae3d2; --sub:#a8a196;
+    --gold:#c9a227; --crimson:#b5432a; --indigo:#2c3a55; --line:#2a2f37;
+    --ok:#3f8f5f; --warn:#c9a227; --bad:#b5432a;
   }
-  * { box-sizing: border-box; }
-  body {
-    margin: 0;
-    background: var(--paper);
-    color: var(--ink);
-    font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", sans-serif;
-    line-height: 1.7;
+  @media (prefers-color-scheme: light){
+    :root{ --bg:#f5f0e3; --panel:#fffdf8; --ink:#20201c; --sub:#5a564c; --line:#e2dbc8; }
   }
-  .wrap { max-width: 980px; margin: 0 auto; padding: 24px 20px 80px; }
-  header {
-    background: var(--navy);
-    color: var(--paper);
-    padding: 28px 24px;
-    border-radius: 10px;
-    margin-bottom: 24px;
-    border-left: 6px solid var(--gold);
+  :root[data-theme="dark"]{ --bg:#0f1216; --panel:#171b20; --ink:#eae3d2; --sub:#a8a196; --line:#2a2f37; }
+  :root[data-theme="light"]{ --bg:#f5f0e3; --panel:#fffdf8; --ink:#20201c; --sub:#5a564c; --line:#e2dbc8; }
+
+  *{box-sizing:border-box;}
+  body{
+    background:var(--bg); color:var(--ink);
+    font-family:"Hiragino Mincho ProN","Yu Mincho",serif;
+    max-width:980px; margin:0 auto; padding:32px 20px 100px;
+    line-height:1.85;
   }
-  header h1 { margin: 0 0 6px; font-size: 1.5rem; }
-  header .sub { color: #cbb98a; font-size: 0.9rem; }
-  .tldr {
-    background: #fff;
-    border: 1px solid var(--line);
-    border-left: 5px solid var(--vermillion);
-    border-radius: 8px;
-    padding: 16px 20px;
-    margin-bottom: 24px;
+  h1{font-size:1.5rem; border-left:6px solid var(--gold); padding-left:14px; margin-bottom:4px;}
+  .subtitle{color:var(--sub); font-size:.9rem; margin-bottom:28px;}
+  h2{font-size:1.15rem; margin-top:48px; border-bottom:1px solid var(--line); padding-bottom:8px; display:flex; align-items:center; gap:8px;}
+  h3{font-size:1rem; color:var(--gold); margin-top:28px;}
+  .panel{background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:20px 24px; margin:16px 0;}
+  .badge{display:inline-block; font-size:.72rem; padding:2px 9px; border-radius:20px; font-family:sans-serif; font-weight:700; letter-spacing:.03em;}
+  .badge.new{background:rgba(181,67,42,.18); color:#e08060;}
+  .badge.edit{background:rgba(201,162,39,.18); color:var(--gold);}
+  .badge.pass{background:rgba(63,143,95,.18); color:#6fc98d;}
+  .badge.warn{background:rgba(201,162,39,.18); color:var(--gold);}
+  .badge.bad{background:rgba(181,67,42,.25); color:#ff8a68; border:1px solid #b5432a;}
+
+  .blocking{
+    background:linear-gradient(135deg, rgba(181,67,42,.16), rgba(181,67,42,.05));
+    border:2px solid var(--bad); border-radius:12px; padding:22px 24px; margin:20px 0 32px;
   }
-  .tldr b { color: var(--vermillion); }
-  section {
-    background: #fff;
-    border: 1px solid var(--line);
-    border-radius: 10px;
-    padding: 20px 22px;
-    margin-bottom: 20px;
+  .blocking h2{border:none; margin-top:0; color:#ff8a68;}
+  .blocking .item{margin:18px 0; padding-top:14px; border-top:1px dashed rgba(181,67,42,.4);}
+  .blocking .item:first-of-type{border-top:none; padding-top:0;}
+
+  .quote{
+    background:var(--panel); border-left:4px solid var(--gold); padding:14px 18px;
+    margin:10px 0; font-size:.98rem; color:var(--ink);
   }
-  h2 {
-    font-size: 1.1rem;
-    margin: 0 0 14px;
-    padding-bottom: 8px;
-    border-bottom: 2px solid var(--gold);
-    color: var(--navy);
+  .quote b{color:var(--gold);}
+  .mono{font-family:ui-monospace,Menlo,Consolas,monospace; font-size:.82rem; color:var(--sub); background:rgba(128,128,128,.12); padding:1px 6px; border-radius:4px;}
+
+  table{width:100%; border-collapse:collapse; font-size:.9rem; margin:14px 0;}
+  th,td{border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top;}
+  th{background:rgba(128,128,128,.08); font-family:sans-serif; font-size:.78rem; letter-spacing:.02em;}
+
+  .imgwrap{margin:16px 0;}
+  .imgwrap img{max-width:100%; border-radius:8px; border:1px solid var(--line); display:block;}
+  .imgcap{font-size:.78rem; color:var(--sub); margin-top:6px; font-family:sans-serif;}
+
+  .evidence-grid{display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:14px 0;}
+  @media (max-width:640px){ .evidence-grid{grid-template-columns:1fr;} }
+  .evidence-grid figure{margin:0;}
+  .evidence-grid img{width:100%; border-radius:8px; border:1px solid var(--line); display:block;}
+  .evidence-grid figcaption{font-size:.76rem; color:var(--sub); margin-top:5px; font-family:sans-serif;}
+
+  .titlecard{background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:16px 20px; margin:12px 0;}
+  .titlecard.reco{border-color:var(--gold); box-shadow:0 0 0 1px var(--gold) inset;}
+  .titlecard .t{font-size:1.05rem; font-weight:700; margin-bottom:6px;}
+  .titlecard .desc{font-size:.85rem; color:var(--sub);}
+
+  .decision-box{
+    background:var(--panel); border:2px solid var(--gold); border-radius:10px; padding:20px 24px; margin:20px 0;
   }
-  .stat-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-    gap: 10px;
-    margin-top: 8px;
-  }
-  .stat {
-    background: var(--paper);
-    border: 1px solid var(--line);
-    border-radius: 8px;
-    padding: 10px 12px;
-    text-align: center;
-  }
-  .stat .v { font-size: 1.3rem; font-weight: 700; color: var(--navy); }
-  .stat .l { font-size: 0.75rem; color: #7a7263; }
-  .filepath {
-    font-family: ui-monospace, monospace;
-    background: var(--navy);
-    color: #e8d9b0;
-    padding: 10px 14px;
-    border-radius: 6px;
-    font-size: 0.85rem;
-    overflow-x: auto;
-    margin-top: 10px;
-  }
-  .contact-img { width: 100%; border-radius: 8px; border: 1px solid var(--line); display: block; margin-top: 6px; }
-  .note {
-    font-size: 0.85rem;
-    color: #7a7263;
-    margin-top: 8px;
-  }
-  .titles {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-  .title-card {
-    border: 1px solid var(--line);
-    border-radius: 8px;
-    padding: 14px 16px;
-    position: relative;
-  }
-  .title-card.recommended {
-    border-color: var(--gold);
-    background: #fdf7e8;
-  }
-  .title-card .badge {
-    position: absolute;
-    top: -10px;
-    right: 14px;
-    background: var(--gold);
-    color: #fff;
-    font-size: 0.7rem;
-    padding: 2px 10px;
-    border-radius: 10px;
-  }
-  .title-card .label {
-    font-weight: 700;
-    color: var(--navy);
-    margin-right: 8px;
-  }
-  .title-card .text {
-    font-size: 0.98rem;
-  }
-  .checklist {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-  .checklist li {
-    padding: 10px 0;
-    border-bottom: 1px dashed var(--line);
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-  }
-  .checklist li:last-child { border-bottom: none; }
-  .checklist .num {
-    background: var(--navy);
-    color: #fff;
-    width: 22px;
-    height: 22px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.75rem;
-    flex-shrink: 0;
-    margin-top: 2px;
-  }
-  .verdict-box {
-    background: var(--paper);
-    border: 2px dashed var(--gold);
-    border-radius: 8px;
-    padding: 16px;
-    margin-top: 16px;
-    text-align: center;
-    font-size: 0.9rem;
-    color: #7a7263;
-  }
-  .next-steps {
-    font-size: 0.9rem;
-    color: #4a4536;
-  }
-  .next-steps ol { padding-left: 20px; margin: 8px 0 0; }
-  .next-steps li { margin-bottom: 4px; }
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --ink: #ece6d6;
-      --paper: #1c2029;
-      --navy: #2a3450;
-      --gold: #d4a94c;
-      --vermillion: #e2664a;
-      --line: #3a3f4d;
-    }
-    section, .title-card { background: #232733; }
-    .title-card.recommended { background: #2c2818; }
-    .tldr { background: #232733; }
-    .stat { background: #1c2029; }
-    header { border-left-color: var(--gold); }
-  }
+  .decision-box .q{font-weight:700; margin-top:16px;}
+  .decision-box .q:first-child{margin-top:0;}
+
+  ul{padding-left:22px;} li{margin:6px 0;}
+  .small{font-size:.82rem; color:var(--sub);}
+  .diff-note{font-family:sans-serif; font-size:.78rem; color:var(--sub); margin-top:2px;}
+
+  .gate-row{display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-bottom:1px solid var(--line); font-size:.9rem;}
+  .gate-row:last-child{border-bottom:none;}
 </style>
-</head>
-<body>
-<div class="wrap">
 
-  <header>
-    <h1>第三十七話「震」— 最終検証・通し視聴ゲート</h1>
-    <div class="sub">BLEACH × 黒崎一護 ／ content/057 ／ releases/057/ep37_shin.mp4</div>
-  </header>
+<h1>ep37 最終検証 — BLEACH黒崎一護 × 震（第三十七話・大改稿版）</h1>
+<div class="subtitle">content/057 ／ releases/057/ep37_shin.mp4（590.8秒 ≒ 9分51秒）／ 検証日 2026-07-12</div>
 
-  <div class="tldr">
-    <b>TL;DR</b> ep37 全工程完了。機械ゲート4種（script / visuals / timing / mix）全PASS・fork採点=台本92点／タイトル94点・identity監査=一護 7/7・尺 543秒（9:03）・公開枠 2026-07-16 4:00 JST。
-    コンタクトシート30枚を目視確認済み — 黒フレーム・字幕欠落・映像崩れなし。このページで通し視聴の合否とタイトル最終決定をお願いします。
+<div class="blocking">
+  <h2>⚠️ ブロッキング検出：2件（再レンダ必須・現版のまま公開不可）</h2>
+  <p class="small">コンタクトシート目視 → タイムスタンプ→シーンID逆引き → ソース画像とmtime比較で原因まで特定済み。台本・タイトル・機械ゲートは別として、<b>この2点は直さないと現行mp4を公開できません。</b></p>
+
+  <div class="item">
+    <h3 style="margin-top:0;">① 法務対応「オレンジ髪・斬月・死覇装の除去」が最終映像に反映されていない</h3>
+    <p><span class="badge bad">未反映</span> 依頼の前提（TL;DR）は「13枚再生成・ブラインド監査12/12不明でPASS」でしたが、これは<b>静止画PNGに対する検証だけ</b>でした。実際に <span class="mono">releases/057/ep37_shin.mp4</span> に焼き込まれている映像（DepthFlowモーションmp4）は、そのうち<b>11カットが再生成前の古い素材のまま</b>で、オレンジの逆立った髪・巨大な包帯巻きの刀（斬月）・黒い死覇装が今もはっきり映っています。</p>
+    <p><b>原因</b>：画像修正は <span class="mono">content/057/visuals/*.png</span>（16:57〜17:02生成）止まりで、その先の DepthFlow モーション中間ファイル <span class="mono">content/057/visuals_mp4/*.mp4</span> が再生成されていません。新規追加の2カット（V_02_08・V_04_06）だけは新しいpngから作られていますが、既存11カット（V_02_01, V_02_02, V_02_03, V_02_04, V_02_06, V_02_07, V_03_01, V_03_02, V_03_03, V_04_04, V_07_01）の <span class="mono">visuals_mp4</span> は7/11 07:36〜07:40のまま＝pngの再生成（7/12 16:57〜17:02）より<b>約33時間古い</b>状態でした（mtime比較で確認）。<span class="mono">video/remotion/public/057/cuts/*.mp4</span> へのコピー自体は7/12 17:21に実行されていますが、コピー元が古いのでコピー先も古い映像のままです。</p>
+    <p>そのうちオレンジ髪を実際に目視確認できたのは V_02_01 / V_02_02 / V_02_03 / V_02_06 / V_02_07 / V_04_04 / V_07_01 の7カット（下に証拠画像）。V_02_04・V_03_01・V_03_02・V_03_03はstaleではあるものの目視上は髪色などの識別要素が写っていません（V_03_01/V_03_02はそもそも比較カット＝シンジ／炭治郎で今回の匿名化対象外）。</p>
+    <div class="evidence-grid">
+      <figure><img src="images/cutcheck_V_02_01_sm.jpg"><figcaption>❌ 最終映像 V_02_01（0:53付近）— オレンジ髪で登校</figcaption></figure>
+      <figure><img src="images/source_V_02_01_sm.jpg"><figcaption>✅ 差し替え済みのはずの元PNG V_02_01.png — 髪は黒・匿名化済み</figcaption></figure>
+      <figure><img src="images/check_V_04_04_sm.jpg"><figcaption>❌ 最終映像 V_04_04（5:40付近）— オレンジ髪で匙と杯</figcaption></figure>
+      <figure><img src="images/check_V_02_08_sm.jpg"><figcaption>✅ 新規カット V_02_08（正しく再生成済み）— 髪なし・匿名シルエット</figcaption></figure>
+    </div>
+    <p><b>直し方</b>：<span class="mono">content/057/visuals/</span>内の11枚（上記ID）について <span class="mono">bash scripts/depthflow-cuts.sh 057</span> を再実行して <span class="mono">visuals_mp4</span> を作り直し → <span class="mono">video/remotion/public/057/cuts/</span> へ再コピー → 該当シーンだけ、または全体をRemotion再レンダ → 本ハーネスで再度コンタクトシート検証。</p>
   </div>
 
-  <section>
-    <h2>ステータス</h2>
-    <div class="stat-grid">
-      <div class="stat"><div class="v">PASS×4</div><div class="l">script/visuals/timing/mix</div></div>
-      <div class="stat"><div class="v">92点</div><div class="l">台本 fork採点</div></div>
-      <div class="stat"><div class="v">94点</div><div class="l">タイトル fork採点</div></div>
-      <div class="stat"><div class="v">7/7</div><div class="l">一護 identity監査</div></div>
-      <div class="stat"><div class="v">9:03</div><div class="l">尺（543秒）</div></div>
-      <div class="stat"><div class="v">07-16 4:00</div><div class="l">公開枠(JST)</div></div>
+  <div class="item">
+    <h3>② 六爻図カード（GUA6）が図解ではなく文字「GUA6」のプレースホルダーのまま表示される</h3>
+    <p><span class="badge bad">表示バグ</span> V_04_01シーン内（震卦の解説導入・約4:10〜4:32付近）に本来出るべき六本線の六爻図が、実際は生成りの背景に黒文字で「<b>GUA6</b>」と表示されるだけになっています。「画像内に文字なし」の固定ルールにも反する見た目です。</p>
+    <p><b>原因を特定済み</b>：<span class="mono">video/remotion/src/data/essay-057.json</span> のV_04_01シーンの cuts 配列で、GUA6カットが <span class="mono">{"type": "card", "id": "GUA6"}</span> になっていますが、対応する <span class="mono">video/remotion/src/data/essay-meta-057.json</span> の <span class="mono">cards</span> マップには <span class="mono">"GUA6"</span> のエントリが存在しません（<span class="mono">KANJI_震</span> のみ）。Card コンポーネントは spec が見つからないと <span class="mono">cutId</span> をそのまま文字表示するフォールバックになっており、それが起動していました。ep51/054/055/058では同じGUA6カットが <span class="mono">{"type": "img", "id": "GUA6"}</span> になっていて正しく動画（<span class="mono">public/057/cuts/GUA6.mp4</span>＝正しい六爻図、下図）を再生します。ep057だけ誤って <span class="mono">"card"</span> になっている状態です（ep056も同じ誤りあり・別件）。</p>
+    <div class="evidence-grid">
+      <figure><img src="images/check_gua6_sm.jpg"><figcaption>❌ 最終映像（4:28付近）— 文字「GUA6」が出るだけ</figcaption></figure>
+      <figure><img src="images/check_gua6_cut.jpg"><figcaption>✅ public/057/cuts/GUA6.mp4 の実体（正しい六爻図・震=全て陽）</figcaption></figure>
     </div>
-    <div class="filepath">releases/057/ep37_shin.mp4 （通し視聴はローカルで再生してください）</div>
-  </section>
-
-  <section>
-    <h2>コンタクトシート（30枚・18秒間隔・機械+目視検証済み）</h2>
-    <img class="contact-img" src="images/contact.jpg" alt="ep37 contact sheet 30 frames">
-    <div class="note">目視結果: 黒フレーム・字幕欠落・映像崩れなし。00:00は意図的な暗転タイトルカット（フック台詞入り）。一護のオレンジ髪シルエットは全編で一貫、07:30に六爻図（震の卦）を確認。Cフラット配色（紺/金/朱/生成り）も崩れなく安定。</div>
-  </section>
-
-  <section>
-    <h2>タイトル3案（fork採点94点・推奨=B）</h2>
-    <div class="titles">
-      <div class="title-card">
-        <span class="label">A</span>
-        <span class="text">BLEACH黒崎一護は、怖くないから刀を取ったのではない【第三十七話・震】</span>
-      </div>
-      <div class="title-card recommended">
-        <span class="badge">採点者推奨</span>
-        <span class="label">B</span>
-        <span class="text">BLEACH黒崎一護が、家の壁が壊された夜に落とさなかったもの【第三十七話・震】</span>
-      </div>
-      <div class="title-card">
-        <span class="label">C</span>
-        <span class="text">BLEACH黒崎一護は、震えを止めないまま刀を握れた【第三十七話・震】</span>
-      </div>
-    </div>
-  </section>
-
-  <section>
-    <h2>判断してください</h2>
-    <ul class="checklist">
-      <li><span class="num">1</span><div><b>通し視聴の合否</b> — 品質ゲート5項目で確認: 冒頭30秒の緊張／「へえ」ポイント3つ／ビジュアル一貫性／自然な日本語（AI臭なし）／締めの余韻。OK / NG（要修正）でお答えください。</div></li>
-      <li><span class="num">2</span><div><b>タイトルはどれにするか</b> — A / B（推奨） / C、または別案。</div></li>
-      <li><span class="num">3</span><div><b>NGの場合の箇所指摘</b> — タイムコード（コンタクトシートの秒数ラベル基準でOK）を添えて指摘してください。</div></li>
-    </ul>
-    <div class="verdict-box">通し視聴後、この3点を本人にご回答いただき次第、残工程へ進みます。</div>
-  </section>
-
-  <section>
-    <h2>承認後の残工程</h2>
-    <div class="next-steps">
-      <ol>
-        <li>サムネイル Tier A 生成</li>
-        <li>概要欄（description.txt / publish_kit.md）</li>
-        <li>ショート2本切り出し（幕4「風刺の刃」＋冒頭Hook）</li>
-        <li>公開キット一式（タグ・シリーズ行・本編リンク）</li>
-        <li>まとめて予約投稿（coord.sh claim-slot → yt-publish.mjs --publish-at）</li>
-      </ol>
-      <div class="note">essay-episode Step9〜11に対応。</div>
-    </div>
-  </section>
-
+    <p><b>直し方</b>：<span class="mono">video/remotion/src/data/essay-057.json</span> のV_04_01シーンで <span class="mono">{"type":"card","id":"GUA6"}</span> → <span class="mono">{"type":"img","id":"GUA6"}</span> に1箇所修正 → 該当シーン（またはフル）再レンダ。</p>
+  </div>
 </div>
-</body>
-</html>
+
+<h2>TL;DR（修正版）</h2>
+<div class="panel">
+  <p>台本の大改稿（震の核を「長男の卦」＋「上六の赦し」の2本に強化）と、採点表のgold回帰テスト整備は<b>完了・検証OK</b>です。画像の識別性反転も<b>静止画としては12/12「不明」でPASS</b>していますが、<b>その修正が最終mp4に届いていません</b>（上のブロッキング①）。加えて六爻図カードの表示バグ（②）も新規発見。<b>台本とタイトルは今レビュー可能ですが、映像そのものの合否判定は①②を直した再レンダ後にもう一度お願いします。</b></p>
+</div>
+
+<h2>✏️ 台本の核心改稿</h2>
+
+<h3>🆕 上六が「助言」から「赦し」へ</h3>
+<div class="quote">
+  「最後の行は、征けば凶、と突き放したあとに、こう続きます。震、その身に于てせず、その隣に于てす、咎无し。<b>雷は、あなたの身ではなく、隣に落ちた。だから、あなたに咎はない。</b>九歳の雨の日、残されたのは母ではなく自分だった。あの子に必要だったのは、助言ではなく、この一行です。」
+  <div class="diff-note">V_06_07（幕4・処方箋の最終行）</div>
+</div>
+
+<h3>🆕 震＝長男の卦</h3>
+<p class="small">一護は黒崎家の長男（妹＝夏梨・遊子）。序卦伝「主器者莫若長子」＝祭器を継ぐのは長子。「護る」は決め台詞ではなく、長子が受け取った預かりものとして再定義。</p>
+<div class="quote">
+  「面白いのは、震が誰の卦か、ということです。易経は震を、長男の卦だと言います。序卦伝には、器を主る者は長子に若くは莫し、とある。祭器を受け継ぐのは、家の長子だ、と。つまり匙と杯を落とさない人とは、ただ怖がらなかった人ではありません。<b>家の器を預かってしまった人</b>のことなんです。」
+  <div class="diff-note">V_04_06（幕3・種明かし／新規挿入シーン）</div>
+</div>
+<div class="quote">
+  「母が死んだあと、黒崎家に残ったのは、父と、双子の妹が二人と、長男の一護でした。夏梨と遊子。台所に立ったのは妹の遊子です。一護は、自分が母を奪ったという思いを抱えたまま、兄の位置に立ち続ける。護る、という言葉は、この家の並びの中で覚えたものなんです。」
+  <div class="diff-note">V_02_08（幕2・観察／新規挿入シーン）</div>
+</div>
+
+<h3>🆕 象辞「洊雷」＝なぜ雷が二つ重なるのか</h3>
+<div class="quote">
+  「象辞は、まず一言、洊雷、震、と書きます。雷、重ねて至る。単発の衝撃なら、雷を二つ重ねる必要はない。<b>震の本質は、また来る、なんです。</b>だから君子は、恐れ慎んで、生活を整え、自分を省みる。勢いで飛び出せ、ではない。まず整えろ。ここが震の処方箋の背骨です。」
+  <div class="diff-note">V_04_03（幕3・種明かし）</div>
+</div>
+
+<h3>🗑 削除</h3>
+<p class="small">V_03_04（凡庸な比較シーン）は台本から削除。32シーン構成に整理済み（旧V_03_04のIDはfull_script.jsonに存在しないことを確認）。</p>
+
+<h3>変化なし</h3>
+<p class="small">幕1（確定済みの「その電話が鳴る一分前まで、あなたは明日のことを考えていたはずなんです……」）はV_01_01のまま不変。</p>
+
+<h2>🆕 画像の識別性を反転（法務）— 静止画は反転済み・最終映像は未反映</h2>
+<div class="panel">
+  <p>方針転換：旧「一護と当てられたらPASS」→ 新「<b>同定されないことがPASS</b>」。<span class="mono">content/057/identity_map.json</span> と <span class="mono">content/057/identity_audit.json</span> を確認したところ、斬月・死覇装・オレンジの逆立つ髪を除去した13枚が再生成され、ブラインド監査（<span class="mono">identity_audit.json</span>）は<b>12/12「不明（unrecognized）」でPASS</b>。識別はナレーション／テロップが担い、視聴体験は落ちない設計になっています。</p>
+  <p><b>ただし上のブロッキング①の通り、この修正はPNG止まりで最終mp4には届いていません。</b>静止画の監査結果自体は正しく、方針とワークフローは機能していますが、「反映」の最後の一手（DepthFlowモーション再生成→cuts再コピー→再レンダ）が漏れています。</p>
+  <table>
+    <tr><th>カットID</th><th>identity_audit判定（静止画）</th><th>最終mp4の実際</th></tr>
+    <tr><td>V_02_01〜V_02_03</td><td>unrecognized</td><td class="mono">❌ オレンジ髪・和装若者の後ろ姿が実写確認</td></tr>
+    <tr><td>V_02_04</td><td>unrecognized</td><td>staleだが目視上は識別要素なし（傘・雨の親子）</td></tr>
+    <tr><td>V_02_06, V_02_07</td><td>unrecognized</td><td class="mono">❌ オレンジ髪・巨大刀が実写確認</td></tr>
+    <tr><td>V_02_08</td><td>（新規・対象外）</td><td>✅ 正しく再生成済み</td></tr>
+    <tr><td>V_03_01〜V_03_03</td><td>unrecognized</td><td>stale・目視上は識別要素小（比較カット中心）</td></tr>
+    <tr><td>V_04_04</td><td>unrecognized</td><td class="mono">❌ オレンジ髪で杯を掲げる構図が実写確認</td></tr>
+    <tr><td>V_04_06</td><td>（新規・対象外）</td><td>✅ 正しく再生成済み</td></tr>
+    <tr><td>V_07_01</td><td>unrecognized</td><td class="mono">❌ オレンジ髪で夕日へ歩く構図が実写確認</td></tr>
+  </table>
+</div>
+
+<h2>🆕 採点表のgold回帰テスト</h2>
+<div class="panel">
+  <p>ep01=94点／ep03=96点（修正前は81/80でhookが0点扱いという不具合があった）。「あなたが正と認めた作品を落とす採点表は起動できない」を機械保証するgold回帰を整備。ep057自体は <span class="mono">essay-script-057-stylefix-20260706</span> でiter1=86→iter2=92（threshold90通過）。</p>
+</div>
+
+<h2>機械ゲート（実測・警告込みで正直に記載）</h2>
+<div class="panel">
+  <div class="gate-row"><span>script（台本）</span><span><span class="badge pass">PASS</span> 警告1件（過剰演出スコア18.8/100・同型構文反復3回／文長標準偏差8.6＝許容範囲内の軽微指摘）</span></div>
+  <div class="gate-row"><span>visuals（画像・プロンプト）</span><span><span class="badge pass">PASS</span> 警告2件（_thumbnail未生成／GUA6が visual_plan.json に明記なし＝preflightの静的チェック対象外のため。上のブロッキング②とは別軸の指摘）</span></div>
+  <div class="gate-row"><span>timing（字幕同期）</span><span><span class="badge pass">PASS</span> 警告0件</span></div>
+  <div class="gate-row"><span>mix（音声ミックス）</span><span><span class="badge pass">PASS</span> 警告0件（尺590.8s／期待591.3s、ピーク-3.9dB、幕間BGM-35.1dB）</span></div>
+  <div class="gate-row"><span>シーン数</span><span>32シーン</span></div>
+  <div class="gate-row"><span>事実チェック</span><span>20件 すべて一次確認済み（fact_check.md）</span></div>
+</div>
+<p class="small">依頼文にあった「全PASS警告0」は実測とは異なり、script1件・visuals2件の軽微な警告があります（いずれも品質基準内でblockingではない）。正確な数字をここに記載しました。</p>
+
+<h2>コンタクトシート（33フレーム・約18秒間隔）</h2>
+<div class="imgwrap">
+  <img src="images/contact.jpg" alt="ep37 contact sheet">
+  <div class="imgcap">releases/057/ep37_shin.mp4 より均等33分割抽出。黒フレーム・字幕欠落・大きな映像崩れは見当たらず。上記ブロッキング①（オレンジ髪カット）と②（GUA6プレースホルダー文字）はこの中に写り込んでいます。</div>
+</div>
+
+<h2>タイトル3案（前回fork採点94・推奨B）</h2>
+<div class="titlecard">
+  <div class="t">A. BLEACH黒崎一護は、怖くないから刀を取ったのではない【第三十七話・震】</div>
+  <div class="desc">否定形・語尾「ない」。「強い＝怖くない」を否定し、"では何故取れたのか"の空白を残す。</div>
+</div>
+<div class="titlecard reco">
+  <div class="t">★ B. BLEACH黒崎一護が、家の壁が壊された夜に落とさなかったもの【第三十七話・震】</div>
+  <div class="desc">What欠落・場面具体・語尾「もの」。幕2の家族襲撃を映像的に置き、「落とさなかったもの」を伏せて好奇心を作る。</div>
+</div>
+<div class="titlecard">
+  <div class="t">C. BLEACH黒崎一護は、震えを止めないまま刀を握れた【第三十七話・震】</div>
+  <div class="desc">逆説・語尾「握れた」。「震えたまま小さく動く」を逆説で凝縮。</div>
+</div>
+<p class="small">⚠️注記：台本が大幅に変わった（長男の卦／上六の赦しが新規の核）ので、タイトルも再検討の余地があります。「咎はない」を軸にした新案が要る場合は言ってください。</p>
+
+<h2>判断セクション</h2>
+<div class="decision-box">
+  <p class="q">① 通し視聴の合否</p>
+  <p class="small">映像そのものは①②の修正が入るまで「合格」判定を保留することを推奨します。台本・ナレーション・構成については、このHTML内の引用と機械ゲートで先行レビュー可能です。「台本OK・再レンダ待ちでOK」「通しでもう一度見てから判断」「他に気になる点がある」のいずれかで教えてください。</p>
+  <p class="q">② タイトル（A / B / C / 新案希望）</p>
+  <p class="small">推奨はB。ただし上六「赦し」を軸にした新案が欲しければ指示してください。</p>
+  <p class="q">③ NGなら箇所</p>
+  <p class="small">上記2件のブロッキング以外に気になる箇所があれば指摘してください。</p>
+</div>
+
+<h2>残工程</h2>
+<ul>
+  <li><b>最優先：ブロッキング①②の修正＋再レンダ＋再検証</b>（本ハーネス相当で再度コンタクトシート確認）</li>
+  <li>Tier Aサムネ生成</li>
+  <li>概要欄・publish_kit作成</li>
+  <li>ショート2本切り出し（幕4「風刺の刃」＋冒頭Hook）</li>
+  <li>公開キット最終化</li>
+  <li>7/16 4:00 JST 予約投稿（coord long枠確保済み）</li>
+</ul>
