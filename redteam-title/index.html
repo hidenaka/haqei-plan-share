@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>タイトル・サムネ採点表のred-team — クリックされる基準か、規則に従う基準か</title>
+<style>
+  :root{--ink:#1a1a1a;--sub:#555;--line:#e3ddd0;--paper:#faf7f0;--accent:#b3541e;--gold:#b8892b;--blue:#2b5d73;--ok:#2e7d4f;--red:#a8321e;}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,sans-serif;line-height:1.8;font-size:16px}
+  .wrap{max-width:900px;margin:0 auto;padding:26px 18px 90px}
+  .kicker{color:var(--accent);font-weight:700;font-size:13px;margin:0 0 6px}
+  h1{font-size:26px;line-height:1.35;margin:0 0 10px}
+  .lede{color:var(--sub);font-size:14.5px;margin:0 0 18px}
+  .method{background:#eef4f6;border:1px solid #d5e4ea;border-radius:12px;padding:12px 16px;margin:0 0 24px;font-size:13.5px}
+  .bomb{background:#2a1512;color:#f6ece8;border-radius:16px;padding:20px 22px;margin:0 0 26px}
+  .bomb h2{color:#ffb397;border:0;margin:0 0 10px;font-size:19px}
+  .bomb p{margin:8px 0;font-size:15px}
+  .bomb .big{font-size:17px;font-weight:700;color:#ffd9a8}
+  h2{font-size:20px;margin:34px 0 12px;padding-bottom:6px;border-bottom:2px solid var(--line)}
+  h2 .n{color:var(--gold);font-weight:800;margin-right:8px}
+  .conv{background:#fff;border:1px solid var(--line);border-left:5px solid var(--red);border-radius:0 14px 14px 0;padding:16px 20px;margin:16px 0}
+  .conv.good{border-left-color:var(--ok)}
+  .conv h3{margin:0 0 6px;font-size:16.5px}
+  .conv .who{font-size:12px;color:#999;margin:0 0 10px;font-weight:600}
+  .conv p{margin:8px 0;font-size:14.5px}
+  table{width:100%;border-collapse:collapse;font-size:13.5px;margin:10px 0}
+  th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+  th{background:#f3efe5;font-weight:700}
+  .bad{color:var(--red);font-weight:700}
+  .good{color:var(--ok);font-weight:700}
+  .ev{background:#f5f1e8;border-radius:8px;padding:10px 13px;margin:10px 0;font-size:13.5px}
+  .ev b{color:var(--red)}
+  .fix{background:#eef6ef;border:1px solid #cfe6d6;border-radius:8px;padding:10px 13px;margin:10px 0 0;font-size:13.5px}
+  .fix b{color:var(--ok)}
+  .decide{background:#12212a;color:#f4efe4;border-radius:16px;padding:22px;margin:34px 0 8px}
+  .decide h2{color:#fff;border-color:#33454f;margin-top:0}
+  .decide .q{color:#ffd9a8;font-weight:700;font-size:16px;margin:0 0 12px}
+  .opt{background:#1b2e39;border:1px solid #33454f;border-radius:10px;padding:12px 15px;margin:9px 0;font-size:14.5px}
+  .opt b{color:#ffd9a8}
+  .opt.rec{border-color:#b8892b;background:#22323a}
+  .src{color:#999;font-size:12px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <p class="kicker">HaQei / アニメと易経 ・ タイトル&サムネ採点表の red-team</p>
+  <h1>これは「クリックされる基準」ではなく「あなたの規則に従う基準」だった</h1>
+  <p class="lede">3つの独立レンズ（①実データで採点表の根拠を検証 ②世の中の実践と比較 ③サムネ+タイトルを1つのクリック面として批判）を、互いの結論を見せずに走らせました。<b>3つとも同じ場所を指しました。</b></p>
+
+  <div class="method">
+    ※ 結論は全て<b>あなたのリポジトリの実データ</b>と<b>WebSearchの一次情報</b>に基づきます。私の見立ては一切渡していません。
+  </div>
+
+  <div class="bomb">
+    <h2>💣 最初に、一番痛いやつ</h2>
+    <p class="big">`title.json` の purpose には、こう書いてあります —— <b>「CTRはサムネの仕事」</b>。</p>
+    <p>つまりこのタイトル採点表は、<b>最初からクリックを目的にしていない</b>。それが唯一のゲートとして90点閾値で運用されている。90点＝「2026-06-24に決めたポリシーへの準拠度」です。</p>
+    <p class="big">そして、実測CTR中央値は <b>1.0%</b>（日本語の健全域は4-6%）。</p>
+  </div>
+
+  <h2><span class="n">収束1</span>あなたは、自分の仮説を検証する手段を、自分で破壊した</h2>
+  <div class="conv">
+    <h3>6/24の一斉改題で、対照群が消滅した</h3>
+    <p class="who">▶ ①データ検証（実測）</p>
+    <div class="ev">
+      6/24に<b>ライブ26本すべて</b>を一斉改題 → 現存27本が <code>name_first</code> 27/27・<code>episode_tag</code> 27/27＝<b>分散ゼロ</b>。<br>
+      採点表の最大配点2軸（25+15=<b>40点</b>）は、実データでは<b>原理的に検証不能</b>な定数を測っている。<br>
+      唯一残った改題前後の4ペア: ep1 1.5→1.5 / ep3 0.7→0.6 / ep5 0.8→0.9 / ep7 0.7→0.9 ＝ <b>平均 +0.05pt（＝誤差）</b>。<br>
+      恒久ポリシー化の根拠「無バイアス2検証」の実体は <b>LLM2体の読み比べ</b>で、CTRも検索インプレも<b>一度も測っていない</b>。しかも同資料自身が「これはCTR改善でなく検索の分母を開く施策」と書いているのに、<b>その分母（検索インプレ絶対数）を測った記録がどこにもない</b>（7ヶ月）。
+    </div>
+    <p>さらに <code>experiments.json</code> に<b>タイトル仮説は0件</b>。恒久ポリシー変更に、実験ID・ベースライン・判定期日が<b>一つも存在しない</b>。</p>
+  </div>
+
+  <h2><span class="n">収束2</span>自分で棄却した仮説に、最大配点を払い続けている</h2>
+  <div class="conv">
+    <h3>H-CTR-1（判定済・2026-07-02）: 同じ絵で文言だけ変えてもCTRは動かない＝no_lift</h3>
+    <p class="who">▶ ①データ検証（あなた自身の判定済み実験）</p>
+    <div class="ev">
+      同一アートでコピーだけ変えた4本すべてで CTR ±0.1pt。あなたの結論: 「<b>同じ絵で文言だけ変えても0.9%中央値は動かない</b>」。<br>
+      それでも <code>title.json</code> は <b>curiosity_gap 25 + no_ai_smell 10 = 35点を「文言の巧拙」</b>に配っている。<br>
+      <b>あなたが自分で棄却した仮説に、最も高い配点を払っている。</b>
+    </div>
+    <div class="ev" style="background:#fdf0e8">
+      <b>さらに交絡</b>: corr(log インプレ, CTR) = <b>-0.175</b>。インプレ2000+の12本は中央値CTR 0.9%、2000未満の15本は1.1%。CTR上位7本のインプレ中央値は834、下位7本は2080。<br>
+      つまり <b>「高CTRタイトル」ランキングの正体は、露出の冷たさランキング</b>。採点表を磨いても、この交絡を除かない限り勝ちタイトルは永久に同定できない。
+    </div>
+  </div>
+
+  <h2><span class="n">収束3</span>タイトルとサムネで、同じ文を2回書いている（クリック面の半分を捨てている）</h2>
+  <div class="conv">
+    <h3>そして、それが実測CTRに表れている</h3>
+    <p class="who">▶ ②世の中の実践 と ③クリック面 が独立に到達（＋実測CTRで裏付け）</p>
+    <table>
+      <tr><th>ep</th><th>タイトル</th><th>サムネのコピー</th><th>判定</th><th>実測CTR</th></tr>
+      <tr><td>10 宇宙兄弟</td><td>ムッタが、怖がりのまま宇宙へ<b>行けた理由</b></td><td>ムッタは、<b>なぜ怖いまま進めたか</b></td><td class="bad">完全重複</td><td class="bad">0.3%（最下位）</td></tr>
+      <tr><td>20 ヒロアカ</td><td>デクが、<b>一段ずつ</b>最強に積み上げた理由</td><td>デクは、<b>なぜ一段ずつ伸びたか</b></td><td class="bad">完全重複</td><td class="bad">0.3%（最下位）</td></tr>
+      <tr><td>26 チェンソーマン</td><td>「普通の生活」で<b>満たされない</b></td><td>不自由ないのに<b>満たされない理由</b></td><td class="bad">完全重複</td><td class="bad">0.6%</td></tr>
+      <tr><td><b>9 秒速</b></td><td>すぐ近くにいたのに届かなかった<br><span class="src">＝場面（物語の具体）</span></td><td>なぜ"好き"ほど離れていくのか<br><span class="src">＝普遍法則（自分ごと）</span></td><td class="good">分業できている</td><td class="good">2.6%（首位）</td></tr>
+    </table>
+    <p><b>完全重複の3本がCTR下位3本を占め、唯一きれいに分業している秒速が首位。</b>n=27の小標本ですが、無料で検証できる仮説としては十分強い。</p>
+    <div class="ev">
+      <b>もっと悪い話</b>: サムネの<b>絵が情報をゼロも運んでいない</b>。実物6枚を360pxで見たところ、ドラえもん＝北斎の大波、ONE PIECE＝波と月、カイジ＝渦と月——<b>絵からどの作品か当てられるものが1枚もない</b>（キャラ意匠禁止 → AIが汎用の「和モチーフ」に逃げる）。<br>
+      つまりサムネの識別情報は<b>全部テキスト</b>。そのテキストがタイトルとほぼ同文。<b>クリック面は「同じ文を2回、片方は小さく」になっている。</b>絵が占める95%の面積は壁紙。
+    </div>
+  </div>
+
+  <h2><span class="n">収束4</span>「卦」は、視聴者ではなくあなたのための記号</h2>
+  <div class="conv">
+    <h3>クリック判断面に2箇所。どちらも読めない・意味不明・検索需要ゼロ</h3>
+    <p class="who">▶ ①②③すべてが独立に指摘</p>
+    <div class="ev">
+      ①サムネ右下の朱印バッジ（180pxで判読不能・ただの赤い染み）<br>
+      ②タイトル末尾【第三十七話・<b>震</b>】<br>
+      「震」「睽」「遯」「明夷」は<b>非易経ユーザーに読めず・意味不明・検索需要ゼロ</b>。全角8-10字はスマホ可視域（約20-28字）の<b>半分近く</b>を消費し、しかも末尾は切れる。<br>
+      <b>「第三十七話」は、冷たいブラウズ視聴者には「36本の未視聴の借金」＝参入コスト</b>に見える。<br>
+      決定的に自己矛盾: <code>title.json</code> は <code>episode_tag</code> に15点を払いながら、同じ表の <code>length_and_cutoff</code> で「前半20字で意味を立てろ」と要求している。
+    </div>
+    <div class="fix"><b>世の中の実践</b>: 大手は末尾【】を<b>検索キーワードの置き場</b>に使う（例: キリン「…※ネタバレ注意<b>【 ワンピース 考察 最新話 】</b>」）。内部連番ではない。<br>
+    そして <b>registry の全タイトルに「考察」「解説」が1つも無い</b>。人は「ドラえもん <b>考察</b>」と打つ。「検索の分母を開く」と言いながら、検索クエリの後半語が入っていない。</div>
+  </div>
+
+  <h2><span class="n">収束5</span>大手が現に使っている最強レバーを、自分で禁止している</h2>
+  <div class="conv">
+    <table>
+      <tr><th>自作ルール</th><th>判定</th><th>一次情報</th></tr>
+      <tr><td>【第N話・卦】を末尾必須</td><td class="bad">有害</td><td>参入障壁＋検索価値ゼロ＋モバイルで切れる</td></tr>
+      <tr><td>サムネの卦バッジ＋作品名タグ</td><td class="bad">有害</td><td>タイトルと重複。卦は視聴前の視聴者に無意味</td></tr>
+      <tr><td>「〜理由」連発禁止・数字禁止・断定言い切り封印</td><td class="bad">有害</td><td><b>岡田斗司夫「…獲れた理由」／アバタロー「〜を解除せよ」</b>＝大手が現に使う最強レバーの自主放棄。<b>釣り禁止と混同</b>している</td></tr>
+      <tr><td>抽象人生訓の言い切りを登録1000まで封印</td><td class="bad">効果不明</td><td>アバタローは<b>無名時代からこの型</b>で伸びた（40万人）。根拠が薄い</td></tr>
+      <tr><td>結末ネタバレ禁止</td><td>効果不明</td><td>大手は「正体」「秘密」を売る。「ネタバレ注意」と明記して使うのが主流</td></tr>
+      <tr><td>作品名/キャラを先頭</td><td class="good">妥当</td><td>大手も一致。検索の入口</td></tr>
+      <tr><td>台本確定後にタイトル決定／釣り（内容不一致）の禁止</td><td class="good">妥当</td><td>—</td></tr>
+    </table>
+  </div>
+
+  <div class="decide">
+    <h2>いま決めてほしいこと</h2>
+    <p class="q">ep37のタイトルとサムネを、この発見を踏まえて作り直しますか？</p>
+
+    <div class="opt rec"><b>A. 分業型に作り直す（推奨・秒速型）</b><span style="font-size:11px;background:#b8892b;color:#12212a;border-radius:5px;padding:1px 7px;margin-left:8px">推奨</span><br>
+      <b>タイトル＝物語の具体（誰が何をした）＋検索KW</b> ／ <b>サムネ＝あなたの話だ（普遍の痛点・キャラ名なし）</b>。両者は<b>内容語を1語も共有しない</b>。<br>
+      例: タイトル「BLEACH黒崎一護が、壁を破られた夜に落とさなかったもの【アニメ考察・易経】」／サムネ「生き残ったことを、罪だと思っていないか」<br>
+      <span class="src">※ ep37単発で試せる。既存30本には触らない。</span>
+    </div>
+    <div class="opt"><b>B. さらに踏み込む：【第N話・卦】を外してA/Bを張る</b><br>
+      ep37から末尾を <b>【アニメ考察】等の検索KW</b>に置換し、次の6本で「タグ有り/無し」を交互にしてA/B。<b>27/27で分散ゼロの現状は、この1手でしか対照群を作れない</b>。話数と卦は概要欄・再生リストで担保。
+    </div>
+    <div class="opt"><b>C. サムネの設計も変える</b><br>
+      サムネから<b>卦バッジと作品名タグを外し</b>、感情の一撃（9-13字）に一本化。作品名はタイトルが担う。絵は「和モチーフの壁紙」をやめる。
+    </div>
+    <div class="opt"><b>D. 今回はこのまま出す</b><br>
+      ep37はB'（既存推奨）で出し、この論点は次回以降に回す。
+    </div>
+  </div>
+
+  <p class="src" style="margin-top:24px;border-top:1px solid var(--line);padding-top:12px">
+    ※ 私の事前予想は「episode_tagが怪しい」まででした。<b>「対照群を自分で破壊した」「自分で棄却した仮説に最大配点」「CTRランキングの正体は露出の冷たさランキング」「重複3本がCTR下位3本／唯一の分業が首位」は、私の予想を超えた発見です。</b>3レンズの全文は保持しています。
+  </p>
+
+</div>
+</body>
+</html>
