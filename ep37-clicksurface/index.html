@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>ep37 クリック面 — 分業型に作り直した</title>
+<style>
+  :root{--ink:#1a1a1a;--sub:#555;--line:#e3ddd0;--paper:#faf7f0;--accent:#b3541e;--gold:#b8892b;--ok:#2e7d4f;--red:#a8321e;}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,sans-serif;line-height:1.75;font-size:16px}
+  .wrap{max-width:860px;margin:0 auto;padding:26px 18px 80px}
+  .kicker{color:var(--accent);font-weight:700;font-size:13px;margin:0 0 6px}
+  h1{font-size:25px;line-height:1.35;margin:0 0 10px}
+  .lede{color:var(--sub);font-size:14.5px;margin:0 0 20px}
+  h2{font-size:19px;margin:32px 0 12px;padding-bottom:5px;border-bottom:2px solid var(--line)}
+  .feed{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px;margin:14px 0;display:flex;gap:14px;align-items:flex-start}
+  .feed img{width:246px;border-radius:8px;flex-shrink:0;display:block}
+  .feed .meta{flex:1;min-width:0}
+  .feed .t{font-size:15px;font-weight:700;line-height:1.4;margin:0 0 6px}
+  .feed .ch{font-size:12.5px;color:#888;margin:0}
+  @media(max-width:600px){.feed{flex-direction:column}.feed img{width:100%}}
+  .split{background:#eef6ef;border:1px solid #cfe6d6;border-radius:12px;padding:14px 17px;margin:14px 0;font-size:14.5px}
+  .split b{color:var(--ok)}
+  .split .row{display:flex;gap:10px;margin:6px 0}
+  .split .lbl{font-weight:700;min-width:90px;color:var(--sub)}
+  table{width:100%;border-collapse:collapse;font-size:13.5px;margin:10px 0}
+  th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+  th{background:#f3efe5;font-weight:700}
+  .bad{color:var(--red);font-weight:700}
+  .good{color:var(--ok);font-weight:700}
+  .cmp{display:flex;gap:12px;flex-wrap:wrap;margin:12px 0}
+  .cmp figure{margin:0;width:200px}
+  .cmp img{width:100%;border-radius:6px;border:1px solid var(--line);display:block}
+  .cmp figcaption{font-size:11.5px;color:var(--sub);margin-top:5px;line-height:1.4}
+  .decide{background:#12212a;color:#f4efe4;border-radius:16px;padding:20px;margin:30px 0 8px}
+  .decide h2{color:#fff;border-color:#33454f;margin-top:0}
+  .decide .q{color:#ffd9a8;font-weight:700;font-size:16px;margin:0 0 10px}
+  .opt{background:#1b2e39;border:1px solid #33454f;border-radius:10px;padding:11px 14px;margin:8px 0;font-size:14.5px}
+  .opt b{color:#ffd9a8}
+  .opt.rec{border-color:#b8892b;background:#22323a}
+  .src{color:#999;font-size:12px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="kicker">HaQei / アニメと易経 ・ ep37 クリック面</p>
+  <h1>タイトルとサムネを「1つの面」として分業設計した</h1>
+  <p class="lede">実測で、タイトルとサムネが同じことを言う動画はCTR下位、唯一分業できている動画（秒速）が首位でした。ep37を秒速型に作り直しています。</p>
+
+  <h2>フィードでの見え方（360px＝PC/タブレット相当）</h2>
+  <div class="feed">
+    <img src="images/thumb057_360.png" alt="ep37サムネ">
+    <div class="meta">
+      <p class="t">BLEACH黒崎一護が、壁を破られた夜に落とさなかったもの【第三十七話・震】</p>
+      <p class="ch">HaQei / アニメと易経 ・ 8:30</p>
+    </div>
+  </div>
+
+  <div class="split">
+    <b>分業チェック（これが今回の肝）</b>
+    <div class="row"><span class="lbl">タイトル</span><span>物語の具体（誰が・何をした）＝<b>壁を破られた夜／落とさなかったもの</b>。検索の入口（BLEACH・黒崎一護）</span></div>
+    <div class="row"><span class="lbl">サムネ</span><span>普遍の痛点（これはお前の話だ）＝<b>助かった自分を／責めていないか</b>。キャラ名なし・二人称の直撃</span></div>
+    <div class="row"><span class="lbl">内容語の共有</span><span><b>ゼロ ✅</b>（タイトル: 一護/壁/破/夜/落/もの ｜ サムネ: 助/自分/責）</span></div>
+    <div class="row"><span class="lbl">絵</span><span>上六（この回の心臓）の実カット＝<b>階段の上に立つ人へ、赤い手が差し伸べられている</b>。「咎はない」の視覚化。明度156で明るい</span></div>
+  </div>
+
+  <h2>なぜこの形か — 実測の根拠</h2>
+  <table>
+    <tr><th>ep</th><th>タイトル ↔ サムネ</th><th>判定</th><th>実測CTR</th></tr>
+    <tr><td>10 宇宙兄弟</td><td>「怖がりのまま行けた理由」↔「なぜ怖いまま進めたか」</td><td class="bad">完全重複</td><td class="bad">0.3%</td></tr>
+    <tr><td>20 ヒロアカ</td><td>「一段ずつ積み上げた理由」↔「なぜ一段ずつ伸びたか」</td><td class="bad">完全重複</td><td class="bad">0.3%</td></tr>
+    <tr><td><b>9 秒速</b></td><td>「すぐ近くにいたのに届かなかった」↔「なぜ"好き"ほど離れていくのか」</td><td class="good">分業</td><td class="good">2.6%（首位）</td></tr>
+    <tr style="background:#fff8ec"><td><b>37 BLEACH（今回）</b></td><td>「壁を破られた夜に落とさなかったもの」↔「助かった自分を責めていないか」</td><td class="good">分業</td><td>—</td></tr>
+  </table>
+
+  <h2>サムネ比較（180px＝モバイル実寸）</h2>
+  <div class="cmp">
+    <figure><img src="images/thumb057.png"><figcaption><b>ep37（今回）</b>／180pxでも2行とも読める。明るい背景＋赤い手</figcaption></figure>
+    <figure><img src="images/029.png"><figcaption>ep09 秒速（CTR首位2.6%）</figcaption></figure>
+    <figure><img src="images/030.png"><figcaption>ep10 宇宙兄弟（CTR 0.3%・重複）</figcaption></figure>
+    <figure><img src="images/040.png"><figcaption>ep20 ヒロアカ（CTR 0.3%・重複）</figcaption></figure>
+  </div>
+
+  <h2>今回やらなかったこと（あなたが選ばなかった選択肢）</h2>
+  <p class="src">
+    ・<b>B</b>: 【第三十七話・震】を検索KWタグ（【アニメ考察】等）へ置換し、次の6本でA/B → <b>今回は従来通り【第三十七話・震】を維持</b>しています。ただしred-teamは「27/27で分散ゼロ＝この1手でしか対照群を作れない」と指摘。<br>
+    ・<b>C</b>: サムネから卦バッジを外す → <b>「震」の朱印バッジは残しています</b>（180pxでは赤い染みにしか見えません）。
+  </p>
+
+  <div class="decide">
+    <h2>判断</h2>
+    <p class="q">このクリック面で確定しますか？</p>
+    <div class="opt rec"><b>1. これで確定</b>（推奨）<br>ep37はこのタイトル＋サムネで公開キットへ進む。</div>
+    <div class="opt"><b>2. コピーを直したい</b><br>サムネの「助かった自分を／責めていないか」または、タイトルの言い回しを変える（各行7字以内の制約あり）。</div>
+    <div class="opt"><b>3. Bも一緒にやる</b><br>【第三十七話・震】を【アニメ考察】等の検索KWに置換し、対照群を作り始める。</div>
+    <div class="opt"><b>4. 別のベース画像で</b><br>今の絵（赤い手）でなく別カットにする。</div>
+  </div>
+</div>
+</body>
+</html>
