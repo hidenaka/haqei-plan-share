@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>5視点 独立red-team — あなたが考えたことのない論点</title>
+<style>
+  :root{--ink:#1a1a1a;--sub:#555;--line:#e3ddd0;--paper:#faf7f0;--accent:#b3541e;--gold:#b8892b;--blue:#2b5d73;--ok:#2e7d4f;--red:#a8321e;}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,sans-serif;line-height:1.8;font-size:16px}
+  .wrap{max-width:900px;margin:0 auto;padding:26px 18px 90px}
+  .kicker{color:var(--accent);font-weight:700;font-size:13px;letter-spacing:.05em;margin:0 0 6px}
+  h1{font-size:27px;line-height:1.35;margin:0 0 10px}
+  .lede{color:var(--sub);font-size:14.5px;margin:0 0 20px}
+  .method{background:#eef4f6;border:1px solid #d5e4ea;border-radius:12px;padding:13px 16px;margin:0 0 26px;font-size:13.5px}
+  .method b{color:var(--blue)}
+  h2{font-size:20px;margin:36px 0 12px;padding-bottom:6px;border-bottom:2px solid var(--line)}
+  h2 .n{color:var(--gold);font-weight:800;margin-right:8px}
+  .conv{background:#fff;border:1px solid var(--line);border-left:5px solid var(--red);border-radius:0 14px 14px 0;padding:16px 20px;margin:16px 0}
+  .conv.uniq{border-left-color:var(--gold)}
+  .conv.good{border-left-color:var(--ok)}
+  .conv h3{margin:0 0 6px;font-size:17px}
+  .conv .who{font-size:12px;color:#999;margin:0 0 10px;font-weight:600}
+  .conv p{margin:8px 0;font-size:14.5px}
+  .ev{background:#f5f1e8;border-radius:8px;padding:10px 13px;margin:10px 0;font-size:13.5px;color:#3a3a3a}
+  .ev b{color:var(--red)}
+  .fix{background:#eef6ef;border:1px solid #cfe6d6;border-radius:8px;padding:10px 13px;margin:10px 0 0;font-size:13.5px}
+  .fix b{color:var(--ok)}
+  table{width:100%;border-collapse:collapse;font-size:13.5px;margin:10px 0}
+  th,td{border:1px solid var(--line);padding:8px 11px;text-align:left;vertical-align:top}
+  th{background:#f3efe5;font-weight:700}
+  .num{font-family:ui-monospace,monospace;font-weight:700;color:var(--red)}
+  .tension{background:#12212a;color:#f4efe4;border-radius:16px;padding:22px;margin:34px 0}
+  .tension h2{color:#fff;border-color:#33454f;margin-top:0}
+  .tension p{font-size:15px}
+  .tension .q{color:#ffd9a8;font-weight:700;font-size:16px}
+  .decide{background:#fff8ec;border:1px solid #f0e3c8;border-radius:14px;padding:18px 20px;margin:20px 0}
+  .decide h3{margin:0 0 10px;font-size:16px;color:var(--accent)}
+  .opt{background:#fff;border:1px solid var(--line);border-radius:9px;padding:11px 14px;margin:8px 0;font-size:14.5px}
+  .opt b{color:var(--accent)}
+  .src{color:#999;font-size:12px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <p class="kicker">HaQei / アニメと易経 ・ 5視点 独立 red-team</p>
+  <h1>あなたが考えたことのない論点</h1>
+  <p class="lede">ep37の通し視聴を待つ間に、互いの結論を一切見せない5つの独立レビュアーに、それぞれ別のレンズで攻撃させました。<b>複数が独立に同じ場所を指した論点＝本物の盲点</b>です。</p>
+
+  <div class="method">
+    <b>方法</b>：①権利・規約 ②ハーネスの構造 ③作品論 ④事業・市場 ⑤人間とAIの関係 — 5体を並列起動。私の見立ては渡していません。各自がリポジトリの実データ・実コード・実ファイルを読んで独立に結論。以下、<b>2体以上が独立に到達した「収束」</b>と、<b>1体だけだが重大な「単独」</b>に分けます。
+  </div>
+
+  <h2><span class="n">収束1</span>ep37のフック事故はバグではない。仕様通りの動作だった</h2>
+  <div class="conv">
+    <h3>採点表は、あなたが「これが正」と署名した作品を落とす</h3>
+    <p class="who">▶ ②ハーネス構造 と ⑤人間とAI が独立に到達</p>
+    <div class="ev">
+      <b>証拠</b>：現行rubricで gold standard を採点すると <span class="num">ep01=62〜68点 / ep03=70〜76点</span>（どちらも不合格）。さらに ep01 は preflight script が <b>FAIL</b>（act4_practice不在）。<br>
+      long-hook の <code>first_sentence_assertion</code>（30点）は「状況説明で始まったら0点」と定義 → <b>ep01もep03も1文目が状況描写＝両方0点</b>。<br>
+      essay-script の <code>hook_open</code> は <b>weight 15/100</b>。しかしあなたの実際の判断は「冒頭が刺さらなければ全却下」＝<b>veto（0か1）</b>。加重和はvetoを表現できない。
+    </div>
+    <p><b>だから何が起きたか</b>：3周のループ（84→88→92）は「改善」ではなく、<b>残り85点の軸に最適化して冒頭を削る系統的ドリフト</b>でした。しかも合格版（最も漂流した版）だけがあなたに提示される設計（runbookに「合格版だけを人間ゲートへ出す」と明記）。<b>iter-1（書き手の声が残っていた版）はディスク上にあるのに、誰もあなたに見せていません。</b></p>
+    <div class="fix"><b>収束した処方</b>：①採点表に「gold回帰テスト」を義務化（ep01/ep03で90点を出せないrubricは、そのrubric自体をFAILにしてループ起動をブロック）②hookを加重和から外し独立の<b>pass/failゲート</b>に ③人間ゲートには <b>iter-1 と best を必ず並置</b>して出す</div>
+  </div>
+
+  <h2><span class="n">収束2</span>あなたの「却下」は、どこにも学習されていない</h2>
+  <div class="conv">
+    <h3>学習信号は指標だけ。人間の否決を吸収する経路が一本も無い</h3>
+    <p class="who">▶ ②ハーネス構造 と ⑤人間とAI が独立に到達</p>
+    <div class="ev">
+      採点プロンプトに毎回注入される <code>data_notes</code> は<b>すべて維持率の実測</b>（「45字超は漏れる」「story連続は離脱」…）。<b>維持率は"去られなかった"ことしか測らず、"刺さった"ことは測らない。</b><br>
+      そして <code>eval-schemas</code> にも <code>measures.json</code> にも、<b>却下を書き戻す入力口が存在しない</b>。ep37の否決は散文メモに残るだけで、次の台本の採点には一切効かない。<br>
+      さらに <code>validateScoreRecord</code> は軸の増減を自動0点にするため、<b>採点者が「承認済み企画から変質している」と気づいても、それを点数にする場所が構造的に無い</b>（報酬ハッキング対策が、意図違反の検出禁止として作動している）。
+    </div>
+    <div class="fix"><b>処方</b>：<code>rejections.json</code>（何を・なぜ・どの語が却下されたか）を作り、data_notesと同格で採点プロンプトへ自動還流。加えてスコアと独立の <code>intent_violation</code> フラグ（trueなら点数に関係なく人間ゲートで停止）</div>
+  </div>
+
+  <h2><span class="n">収束3</span>手が動いている場所は、作品ではなく装置</h2>
+  <div class="conv">
+    <h3>直近30日: scripts/ 146ファイル vs content/ 34ファイル</h3>
+    <p class="who">▶ ⑤人間とAI と ④事業 が独立に到達</p>
+    <div class="ev">
+      <code>scripts/</code> は <span class="num">253ファイル・38,238行</span>。対する成果は 公開31本・<b>登録83人</b>・本編CTR中央値1.0%・本編1本あたり<b>38.6再生 / 0.23登録</b>。<br>
+      本編の累計工数 ≈ <span class="num">250〜370時間</span> → 本編由来の登録 <span class="num">8人</span>（= <b>登録1人あたり30〜45時間</b>）。<br>
+      <b>measures.json: implemented 14 / measured 0 / adopted 0</b>。仮説はH47まで採番、判定済み4件。<b>PDCAのPとDだけが回り、CとAが一度も閉じていない。</b>
+    </div>
+    <p>あなたのメモリには「<b>作りたい作品をちゃんと作るのが大前提。成長ROIで作り込みを値切るな</b>」とあります。しかしレビュアーの指摘は逆側から刺さります——<b>ハーネスは「作品を守るため」に生まれ、いま「作品を作らない理由」を毎日供給している</b>（growth-tickが今日やることを出してくれるので、台本を書かなくても仕事をした気になれる）。</p>
+  </div>
+
+  <h2><span class="n">単独・重大 A</span>identity-audit は、侵害の証拠を自作している</h2>
+  <div class="conv uniq">
+    <h3>「キャラだと当てられたらPASS」＝翻案の"直接感得性"を機械的に最大化するループ</h3>
+    <p class="who">▶ ①権利・規約（法務レンズ・要WebSearch裏取り済）</p>
+    <div class="ev">
+      日本法の翻案侵害テストは「既存著作物の<b>表現上の本質的特徴を直接感得できるか</b>」（江差追分・最判H13）。<br>
+      <code>identity-audit.mjs</code> は「第三者が『BLEACH/黒崎一護』と当てられること」を<b>PASS条件</b>にしている。<br>
+      <code>identity_map.json</code> には <code>signature_prop: 背に負う特大の刀（斬月）＋黒い死覇装</code>、<code>signature_color: オレンジの逆立つ髪</code> と<b>キャラの本質的特徴が名指しで指定</b>されている。<br>
+      文化庁「AIと著作権に関する考え方」(2024-03)：<b>キャラ名等をプロンプトに入れた事実＝依拠性を推認させる間接事実</b>。<br>
+      集英社は2025-10-31に「生成AIを利用した権利侵害への対応について」を公表（BLEACH・鬼滅＝集英社）。
+    </div>
+    <p><b>なぜ気づけないか</b>：「顔を描かない」を免責要件だと思っている。顔は本質的特徴の<b>一部</b>にすぎず、<code>identity_audit.json</code> は「<b>顔なしでも一護と当てられた</b>」を日時つきで記録している＝顔なし論の反証を自分で取っている。<b>安全弁と品質ゲートが正面衝突しています。</b></p>
+    <div class="fix"><b>エレガントな解</b>：<b>ナレーションとテロップは既にキャラを名指ししている</b>（「フリーレン」「シンジ」「炭治郎」）。つまり<b>画像が識別を担う必要がそもそも無い</b>。画像は一般記号（大刀のシルエット＋制服）に落とし、identity-auditのPASS基準を<b>「作品が同定されないこと」へ反転</b>する。視聴体験は落ちず（言葉で分かる）、依拠性・類似性の中核証拠が同時に消える。</div>
+  </div>
+
+  <h2><span class="n">単独・重大 B</span>ep37は、いま桁違いに良くなれる（震の核を2つ捨てている）</h2>
+  <div class="conv good">
+    <h3>震＝「長男の卦」。祭器を継ぐのは長子——一護は黒崎家の長男だ</h3>
+    <p class="who">▶ ③作品論（db/hexagrams.json を精読した結果）</p>
+    <p>震の彖・序卦の核は「<b>主器者莫若長子</b>」＝祭器（匕鬯）を継ぐのは長男。dbのcommentaryにも "the eldest son, who seizes rule" と明記。<b>一護は、死んだ母と頼りない父の下、二人の妹を抱えた長男</b>。台本は「不喪匕鬯＝預かったものを落とさない」を正しく訳しながら、<b>誰が預かる者なのかを落としています</b>。この一致が言えれば「卦が後付けでない」ことが自動的に証明される。</p>
+    <div class="ev">
+      <b>もう一つ捨てているもの：上六「震不于其躬、于其鄰、无咎」</b><br>
+      ＝<b>雷は、あなたの身ではなく、隣に落ちた。あなたに咎はない。</b><br>
+      台本は幕2で「母が自分の代わりに死に、自分だけ生き残った負い目」を提示しておきながら、幕5の上六を「退け・助けを呼べ」という<b>どこにでもある自己啓発</b>に落としている。三千年前の本に「生き残ったことに咎はない」と書いてある——それが一護の生涯の傷に、そして<b>生き残ってしまった視聴者に、そのまま届く</b>。処方箋が<b>助言から赦しに変わる</b>唯一のカードです。
+    </div>
+    <p class="src">※ 他の指摘：「へえ」は現状2つ（目標3に不足）／処方箋の牽強付会度は3/10＝低く、爻辞に忠実（ここは褒められている）／幕2の比較群V_03_01〜04は結論が「人それぞれ」で凡庸、1本削って上六に時間を回せ／<b>構造的天井</b>: 1作品=1卦の割当は易経を「変化の書」から「静的な性格分類表」に変える＝あなたが最も嫌うバーナム型と同じ動き。64話進むほど「またキャラに卦を貼った回」に見える。1話に1回、<b>卦が別の卦へ変わる瞬間</b>を見せるべき。</p>
+  </div>
+
+  <h2><span class="n">単独・重大 C</span>登録が積まないのは、CTAでも配線でもない</h2>
+  <div class="conv uniq">
+    <h3>「次を見る理由」がコンテンツ構造として存在しない</h3>
+    <p class="who">▶ ④事業・市場（実データ＋競合調査）</p>
+    <table>
+      <tr><th>事実</th><th>数字</th></tr>
+      <tr><td>ショート→本編クリック（30日）</td><td class="num">33再生</td></tr>
+      <tr><td>ショートのsubs/view</td><td class="num">0.036%</td></tr>
+      <tr><td>日本語YouTube 易経系の最大手</td><td class="num">約2,950人</td></tr>
+      <tr><td>「アニメ×易経」の成功例</td><td class="num">発見できず</td></tr>
+    </table>
+    <p>CTAバッジ・キャプション・オーナーコメント・関連動画リンクの<b>配線は7/1に全部完了</b>している。それでも動かない。この分野で登録が積む型は2つだけで、<b>どちらにも該当しません</b>：<b>①連載中IPの考察</b>（次の予測を追う理由がある）<b>②人物ブランド</b>（この人の話を聴く理由がある）。HaQeiは <b>TTS音声・顔なし・完結作品・単発完結</b>——視聴者が「いい話だった」で立ち去るのは<b>正しい反応</b>です。</p>
+    <p class="src">※ さらに：<code>bottleneck.json</code>（本編CTRが第一律速・サムネで直せ）と <code>growth-1000-strategy.md</code>（本編CTRは現状ほぼ無価値・工数を割くな）が<b>正面から矛盾</b>し、両方が毎日"正"として読まれている。／<b>撤退・ピボット基準がリポジトリのどこにも存在しない</b>。</p>
+  </div>
+
+  <div class="tension">
+    <h2>あなたにしか決められない緊張</h2>
+    <p>レビュアーたちの処方は、<b>あなたの2つの信念を正面から衝突させます</b>。</p>
+    <p class="q">「作りたい作品をちゃんと作る」（＝ROIで作り込みを値切るな）<br>　　　　　　　　vs<br>「登録1000人」（＝データが"この形態に登録需要は無い"と言い始めている）</p>
+    <p>④事業は「<b>30日間、本編制作を全部止めろ</b>」と言う。⑤人間とAIは「<b>幕1の30秒はあなたが自分の言葉で書け</b>」と言う。③作品論は「<b>上六を書き直せば、この回は初めて人の心を動かす</b>」と言う。</p>
+    <p>これらは同時に成り立ちます——<b>もし目的が「登録」でなく「作品」なら</b>。逆に目的が登録なら、④が正しく、ep37に手をかけること自体が誤りになります。<b>私はこの問いに答えられません。あなたの答えが要ります。</b></p>
+  </div>
+
+  <div class="decide">
+    <h3>いま決めてほしいこと（ep37は通し視聴ゲートで止まったままです）</h3>
+    <div class="opt"><b>① ep37をどうするか</b><br>
+      (a) このまま出す（現状も全ゲートPASS・悪くはない）<br>
+      (b) <b>上六＝「雷は隣に落ちた、君に咎はない」と、震＝長男の卦を入れて書き直す</b>（幕5と幕2の一部改稿→再音声→再レンダ。半日）<br>
+      (c) 出さない
+    </div>
+    <div class="opt"><b>② identity-audit の反転（法務）</b><br>
+      画像から作品固有意匠（斬月・死覇装・オレンジ髪）を外し、識別はナレーション/テロップに任せる方針へ切り替えるか。<b>切り替えるなら ep37 の画像は作り直し</b>（半日）。<b>切り替えないなら、そのリスクを承知の上で続ける</b>という明示的な判断が要ります。
+    </div>
+    <div class="opt"><b>③ 採点表のgold回帰テスト</b><br>
+      ep01/ep03で90点を出せないrubricをブロックする仕組みを入れるか（＝ep37型の事故を構造的に止める）。入れるなら1日。
+    </div>
+    <div class="opt"><b>④ 撤退基準を決めるか</b><br>
+      「何が起きたらこの企画を止める/変えるのか」が今どこにも無い。決めるか、決めないか。
+    </div>
+  </div>
+
+  <p class="src" style="margin-top:26px;border-top:1px solid var(--line);padding-top:12px">各レビュアーの全文は保持しています。特定の論点を深掘りしたい場合は言ってください。なお、彼らは私（オーケストレーター）の見立てを一切知らずに走っており、収束1〜3は<b>複数が独立に同じ結論に達した</b>ものです。</p>
+
+</div>
+</body>
+</html>
