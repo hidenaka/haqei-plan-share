@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>あなたの未知 — 図解Webアプリ構想の盲点12件</title>
+<style>
+  :root {
+    --ink: #1a1a1a;
+    --ink-2: #4a4a4a;
+    --bg: #f7f5ee;
+    --paper: #fbf9f1;
+    --line: #d8d2bf;
+    --accent: #cc785c;
+    --accent-soft: #f5e0d6;
+    --warn: #c83a2c;
+    --warn-soft: #f6dcd6;
+    --yellow: #f4d35e;
+    --shadow: 0 1px 0 rgba(0,0,0,.04), 0 8px 24px rgba(0,0,0,.06);
+    --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+    --sans: -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN",
+            "Hiragino Sans", "Noto Sans JP", "Yu Gothic", "Meiryo", sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 56px 28px 96px; }
+
+  .hero { margin-bottom: 56px; }
+  .hero .kicker {
+    display: inline-block;
+    background: var(--accent); color: #fff;
+    font-size: 12px; font-weight: 700; letter-spacing: .12em;
+    padding: 6px 12px; border-radius: 999px;
+    margin-bottom: 18px;
+  }
+  .hero h1 { font-size: 40px; line-height: 1.3; margin: 0 0 14px; letter-spacing: -.01em; }
+  .hero h1 b { color: var(--accent); }
+  .hero p.lede { font-size: 18px; color: var(--ink-2); margin: 0; max-width: 780px; }
+  .tldr {
+    margin-top: 28px; padding: 22px 24px;
+    background: var(--paper); border: 1px solid var(--line); border-radius: 12px;
+    box-shadow: var(--shadow);
+  }
+  .tldr h2 { font-size: 13px; letter-spacing: .15em; color: var(--accent); margin: 0 0 10px; }
+  .tldr ol { margin: 0; padding-left: 20px; }
+  .tldr li { margin: 4px 0; }
+
+  section { margin: 64px 0 0; }
+  section > h2 {
+    font-size: 28px; line-height: 1.4; margin: 0 0 6px;
+    border-left: 6px solid var(--accent); padding-left: 12px;
+  }
+  section > h2 .num { color: var(--accent); font-variant-numeric: tabular-nums; margin-right: 10px; }
+  section > p.sub { color: var(--ink-2); margin: 0 0 22px; }
+
+  figure {
+    margin: 0 0 24px; padding: 12px;
+    background: var(--paper); border: 1px solid var(--line); border-radius: 14px;
+    box-shadow: var(--shadow);
+  }
+  figure img { display: block; width: 100%; height: auto; border-radius: 8px; }
+  figcaption { font-size: 13px; color: var(--ink-2); margin-top: 10px; text-align: center; }
+
+  .table {
+    width: 100%; border-collapse: collapse; margin: 12px 0 6px;
+    background: var(--paper); border: 1px solid var(--line); border-radius: 12px; overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+  .table th, .table td {
+    text-align: left; padding: 12px 14px; border-bottom: 1px solid var(--line);
+    vertical-align: top; font-size: 14.5px;
+  }
+  .table th { background: #efeadb; font-weight: 700; }
+  .table tr:last-child td { border-bottom: 0; }
+  .table .pick { background: var(--accent-soft); }
+  .table .pick td:first-child { font-weight: 700; color: var(--accent); }
+
+  .callout {
+    margin: 18px 0; padding: 16px 18px;
+    border-left: 4px solid var(--accent);
+    background: var(--accent-soft);
+    border-radius: 0 10px 10px 0;
+  }
+  .callout.warn { border-color: var(--warn); background: var(--warn-soft); }
+  .callout p { margin: 0; }
+  .callout strong { color: var(--accent); }
+  .callout.warn strong { color: var(--warn); }
+
+  .quote {
+    border-left: 3px solid var(--line); padding: 6px 16px;
+    color: var(--ink-2); font-size: 14.5px; margin: 18px 0;
+  }
+  .src { font-size: 13px; color: var(--ink-2); margin-top: 6px; }
+
+  .conclusion {
+    margin-top: 56px; padding: 28px 28px 24px;
+    background: var(--ink); color: #f6f3e8; border-radius: 16px;
+  }
+  .conclusion h2 { color: var(--yellow); border: 0; padding: 0; margin: 0 0 12px; }
+  .conclusion ol { margin: 0; padding-left: 20px; }
+  .conclusion li { margin: 6px 0; }
+
+  footer { margin-top: 36px; color: var(--ink-2); font-size: 13px; }
+
+  @media (max-width: 720px) {
+    .wrap { padding: 32px 18px 64px; }
+    .hero h1 { font-size: 30px; }
+    section > h2 { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <span class="kicker">未知の洗い出し — BLIND SPOTS</span>
+    <h1>あなたが<b>考えたこともない論点</b> — 図解Webアプリ構想の盲点</h1>
+    <p class="lede">8つのレンズ（法務・原価・買い手・製品・本人適合・競争・倫理・戦略）が独立に盲点を探索し、批判役が既知の言い換えを容赦なく落として選別した。既に指摘済みの3点（無料代替・販路・飽和）の再説は0点として禁止してある。残ったのは、あなたの<b>強みが作っている盲点</b>だった。</p>
+    <div class="tldr">
+      <h2>TL;DR</h2>
+      <ol>
+        <li><b>最大の発見は案ではなく、あなたの判断装置。</b>5条件フィルター（①能力発揮 ②積み上がる ③高収入 ④時間の主導権 ⑤嫌な人間関係）は<b>5つ全部が「自分」についての条件で、「誰が買うか」を問う条件がゼロ</b>。だから5/5で通った案が毎回市場で死ぬ。</li>
+        <li>この案には論理的な急所が2つある: <b>安全に使える人はこのツールを必要としない</b>（原理的自己矛盾）／<b>「上司に見せる」行為そのものが評価を下げる</b>（HBR調査で実証済み）。どちらも品質向上では解けない。</li>
+        <li>結論: 有償Webアプリとしては不成立。<b>8月は都知事杯に集中</b>し、空白は完成済み在庫の出品で埋める。技術は捨てず、画像生成をSVGに替えて「無料の名刺」にすればリスクの9割と原価の大半が消え、唯一足りない資産（顧客リスト）だけが残る。</li>
+      </ol>
+    </div>
+  </header>
+
+  <section>
+    <h2><span class="num">01</span>最大の未知 — フィルターに「買い手」がいない</h2>
+    <p class="sub">8レンズ全員がこの案を5条件で採点したが、フィルター自体の欠陥は誰も見ていなかった（批判役が追加）</p>
+    <figure>
+      <img src="images/concept-01-01.png" alt="5条件フィルターに買い手の条件が欠けていることを示す図">
+      <figcaption>①〜⑤は全部「自分」の話。買い手を問う網目が最初から無い</figcaption>
+    </figure>
+    <p>あなたの5条件は「①自分の能力発揮 ②積み上がる ③高収入の可能性 ④時間の主導権 ⑤嫌な人間関係を増やさない」。よく見てください — <b>5つとも主語が自分です。</b>「誰が買うのか」「どこに置くのか」「そこで既に金が動いているか」を問う条件が1つもない。</p>
+    <div class="callout warn"><p><strong>これが「毎回同じ地点に戻る」理由:</strong> 長年の課題が『商売のイメージが全くつかない』なのに、意思決定装置に商売を見る目が付いていない。だから5/5で通過した案が市場で死に、また「やはり商売がわからない」に戻る。アイデアを何回変えてもこのループは終わらない — 変えるべきはアイデアではなくフィルター。</p></div>
+    <p><b>処方: 第6条件をスコアではなくゲートとして追加する。</b>「⑥ 既に金が動いている棚に、今日置けるか（買い手が実在し、検索・回遊で見つかるか）」。⑥が✗なら①〜⑤は見るまでもない。<b>この案の⑥は✗です。</b></p>
+  </section>
+
+  <section>
+    <h2><span class="num">02</span>論理の急所 — 品質を上げても解けない2つ</h2>
+    <p class="sub">技術で解決できない。前提が自己矛盾している</p>
+    <figure>
+      <img src="images/concept-02-01.png" alt="自己矛盾のループとworkslopによる評価毀損の図">
+      <figcaption>左: 使える人は要らない／右: 見せた瞬間に減点される</figcaption>
+    </figure>
+    <p><b>急所①: 安全に使える人は、このツールを必要としない。</b>「説明できない人」の入力は『部長に怒られた、たぶん納期の件』程度です。ここから図解1枚を作るには、AIが因果・時系列・原因を<b>補完＝捏造</b>するしかない。「原因: 事前共有の不足」のような断定が図に入る。<b>その断定が事実か判定できるのは、構造を言語化できる人＝このツールを必要としない人。</b>価値提案（構造化の代行）と、安全に使える条件（既に構造化できる）が論理的に両立しません。</p>
+    <div class="callout"><p><strong>なぜ見えないか:</strong> デモは常に自分の手で回すから。あなたの入力が既に構造化されているので出力が良い。この n=1 が、ターゲットとの<b>入力分布の落差</b>を完全に隠しています。あなたの技術力が高いほど、AI出力の粗さを無意識に脳内で補正してしまう。</p></div>
+    <p><b>急所②: 「上司に見せる」がそのまま減点ボタン。</b>HBR掲載のBetterUp Labs×Stanford調査（米フルタイム1,150人）では、AI生成物（workslop）を受け取った側の<b>42%が送り手を「信頼できない」、37%が「知的でない」</b>と評価しました。職場の成果物は「本人が考えた証拠」として読まれるため、<b>品質を上げるほど「これAIだろ」と疑われる</b>。品質軸の外側に評価軸がある非対称市場です。</p>
+    <p>さらに致命的な帰結: <b>満足したユーザーほど利用を隠す</b>。口コミ・紹介・SNS投稿が原理的に発生せず、実績ゼロの個人が使える唯一の無料成長経路が閉じます。</p>
+    <p class="src">※ 出典: <a href="https://hbr.org/2025/09/ai-generated-workslop-is-destroying-productivity">HBR「AI-Generated Workslop Is Destroying Productivity」</a>（n=1,150）</p>
+  </section>
+
+  <section>
+    <h2><span class="num">03</span>手持ちの資産が、間違った設計を先に固定していた</h2>
+    <p class="sub">「既にパイプラインがある」という唯一の優位が、致命的な劣位を生んでいる</p>
+    <p>正解は『画像生成』ではなく<b>『構造化テキスト → SVG/HTMLのレンダリング』</b>です。ラスタ画像は誤字1文字を直せず、再生成するとレイアウトが変わる。競合Napkin AIはSVG出力でテキストを直接編集できる。OpenAI自身のベストプラクティスも「テキストは画像生成後に別途入れる」— つまり<b>「AIに日本語を描かせる」設計はベンダー推奨と逆行しています。</b></p>
+    <div class="callout warn"><p><strong>反転の構造:</strong> あなたがこの設計を選ぶ理由はただ1つ、run-ai-imagesが既にあるから。<b>資産がゼロなら絶対に選ばない設計です。</b>SVG方式に切り替えると、原価が2桁下がり（画像 $0.05-0.21/枚 → テキスト生成1回）、リトライ地獄も、熱心な客ほど赤字になる逆選択も、画風のモデル依存も<b>同時に消えます</b>。これら3つは「画像生成に固執する限り」だけ存在する問題でした。</p></div>
+    <p><b>そしてもう1つ、時限爆弾。</b>商品の正体である「グラレコ風の絵柄」は gpt-image 系に紐づいたレンタル品です。一次確認したところ <b>gpt-image-1 は 2026年10月23日にAPI廃止</b>（mini/1.5等は12月1日、後継 gpt-image-2 で絵柄が変わる）。有償顧客は「先月と同じ絵」を要求します。<b>最短の廃止日10/23は、都知事杯Final（10/17）の6日後・工事マップG-Pゲート（10月末）の直前</b>に落ちる。最重要ゲート期に、最小収益レーンの緊急移行作業が降ってきます。</p>
+    <p class="src">※ 出典: <a href="https://developers.openai.com/api/docs/deprecations">OpenAI Deprecations</a>（一次確認済）／ <a href="https://tech-lab.sios.jp/archives/46830">Napkin AI の SVG 編集</a></p>
+  </section>
+
+  <section>
+    <h2><span class="num">04</span>5条件の答え合わせ — ○のはずが逆符号</h2>
+    <p class="sub">自己採点では4〜5/5に見える。構造で採点すると3つが逆を向いている</p>
+    <figure>
+      <img src="images/concept-04-01.png" alt="5条件を構造で採点し直すと逆符号になる採点表">
+      <figcaption>「時間の主導権が増える」はずの案が、20時間応答不能な自分に24時間の当番を課す</figcaption>
+    </figure>
+    <table class="table">
+      <thead><tr><th>条件</th><th>自己採点</th><th>構造で採点した実際</th></tr></thead>
+      <tbody>
+        <tr class="pick"><td>④ 時間の主導権が増える</td><td>○</td><td><b>✗ 24時間の首輪。</b>Stripeの紛争回答期限は7〜21日（逃せば自動敗訴・1件¥1,500）、個人情報漏えいの速報期限は3〜5日。隔勤なら20時間近く端末に触れない。<b>法定期限が、物理的に応答できない時間帯に降ってくる</b></td></tr>
+        <tr><td>⑤ 嫌な人間関係を増やさない</td><td>○</td><td><b>✗ 実名・自宅・電話が公開される。</b>独立WebアプリのBtoC有償販売は通信販売＝特商法表記が必須で、個人事業者は戸籍上の氏名の表示を省略できない。①副業許可制の勤務先に露見する経路になり、②「上司の悪口」を打ち込んだ追い詰められた匿名ユーザーに、あなたの連絡先が渡る</td></tr>
+        <tr><td>② 積み上がる（ストック型）</td><td>○</td><td><b>✗ 借り物。</b>絵柄はモデルに紐づき年内失効。配管の巧さ（並列生成・レース回避）は、モデル側が真っ先に吸収する層で市場が一円も値付けしない</td></tr>
+        <tr><td>③ 高収入の可能性</td><td>○</td><td><b>✗ 原価割れ。</b>決済手数料が少額課金を殺す。1枚数百円では生成失敗のリトライだけで利益が消える</td></tr>
+      </tbody>
+    </table>
+    <div class="callout warn"><p><strong>時計が2つズレている:</strong> 陳腐化クロックは3〜6ヶ月、あなたの集客クロック（実績ゼロから）は最短6ヶ月。<b>構造的に一度も追いつけません。</b>判断ルールとして固定してください — 「集客に6ヶ月かかる自分は、6ヶ月で消えるギャップを売ってはいけない」。</p></div>
+    <p class="src">※ 出典: <a href="https://docs.stripe.com/disputes/responding">Stripe 紛争対応期限</a> ／ <a href="https://www.ppc.go.jp/news/kaiseihou_feature/roueitouhoukoku_gimuka/">個人情報保護委員会 漏えい報告義務</a></p>
+  </section>
+
+  <section>
+    <h2><span class="num">05</span>あなたのパターン — 5レーン、顧客ゼロから5回</h2>
+    <p class="sub">複利がかかる単位は「コード」ではなく「顧客と信用」</p>
+    <figure>
+      <img src="images/concept-05-01.png" alt="5レーンに顧客が5種類いて、コードだけが積み上がっている図">
+      <figcaption>再利用されているのは自分の手間だけ。顧客側の再利用（同じ人がまた買う）は一度も起きていない</figcaption>
+    </figure>
+    <p>工事マップ＝自治体/土木、YouTube易経とオラクルデッキ＝スピ/自己啓発層、ヴォールト＝AI実務者、グラレコ＝新人会社員。<b>5レーンに顧客が5種類いて、1人目の買い手が2つ目を買う経路が1本もありません。</b>あなたはコードを5本積み、顧客を0人積んでいる。だから何を作っても毎回「販路がない」という同じ地点に戻る。<b>案の質の問題ではなく、資産の種類の問題です。</b></p>
+    <div class="callout"><p><strong>反証テスト:</strong> 「工事マップの買い手が易経デッキを買うか」に一度でもYesと言えるか。言えないなら、5レーンは全部独立です。</p></div>
+    <p>これに連なる、あなた固有のパターンが3つ見つかりました。</p>
+    <table class="table">
+      <thead><tr><th>パターン</th><th>中身</th></tr></thead>
+      <tbody>
+        <tr class="pick"><td>Webアプリは、あなたが構造的に出荷できない唯一の形態</td><td>未出品在庫が2つある原因は意志ではなく<b>商品形態</b>。デッキ/PDFは「完成」が定義できるが、Webアプリは完成が定義できない（UI・料金・エラー処理・不正対策・モデル更新が無限に残る）。<b>Maximizer＋Ideationは、改善余地がある限り出荷を延期する資質</b>。最も出荷されない形態をわざわざ選びに行っている</td></tr>
+        <tr><td>初めて「自分が顧客でない」案件</td><td>工事マップは乗務中の実体験から、易経もデッキもヴォールトも run-ai-images も、全部あなたの痛みが出発点。<b>この案だけが、一度も経験していない他人の痛み（会社員として上司に怒られる）の推測から出ている。</b>しかもあなたはタクシー乗務員で、上司も報連相の場面も社内AI規程も持たず、周りに新人会社員がいないので推測を安く反証する手段すらない</td></tr>
+        <tr><td>探し続けた「商売の先生」は、既に提出済みの案件に無料で付いている</td><td>都知事杯のFinal進出チームには<b>事業化支援（マネタイズ・実証支援・壁打ち）と都との接点、Demo Dayまでの伴走</b>が付く。First Stage結果は9月下旬、Finalは10/17。<b>長年の課題への無料の伴走枠・行政接点・実績ラベル・toB与信が、既に提出済みの案件の延長線上に用意されている</b>。新レーンはその勝負を薄める方向にしか働かない</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2><span class="num">06</span>「課金する」という1つの決定が、リスクの9割を生んでいる</h2>
+    <p class="sub">8レンズ全員が「有償で売る」という与件を一度も疑っていなかった（批判役が追加）</p>
+    <p>特商法の実名開示、カードテスティング、Stripe紛争、返金対応、免責、越境PII同意 — <b>洗い出された論点の相当数が「金を取る」という決定からのみ発生しています。</b>無料で公開してリード（メールアドレス）だけ取るなら、これらは全部消え、残るのはAPI原価（日次上限で数百円）と利用規約だけ。</p>
+    <div class="callout"><p><strong>そしてあなたの真の欠落は「売上」ではなく「顧客リスト・信用・実績」です。</strong>¥300を誰にも売れなければ¥0だが、無料で500人に配ればリスト500件が残る — それが01と05で言った、唯一の増価資産。</p></div>
+    <p><b>検証の変数を1つに保つ:</b> 課金の検証は「完成済み在庫（ヴォールト・デッキ）を検索流入のある棚に置く」でやる（変数＝価格）。グラレコは「無料の名刺」として導線検証をやる（変数＝集客）。<b>1つの案に検証を2つ載せないこと。</b></p>
+    <div class="callout warn"><p><strong>ただし無料でも消えないリスクが1つ:</strong> run-ai-images は codex exec + ChatGPTプラン認証で動いており、<b>他人のリクエストを自分のプラン認証で処理するのは規約違反</b>。しかも同じアカウントでYouTube易経・オラクルデッキ・ハッカソン動画の画像も回している。<b>見知らぬユーザー1人の違反プロンプトで、本命4つの画像生成が同時に止まります。</b>公開するなら商用は完全別Org・別APIキーに隔離（今日30分でできる）。</p></div>
+  </section>
+
+  <section>
+    <h2><span class="num">07</span>この報告書の、正しい消費のされ方</h2>
+    <p class="sub">最後の盲点は、あなたがこれをどう使うかの中にある</p>
+    <figure>
+      <img src="images/concept-07-01.png" alt="直せる問題をチケット化して安心する罠と、48時間ヒアリングの対比">
+      <figcaption>技術力が高い人ほど「直せるもの」を片付けて、「直せないもの」を後回しにする</figcaption>
+    </figure>
+    <p>技術力が高い人は、<b>直せるもの</b>（別APIキー・ゼロ保持・レート制限・特商法ページ）を全部チケット化して片付け、<b>直せないもの</b>（顧客がいない・棚がない・上司が判定者・自分が顧客でない・8月が埋まっている）を「後で考える」に送ります。<b>デッキとヴォールトで、既に2回起きた経路です。</b></p>
+    <div class="callout warn"><p><strong>正しい使い方:</strong> チケットを切ることではなく、<b>「01・02・05・09 のどれか1つでも本当なら、実装は0行でよい」と先に決めること。</b>実装に触れる前に、48時間のヒアリングだけをやる。判断を動かすのはそれだけです。</p></div>
+    <p><b>48時間で聞く3つ（実装0行）:</b></p>
+    <ul>
+      <li>若手5人に「会社PCで、業務内容をChatGPTに貼れるか？」（日本企業の約7割が業務での生成AI利用を制限。入力禁止情報の筆頭が"社内の未公表情報"）</li>
+      <li>若手5人に「直近3ヶ月で、上司への相談用に事前資料を作った回数は？」（<b>0回なら、そもそも起動される場面が存在しない</b>）</li>
+      <li>現役の課長・係長10人に「新人が報告に図解1枚を持ってきたら、どう感じる？」（歓迎が半数未満なら、用途仮説は死んでいる）</li>
+    </ul>
+  </section>
+
+  <div class="conclusion">
+    <h2>結論</h2>
+    <ol>
+      <li><b>有償Webアプリとしては不成立。</b>5条件で自己採点すれば4〜5/5に見えるが、構造で採点すると②④⑤が逆符号、③は原価割れ。決定打は2つ — 安全に使える人はこのツールを必要としない（原理的自己矛盾）／「上司に見せる」行為自体が評価を下げる（workslop）。どちらも品質向上では解けない。</li>
+      <li><b>本当の未知は、案ではなくフィルターだった。</b>5条件に「誰が買うか」を問う第6条件をゲートとして追加する。⑥が✗なら①〜⑤は見るまでもない。これが「毎回同じ地点に戻る」ループの出口。</li>
+      <li><b>8月は都知事杯に集中。</b>探していた「商売の先生」は、既に提出済みの案件に無料で付いている（Final進出＝事業化支援・都との接点・Demo Day伴走）。空白は完成済み在庫（オラクルデッキ・ヴォールト10商品）の出品で埋める。この案の再評価は9月。</li>
+      <li><b>技術は捨てるな。</b>画像生成をSVGレンダリングに替え、無料配布＋リード取得の「名刺」に変えれば、リスクの9割と原価の大半が消え、唯一足りない資産（顧客リスト）だけが残る。</li>
+    </ol>
+  </div>
+
+  <footer>調査体制: 8レンズ並列探索（法務・原価/悪用・買い手・製品の真実・本人適合性・競争の時間軸・倫理・戦略）+ 批判役による選別と追加 / 9エージェント・Web検索98回 / 2026-07-12</footer>
+
+</div>
+</body>
+</html>
