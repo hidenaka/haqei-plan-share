@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>ep40 企画ゲート — 題材2案から選ぶ</title>
+<style>
+  :root{
+    --ink:#1c1a17; --sub:#5c574f; --line:#e5ded1; --bg:#faf7f0; --card:#fff;
+    --gold:#b8892b; --ai:#c0562f; --a:#2f6d64; --b:#8a4a86;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,"Hiragino Sans","Yu Gothic",sans-serif;
+    color:var(--ink);background:var(--bg);line-height:1.75;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:920px;margin:0 auto;padding:28px 20px 80px}
+  .kicker{font-size:13px;letter-spacing:.14em;color:var(--ai);font-weight:700}
+  h1{font-size:30px;margin:.25em 0 .3em;line-height:1.3}
+  .lede{color:var(--sub);font-size:15px;margin:0 0 18px}
+  .tldr{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin:18px 0 24px}
+  .tldr b{color:var(--gold)}
+  figure{margin:0 0 26px}
+  figcaption{font-size:12px;color:var(--sub);margin-top:6px;text-align:center}
+  .ov{background:linear-gradient(135deg,#fffdf6,#f6f0e2);border:1px solid var(--line);border-radius:16px;padding:20px}
+  .ov-title{text-align:center;font-size:22px;font-weight:800;margin-bottom:16px}
+  .ov-title span{display:block;font-size:12px;color:var(--sub);font-weight:600;letter-spacing:.1em;margin-top:3px}
+  .ov-cols{display:grid;grid-template-columns:1fr auto 1fr;gap:12px;align-items:center}
+  @media(max-width:680px){.ov-cols{grid-template-columns:1fr;gap:8px}}
+  .ov-a,.ov-b{background:#fff;border-radius:12px;padding:14px;border:1px solid var(--line)}
+  .ov-a{border-top:4px solid var(--a)} .ov-b{border-top:4px solid var(--b)}
+  .ov-vs{font-size:30px;text-align:center}
+  .ov-tag{font-size:13px;font-weight:800;color:var(--a)} .ov-tag.b{color:var(--b)}
+  .ov-tag b{background:#f3edc7;color:var(--gold);border-radius:10px;padding:1px 7px;margin-left:4px}
+  .ov-work{font-size:14px;font-weight:700;margin:6px 0 8px}
+  .ov-note{background:#fbf7ea;border-left:3px solid var(--gold);font-size:12px;padding:5px 8px;border-radius:4px;margin:5px 0}
+  .ov-p{font-size:12px;color:var(--sub);margin-top:8px}
+  .ov-foot{text-align:center;font-size:12px;color:var(--sub);margin-top:14px;background:#fff;border:1px dashed var(--line);border-radius:8px;padding:8px}
+  h2{font-size:20px;margin:34px 0 12px;padding-bottom:6px;border-bottom:2px solid var(--line)}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  @media(max-width:680px){.grid{grid-template-columns:1fr}}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;position:relative}
+  .card.a{border-top:5px solid var(--a)}
+  .card.b{border-top:5px solid var(--b)}
+  .badge{position:absolute;top:14px;right:14px;font-size:12px;font-weight:700;
+    background:#f3edc7;color:var(--gold);border-radius:20px;padding:3px 10px}
+  .rec{display:inline-block;font-size:11px;font-weight:700;background:var(--a);color:#fff;
+    border-radius:6px;padding:2px 8px;margin-left:6px;vertical-align:middle}
+  .card h3{font-size:17px;margin:0 6px 2px 0;display:inline}
+  .work{font-size:13px;color:var(--sub);margin:4px 0 12px}
+  .row{font-size:14px;margin:9px 0}
+  .row .lbl{font-weight:700;color:var(--ink);font-size:12px;display:block;margin-bottom:1px}
+  .pill{font-size:12px;padding:2px 8px;border-radius:20px;display:inline-block;margin:2px 3px 0 0}
+  .good{background:#e5f1ea;color:var(--a)}
+  .warn{background:#fbecdf;color:var(--ai)}
+  .quote{font-size:13px;color:var(--sub);border-left:3px solid var(--line);padding-left:10px;margin:8px 0}
+  table{width:100%;border-collapse:collapse;font-size:14px;margin:6px 0}
+  th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+  th{background:#f3 efe6;background:#f4efe6;font-size:12px}
+  .decision{background:#fffdf6;border:2px solid var(--gold);border-radius:16px;padding:20px;margin:30px 0}
+  .decision h2{border:none;margin-top:0;color:var(--gold)}
+  .opt{background:#fff;border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin:10px 0}
+  .opt b{font-size:15px}
+  .concl{color:var(--sub);font-size:14px;margin-top:26px}
+  .meta{font-size:12px;color:var(--sub);background:var(--card);border:1px dashed var(--line);border-radius:10px;padding:12px 14px;margin:20px 0}
+  .gate{font-size:12px;color:var(--a);font-weight:700}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="kicker">ESSAY EPISODE ／ 企画ゲート（本人承認）</div>
+  <h1>第40話は、どっちの題材で作りますか？</h1>
+  <p class="lede">radar未使用の大型IPから2案を立て、両方とも独立採点（fork・concept採点表）を合格しました。ここで本人が1つ選ぶと、その卦・題材で台本工程へ進みます。</p>
+
+  <div class="tldr">
+    <b>TL;DR</b><br>
+    ・<b>案A</b> Re:ゼロ × 小過（62）… 独立採点 <b>92点</b>・ゲート✅ ／ <b>私の推薦</b><br>
+    ・<b>案B</b> 五等分の花嫁 × 帰妹（54）… 独立採点 <b>90点</b>・ゲート✅<br>
+    ・タイトルはまだ決めません（台本確定後 Step8.5）。title-arm＝<b>穴あき対戦型 × 末尾【アニメ考察・易経】</b>で機械割付済。公開枠 2026-07-19 04:00 JST 取得済。
+  </div>
+
+  <figure class="ov">
+    <div class="ov-title">第40話 どっちで作る？<span>易経 × アニメ・全64話</span></div>
+    <div class="ov-cols">
+      <div class="ov-a">
+        <div class="ov-tag">案A ★推薦 <b>92</b></div>
+        <div class="ov-work">Re:ゼロ × 小過（62）🕐🐦</div>
+        <div class="ov-note">飛ぶたび墜ちる →<br>低くとどまれ</div>
+        <div class="ov-note">大きく変えられない、<br>小さくしか直せない</div>
+        <div class="ov-p">👍大型IP　👍普遍の痛点　👍ネタバレOK</div>
+      </div>
+      <div class="ov-vs">⚖️</div>
+      <div class="ov-b">
+        <div class="ov-tag b">案B <b>90</b></div>
+        <div class="ov-work">五等分の花嫁 × 帰妹（54）💐</div>
+        <div class="ov-note">惹かれる順番と<br>結ばれる順番は違う</div>
+        <div class="ov-note">同じ顔の姉妹＝<br>帰妹の構造そのもの</div>
+        <div class="ov-p">👍ラブコメ最大級　⚠️結末ネタバレ注意</div>
+      </div>
+    </div>
+    <div class="ov-foot">卦辞・爻辞まで固めた ／ タイトルは台本のあと ／ 公開枠 7-19 04:00 取得済</div>
+    <figcaption>2案の全体俯瞰（AI画像枠が枯渇のためCSS図で代替）</figcaption>
+  </figure>
+
+  <h2>2案を並べる</h2>
+  <div class="grid">
+    <div class="card a">
+      <div class="badge">92点 ✅</div>
+      <h3>案A</h3><span class="rec">推薦</span>
+      <div class="work">Re:ゼロから始める異世界生活（ナツキ・スバル）× 第62卦・小過（しょうか）</div>
+      <div class="row"><span class="lbl">中心命題</span>死に戻り＝やり直せる力で「大きく世界を変えて英雄になろう」とするたび墜ちる状態から、「大事は成せないと認め、手の届く一人を小さく確実に助ける」小過への変化。</div>
+      <div class="row"><span class="lbl">入口の感情</span>「やり直せるなら大きく変えたい。でも実際できるのは小さいことだけ」</div>
+      <div class="quote">卦辞「飛鳥、上るに宜しからず、下るに宜し。大吉」＝高く飛ぶな、低くとどまれ。<br>白鯨戦でレムを喪い絶望→叱咤で立ち直り、他陣営と小さく手を組んで初めて勝つ（二爻＝手の届く相手と組む）。</div>
+      <div class="row">
+        <span class="pill good">👍 大型IP最上級</span>
+        <span class="pill good">👍 普遍的な人生痛点</span>
+        <span class="pill good">👍 結末ネタバレ問題なし</span>
+        <span class="pill good">👍 radar未使用トップ</span>
+      </div>
+    </div>
+
+    <div class="card b">
+      <div class="badge">90点 ✅</div>
+      <h3>案B</h3>
+      <div class="work">五等分の花嫁（上杉風太郎と五つ子）× 第54卦・帰妹（きまい）</div>
+      <div class="row"><span class="lbl">中心命題</span>「惹かれる順番・出会った順番という"正しい順番"に沿って結ばれるはず」という思い込みから、「順番も位置も外れたところに縁は結ばれる」帰妹への変化。</div>
+      <div class="row"><span class="lbl">入口の感情</span>「本命はこの人のはず、順番的にもこの人のはず、と決めていたのに気づくと全然ちがう相手を見ている」</div>
+      <div class="quote">卦辞「帰妹、征けば凶」＝順番/位置を無理に正そうと動くと凶。四爻「愆期、遅帰有時」＝急がず待つことに時がある。<br>五つ子＝同じ顔の姉妹という帰妹（娣＝姉妹の婚姻順位）と構造が一致。</div>
+      <div class="row">
+        <span class="pill good">👍 ラブコメ最大級IP</span>
+        <span class="pill good">👍 卦との構造一致が強い</span>
+        <span class="pill warn">⚠️ 結末ネタバレ管理が繊細</span>
+      </div>
+    </div>
+  </div>
+
+  <h2>横並び比較</h2>
+  <table>
+    <tr><th>観点</th><th>案A Re:ゼロ×小過</th><th>案B 五等分×帰妹</th></tr>
+    <tr><td>独立採点（fork・絶対評価）</td><td><b>92</b>／100 ✅</td><td><b>90</b>／100 ✅</td></tr>
+    <tr><td>処方箋ゲート（卦辞爻辞の出典明示）</td><td class="gate">PASS</td><td class="gate">PASS</td></tr>
+    <tr><td>IP規模（入口の広さ）</td><td>最上級・全世界級</td><td>ラブコメ最大級</td></tr>
+    <tr><td>人生痛点の普遍性</td><td>広い（誰もが「やり直したい」）</td><td>やや恋愛寄り</td></tr>
+    <tr><td>結末ネタバレ耐性</td><td>強い（結末に依存しない）</td><td>弱い（花嫁が最大の見せ場）</td></tr>
+    <tr><td>卦との構造一致の締まり</td><td>強い（飛ぶ鳥＝死に戻り）</td><td>強い（同じ顔の姉妹＝帰妹）</td></tr>
+  </table>
+
+  <div class="decision">
+    <h2>▶ あなたが選ぶ</h2>
+    <div class="opt"><b>A：Re:ゼロ × 小過（62）で進める</b><br><span style="font-size:13px;color:#5c574f">私の推薦。IP規模・普遍性・ネタバレ耐性で優位。</span></div>
+    <div class="opt"><b>B：五等分の花嫁 × 帰妹（54）で進める</b><br><span style="font-size:13px;color:#5c574f">卦との構造一致は最強クラス。ただし結末を素材で伏せる運用が必要。</span></div>
+    <div class="opt"><b>C：どちらも保留／別の題材・卦に変えたい</b><br><span style="font-size:13px;color:#5c574f">radar上位の他IPや、指定の卦があれば教えてください。</span></div>
+  </div>
+
+  <div class="meta">
+    <b>この後の流れ（選んだら自走）</b>：選んだ案を registry に登録 → 台本（6幕・処方箋の六爻階段・作品事実のweb検証）→ <b>台本ゲート（本人承認）</b> → 絵コンテ本人レビュー → 音声/ビジュアル → モーション/レンダ → <b>通し視聴ゲート（本人承認）</b> → タイトル3案提示 → サムネ・ショート・TikTok素材 → まとめてアップ予約。<br>
+    <b>採番済</b>：成長仮説 H53（H46派生・常識反転フックの自己投影/保存率）を選定後に確定。
+  </div>
+
+  <p class="concl">両案とも「卦辞・爻辞まで根拠が固まった合格企画」です。作りたい方を選んでください。迷うなら案A（Re:ゼロ×小過）を推します。「Cで別の題材」も歓迎です。</p>
+</div>
+</body>
+</html>
