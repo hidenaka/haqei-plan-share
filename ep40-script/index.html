@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="ja"><head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="robots" content="noindex">
-<title>ep40 台本ゲート — Re:ゼロ × 小過</title>
+<title>ep40 台本ゲート v2 — データ配分改訂版</title>
 <style>
-:root{--ink:#1c1a17;--sub:#5c574f;--line:#e5ded1;--bg:#faf7f0;--card:#fff;--gold:#b8892b;--ai:#c0562f;--ok:#2f6d64}
+:root{--ink:#1c1a17;--sub:#5c574f;--line:#e5ded1;--bg:#faf7f0;--card:#fff;--gold:#b8892b;--ai:#c0562f;--ok:#2f6d64;--nv:#7a5ba8}
 *{box-sizing:border-box}
 body{margin:0;font-family:-apple-system,"Hiragino Sans","Yu Gothic",sans-serif;color:var(--ink);background:var(--bg);line-height:1.8}
 .wrap{max-width:860px;margin:0 auto;padding:26px 18px 80px}
 .kicker{font-size:12px;letter-spacing:.14em;color:var(--ai);font-weight:700}
-h1{font-size:26px;margin:.25em 0 .3em;line-height:1.35}
+h1{font-size:25px;margin:.25em 0 .3em;line-height:1.35}
 .lede{color:var(--sub);font-size:14px;margin:0 0 16px}
 .tldr{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:15px 17px;margin:16px 0 22px;font-size:14px}
 .tldr b{color:var(--gold)}
@@ -16,65 +16,71 @@ h2{font-size:18px;margin:30px 0 10px;padding-bottom:6px;border-bottom:2px solid 
 table{width:100%;border-collapse:collapse;font-size:13px;margin:8px 0}
 th,td{border:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top}
 th{background:#f4efe6;font-size:12px}
-.ok{color:var(--ok);font-weight:700}
-.warn{color:var(--ai);font-weight:700}
-.act{font-size:14px;color:#fff;background:var(--gold);border-radius:6px;padding:5px 11px;margin:22px 0 10px;display:inline-block;letter-spacing:.05em}
+.ok{color:var(--ok);font-weight:700}.warn{color:var(--ai);font-weight:700}
+.act{font-size:14px;color:#fff;background:var(--gold);border-radius:6px;padding:5px 11px;margin:22px 0 10px;display:inline-block}
 .sc{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--line);border-radius:8px;padding:10px 13px;margin:7px 0}
 .sc .meta{font-size:11px;color:var(--sub);margin-bottom:3px}
 .sc p{margin:0;font-size:14.5px}
 .gua{background:#f3edc7;color:var(--gold);border-radius:10px;padding:1px 7px;font-weight:700}
+.mk{border-radius:10px;padding:1px 7px;font-weight:700;font-size:10.5px}
+.mk.new{background:#e8dff3;color:var(--nv)}.mk.ed{background:#e5f1ea;color:var(--ok)}
 .decision{background:#fffdf6;border:2px solid var(--gold);border-radius:16px;padding:18px;margin:28px 0}
 .decision h2{border:none;margin-top:0;color:var(--gold)}
 .opt{background:#fff;border:1px solid var(--line);border-radius:10px;padding:11px 13px;margin:9px 0;font-size:14px}
 .note{font-size:12.5px;color:var(--sub);background:var(--card);border:1px dashed var(--line);border-radius:10px;padding:12px 14px;margin:18px 0}
+.databox{background:#eef4f2;border:1px solid #cfe0da;border-radius:14px;padding:14px 16px;margin:16px 0;font-size:13.5px}
+.databox b{color:var(--ok)}
 </style></head><body><div class="wrap">
-<div class="kicker">ESSAY EPISODE ／ 台本ゲート（本人承認）</div>
-<h1>第40話 台本レビュー<br><small style="font-size:16px;color:#5c574f">Re:ゼロ（ナツキ・スバル）× 第62卦 小過</small></h1>
-<p class="lede">企画ゲートで選んでいただいた案A（大きく変えようとするたび墜ち、手の届く一手を小さく越える）の台本です。全32シーン・約9分30秒。</p>
+<div class="kicker">ESSAY EPISODE ／ 台本ゲート v2（データ配分改訂版）</div>
+<h1>第40話 台本レビュー（改訂）<br><small style="font-size:16px;color:#5c574f">Re:ゼロ（ナツキ・スバル）× 第62卦 小過</small></h1>
+<p class="lede">前回版へのご指摘「幕2長くない？ PDCA回すようになっていない？」を受け、<b>実測データで幕配分を組み替えた改訂版</b>です。全32シーン・約9分06秒。</p>
+
+<div class="databox">
+<b>📊 ご指摘は実測どおりでした（scene-retention.mjs・公開17本403シーン）</b><br>
+scene_type別 離脱%/分（中央値）: <b>幕2観察(act2_story) = 17.79 ＝ 唯一の大量離脱帯</b> ／ 幕3種明かし = 0（最良ホールド上位3件を独占＝六爻図・卦名の由来に人が戻ってくる）／ 幕5処方箋 = 0（価値の本体）。<br>
+旧仕様「観察3-5分」は<b>いちばん人が消えるパートを、いちばん長く取れと命じていた</b>ため、正典を v2.3 に改訂しました（詳細は下の「ハーネス修正」）。
+</div>
 
 <div class="tldr">
-<b>TL;DR</b><br>
-・冒頭＝「今年こそ、と大きな目標を立てた朝」（作品名は幕2まで出さない）<br>
-・処方箋＝<b>小過の六爻を6つの"別々の行動"</b>に分け、全段をスバルの実在場面に一対一で着地<br>
-・独立採点：<b>90点</b>／冒頭ゲート・物語橋ゲートとも通過。卦辞爻辞はdb本文と逐語照合済み<br>
-・事実は<b>fact_check 13項目</b>で裏取り（fork採点者が誤りを2件検出→修正済み）
+<b>TL;DR（前回版からの変更）</b><br>
+・幕2観察: <b>175s(30.6%) → 131s(24.1%)</b> ✂️ 名乗り＋惨敗を1シーンに統合・贅肉削除（処方箋が参照する事実は全部残存）<br>
+・幕3種明かし: <b>121s → 139s(25.5%)</b> ➕ 最良ホールド帯を増強（🆕「余っている小さいもので越える」設計思想の1シーン）<br>
+・fork独立採点: <b>94点</b>（旧版90点）／冒頭・物語橋の両ゲート通過／db逐語照合・db逸脱ゼロ／fact_check 14項目
 </div>
 
 <h2>検証の状態</h2>
 <table>
 <tr><th>項目</th><th>結果</th></tr>
-<tr><td>fork独立採点（essay-script・自己採点禁止）</td><td class="ok">90 / 100（閾値90）</td></tr>
-<tr><td>冒頭ゲート hook_gate（＝刺さらなければ全却下）</td><td class="ok">PASS</td></tr>
-<tr><td>物語橋ゲート story_bridge_gate</td><td class="ok">PASS</td></tr>
-<tr><td>卦辞・爻辞・象辞の db 逐語照合</td><td class="ok">全6爻＋象辞 一致・db逸脱なし</td></tr>
-<tr><td>作品事実の一次情報裏取り</td><td class="ok">13項目 fact_check.md に記録</td></tr>
-<tr><td>fork が検出し修正した誤り</td><td class="warn">①ヴィルヘルムを「剣聖」と誤記→<b>剣鬼</b>（剣聖は妻テレシア）②スバルの初回の死を二重計上→エルザ/ラチンスに整理</td></tr>
+<tr><td>fork独立採点（v2.3 rubric・自己採点禁止）</td><td class="ok">94 / 100（閾値90）</td></tr>
+<tr><td>冒頭ゲート／物語橋ゲート</td><td class="ok">両方 PASS</td></tr>
+<tr><td>幕配分（新基準）</td><td class="ok">観察24.1%（25%以内）／種明かし2.32分（≧2分）／処方箋2.78分</td></tr>
+<tr><td>卦辞・爻辞・象辞の db 照合</td><td class="ok">六爻＋象辞すべて comments 本文まで逐語一致・db逸脱ゼロ</td></tr>
+<tr><td>作品事実</td><td class="ok">fact_check 14項目（レムの霧・死の内訳含む）</td></tr>
 </table>
 
-<h2>処方箋＝六爻の6つの行動（この回の価値の本体）</h2>
+<h2>処方箋＝六爻の6つの行動（価値の本体・全段別行動）</h2>
 <table>
 <tr><th>爻</th><th>易経の言葉</th><th>スバルの場面</th><th>あなたの一手</th></tr>
 <tr><td>初爻</td><td>飛ぶ鳥、飛ぶことで凶</td><td>王選で名乗り→墜落</td><td>今日の大技をひとつ手放す</td></tr>
-<tr><td>二爻</td><td>君に及ばず、臣に遇う</td><td>英雄の座を諦め囮の持ち場へ</td><td>認めてもらう一発をやめ、地味な役をちゃんとやる</td></tr>
+<tr><td>二爻</td><td>君に及ばず、臣に遇う</td><td>英雄の座を諦め囮の持ち場へ</td><td>認めてもらう一発をやめ、任された地味な役をちゃんとやる</td></tr>
 <tr><td>三爻</td><td>用心せねば後ろから打たれる</td><td>盗品蔵で背後から殺される</td><td>省こうとした確認をひとつ残す</td></tr>
 <tr><td>四爻</td><td>行けば危うし、動くな守れ</td><td>白鯨の出現時刻を知りつつ動かない</td><td>今日つかんだ話で今日は動かない</td></tr>
-<tr><td>五爻</td><td>密雲不雨／穴に在る者を射る</td><td>一人では雨が降らず、隣の屋敷で剣鬼を引き当てる</td><td>誰か一人に「助けてほしい」と言葉にする</td></tr>
+<tr><td>五爻</td><td>密雲不雨／穴に在る者を射る</td><td>一人では雨が降らず、屋敷で剣鬼を引き当てる</td><td>誰か一人に「助けてほしい」と言葉にする</td></tr>
 <tr><td>上爻</td><td>行き過ぎて通り過ぎる</td><td>白鯨討伐直後にもう次の敵へ</td><td>始める前にやめ時を決めておく</td></tr>
 </table>
 
-<h2>台本 全文</h2>
+<h2>台本 全文（✏️＝今回圧縮・🆕＝新規）</h2>
 <h3 class="act">幕1 違和感</h3>
 <div class="sc"><div class="meta">V_01_01 · 13.4s</div><p>今年こそ、と大きな目標を立てた朝のこと、覚えていますか。全部変える、生まれ変わる、そう気合を入れたはずなのに。夜になると、何ひとつ進んでいない。決意した朝の自分が、少し恥ずかしくなる。あの感じです。</p></div>
 <div class="sc"><div class="meta">V_01_02 · 14.8s</div><p>不思議なんです。大きく変えようと構えるほど、なぜか一歩も動けなくなる。逆に、目の前の小さな一手は、地味だ、そんなの意味がない、と見下してしまう。大きなことは怖くてできず、小さなことは馬鹿にして、やらない。心当たり、ありませんか。</p></div>
 <div class="sc"><div class="meta">V_01_03 · 11.8s</div><p>易経に、小過という、変わった名前の卦があります。小さく、少しだけ過ぎていく、という字です。この卦は、ちょっと信じがたいことを、正面から言い切るんです。今日は、その話をします。</p></div>
 <h3 class="act">幕2 観察</h3>
-<div class="sc"><div class="meta">V_02_01 · 18.8s</div><p>リゼロ、正しくはRe:ゼロから始める異世界生活、という作品があります。主人公のナツキスバルは、死ぬと、少し前の時間に戻ってやり直せる。死に戻り、という力を持った少年です。何度でもコンティニューできる。人生をやり直したい私たちからすれば、これ以上ない反則の力に見えます。</p></div>
-<div class="sc"><div class="meta">V_02_02 · 22.2s</div><p>ただ、この力の始まりは、まったく格好よくありません。彼が最初に死ぬのは、盗品蔵です。背後から襲われ、腸狩りと呼ばれる殺し屋エルザに、腹を割かれて終わる。やり直した二度目も、同じエルザに殺される。三度目は、ラチンスというチンピラに、腰と背中をナイフで刺されて死ぬ。油断した背中を、後ろから突かれて終わる。それが、彼の出発点でした。</p></div>
-<div class="sc"><div class="meta">V_02_03 · 19.4s</div><p>そんな無様な死を何度もくぐったスバルが、次に何をしたか。彼は、英雄になろうとするんです。王様を選ぶ、王選という大きな舞台。その謁見式で、ヒロインのエミリアの騎士だと、大広間の全員に向かって名乗りを上げます。誰にも頼まれていないのに、たった一人で。一気に、いちばん高いところへ飛ぼうとした。</p></div>
-<div class="sc"><div class="meta">V_02_04 · 18.4s</div><p>結果は、無残でした。最優の騎士と呼ばれるユリウスに決闘を挑まれ、手も足も出ずに叩きのめされる。精霊の魔法を浴びて全身に傷を負い、大広間の床に転がされて。守るはずのエミリアにまで、失望される。高く飛ぼうとした少年は、いちばん見られている場所で、いちばん深く墜ちました。</p></div>
-<div class="sc"><div class="meta">V_02_05 · 29.7s</div><p>それでも懲りない彼に、いちばん重い罰が来ます。白鯨の霧は、殺すだけではありません。その人の存在を、世界の記憶から丸ごと消してしまう。ある回、その霧が、隣にいたレムを呑みました。誰も彼女を覚えていない。一人で全部背負おうとした先に待っていたのは、その孤独でした。膝をついた彼を立たせたのは、死に戻りで彼女が戻った世界で、レムが言った、あなたを信じている、という一言です。世界をひっくり返す力ではなく、手の届く場所にいた、たった一人の声でした。</p></div>
-<div class="sc"><div class="meta">V_02_07 · 20.8s</div><p>立ち直ったスバルは、白鯨という、三大魔獣の一体を討つ大仕事を前にして、もう一人で名乗りを上げませんでした。代わりにしたのは、取引です。死に戻りで知った、白鯨がいつどこに現れるかという情報。それを手土産に、隣の陣営のクルシュたちの屋敷へ行って、頭を下げた。英雄の名乗りではなく、地味な交渉でした。</p></div>
-<div class="sc"><div class="meta">V_02_08 · 23.6s</div><p>そして、その屋敷で、彼は一本の剣を引き当てます。剣鬼ヴィルヘルム。妻の剣聖テレシアを白鯨に奪われ、その一太刀のためだけに剣を研いできた老剣士です。表の英雄ではなく、人の屋敷に仕えていた。彼の剣と、囮になったスバルとが噛み合って、ついに白鯨は討たれます。一人で墜ち続けた少年が初めて大物を越えたのは、低く、隣と手を組んだときでした。</p></div>
+<div class="sc"><div class="meta">V_02_01 · 14.3s <span class="mk ed">✏️圧縮</span></div><p>リゼロ、正しくはRe:ゼロから始める異世界生活。主人公のナツキスバルは、死ぬと少し前に戻ってやり直せる。死に戻り、という力を持っています。人生をやり直したい私たちからすれば、これ以上ない反則の力です。</p></div>
+<div class="sc"><div class="meta">V_02_02 · 15.1s <span class="mk ed">✏️圧縮</span></div><p>ただ、始まりは格好よくありません。最初の死は、盗品蔵。背後から襲われ、腸狩りエルザに腹を割かれて終わる。二度目も同じエルザ。三度目はラチンスというチンピラに、背中を刺されて死ぬ。油断した背中を、後ろから突かれて終わるんです。</p></div>
+<div class="sc"><div class="meta">V_02_03 · 20.5s <span class="mk ed">✏️圧縮</span></div><p>そんな死をくぐった彼が、次に何をしたか。英雄になろうとするんです。王を選ぶ王選の謁見式で、エミリアの騎士だと、大広間の全員に名乗りを上げる。誰にも頼まれていないのに、一人で。結果は、最優の騎士ユリウスに叩きのめされ、全身に傷を負って床に転がされる。いちばん見られている場所で、いちばん深く墜ちました。</p></div>
+<div class="sc"><div class="meta">V_02_05 · 21.6s <span class="mk ed">✏️圧縮</span></div><p>それでも懲りない彼に、いちばん重い罰が来ます。白鯨の霧は、殺すだけでなく、その人の存在を世界の記憶から消してしまう。ある回、その霧が、隣にいたレムを呑みました。誰も彼女を覚えていない。一人で全部背負おうとした先にあったのは、その孤独です。彼を立たせたのは、戻った世界でレムが言った、あなたを信じている、という一言でした。</p></div>
+<div class="sc"><div class="meta">V_02_07 · 15.4s <span class="mk ed">✏️圧縮</span></div><p>立ち直ったスバルは、白鯨という三大魔獣の一体を前にして、もう名乗りを上げませんでした。したのは取引です。死に戻りで知った、白鯨がいつどこに出るかという情報。それを手土産に、隣の陣営のクルシュの屋敷へ行き、頭を下げた。</p></div>
+<div class="sc"><div class="meta">V_02_08 · 22.7s <span class="mk ed">✏️圧縮</span></div><p>そしてその屋敷で、彼は一本の剣を引き当てます。剣鬼ヴィルヘルム。妻の剣聖テレシアを白鯨に奪われ、その一太刀のために剣を研いできた老剣士です。表の英雄ではなく、人の屋敷に仕えていた。その剣と、囮になったスバルが噛み合って、白鯨は討たれます。一人で墜ち続けた少年が初めて大物を越えたのは、低く、隣と手を組んだときでした。</p></div>
 <h3 class="act">幕2 比較</h3>
 <div class="sc"><div class="meta">V_02_09 · 21.8s</div><p>逆の生き方も、私たちは知っています。カイジです。彼はいつも、一回で全部ひっくり返す大勝負に乗る。電流の流れる鉄骨の上を渡り、負ければ帝愛の地下強制労働施設へ落ちて、ペリカを数えて暮らす。そしてまた、一発を狙う。力が足りないのではありません。低く構える、という選択肢を、彼は最初から持っていないんです。</p></div>
 <h3 class="act">幕3 種明かし</h3>
@@ -85,6 +91,7 @@ th{background:#f4efe6;font-size:12px}
 <div class="sc"><div class="meta">V_03_05 · 17.2s</div><p>飛ぶ鳥が、鳴きながら、告げていく。上るのはよくない、下るのがよい、と。そして、大いに吉。大きなことをするな、小さなことだけをせよ。ずいぶん後ろ向きに聞こえます。でも易経は、これを大いに吉、といちばん強い言葉で祝福している。そこが、この卦の奇妙なところなんです。</p></div>
 <div class="sc"><div class="meta">V_03_06 · 16.3s</div><p>飛ぶ鳥。それはまさに、王選の大広間で名乗りを上げた、あのスバルです。高く飛べば、遠くまで見渡せる気がする。誰かが見つけてくれる気がする。でも小過は言うんです。その高さこそが、猟師の網にかかる、と。鳥は、巣のある低いところにいるうちが、いちばん強い。</p></div>
 <div class="sc"><div class="meta">V_03_07 · 18.9s</div><p>上の雷は、死に戻りで今すぐ動きたがるスバルそのものです。下の山は、それを押さえつける現実。彼が墜ちた回は、雷だけが暴れていました。越えた回は、山がちゃんと据わっていた。同じ人間が、同じ力を使って、結果だけが真逆になる。その分かれ目が、この六本の線に描いてあるんです。</p></div>
+<div class="sc"><div class="meta">V_03_08 · 18.5s <span class="mk new">🆕新規</span></div><p>面白いのは、この卦が弱さを否定していないことなんです。強い陽が足りない。だから大きいことはできない。それは事実として認める。認めた上で、外にはみ出した小さいものたちに、少しだけ働いてもらう。足りないものを嘆くのでなく、余っているもので越えていく。それが、この六本の設計思想です。</p></div>
 <h3 class="act">幕4 風刺の刃</h3>
 <div class="sc"><div class="meta">V_04_01 · 14.3s</div><p>私たちは、大きく変える方法が、本当に大好きです。人生を一発で変える、環境を丸ごと捨てる、別人になる。その響きに、お金と時間を、気持ちよく吸い込まれていく。買った時点で、もう半分変わった気になっている。</p></div>
 <div class="sc"><div class="meta">V_04_02 · 16.2s</div><p>その一方で、目の前の小さな一手は、地味だと切り捨てる。今日、あの一人に連絡する。今日、机の上を片づける。そんなので人生変わらないよ、と。でも、思い出してください。スバルが墜ちたのは、いつも、その地味を飛び越えて、高く賭けた瞬間だったんです。</p></div>
@@ -103,16 +110,22 @@ th{background:#f4efe6;font-size:12px}
 <div class="sc"><div class="meta">V_06_01 · 17.2s</div><p>無限にやり直せる力を持ったスバルが、最後にたどり着いたのは、別人になることではありませんでした。低く構えて、隣の一人に頭を下げ、手元の一枚で、目の前の一つを越える。その小ささの積み重ねだけが、無限のやり直しの中で、彼を本当に前へ運んだんです。</p></div>
 <div class="sc"><div class="meta">V_06_02 · 12.7s</div><p>人生を大きく変える一回は、たぶん、来ません。来ないまま、それでも人は、けっこう遠くまで行きます。今日あなたが手放す大技と、頭を下げて組む隣の一人。世界を動かすのは、たぶん、そっちです。</p></div>
 
+<h2>🔧 ハーネス修正（実施済み・同時報告）</h2>
+<table>
+<tr><th>#</th><th>修正</th><th>内容</th></tr>
+<tr><td>1</td><td>format_v2.md → <b>v2.3</b></td><td>幕配分をデータ由来に改訂: 観察1.5-2.5分(25%上限・下限廃止)／種明かし2-3分(下限維持・薄くしない)。「配分は静的な聖典ではない＝実測と食い違えば配分の方を直す」を明記</td></tr>
+<tr><td>2</td><td>採点表 essay-script.json</td><td>structure_balanceを新配分へ（「観察3-5分の下限割れ」減点を廃止）。gold回帰: ep01=98/ep03=99で採点表の壊れなし確認</td></tr>
+<tr><td>3</td><td>growth-tick.mjs</td><td>幕配分PDCAを機械化: scene-retention計測が7日超で古いと日次司令が自動フラグ→再実測→配分改訂の還流</td></tr>
+<tr><td>4</td><td>rejections.json</td><td>今回の「幕2長くない？」を却下台帳へ還流（以後の全採点プロンプトに注入）</td></tr>
+<tr><td>5</td><td>CLAUDE.md / SKILL.md</td><td>旧「観察3-5分」の記載を全て同期</td></tr>
+</table>
+
 <div class="decision">
 <h2>▶ 判断してください</h2>
 <div class="opt"><b>A：この台本でOK。次（絵コンテ）へ進む</b></div>
-<div class="opt"><b>B：直しを指定する</b>（どのシーンの何が刺さらないか、一言で構いません。「冒頭が弱い」「幕2が冗長」等）</div>
-<div class="opt"><b>C：作り直す</b>（切り口ごと変える）</div>
+<div class="opt"><b>B：直しを指定する</b>（どのシーンの何が刺さらないか一言で）</div>
+<div class="opt"><b>C：作り直す</b></div>
 </div>
 
-<div class="note">
-<b>正直な申告（ハーネスの状態）</b>：creative-loop の独立採点は 80→85→84→<b>91→90</b> と推移し、合格2回・未達2回で判定者間の分散がありました（未達の指摘＝実バグは全て修正済み：db逸脱の比喩・六爻の行動重複・「降りる/上がる」の矛盾・事実の取り違え）。<br>
-また <b>creative-harness の essay-script 昇格証跡は現在未完了</b>です。理由＝品質改稿のたびに canonical を編集し、その都度「編集は下流証跡を無効化する」規則で昇格が外れるため。<b>あなたの台本フィードバックでどのみち編集が入る</b>ので、昇格・preflight証跡は<b>台本ゲート通過後にまとめて確定</b>させます（この順序の方が正しい）。<br>
-次の停止点＝<b>Step2.5 絵コンテ本人レビュー</b>（立ち絵設計を確定してから音声・画像へ）。
-</div>
+<div class="note">次の停止点＝<b>Step2.5 絵コンテ本人レビュー</b>（立ち絵設計の確定後に音声・画像へ）。</div>
 </div></body></html>
