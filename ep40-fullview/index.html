@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ja"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="robots" content="noindex">
+<title>ep40 通し視聴ゲート — Re:ゼロ × 小過</title>
+<style>
+:root{--ink:#1c1a17;--sub:#5c574f;--line:#e5ded1;--bg:#faf7f0;--card:#fff;--gold:#b8892b;--ai:#c0562f;--ok:#2f6d64}
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,"Hiragino Sans","Yu Gothic",sans-serif;color:var(--ink);background:var(--bg);line-height:1.75}
+.wrap{max-width:880px;margin:0 auto;padding:26px 18px 80px}
+.kicker{font-size:12px;letter-spacing:.14em;color:var(--ai);font-weight:700}
+h1{font-size:24px;margin:.25em 0 .3em}
+.lede{color:var(--sub);font-size:14px}
+.tldr{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:15px 17px;margin:16px 0;font-size:14px}
+.tldr b{color:var(--gold)}
+h2{font-size:18px;margin:26px 0 10px;padding-bottom:6px;border-bottom:2px solid var(--line)}
+img{max-width:100%;border-radius:12px;border:1px solid var(--line)}
+table{width:100%;border-collapse:collapse;font-size:13px;margin:8px 0}
+th,td{border:1px solid var(--line);padding:7px 9px;text-align:left}
+th{background:#f4efe6;font-size:12px}
+.ok{color:var(--ok);font-weight:700}
+.decision{background:#fffdf6;border:2px solid var(--gold);border-radius:16px;padding:18px;margin:26px 0}
+.decision h2{border:none;margin-top:0;color:var(--gold)}
+.opt{background:#fff;border:1px solid var(--line);border-radius:10px;padding:11px 13px;margin:9px 0;font-size:14px}
+.note{font-size:12.5px;color:var(--sub);background:var(--card);border:1px dashed var(--line);border-radius:10px;padding:12px 14px;margin:16px 0}
+</style></head><body><div class="wrap">
+<div class="kicker">ESSAY EPISODE ／ 通し視聴ゲート（本人承認・final-video）</div>
+<h1>第40話 レンダ完了 — 通し視聴をお願いします</h1>
+<p class="lede">Re:ゼロ（ナツキ・スバル）× 第62卦 小過 ・10分10秒・32シーン</p>
+
+<div class="tldr"><b>TL;DR</b><br>
+・レンダ 610秒/853MB（Mac mini・BGM頭出し修正後の再レンダ）・mix preflight: <b>PASS</b><br>
+・<b>H52オーバーレイ</b>: 冒頭0-8秒に「Re:ゼロ×ナツキ・スバル／易経・小過」が載っていることをフレームで確認済み<br>
+・identity監査: 全カット「不明」＝PASS ／ 六爻図: 001100・二爻金強調（決定論・静止画）</div>
+
+<h2>本編プレビュー（720p・スマホ再生可）</h2>
+<video controls preload="metadata" style="width:100%;border-radius:12px;border:1px solid var(--line)" src="preview-720p.mp4"></video>
+
+<h2>冒頭3秒（H52 約束の確認）</h2>
+<img src="frame-3s.png" alt="冒頭3秒">
+
+<h2>全編サンプル（13点・5s〜590s）</h2>
+<img src="render-sheet.jpg" alt="レンダ済みコンタクトシート">
+
+<h2>機械検証</h2>
+<table id="checks">
+<tr><th>ゲート</th><th>結果</th></tr>
+<tr><td>essay-preflight script / timing / promise / visuals</td><td class="ok">すべてPASS（警告0〜1）</td></tr>
+<tr><td>fork独立採点（台本96・シーン画像92）</td><td class="ok">閾値90超え</td></tr>
+<tr><td>identity監査（ブラインド・全11対象カット）</td><td class="ok">全カット「不明」＝PASS・安全弁4項目false</td></tr>
+<tr><td>mix preflight（尺・ピーク・幕間BGM・シーン境界の黒落ち）</td><td class="ok">PASS — 尺610.4s／ピーク-4.0dB／幕間BGM-35.5dB（基準帯中央）／黒落ち0（31境界検査・暗い絵の正常表示4件をV字判定でスキップ・全4件フレーム目視済み）</td></tr>
+</table>
+
+<div class="decision">
+<h2>▶ 通し視聴して判断してください</h2>
+<div class="opt"><b>A：公開OK</b>（→ タイトル3案→サムネ→ショート→予約 07-19 04:00 の順で自走）</div>
+<div class="opt"><b>B：直しを指定</b>（シーンIDと一言）</div>
+</div>
+<div class="note">上の埋め込みは720pプレビュー。原本はMacの releases/060/ep40_full.mp4（1080p・853MB）。</div>
+</div></body></html>
