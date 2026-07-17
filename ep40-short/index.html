@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ja"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="robots" content="noindex">
+<title>ep40 ショート 人間ゲート — 小過→既済</title>
+<style>
+:root{--ink:#1c1a17;--sub:#5c574f;--line:#e5ded1;--bg:#faf7f0;--card:#fff;--gold:#b8892b;--ai:#c0562f;--ok:#2f6d64}
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,"Hiragino Sans","Yu Gothic",sans-serif;color:var(--ink);background:var(--bg);line-height:1.75}
+.wrap{max-width:760px;margin:0 auto;padding:26px 18px 80px}
+.kicker{font-size:12px;letter-spacing:.14em;color:var(--ai);font-weight:700}
+h1{font-size:23px;margin:.25em 0 .3em}
+.lede{color:var(--sub);font-size:14px}
+h2{font-size:17px;margin:26px 0 10px;padding-bottom:6px;border-bottom:2px solid var(--line)}
+video{width:100%;max-width:340px;border-radius:12px;border:1px solid var(--line);display:block;margin:0 auto}
+table{width:100%;border-collapse:collapse;font-size:13px;margin:8px 0}
+th,td{border:1px solid var(--line);padding:7px 9px;text-align:left}
+th{background:#f4efe6;font-size:12px}
+.ok{color:var(--ok);font-weight:700}
+.sc{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:9px 12px;margin:6px 0}
+.sc .meta{font-size:11px;color:var(--sub)}
+.sc p{margin:2px 0 0;font-size:14px}
+.core{background:#eef4f2;border:1px solid #cfe0da;border-radius:12px;padding:13px 15px;font-size:13.5px;margin:14px 0}
+.core b{color:var(--ok)}
+.decision{background:#fffdf6;border:2px solid var(--gold);border-radius:16px;padding:18px;margin:26px 0}
+.decision h2{border:none;margin-top:0;color:var(--gold)}
+.opt{background:#fff;border:1px solid var(--line);border-radius:10px;padding:11px 13px;margin:9px 0;font-size:14px}
+.note{font-size:12.5px;color:var(--sub);background:var(--card);border:1px dashed var(--line);border-radius:10px;padding:12px 14px;margin:16px 0}
+</style></head><body><div class="wrap">
+<div class="kicker">ESSAY EPISODE ／ ショート人間ゲート（隣の卦・序卦ショート）</div>
+<h1>ep40 ショート — 小過（62）→ 既済（63）</h1>
+<p class="lede">58.3秒・6シーン・主指標=いいね率（H51／再生数で判定しない）</p>
+
+<div class="core"><b>「へえ」の本体（反論不能の証拠）</b><br>
+小過は「大きなことはするな、小さなことならいい」と書いてある。後ろ向きに聞こえる。<br>
+<b>でも六十二の次が、六十三。「既済＝完成」の卦辞の一行目が “Success in small matters（小さなことで成功する）”。</b><br>
+＝「小さくしかできない」が「小さいからこそ完成に着く」へ裏返る。db本文と逐語照合済み・序卦の並びも確認済み。</div>
+
+<h2>動画（スマホで再生できます）</h2>
+<video controls preload="metadata" src="short-preview.mp4"></video>
+
+<h2>台本</h2>
+<div class="sc"><div class="meta">S01 · hook</div><p>大きな目標を立てた朝って、自分が強くなった気がしますよね。でも夜には、何も進んでいない。決意した朝の自分が、ちょっと恥ずかしい。</p></div>
+<div class="sc"><div class="meta">S02 · body</div><p>リゼロのスバルは、王選の場で、エミリアの騎士だ、と大広間の全員に名乗りを上げます。結果は、最優の騎士に叩きのめされて、床に転がされる。</p></div>
+<div class="sc"><div class="meta">S03 · body</div><p>易経に、小過という卦があります。大きなことはするな、小さなことならいい。そう書いてあるんです。</p></div>
+<div class="sc"><div class="meta">S04 · payoff</div><p>後ろ向きに聞こえます。でも面白いのは、次の形。六十二の次が、六十三。既済、完成という卦で、その卦辞の一行目が、小さなことで成功する、なんです。</p></div>
+<div class="sc"><div class="meta">S05 · payoff</div><p>小さくしかできない自分を、能力が足りないんだと思っていました。逆でした。小さいから、完成に着く。地味な一手を見下していたのは、私です。</p></div>
+<div class="sc"><div class="meta">S06 · cta_close</div><p>大きな朝の強さは、要りません。要るのは、夜まで残る、小さい一つです。</p></div>
+
+<h2>検証</h2>
+<table>
+<tr><td>shorts-qa.py</td><td class="ok">PASS（motion／字幕同期／実際に動く／黒落ちなし／尺58.3s=45-60s内）</td></tr>
+<tr><td>fork独立採点（short-artwork・自己採点なし）</td><td class="ok">92／100</td></tr>
+<tr><td>独立ゲート</td><td class="ok">hook_gate ✅ ／ no_self_blade ✅（刃が自分に返っている）</td></tr>
+<tr><td>一次情報</td><td class="ok">小過62・既済63の卦辞をdb逐語照合／王選の名乗り→ユリウス敗北をweb裏取り</td></tr>
+<tr><td>採点者の指摘→対応</td><td>「卦辞より命令が強い」「解説者の口」→ S03を『大きなことはするな、小さなことならいい。そう書いてあるんです』へ修正済み</td></tr>
+</table>
+
+<h2>目視で直したこと</h2>
+<p style="font-size:13.5px">最終カット（S06）が指定を無視して<b>着物の女性像</b>になっていたので、指定通り「余白＋金の足跡が画面外へ抜ける」へ再生成・DepthFlow差し替え。</p>
+
+<div class="decision">
+<h2>▶ 判断してください</h2>
+<div class="opt"><b>A：これでOK</b>（本編07-19 04:00 の後、朝5:00に予約）</div>
+<div class="opt"><b>B：直しを指定</b>（シーンIDと一言）</div>
+</div>
+<div class="note">⚠️ 正直な申告: creative-harness の vertical 3-run（provenance記録簿）は、私が候補生成中にcanonicalを編集したため invalidated のまま未完了です。<b>動画本体と品質証跡（QA PASS＋fork92＋目視）は揃っています</b>が、記録簿は欠落。次回のショートは「候補を全部確定→init→触らず3-run」の順序を守ります（メモリに記録済み）。</div>
+</div></body></html>
