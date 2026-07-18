@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>第41話 企画ゲート — 五等分の花嫁×帰妹 / 四月は君の嘘×離</title>
+<style>
+  :root{
+    --bg:#faf7f2; --fg:#1f2430; --muted:#5c6472; --line:#e5ded2;
+    --card:#ffffff; --accent:#c0392b; --accentA:#2e7d5b; --accentB:#8e6a3f;
+    --a-bg:#f0f8f4; --b-bg:#f7f2ea; --warn:#b9770e; --ok:#2e7d5b; --pill:#eee8dc;
+    --shadow:0 2px 10px rgba(60,50,30,.07);
+  }
+  @media (prefers-color-scheme:dark){
+    :root{ --bg:#15171c; --fg:#e9ecf1; --muted:#a4adbb; --line:#2b2f38;
+      --card:#1c1f26; --a-bg:#152720; --b-bg:#241d13; --pill:#262a33; --shadow:0 2px 12px rgba(0,0,0,.4);}
+  }
+  :root[data-theme="dark"]{ --bg:#15171c; --fg:#e9ecf1; --muted:#a4adbb; --line:#2b2f38;
+    --card:#1c1f26; --a-bg:#152720; --b-bg:#241d13; --pill:#262a33; --shadow:0 2px 12px rgba(0,0,0,.4);}
+  :root[data-theme="light"]{ --bg:#faf7f2; --fg:#1f2430; --muted:#5c6472; --line:#e5ded2;
+    --card:#ffffff; --a-bg:#f0f8f4; --b-bg:#f7f2ea; --pill:#eee8dc; --shadow:0 2px 10px rgba(60,50,30,.07);}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--fg);
+    font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN",-apple-system,BlinkMacSystemFont,"Segoe UI",Meiryo,sans-serif;
+    line-height:1.75;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:920px;margin:0 auto;padding:32px 20px 80px}
+  .kicker{font-size:.8rem;letter-spacing:.14em;color:var(--accent);font-weight:700;text-transform:uppercase}
+  h1{font-size:1.85rem;line-height:1.35;margin:.3em 0 .2em}
+  .lede{color:var(--muted);font-size:1.02rem;margin:.4em 0 1.1em}
+  .tldr{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--accent);
+    border-radius:10px;padding:14px 18px;box-shadow:var(--shadow);margin:0 0 24px}
+  .tldr b{color:var(--accent)}
+  figure{margin:0 0 28px}
+  figure img{width:100%;height:auto;border-radius:12px;border:1px solid var(--line);box-shadow:var(--shadow)}
+  figcaption{color:var(--muted);font-size:.85rem;margin-top:8px;text-align:center}
+  h2{font-size:1.25rem;margin:34px 0 12px;padding-bottom:6px;border-bottom:2px solid var(--line)}
+  h3{font-size:1.05rem;margin:22px 0 8px}
+  table{width:100%;border-collapse:collapse;margin:12px 0 8px;font-size:.92rem;overflow-x:auto;display:block}
+  @media(min-width:640px){table{display:table}}
+  th,td{border:1px solid var(--line);padding:8px 11px;text-align:left;vertical-align:top}
+  th{background:var(--pill);font-weight:700}
+  .num{font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap}
+  .cardrow{display:grid;grid-template-columns:1fr;gap:16px;margin:16px 0}
+  @media(min-width:720px){.cardrow{grid-template-columns:1fr 1fr}}
+  .card{border:1px solid var(--line);border-radius:12px;padding:16px 18px;box-shadow:var(--shadow)}
+  .card.a{background:var(--a-bg);border-top:4px solid var(--accentA)}
+  .card.b{background:var(--b-bg);border-top:4px solid var(--accentB)}
+  .badge{display:inline-block;font-size:.72rem;font-weight:700;padding:2px 9px;border-radius:999px;margin-left:6px}
+  .badge.rec{background:var(--ok);color:#fff}
+  .badge.alt{background:var(--pill);color:var(--muted)}
+  .score{font-size:1.5rem;font-weight:800}
+  .score.a{color:var(--accentA)} .score.b{color:var(--accentB)}
+  ul{margin:.3em 0 .6em;padding-left:1.25em} li{margin:.18em 0}
+  .thesis{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 18px;
+    box-shadow:var(--shadow);font-size:1.05rem;font-weight:600}
+  .thesis .sub{display:block;font-weight:400;font-size:.92rem;color:var(--muted);margin-top:6px}
+  .acts{counter-reset:act;list-style:none;padding:0;margin:12px 0}
+  .acts li{counter-increment:act;position:relative;padding:10px 12px 10px 46px;border:1px solid var(--line);
+    border-radius:9px;margin:8px 0;background:var(--card)}
+  .acts li::before{content:counter(act);position:absolute;left:10px;top:10px;width:26px;height:26px;
+    background:var(--accent);color:#fff;border-radius:50%;display:grid;place-items:center;font-weight:700;font-size:.85rem}
+  .acts b{color:var(--fg)}
+  .flip{display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:var(--card);border:1px dashed var(--accent);
+    border-radius:10px;padding:12px 16px;margin:10px 0}
+  .flip .g{padding:6px 12px;border-radius:8px;font-weight:700}
+  .flip .zen{background:#e6f4ec;color:#1e6b47} .flip .kyo{background:#fbe9e7;color:#b1362a}
+  @media (prefers-color-scheme:dark){.flip .zen{background:#17352a;color:#7fd6a8}.flip .kyo{background:#3a201c;color:#f0a99e}}
+  .arrow{font-size:1.3rem;color:var(--accent)}
+  .decision{background:var(--card);border:2px solid var(--accent);border-radius:14px;padding:20px 22px;margin:28px 0;box-shadow:var(--shadow)}
+  .decision h2{border:0;margin-top:0}
+  .opt{display:flex;gap:12px;align-items:flex-start;padding:12px 0;border-top:1px solid var(--line)}
+  .opt:first-of-type{border-top:0}
+  .opt .k{font-size:1.15rem;font-weight:800;min-width:2.2em}
+  .opt.a .k{color:var(--accentA)} .opt.b .k{color:var(--accentB)}
+  .meta{font-size:.86rem;color:var(--muted)}
+  .grid2{display:grid;grid-template-columns:1fr;gap:10px}
+  @media(min-width:640px){.grid2{grid-template-columns:1fr 1fr}}
+  .mini{border:1px solid var(--line);border-radius:9px;padding:10px 13px;background:var(--card);font-size:.9rem}
+  .mini b{color:var(--accent)}
+  code{background:var(--pill);padding:1px 6px;border-radius:5px;font-size:.86em}
+  .foot{margin-top:40px;color:var(--muted);font-size:.82rem;border-top:1px solid var(--line);padding-top:16px}
+  .ok{color:var(--ok);font-weight:700} .warnc{color:var(--warn);font-weight:700}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="kicker">第41話 企画ゲート ・ content/061 ・ 公開 2026-07-20 04:00 JST</div>
+  <h1>第41話、どっちで作る？<br>A：五等分の花嫁×帰妹　／　B：四月は君の嘘×離</h1>
+  <p class="lede">essay-episode Step1 の企画承認ゲート。concept例外プロトコルに従い候補2案を用意しました。<b>A/B のどちらで作るかを選び、承認してください。</b>タイトルはこの段階では決めません（台本確定後 Step8.5）。</p>
+
+  <div class="tldr">
+    <b>TL;DR</b>
+    <ul style="margin:.4em 0 0">
+      <li><b>推奨＝A（五等分の花嫁×帰妹）</b>。topic-radar 突合で「新作品×未使用卦」の唯一の生き残り＝大型IP。独立採点 <b>85</b>／両ゲートpass。</li>
+      <li>芯＝<b>序卦の隣接反転</b>：<b>漸</b>（正式な順序でだんだん進む＝吉／ep19ハイキュー既出）→ <b>帰妹</b>（順位・衝動で結ぶ＝征凶）。同じ「娘が嫁ぐ」でも作法で吉凶が逆。</li>
+      <li>B（四月は君の嘘×離）は卦適合は素直だが、独立採点73・死＋嘘主題で間口が狭い。</li>
+    </ul>
+  </div>
+
+  <figure>
+    <img src="images/overview-01.png" alt="第41話 企画A/Bの俯瞰グラレコ">
+    <figcaption>第41話 企画A/B ぜんたい俯瞰（手描きグラレコ）</figcaption>
+  </figure>
+
+  <h2>独立採点（自己採点禁止・まっさらな別の頭で絶対評価・内側ループ3周）</h2>
+  <p class="meta">スコア推移 A：85→81→85（90未達で収束・max3到達）。前回指摘の主要論理欠陥（順番の二義混同・命題内部矛盾・帰妹卦辞と結末の逆行）は<span class="ok">解消確認</span>。事実捏造ゼロ。残る減点は帰妹の爻辞解釈の細かな価値付け＝<b>Step2台本で db 逐語照合して確定し、そこで独立採点≧90をかける工程</b>です。</p>
+  <table>
+    <thead><tr><th>軸（各25点）</th><th class="num">A 五等分×帰妹</th><th class="num">B 四月×離</th></tr></thead>
+    <tbody>
+      <tr><td>卦適合（gua_fit）</td><td class="num">22</td><td class="num">22</td></tr>
+      <tr><td>フックと刃（hook & blade）</td><td class="num">21</td><td class="num">18</td></tr>
+      <tr><td>処方箋の深さ</td><td class="num">19</td><td class="num">15</td></tr>
+      <tr><td>IP規模と戦略</td><td class="num">23</td><td class="num">18</td></tr>
+      <tr><td><b>合計</b></td><td class="num"><b>85</b></td><td class="num"><b>73</b></td></tr>
+      <tr><td>ゲート（事実検証／フック）</td><td class="num"><span class="ok">pass / pass</span></td><td class="num"><span class="ok">pass / pass</span></td></tr>
+    </tbody>
+  </table>
+
+  <h2>候補A（推奨）：五等分の花嫁 × 帰妹（きまい・歸妹 54）</h2>
+
+  <div class="thesis">
+    順位で選ぶ結びは、凶に転ぶ（帰妹の<b>征凶</b>）。順位を捨て「終わりまで添えるか」で結んだとき、同じ縁が吉に変わる。
+    <span class="sub">＝惹かれた順位は、添う相手を決める資格を持たない。決めるのは「永終（終わりまでの覚悟）」だけ。</span>
+  </div>
+
+  <h3>芯：序卦の隣接反転（これが反論不能の物証）</h3>
+  <div class="flip">
+    <span class="g zen">漸(53)<br>正式な段取り＝女歸吉</span>
+    <span class="arrow">→</span>
+    <span class="g kyo">帰妹(54)<br>順位・衝動で結ぶ＝征凶</span>
+    <span style="flex:1;min-width:180px">同じ「娘が嫁ぐ」でも <b>作法</b> が違えば吉凶が真逆。漸は<b>ep19（ハイキュー）</b>で既出＝シリーズ回遊の橋にもなる。</span>
+  </div>
+
+  <h3>6幕アウトライン（v2.3・観察1.5-2.5分／種明かし2-3分／処方箋1.5-3分）</h3>
+  <ol class="acts">
+    <li><b>違和感の提示（30秒）</b>：スマホの連絡先を心の中で並べ替える。本命／とりあえずキープ。返信の速さも順位で決めている——なのに"1位"に選んだ相手と、なぜか続かなかった後ろめたさ（一人称・日常語・作品名まだ出さない）。</li>
+    <li><b>観察（1.5-2.5分・固有名＋名場面）</b>：五等分の花嫁。同じ顔の五つ子。読者もファンも「推し順」を競う。だが結ばれた四葉は最も"主役らしくない"側で、原点（京都の思い出の子）でありながら正体は最後まで伏せられ、「嫌いです」と嘘で自分を最下位に置いた。学園祭最終夜、5人が別々に待つ中、彼が入ったのは保健室。結婚式では全員同じ花嫁衣装で四葉を当て、さらに<b>5人全員を見分けた</b>。／比較＝<b>とらドラ！</b>（順位1位の実乃梨でなく大河と）。</li>
+    <li><b>種明かし（2-3分）</b>：帰妹＝卦辞「征凶、无攸利」。二層に分ける——「推し順（衝動・位取り＝征凶）」と「作法・永終（漸＝吉）」は別層。序卦 漸→帰妹は<b>後者（作法）</b>の物証。<b>主語の橋渡し</b>：位を越えて嫁ぐ娘と、人に1位2位をつける私たちは、同じ"位で縁を測る過ち"の裏表。</li>
+    <li><b>風刺の刃（30秒-1分）</b>：幕1の"本命／キープ"に戻る。私たちは人を順位で値踏みする。その順位付けで突き進むこと自体が「征凶」——保険にした人にも、自分を下に置いた自分にも刃になる。</li>
+    <li><b>処方箋（1.5-3分・帰妹の六爻＋象辞「永終知敝」を階段に・db準拠）</b>：終わりまで添えるか／どこが破れるかで結べ。初＝分をわきまえれば低位でも吉／二＝失望しても内なる芯(貞)を保つ／三＝順位を貪ると身を落とす（征凶の縮図・戒め）／四＝遅い結婚も時が来る／五＝装いより実／上＝実の無い籠＝順位・体裁だけの結びは空になる。</li>
+    <li><b>余韻（30秒）</b>：惹かれた順位は、添う相手を決める資格を持たない。順位を手放した人にだけ、"終わりまで"の縁が残る。</li>
+  </ol>
+
+  <h3>作品事実（WebSearch一次確認済み・Step2でfact_check.md化）</h3>
+  <div class="grid2">
+    <div class="mini"><b>結ばれる相手</b>：四女・四葉。中学の京都で出会った「思い出の少女（原点）」が四葉と最終盤で判明。</div>
+    <div class="mini"><b>四葉の葛藤</b>：「嫌いです」と嘘。姉妹全員が風太郎を好きと知り、自分だけ幸せになる罪悪感で自分を最下位に。</div>
+    <div class="mini"><b>告白</b>：学園祭最終日の夜、5人が別々に待つ中、彼が入ったのは四葉のいた保健室。</div>
+    <div class="mini"><b>結婚式</b>：5人が同じ花嫁衣装。四葉を当て、さらに5人全員を見分けた（順位で切り捨てない証）。</div>
+  </div>
+
+  <h2>候補B（対抗）：四月は君の嘘 × 離（り・離為火 30）</h2>
+  <div class="cardrow">
+    <div class="card b">
+      <div><span class="score b">73</span> <span class="badge alt">対抗</span></div>
+      <p style="margin:.5em 0"><b>命題</b>：光は、何かに依って初めて燃える。依った相手が去るとき、その光は依られた側へ移る。</p>
+      <p style="margin:.3em 0"><b>卦適合</b>：離＝clinging（依る）＋光。卦辞「畜牝牛吉」・象辞「継明照于四方」がそのまま主題を支える（Aのような卦辞と結末の反発が無い＝実は素直）。</p>
+    </div>
+    <div class="card b">
+      <p style="margin:.2em 0"><b>⚠️ 弱点</b></p>
+      <ul>
+        <li>処方箋が骨子止まり（離の六爻は焚如死如棄如と暗く、建設的な階段化が難しい）。</li>
+        <li>結末が重い（かをり死）＋「嘘」主題で間口が狭い。</li>
+        <li>五等分より IP規模・検索需要が小さく、序卦の橋（回遊）・ショート適性が弱い。</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="decision">
+    <h2>🚦 あなたの判断</h2>
+    <div class="opt a"><div class="k">A</div><div>
+      <b>五等分の花嫁 × 帰妹</b>（推奨・独立採点85）。承認後、registryを planning登録し、Step2台本→fork採点≧90→本人台本ゲートへ自走します。
+    </div></div>
+    <div class="opt b"><div class="k">B</div><div>
+      <b>四月は君の嘘 × 離</b>（独立採点73）。選ぶ場合、処方箋（離の六爻の建設的階段化）と冒頭場面を作り込んでから台本へ。
+    </div></div>
+    <div class="opt"><div class="k" style="color:var(--muted)">他</div><div class="meta">
+      別の作品・別の卦にしたい／命題の方向を変えたい 等があれば指示してください（未使用卦は残り24：屯 小畜 豫 隨 臨 觀 噬嗑 剝 無妄 大畜 離 晉 解 姤 萃 鼎 艮 歸妹 豐 巽 渙 節 中孚 未濟）。
+    </div></div>
+  </div>
+
+  <h2>メタ情報（確定済み）</h2>
+  <div class="grid2">
+    <div class="mini"><b>公開枠</b>：2026-07-20 04:00 JST（coord claim-slot 取得済 / long / 061）。</div>
+    <div class="mini"><b>title arm（機械割付・人は選べない）</b>：H50=<code>hole</code>（穴あき対戦型）／ H49=<code>kw</code>（末尾【アニメ考察・易経】）。block2。</div>
+    <div class="mini"><b>検証仮説</b>：H54採番済。順位・勝ち負けで人を並べる痛点を帰妹（順位＝征凶／永終＝吉）の常識反転で救うフックが自己投影コメント率/保存率を上げるか（公開後72h-7d・ep29-40中央値比較）。</div>
+    <div class="mini"><b>話数/卦の整合</b>：ep41＝40卦使用済みの次。帰妹は未使用。dir番号≠話数（registry準拠）。</div>
+  </div>
+
+  <div class="foot">
+    生成：essay-episode Step1 企画ゲート ／ 内側ループ（threshold90・max3）で独立採点3周 ／ 最良版採用。
+    数字の出典：独立fork採点（general-purpose・絶対評価）・topic-radar.json・db/hexagrams.json・WebSearch一次確認。
+  </div>
+
+</div>
+</body>
+</html>
