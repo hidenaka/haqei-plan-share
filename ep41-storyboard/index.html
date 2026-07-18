@@ -1,0 +1,70 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex">
+<title>第41話 絵コンテ確認 — 五等分の花嫁×帰妹</title><style>
+:root{--bg:#faf7f2;--fg:#20242e;--muted:#5c6472;--line:#e5ded2;--card:#fff;--accent:#c0392b;--pill:#eee8dc;--ok:#2e7d5b;--shadow:0 2px 10px rgba(60,50,30,.07)}
+@media(prefers-color-scheme:dark){:root{--bg:#15171c;--fg:#e9ecf1;--muted:#a4adbb;--line:#2b2f38;--card:#1c1f26;--pill:#262a33;--ok:#7fd6a8;--shadow:0 2px 12px rgba(0,0,0,.4)}}
+:root[data-theme=dark]{--bg:#15171c;--fg:#e9ecf1;--muted:#a4adbb;--line:#2b2f38;--card:#1c1f26;--pill:#262a33;--ok:#7fd6a8}
+:root[data-theme=light]{--bg:#faf7f2;--fg:#20242e;--muted:#5c6472;--line:#e5ded2;--card:#fff;--pill:#eee8dc;--ok:#2e7d5b}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font-family:"Hiragino Sans",-apple-system,BlinkMacSystemFont,Meiryo,sans-serif;line-height:1.7}
+.wrap{max-width:1000px;margin:0 auto;padding:30px 18px 90px}
+.kicker{font-size:.8rem;letter-spacing:.13em;color:var(--accent);font-weight:700}
+h1{font-size:1.6rem;margin:.3em 0}.lede{color:var(--muted);margin:.3em 0 1em}
+figure{margin:0 0 22px}figure img{width:100%;border-radius:12px;border:1px solid var(--line);box-shadow:var(--shadow)}
+.policy{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:10px;padding:12px 16px;box-shadow:var(--shadow);margin:0 0 20px;font-size:.92rem}
+.policy b{color:var(--accent)}
+h2{font-size:1.2rem;margin:26px 0 10px;padding-bottom:6px;border-bottom:2px solid var(--line)}
+.scroll{overflow-x:auto;border:1px solid var(--line);border-radius:10px}
+table{width:100%;border-collapse:collapse;font-size:.86rem;min-width:760px}
+th,td{border-bottom:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+th{background:var(--pill);position:sticky;top:0;font-weight:700;white-space:nowrap}
+.sc{font-weight:700;white-space:nowrap;color:var(--accent)}.col{white-space:nowrap}.mo{white-space:nowrap}.nt{color:var(--muted)}
+.decision{background:var(--card);border:2px solid var(--accent);border-radius:14px;padding:18px 20px;margin:26px 0;box-shadow:var(--shadow)}
+.decision h2{border:0;margin-top:0}.opt{padding:9px 0;border-top:1px solid var(--line)}.opt:first-of-type{border-top:0}.opt b{color:var(--fg)}
+.meta{color:var(--muted);font-size:.85rem}.ok{color:var(--ok);font-weight:700}
+.foot{margin-top:34px;color:var(--muted);font-size:.82rem;border-top:1px solid var(--line);padding-top:14px}
+</style></head><body><div class="wrap">
+<div class="kicker">第41話 絵コンテゲート ・ content/061 ・ Step2.5（音声より前）</div>
+<h1>第41話 絵コンテ確認（立ち絵設計）</h1>
+<p class="lede">音声・画像に進む前に、<b>各シーンの立ち絵（誰を・どの構図で・何の象徴・何色）</b>を確定します。承認後この設計が visual_plan / 画像プロンプトへ機械展開されます。</p>
+<figure><img src="images/overview-01.png" alt="第41話 絵コンテ俯瞰"></figure>
+<div class="policy"><b>画風・識別の方針（厳守）</b>：木版浮世絵（藍と墨＋金の差し色・和紙質感・平塗り）。<b>顔は描かない／後ろ姿・シルエット</b>。<b>画像でキャラを識別させない</b>＝五等分の制服・髪型・固有小道具は描かず、<b>「同じ形の5つの人影」「一般的な白い花嫁シルエット」などの一般記号</b>で表す（識別はナレーション／テロップが担う）。卦名・漢字カード・<span class="ok">六爻図は決定論描画</span>（AI生成せず・画像枠を消費しない）。画像内に文字は入れない。</div>
+<h2>立ち絵設計表（全29カット）</h2>
+<div class="scroll"><table>
+<thead><tr><th>カット</th><th>構図</th><th>被写体（象徴）</th><th>象徴小道具</th><th>象徴色</th><th>動き</th><th>狙い</th></tr></thead>
+<tbody>
+<tr><td class='sc'>V_01_01</td><td>手元アップ（斜め上から）</td><td>スマホを持つ手のシルエット、画面に縦並びの連絡先リスト</td><td>連絡先リスト（一般的なUIの抽象化・文字は入れない・行が上下に並ぶ）</td><td class='col'>藍地に墨、金の差し色</td><td class='mo'>静止</td><td class='nt'>順位づけの日常。顔なし・手のみ</td></tr>
+<tr><td class='sc'>V_01_02</td><td>俯瞰</td><td>並んだ行のうち一つが上に、一つが下に静かに入れ替わる</td><td>入れ替わる二つの札のシルエット</td><td class='col'>藍・墨・金</td><td class='mo'>🎬 見せ場</td><td class='nt'>順位が入れ替わる暗示（軽いDepthFlow）</td></tr>
+<tr><td class='sc'>V_02_01</td><td>横並びの引き</td><td>同じ形の5つの人影シルエットが横一列（顔なし・固有意匠なし）</td><td>5つの同一シルエット</td><td class='col'>生成り地に藍、朱の差し色</td><td class='mo'>静止</td><td class='nt'>五つ子＝『同じ形が5つ』の一般記号。制服・髪型は描かない</td></tr>
+<tr><td class='sc'>V_02_02</td><td>引き</td><td>5影のうち一番端の一体が半歩だけ後ろに下がっている</td><td>5同一シルエット（1体が後退）</td><td class='col'>藍・墨、後退した影に淡い金</td><td class='mo'>静止</td><td class='nt'>四葉＝最も後ろに置く子。誰と特定させない</td></tr>
+<tr><td class='sc'>V_02_07</td><td>引き</td><td>2つの人影と、手前の『一位の札』ではなく奥の人影へ伸びる縁の線</td><td>縁を結ぶ一本の線・順位札</td><td class='col'>墨に朱の線</td><td class='mo'>静止</td><td class='nt'>とらドラ比較＝順位の外で結ばれる（generic・キャラ描かない）</td></tr>
+<tr><td class='sc'>V_02_03</td><td>引き</td><td>5影の一番端が最下段へ沈み、影が最も濃い</td><td>沈む一体の濃い影</td><td class='col'>墨の濃淡、藍</td><td class='mo'>静止</td><td class='nt'>自分の順位を最下位に下げる罪悪感</td></tr>
+<tr><td class='sc'>V_02_04</td><td>後ろ姿</td><td>子どもの小さな後ろ姿、遠景に五重塔と紅葉のシルエット</td><td>京都の塔・紅葉（一般的な京都記号）</td><td class='col'>朱の紅葉、藍の空、金の残光</td><td class='mo'>静止</td><td class='nt'>京都の原点。特定作品の場面は描かない</td></tr>
+<tr><td class='sc'>V_02_05</td><td>手元〜半身</td><td>目の前の一つの人影へ、そっと手が向く</td><td>差し伸べる手のシルエット</td><td class='col'>生成り・藍、手先に金</td><td class='mo'>静止</td><td class='nt'>原点と知らずに惹かれる</td></tr>
+<tr><td class='sc'>V_02_06</td><td>横並びの引き</td><td>同じ形の5つの白い婚礼のシルエットが並ぶ（顔なし・一般的な白無垢）</td><td>5つの同一の花嫁シルエット</td><td class='col'>生成り・白、帯に金、背に藍</td><td class='mo'>🎬 見せ場</td><td class='nt'>花嫁衣装で全員見分け。婚礼衣装は一般化（固有意匠なし）</td></tr>
+<tr><td class='sc'>V_03_01</td><td>静物</td><td>和綴じの古い書物が開かれている</td><td>和綴じ本（易経）</td><td class='col'>生成りの紙、墨、金の栞</td><td class='mo'>静止</td><td class='nt'>三千年前の本</td></tr>
+<tr><td class='sc'>V_03_02</td><td>静物カード</td><td>『凶』を示す朱の印影（文字はRemotionカードで別途）</td><td>朱印のにじみ</td><td class='col'>朱・墨・生成り</td><td class='mo'>静止</td><td class='nt'>征凶。画像内に文字は入れない（卦名/漢字はRemotion描画）</td></tr>
+<tr><td class='sc'>V_03_03</td><td>二枚並置</td><td>隣り合う二枚の卦のカードのシルエット（漸／帰妹）</td><td>隣接する二つの枠</td><td class='col'>片方に藍(吉)、片方に朱(凶)</td><td class='mo'>静止</td><td class='nt'>序卦の隣接。卦名文字はRemotionで</td></tr>
+<tr><td class='sc'>V_03_04</td><td>足元</td><td>一段ずつ上る足（漸）と、段を飛び越す足（帰妹）の対比</td><td>石段と足のシルエット</td><td class='col'>墨・藍、段に金</td><td class='mo'>静止</td><td class='nt'>作法の違い</td></tr>
+<tr><td class='sc'>V_03_05</td><td>図解的</td><td>上下に分かれた二つの層（順位の層／作法の層）</td><td>二層の帯</td><td class='col'>上層=藍、下層=金</td><td class='mo'>静止</td><td class='nt'>惹かれる順番と結ばれる作法は別の層</td></tr>
+<tr><td class='sc'>GUA6</td><td>六爻図</td><td>帰妹の六爻図（決定論・gen-hexagram-diagram.py・gua_yao=5強調）</td><td>六本の爻・第五爻を金で強調</td><td class='col'>藍墨の背景に金の爻</td><td class='mo'>静止</td><td class='nt'>AI生成しない。short-hexcards/gen-hexagram-diagram で決定論描画</td></tr>
+<tr><td class='sc'>V_03_07</td><td>重ね</td><td>嫁ぐ娘の後ろ姿の影と、順位札を持つ手が重なる</td><td>婚礼の影＋順位札</td><td class='col'>藍・墨・朱</td><td class='mo'>静止</td><td class='nt'>主語の橋渡し（嫁ぐ側と選ぶ側は同じ過ち）</td></tr>
+<tr><td class='sc'>V_04_01</td><td>手元アップ（幕1と同構図）</td><td>冒頭の連絡先リストの手元へ回帰</td><td>連絡先リスト（V_01_01と同じ）</td><td class='col'>藍・墨・金</td><td class='mo'>静止</td><td class='nt'>刃は冒頭場面へ返す＝同じ絵に戻す</td></tr>
+<tr><td class='sc'>V_04_02</td><td>半身の影</td><td>自分自身の影に、順位札が刺さる/貼られる</td><td>自分の影・順位札</td><td class='col'>墨に朱の一点</td><td class='mo'>静止</td><td class='nt'>刃は自分自身へ</td></tr>
+<tr><td class='sc'>V_05_01</td><td>六爻図＋象辞</td><td>六爻図の下に、静かな水平線（永終＝終わりを見据える）</td><td>六爻の下の一本の長い線</td><td class='col'>藍・金</td><td class='mo'>静止</td><td class='nt'>処方箋の背骨＝永終知敝</td></tr>
+<tr><td class='sc'>V_05_02</td><td>足元</td><td>低い位置から踏み出す一歩（初爻）</td><td>一歩踏み出す足のシルエット</td><td class='col'>墨・藍、足先に金</td><td class='mo'>静止</td><td class='nt'>初爻：低位でも一歩で吉</td></tr>
+<tr><td class='sc'>V_05_03</td><td>半身</td><td>片方を伏せても、まっすぐ前を見る横顔シルエット（二爻・眇能視）</td><td>片目を伏せた横顔の影</td><td class='col'>藍・墨</td><td class='mo'>静止</td><td class='nt'>二爻：失望しても芯を保つ。顔は描かず輪郭のみ</td></tr>
+<tr><td class='sc'>V_05_04</td><td>静物</td><td>良し悪しを付けない、ただ置かれた一つの影（中立の踊り場）</td><td>中央にぽつんと一つの影</td><td class='col'>生成り・淡い墨</td><td class='mo'>静止</td><td class='nt'>三爻＝中立。吉凶の色（朱/藍）を強く付けない</td></tr>
+<tr><td class='sc'>V_05_05</td><td>引き</td><td>月の満ち欠け／季節が巡る暗示（四爻・遅れても時が来る）</td><td>月・巡る円</td><td class='col'>藍の夜、金の月</td><td class='mo'>🎬 見せ場</td><td class='nt'>四爻：遅い縁も時が来る（軽いDepthFlow）</td></tr>
+<tr><td class='sc'>V_05_06</td><td>静物</td><td>華美な衣装より、質素だが実の詰まった佇まい（五爻）</td><td>簡素な衣のシルエット</td><td class='col'>生成り・墨、控えめな金</td><td class='mo'>静止</td><td class='nt'>五爻：装いより実</td></tr>
+<tr><td class='sc'>V_05_07</td><td>静物</td><td>空の籠と、実の入った籠の対比（上爻・女承筐无実）</td><td>二つの籠（空／実）</td><td class='col'>生成り・墨、実に金</td><td class='mo'>静止</td><td class='nt'>上爻：形だけの結びは空になる</td></tr>
+<tr><td class='sc'>V_05_08</td><td>引き</td><td>最下段の影に、静かに金の光が差す（四葉が選ばれた理由）</td><td>最下段の影＋金の光</td><td class='col'>墨・藍、金の一条</td><td class='mo'>🎬 見せ場</td><td class='nt'>作法が漸へ抜けた</td></tr>
+<tr><td class='sc'>V_05_09</td><td>手元</td><td>順位表を、そっと机に伏せて置く手</td><td>伏せられた順位表</td><td class='col'>藍・墨・生成り</td><td class='mo'>静止</td><td class='nt'>明日からの一手＝順位表を置く</td></tr>
+<tr><td class='sc'>V_06_01</td><td>半身の後ろ姿</td><td>順位札を手放し、ふっと肩の力が抜ける後ろ姿</td><td>手放される順位札</td><td class='col'>生成り・藍</td><td class='mo'>静止</td><td class='nt'>言い淀み『正直に言うと私にも癖はある』</td></tr>
+<tr><td class='sc'>V_06_02</td><td>引き</td><td>順位の列の外に一人静かに立つ人影に、金の光</td><td>列の外の一体＋金光</td><td class='col'>藍の余韻、金の光</td><td class='mo'>🎬 見せ場</td><td class='nt'>断言で締め＝順位を手放した人にだけ本命が見える</td></tr>
+</tbody></table></div>
+<div class="decision"><h2>🚦 ご判断</h2>
+<div class="opt"><b>承認</b> → この立ち絵設計で音声（AivisSpeech morioki）＋画像生成へ自走します。</div>
+<div class="opt"><b>修正指示</b> → 変えたいカット（象徴・色・構図・動きの有無）をお知らせください。</div>
+<div class="opt meta">※不安なカットがあれば主要カットだけ先行生成してA/B確認も可能です。六爻図（GUA6）は決定論描画なので必ず卦通りに出ます。</div>
+</div>
+<div class="foot">生成：essay-episode Step2.5 ／ storyboard.json ／ 画風=木版浮世絵（2026-07-18 本人A/B確定）・キャラ非識別（2026-07-12 法務反転）。</div>
+</div></body></html>
