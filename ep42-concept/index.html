@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>ep42 企画承認ゲート — あの花×解 / まどマギ×剝</title>
+<style>
+  :root{
+    --bg:#faf8f3; --fg:#1a1a1a; --muted:#5c5347; --line:#e3dccc;
+    --card:#ffffff; --accent:#8b6f2e; --gold:#b5942f; --ai:#1e5aa8;
+    --a:#2b6a4f; --b:#7a3b6b; --warn:#a8541c; --ok:#2b6a4f;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{ --bg:#16130d; --fg:#ece7db; --muted:#a89f8c; --line:#33301f;
+      --card:#211d14; --accent:#d9bd6a; --gold:#d9bd6a; --ai:#7fb0ec;
+      --a:#6fc79c; --b:#d69ac2; --warn:#e6a15e; --ok:#6fc79c; }
+  }
+  :root[data-theme="dark"]{ --bg:#16130d; --fg:#ece7db; --muted:#a89f8c; --line:#33301f; --card:#211d14; --accent:#d9bd6a; --gold:#d9bd6a; --ai:#7fb0ec; --a:#6fc79c; --b:#d69ac2; --warn:#e6a15e; --ok:#6fc79c; }
+  :root[data-theme="light"]{ --bg:#faf8f3; --fg:#1a1a1a; --muted:#5c5347; --line:#e3dccc; --card:#ffffff; --accent:#8b6f2e; --gold:#b5942f; --ai:#1e5aa8; --a:#2b6a4f; --b:#7a3b6b; --warn:#a8541c; --ok:#2b6a4f; }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--fg);font-family:-apple-system,"Hiragino Kaku Gothic ProN","Yu Gothic",system-ui,sans-serif;line-height:1.7;font-size:16px}
+  .wrap{max-width:1080px;margin:0 auto;padding:24px 18px 80px}
+  header.top{border-bottom:2px solid var(--gold);padding-bottom:16px;margin-bottom:8px}
+  .kicker{font-size:12px;letter-spacing:.14em;color:var(--accent);font-weight:700}
+  h1{font-size:24px;margin:6px 0 4px;line-height:1.35}
+  .sub{color:var(--muted);font-size:14px}
+  .decision{background:linear-gradient(0deg,transparent,transparent),var(--card);border:1px solid var(--line);border-left:4px solid var(--gold);border-radius:10px;padding:14px 16px;margin:18px 0}
+  .decision b{color:var(--gold)}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:18px 0}
+  @media (max-width:760px){.grid{grid-template-columns:1fr}}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;position:relative;overflow:hidden}
+  .card.A{border-top:4px solid var(--a)}
+  .card.B{border-top:4px solid var(--b)}
+  .tag{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:20px;border:1px solid var(--line);color:var(--muted);margin:0 4px 4px 0}
+  .tag.a{color:var(--a);border-color:var(--a)}
+  .tag.b{color:var(--b);border-color:var(--b)}
+  .score{float:right;text-align:center;line-height:1.1}
+  .score .n{font-size:34px;font-weight:800}
+  .score.a .n{color:var(--a)} .score.b .n{color:var(--b)}
+  .score .l{font-size:10px;color:var(--muted);letter-spacing:.1em}
+  .card h2{font-size:19px;margin:2px 0 2px}
+  .hex{font-size:13px;color:var(--muted);margin-bottom:10px}
+  .premise{font-weight:700;font-size:15px;margin:10px 0;padding:10px 12px;background:rgba(181,148,47,.09);border-radius:8px}
+  .row{border-top:1px dashed var(--line);padding:9px 0;font-size:14px}
+  .row .k{font-size:11px;letter-spacing:.08em;color:var(--accent);font-weight:700;display:block;margin-bottom:2px}
+  .bd{display:flex;flex-wrap:wrap;gap:4px;font-size:11px;color:var(--muted);margin-top:6px}
+  .bd span{border:1px solid var(--line);border-radius:6px;padding:1px 6px}
+  .weak{font-size:12.5px;color:var(--muted);margin-top:8px}
+  .weak b{color:var(--warn)}
+  h3.sec{font-size:15px;border-left:3px solid var(--gold);padding-left:8px;margin:30px 0 10px}
+  .common{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px;font-size:13.5px}
+  .common li{margin:4px 0}
+  table{width:100%;border-collapse:collapse;font-size:13px;margin-top:8px}
+  th,td{text-align:left;padding:7px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{color:var(--accent);font-size:11px;letter-spacing:.06em}
+  .badge{font-size:10px;font-weight:700;padding:1px 6px;border-radius:5px}
+  .badge.over{background:rgba(168,84,28,.16);color:var(--warn)}
+  .badge.gate{background:rgba(30,90,168,.14);color:var(--ai)}
+  .foot{margin-top:26px;font-size:12px;color:var(--muted);border-top:1px solid var(--line);padding-top:12px}
+  code{background:rgba(128,128,128,.14);padding:1px 5px;border-radius:4px;font-size:12px}
+  .ask{background:rgba(43,106,79,.10);border:1px solid var(--a);border-radius:10px;padding:14px 16px;margin:20px 0;font-size:14.5px}
+  .ask b{color:var(--a)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="kicker">HaQei / アニメと易経 ・ 企画承認ゲート（concept）</div>
+    <h1>第42話 企画 — 2案から1案を選んでください</h1>
+    <div class="sub">content/062 ・ 公開 2026-07-21 04:00 JST ・ タイトルarm（機械割付）= <b>言い切り型 × 末尾【第四十二話・卦】</b>（人は選べない）</div>
+  </header>
+
+  <div class="decision">
+    <b>concept例外プロトコル</b>：候補2案を両方 <b>quality ≥ 90</b>（fork独立採点・自己採点禁止）に仕上げました。<b>本人が1案を選択・承認</b>してから正典へ昇格します。両案とも独立ゲート（処方箋の卦辞・爻辞出典が特定でき行動翻訳が明示）を <b style="color:var(--ok)">PASS</b>、db照合・作品事実の検算も採点者が実施済み。
+  </div>
+
+  <div class="grid">
+    <!-- A -->
+    <section class="card A">
+      <div class="score a"><div class="n">90</div><div class="l">SCORE / 100</div></div>
+      <span class="tag a">候補A</span><span class="tag">grief・群像レーン</span>
+      <h2>あの花 × 解（かい・40 Deliverance）</h2>
+      <div class="hex">序卦の物証: <b>蹇(39・行き詰まり＝ep17 呪術廻戦・公開済)→ 解(40・雪解け/ほどける)</b>。「四十の解は、三十九の蹇の次」と番号で言い切る＝シリーズ回遊にも効く。</div>
+      <div class="premise">終わったことにして蓋をした後悔は、正面から向き合って“赦す”まで固まったまま残る。解は、その凝った結び目を雷雨のように一気にほどく卦。</div>
+      <div class="row"><span class="k">卦の核（db準拠）</span>卦辞「往く所無ければ帰って吉／やり残しは速やかに片づけよ」・象辞「雷雨作、解。君子以<b>赦過宥罪</b>＝過ちを赦し罪を宥す」＝“引きずる”でも“蓋をする”でもなく速やかに片づけて常へ帰す。</div>
+      <div class="row"><span class="k">6幕の芯</span>幕1=見送れなかった人への「言いそびれた一言」（日常語）／観察=超平和バスターズ6人・女装・引きこもり・「めんま、みぃつけた」／刃=蓋をした自分へ／処方箋=解の六爻＋赦過宥罪を「赦してほどく」階段に。比較=秒速5cm（遯＝解けず離れる／出口が逆）。</div>
+      <div class="row"><span class="k">狙い（成長仮説）</span>griefを“止めれば固まる・赦せばほどける”で救う常識反転フック（H46/H53の新痛点＝grief展開）。主指標=自己投影コメント率/保存率・再生数で判定しない。
+        <div class="bd"><span>命題 23</span><span>卦適合 18</span><span>6幕 18</span><span>処方箋 18</span><span>成長 13</span></div>
+      </div>
+      <div class="weak"><b>残る弱点（台本で潰す）</b>：①蹇と解は綜卦（上下反転・坎共有）の構造ペア→dbで陰陽の裏打ちを足すと物証がより固い ②四爻「拇=執着」は軽い読み替え→原意（内でつながらぬものを手放す）へ寄せる一文 ③めんまの願いはStep2で公式一次照合を厳格化。</div>
+    </section>
+
+    <!-- B -->
+    <section class="card B">
+      <div class="score b"><div class="n">95</div><div class="l">SCORE / 100</div></div>
+      <span class="tag b">候補B</span><span class="tag">ダーク→救済・セカイ系レーン</span>
+      <h2>まどか☆マギカ × 剝（はく・23 Splitting Apart）</h2>
+      <div class="hex">序卦の物証: <b>剝(23・下から一枚ずつ剥がれ落ちる)→ 復(24・一陽来復＝ep03 スラムダンク三井・公開済)</b>。剝の上に残った一陽が、ひっくり返って復の初爻になる。</div>
+      <div class="premise">何もかも崩れ落ちていく時（剝）、全部を守り切ろうと動くほど早く剥がれる。最後の一果だけを残せば、そこから戻れる（復）。</div>
+      <div class="row"><span class="k">卦の核（db準拠）</span>卦辞「<b>不利有攸往</b>＝下手に動けば全部剥がれる／従い静かにするのが知恵」・上爻「<b>碩果不食</b>＝食べ残された一果＝次の芽（復）の種」・象辞「上に在る者は下へ厚く与えてのみ位を保つ」。</div>
+      <div class="row"><span class="k">6幕の芯</span>幕1=両手いっぱいに抱えるほどこぼれる（日常語）／観察=マミ→さやか→杏子が一枚ずつ落ち、ほむらの周回が崩壊を上塗り／種明かし=六爻図（陰5＋最上に一陽＝碩果）＝まどかの願い（円環の理）と一対一／刃=抱えすぎて崩した自分へ／処方箋=剝の六爻（下は“やめる”・上爻で“一つ残す”）。</div>
+      <div class="row"><span class="k">狙い（成長仮説）</span>「崩れる時は全部守るな、一つ残せ」の常識反転（頑張って全部守る＝正しい を裏返す）。新レーン＝既存客と食い合わない。主指標=自己投影/保存・再生数で判定しない。
+        <div class="bd"><span>命題 24</span><span>卦適合 19</span><span>6幕 19</span><span>処方箋 19</span><span>成長 14</span></div>
+      </div>
+      <div class="weak"><b>残る弱点（台本で潰す）</b>：①比較の秒速=遯の対比が緩い→「遯=自ら退く／剝=剥がれる」の差を一言 ②観察が密度高め→さやか・杏子を一文で束ね1.5-2.5分に ③三爻の処方箋がやや抽象→幕1の具体所作へもう一段。<br><span style="color:var(--muted)">※剝は衰退の卦。初〜四爻に前向き教訓を捏造せず四爻を「dbが沈黙する踊り場」に置いた誠実さを採点者が高評価。</span></div>
+    </section>
+  </div>
+
+  <h3 class="sec">両案 共通（どちらを選んでも）</h3>
+  <div class="common">
+    <ul>
+      <li><b>タイトル</b>は台本確定後（Step8.5）に決定。arm=言い切り型×末尾【第四十二話・卦】（control・現行house style）。企画段階でタイトルは問いません。</li>
+      <li><b>幕配分v2.3</b>（観察1.5-2.5分/25%上限・種明かし2-3分下限・処方箋1.5-3分）。冒頭「約束の確認」オーバーレイ（H52）付与。</li>
+      <li><b>ショート1本</b>（Step10・作品として書き下ろし）＝序卦ショート型。<b>主指標=いいね率(H51)・再生数で判定しない</b>。両案とも序卦の隣接反転が「へえ」の本体に乗り、公開済み隣接卦（A=蹇ep17／B=復ep03）への橋になる。</li>
+      <li>選定根拠：topic-radar上位17件を registry と突合 → 高認知×未使用卦が枯渇（ep41で消費）。両案とも「高認知の<b>完結</b>作品 × 未使用卦 × 公開済み隣接卦の反転を物証」で新規に構築。レーンは分散（A=grief群像／B=ダーク救済）。</li>
+    </ul>
+  </div>
+
+  <h3 class="sec">同時報告：YouTube改善 PDCA 棚卸し（判定漏れ・要対応）</h3>
+  <div class="common">
+    <div style="font-size:13.5px;margin-bottom:8px">実測 <b>登録90（+1）/ 総再生78,165（+1,055・6.7h）/ 直近5日 +6</b>。第一律速＝<b>ショート視聴→登録の変換（subs/view 0.036%）</b>。本編CTRは律速rank4へ降格・監視のみ。以下は期日超過の判定＝多くがStudio/TikTok/本人ゲート必須です。<b>どれを今セッションで処理するか指示ください</b>（優先度案は右端）。</div>
+    <div style="overflow-x:auto">
+    <table>
+      <tr><th>項目</th><th>状態</th><th>必要な手</th><th>優先案</th></tr>
+      <tr><td>SH-CONTENT-1（作品ショートのいいね率）</td><td><span class="badge over">超過4日</span></td><td>growth-loop shorts-judge（CLIで可・cohort 5本成立）</td><td>高（現行戦略の核）</td></tr>
+      <tr><td>H42（勝ちサムネ様式のCTR）</td><td><span class="badge over">超過3日</span></td><td>yt-ctr取得（Studioブラウザ）→ growth-loop judge</td><td>中</td></tr>
+      <tr><td>TT-EXP-051（TikTok長尺vs短尺）</td><td><span class="badge over">超過1日</span></td><td>tiktok-stats（ブラウザ）→ experiment-check</td><td>中</td></tr>
+      <tr><td>measure M4/M7/M15/M16 の効果判定</td><td><span class="badge over">超過2-3日</span></td><td>measures.mjs metric で measured へ</td><td>低（棚卸し）</td></tr>
+      <tr><td>反復：weekly-review / weekly-growth-loop / shorts-cohort-check</td><td><span class="badge over">遅れ8-13日</span></td><td>各recurring実行</td><td>低</td></tr>
+      <tr><td>承認待ち施策 3件（人間ゲート1）＋ coordタスク17件超過</td><td><span class="badge gate">要本人</span></td><td>measures 承認 / coord棚卸し</td><td>別途HTMLで</td></tr>
+    </table>
+    </div>
+  </div>
+
+  <div class="ask">
+    <b>お願いしたい判断（2つ）</b><br>
+    ① ep42 は <b>A（あの花×解）</b> と <b>B（まどマギ×剝）</b> のどちらで進めますか？（承認で Step2 台本着手）<br>
+    ② PDCA backlog は、まず <b>SH-CONTENT-1（作品ショートのいいね率判定・CLIで即処理可）</b> だけ回しますか？ それとも Studio/TikTok要のものも含めて棚卸ししますか？
+  </div>
+
+  <div class="foot">
+    採点は fork独立（まっさらな文脈・<code>analytics/eval-schemas/concept.json</code>準拠・自己採点禁止）。証跡=<code>content/062/concept-scores.json</code> / 企画本体=<code>content/062/concept-candidates/A.md · B.md</code>。人間承認ゲート（企画）＝止まって本人の明示OKを待ちます。
+  </div>
+</div>
+</body>
+</html>
