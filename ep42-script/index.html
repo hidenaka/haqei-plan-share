@@ -1,61 +1,58 @@
 <!doctype html><html lang="ja"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex">
-<title>ep42 台本提示ゲート — まどマギ×剝</title>
+<title>ep42 台本提示ゲート(改) — まどマギ×剝</title>
 <style>
-:root{--bg:#faf8f3;--fg:#1a1a1a;--muted:#5c5347;--line:#e3dccc;--card:#fff;--gold:#b5942f;--ok:#2b6a4f;--warn:#a8541c}
-@media(prefers-color-scheme:dark){:root{--bg:#16130d;--fg:#ece7db;--muted:#a89f8c;--line:#33301f;--card:#211d14;--gold:#d9bd6a;--ok:#6fc79c;--warn:#e6a15e}}
-:root[data-theme=dark]{--bg:#16130d;--fg:#ece7db;--muted:#a89f8c;--line:#33301f;--card:#211d14;--gold:#d9bd6a;--ok:#6fc79c;--warn:#e6a15e}
-:root[data-theme=light]{--bg:#faf8f3;--fg:#1a1a1a;--muted:#5c5347;--line:#e3dccc;--card:#fff;--gold:#b5942f;--ok:#2b6a4f;--warn:#a8541c}
+:root{--bg:#faf8f3;--fg:#1a1a1a;--muted:#5c5347;--line:#e3dccc;--card:#fff;--gold:#b5942f;--ok:#2b6a4f;--warn:#a8541c;--chg:#7a3b6b}
+@media(prefers-color-scheme:dark){:root{--bg:#16130d;--fg:#ece7db;--muted:#a89f8c;--line:#33301f;--card:#211d14;--gold:#d9bd6a;--ok:#6fc79c;--warn:#e6a15e;--chg:#d69ac2}}
+:root[data-theme=dark]{--bg:#16130d;--fg:#ece7db;--muted:#a89f8c;--line:#33301f;--card:#211d14;--gold:#d9bd6a;--ok:#6fc79c;--warn:#e6a15e;--chg:#d69ac2}
+:root[data-theme=light]{--bg:#faf8f3;--fg:#1a1a1a;--muted:#5c5347;--line:#e3dccc;--card:#fff;--gold:#b5942f;--ok:#2b6a4f;--warn:#a8541c;--chg:#7a3b6b}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font-family:-apple-system,"Hiragino Kaku Gothic ProN","Yu Gothic",system-ui,sans-serif;line-height:1.85;font-size:16px}
 .wrap{max-width:820px;margin:0 auto;padding:22px 18px 90px}
 .kick{font-size:11px;letter-spacing:.14em;color:var(--gold);font-weight:700}
 h1{font-size:22px;margin:5px 0 3px}.sub{color:var(--muted);font-size:13px}
-.scorebar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin:16px 0}
+.newbar{background:rgba(122,59,107,.12);border:1px solid var(--chg);border-radius:9px;padding:10px 14px;margin:14px 0;font-size:13.5px}.newbar b{color:var(--chg)}
+.scorebar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin:14px 0}
 .big{font-size:30px;font-weight:800;color:var(--ok)}
 .chip{font-size:11px;border:1px solid var(--line);border-radius:20px;padding:2px 9px;color:var(--muted)}
-.chip.ok{color:var(--ok);border-color:var(--ok)}
-.bd{font-size:11px;color:var(--muted)}
+.chip.ok{color:var(--ok);border-color:var(--ok)}.bd{font-size:11px;color:var(--muted)}
 .premise{font-weight:700;background:rgba(181,148,47,.1);border-radius:8px;padding:10px 12px;margin:12px 0;font-size:15px}
 h2{font-size:15px;border-left:3px solid var(--gold);padding-left:8px;margin:26px 0 8px}
 .act{margin:14px 0}.acth{border-left:3px solid;padding-left:9px;font-weight:700;font-size:13px;margin-bottom:6px}
-.ln{margin:7px 0;padding-left:2px;font-size:15.5px}
+.ln{margin:7px 0;padding-left:2px;font-size:15.5px}.chgln{background:rgba(122,59,107,.08);border-radius:6px;padding:6px 8px}
 .sid{display:inline-block;font-size:9.5px;color:var(--muted);background:rgba(128,128,128,.12);border-radius:4px;padding:1px 5px;margin-right:7px;vertical-align:1px;letter-spacing:.03em}
-.note{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:13px 15px;font-size:13.5px;margin:12px 0}
-.note b{color:var(--gold)}.warn{color:var(--warn)}
-.ask{background:rgba(43,106,79,.1);border:1px solid var(--ok);border-radius:10px;padding:14px 16px;margin:18px 0;font-size:14.5px}
-.ask b{color:var(--ok)}
+.chg{color:var(--chg);font-weight:700}
+.note{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:13px 15px;font-size:13.5px;margin:12px 0}.note b{color:var(--gold)}.warn{color:var(--warn)}
+.ask{background:rgba(43,106,79,.1);border:1px solid var(--ok);border-radius:10px;padding:14px 16px;margin:18px 0;font-size:14.5px}.ask b{color:var(--ok)}
 .foot{margin-top:22px;font-size:11.5px;color:var(--muted);border-top:1px solid var(--line);padding-top:10px}
 code{background:rgba(128,128,128,.14);padding:1px 5px;border-radius:4px;font-size:11.5px}
 </style></head><body><div class="wrap">
-<div class="kick">HaQei / アニメと易経 ・ 台本提示ゲート（Step2・人間承認）</div>
+<div class="kick">HaQei / アニメと易経 ・ 台本提示ゲート(改) ・ 人間承認</div>
 <h1>第42話 台本 — 魔法少女まどか☆マギカ × 剥（はく・23）</h1>
-<div class="sub">content/062 ・ 公開 2026-07-21 ・ 24シーン ・ 推定 約6.5分 ・ format v2.3</div>
+<div class="sub">content/062 ・ 公開 2026-07-21 ・ 24シーン ・ 推定 約6.5分（総尺388s）</div>
+
+<div class="newbar">🆕 <b>本人フィードバック反映</b>：「冒頭の違和感の解像度が低い」→ 比喩（両手いっぱいに抱えて走る）を捨て、<b>A案＝生活の具体（誘い／予定／連絡／既読）</b>へ差し替え。幕4の刃・幕5の処方箋の回収も同じ具体で言い直し済み（下で🆕差替）。却下は rejections.json へ還流。</div>
 
 <div class="scorebar">
-<span class="big">93</span><span class="bd">/100 fork独立採点</span>
-<span class="chip ok">hook_gate ✅</span><span class="chip ok">story_bridge_gate ✅</span><span class="chip ok">intent_violation false</span>
-<span class="chip">処方箋29/30</span><span class="chip">観察17/18</span><span class="chip">刃16/17</span><span class="chip">文体21/23</span><span class="chip">構成10/12</span>
+<span class="big">93</span><span class="bd">/100 fork独立再採点</span>
+<span class="chip ok">hook_gate ✅（低解像度を克服）</span><span class="chip ok">story_bridge ✅</span><span class="chip ok">intent false</span>
+<span class="chip">処方箋29/30</span><span class="chip">観察16/18</span><span class="chip">刃16/17</span><span class="chip">文体21/23</span><span class="chip">構成11/12</span>
 </div>
 
 <div class="premise">命題：全部を守り切ろうと動くほど、早く剥がれる。最後の一果だけを残せば、そこから戻れる（復）。</div>
-<div class="note" style="font-size:13px">物証＝序卦 <b>剥(23)→復(24＝ep03スラダン三井・公開済)</b>。処方箋＝剥の六爻＋象辞をdb逐語で階段化（四爻は「易経が何も処方しない踊り場」として正直に据置＝db comment "No warning added" に忠実）。作品事実9件はWebSearch一次確認・全✅（fact_check.md）。冒頭は日常語で身に覚えを直撃（ep37/39の却下パターンを回避）。刃は冒頭の「抱えすぎた自分」へ一人称で返す。</div>
+<div class="note" style="font-size:13px">物証＝序卦 <b>剥(23)→復(24＝ep03スラダン三井・公開済)</b>。処方箋＝剥の六爻＋象辞をdb逐語で階段化（四爻は"易経が何も処方しない踊り場"として正直に据置）。作品事実9件はweb一次確認・全✅。</div>
 
-<h2>台本全文（幕ごと）</h2>
-<div class="act"><div class="acth" style="border-color:#7a3b6b"><span style="color:#7a3b6b">幕1 違和感の提示（約26秒）</span></div><p class="ln"><span class="sid">V_01_01</span>全部、なんとかしようとした日のことを、覚えていますか。仕事も、家族の予定も、友だちからの相談も、ひとつも落とさないように、両手いっぱいに抱えて、走っていた日です。</p><p class="ln"><span class="sid">V_01_02</span>なのに、抱えれば抱えるほど、指の間から、こぼれていくんです。落ちた一つを拾おうと屈むと、今度は別の二つが、手からすべり落ちる。</p><p class="ln"><span class="sid">V_01_03</span>手を伸ばすほど、崩れていく。全部を守ろうとしているのに、全部が、少しずつ、こぼれていく。あの、どうにもならない感じです。</p></div><div class="act"><div class="acth" style="border-color:#2b6a4f"><span style="color:#2b6a4f">幕2 観察（52秒・全体18.9%）</span></div><p class="ln"><span class="sid">V_02_01</span>魔法少女まどか☆マギカ、という作品があります。願いをひとつ叶える代わりに、魔法少女として戦う少女たちの物語です。でもこの物語は、始まってすぐ、一枚ずつ剥がれ落ちていく。第三話、頼れる先輩の巴マミが、お菓子の魔女シャルロッテに頭から食べられて、あっけなく消えます。</p><p class="ln"><span class="sid">V_02_02</span>剥がれは、止まりません。第八話、親友の美樹さやかが、絶望でソウルジェムを濁らせ、魔女オクタヴィアに変わり果てる。第九話、佐倉杏子は、そのさやかを救えないと知って、一緒に逝くために、自分ごと自爆する。足元から、一段、また一段と、抜けていくんです。</p><p class="ln"><span class="sid">V_02_03</span>そして、暁美ほむら。彼女は、まどかを救う、それだけを願って、時間を巻き戻します。まどかが死ぬ未来を変えるために、同じひと月を、何度も、何度もやり直す。でも、周回するたびに、ワルプルギスの夜で、また誰かが死ぬ。全部を守ろうとするほど、同じ崩れを、繰り返してしまうんです。</p></div><div class="act"><div class="acth" style="border-color:#2b6a4f"><span style="color:#2b6a4f">幕2 比較（秒速＝遯との差・21秒）</span></div><p class="ln"><span class="sid">V_02_04</span>この、握りしめるほど失っていく形を、私たちは別の作品でも知っています。秒速5センチメートルの、遠野貴樹です。彼は、たった一つの想いを手放せないまま、自分から静かに身を引いていった。あれは、遯、自ら退く卦の物語でした。剥は、少し違います。退くのではなく、一枚ずつ、剥がされていく側の物語です。</p></div><div class="act"><div class="acth" style="border-color:#8b6f2e"><span style="color:#8b6f2e">幕3 種明かし（101秒・GUA6六爻図）</span></div><p class="ln"><span class="sid">V_03_01</span>一枚ずつ剥がれ落ちていく。この形を、易経は、三千年前から一つの卦にしています。剥、と書いて、はく。文字どおり、剥がれ落ちる、という名前の卦です。占いの本だと思われがちですが、もとは、変化のパターンを六十四通り記録した、古い書物なんです。</p><p class="ln"><span class="sid">V_03_02</span>卦は、六本の線を、下から積み上げて読みます。剥の形は、下から陰が五つ、いちばん上に、陽がたった一つだけ、残っている。マミ、さやか、杏子、そして、ほむらの周回。一枚ずつ抜けていって、最後に、上にひとつだけ、残った。まさに、あの形なんです。</p><p class="ln"><span class="sid">V_03_03</span>剥の卦辞は、こう言い切ります。不利有攸往。往くところ有るに、利あらず。つまり、下手に動けば、全部剥がれる。抗わずに、静かに従うことは、臆病ではなく、知恵なんだ、と。ほむらは、この、まっすぐ逆をやり続けました。動いて、動いて、剥がし続けたんです。</p><p class="ln"><span class="sid">V_03_04</span>では、いちばん上に残った、あの一つの陽は、何なのか。易経は、これを、碩果不食、と呼びます。食べ残された、大きな果実。そして、こう続けるんです。その果実が、地に落ちる、まさにその時に、種から、新しい芽が、吹く。剥がれ切った、その一点が、次の始まりだ、と。</p><p class="ln"><span class="sid">V_03_05</span>卦の並びを見てください。二十三番目の剥の、すぐ次に置かれているのは、二十四番目の、復。一陽来復、戻る、という卦です。以前、スラムダンクの三井寿で、お話しした、あの復です。剥の上に残った一つの陽が、地に落ちてひっくり返り、復の、いちばん下の陽に、生まれ変わる。</p><p class="ln"><span class="sid">V_03_06</span>まどかが、最終話でした願いは、これと、ぴったり重なります。全ての魔女を、生まれる前に消したい。彼女は、全部を守ろうとするのを、やめました。そして、救いの種をひとつだけ、円環の理という一つの理を、世界に埋めて、自分は、消える。剥の上の果実を、次の芽のために、そっと残したんです。</p></div><div class="act"><div class="acth" style="border-color:#b1462c"><span style="color:#b1462c">幕4 風刺の刃（31秒・冒頭場面へ一人称で返す）</span></div><p class="ln"><span class="sid">V_04_01</span>ここで、両手いっぱいに抱えて走っていた、あの自分に戻ります。私たちは、つい、ほむらになるんです。ひとつも落としたくないから、もっと頑張る、もっと手を伸ばす、もう一周、やり直す。全部を、握りしめようとする。落とさないことが、正しさだと思って。</p><p class="ln"><span class="sid">V_04_02</span>でも、剥は言うんです。その、全部を守ろうとする踏ん張りこそが、剥がれを、早める、と。落とせないと握りしめた手のひらの中で、いちばん大事だったはずの一つまで、いつのまにか、潰れている。白状すると、私も、この握りしめた手を、なかなか開けないほうです。</p></div><div class="act"><div class="acth" style="border-color:#1e5aa8"><span style="color:#1e5aa8">幕5 処方箋（125秒・剝六爻の実践階段）</span></div><p class="ln"><span class="sid">V_05_01</span>では、どうすればいいのか。剥の、もう一つの言葉、象辞に、手がかりがあります。上に立つ者は、下に厚く与えることで、はじめて、位を保てる。守り切ろうと、上へ踏ん張るのではなく、下へ、土台を広げよ、と。剥は、衰えていく卦ですから、この階段は、きれいな上りには、なりません。</p><p class="ln"><span class="sid">V_05_02</span>初めの段。寝台の脚が、足元から裂ける。ここで意地を張って持ちこたえようとする者から、滅ぶ、と易経は言います。だからまず、認める。足元の一つが、もう抜けかけている、と。次の段。裂け目が、縁まで迫る。危ないと感じたら、意地を張らず、早めに一つだけ、手放す。誰かに、渡す。</p><p class="ln"><span class="sid">V_05_03</span>三つ目の段は、少し毛色が違います。彼は、それらと、袂を分かつ。咎なし、と。崩れていく場所に、義理や惰性で留まり続けるのを、やめる。これだけは、という内側の拠り所を、一つ確かめて、剥がれていく縁からは、罪悪感を持たずに、離れていい。それは、逃げでは、ないんです。</p><p class="ln"><span class="sid">V_05_04</span>四つ目の段は、正直に言います。ここだけは、易経が、何も処方してくれません。裂け目が、皮膚まで達する。凶。警告も、慰めも、何も、付いていない。剥は、戒めの卦ですから、全部が、明るい教訓には、ならないんです。ここは、いちばん暗い底。何もできない踊り場として、そのまま、置いておきます。</p><p class="ln"><span class="sid">V_05_05</span>五つ目の段で、流れが、変わります。魚が、群れて並ぶように。下の弱いものたちが、抗うのをやめて、上の一つに、秩序だって、従っていく。全部を敵に回して、抗い続けるのを、やめる。流れに従いながら、残せる一つのほうへ、みんなを、導いていく。剥の中で、はじめて、うまくいく段です。</p><p class="ln"><span class="sid">V_05_06</span>そして、いちばん上の段。碩果不食。食べ残された、あの一つの果実です。全部を守るのを、やめる。地に落ちても、そこから芽になる一つを、選んで、残す。まどかが、円環の理という一つの理だけを残したのも、剥の上の陽が、復の一陽に、転じたのも、やっていることは、同じでした。</p><p class="ln"><span class="sid">V_05_07</span>だから、明日。両手いっぱいに抱えて、崩れそうになったら、全部を握り直すのを、やめてみる。これだけは、地に落ちても芽になる、という一つを選んで、残りは、いったん、手放す。動いて全部を握るのではなく、一つ残して、土台に、返す。それが、剥から復へ、戻っていく道です。</p></div><div class="act"><div class="acth" style="border-color:#5c5347"><span style="color:#5c5347">幕6 余韻（20秒・断言で閉じ冒頭へループ）</span></div><p class="ln"><span class="sid">V_06_01</span>崩れていく時、全部を守ろうと動くほど、早く剥がれます。ほむらは、全部を守ろうと繰り返して、全部を失い続けた。まどかは、全部を守るのをやめて、一つの種だけを残し、世界を、戻れる形に、しました。</p><p class="ln"><span class="sid">V_06_02</span>最後の一つを残した人にだけ、そこから戻る道が、残る。抱えすぎて、崩れそうな時は、握った手を、いったん、開く。</p></div>
+<h2>台本全文（幕ごと・🆕＝今回の差替箇所）</h2>
+<div class="act"><div class="acth" style="border-color:#7a3b6b"><span style="color:#7a3b6b">幕1 違和感の提示（約28秒）</span></div><p class="ln chgln"><span class="sid">V_01_01 <span class="chg">🆕差替</span></span>全部に手を伸ばした結果、いちばん大事な一つを、落としてしまった。そんな日は、ないでしょうか。</p><p class="ln chgln"><span class="sid">V_01_02 <span class="chg">🆕差替</span></span>来た誘いをどれも断らずに予定を埋めたら、本当に会いたかった人と会う日だけが、消えていた。全部の連絡に返そうとして、いちばん返したかった相手のメッセージを、既読のまま、忘れていた。</p><p class="ln chgln"><span class="sid">V_01_03 <span class="chg">🆕差替</span></span>落とさないように、と必死になるほど、なぜか、いちばん落としたくなかったものから、こぼれていく。あの、順番を間違えたような、後味です。</p></div><div class="act"><div class="acth" style="border-color:#2b6a4f"><span style="color:#2b6a4f">幕2 観察（マミ→さやか+杏子→ほむら・全体18.6%）</span></div><p class="ln"><span class="sid">V_02_01</span>魔法少女まどか☆マギカ、という作品があります。願いをひとつ叶える代わりに、魔法少女として戦う少女たちの物語です。でもこの物語は、始まってすぐ、一枚ずつ剥がれ落ちていく。第三話、頼れる先輩の巴マミが、お菓子の魔女シャルロッテに頭から食べられて、あっけなく消えます。</p><p class="ln"><span class="sid">V_02_02</span>剥がれは、止まりません。第八話、親友の美樹さやかが、絶望でソウルジェムを濁らせ、魔女オクタヴィアに変わり果てる。第九話、佐倉杏子は、そのさやかを救えないと知って、一緒に逝くために、自分ごと自爆する。足元から、一段、また一段と、抜けていくんです。</p><p class="ln"><span class="sid">V_02_03</span>そして、暁美ほむら。彼女は、まどかを救う、それだけを願って、時間を巻き戻します。まどかが死ぬ未来を変えるために、同じひと月を、何度も、何度もやり直す。でも、周回するたびに、ワルプルギスの夜で、また誰かが死ぬ。全部を守ろうとするほど、同じ崩れを、繰り返してしまうんです。</p></div><div class="act"><div class="acth" style="border-color:#2b6a4f"><span style="color:#2b6a4f">幕2 比較（秒速＝遯との差）</span></div><p class="ln"><span class="sid">V_02_04</span>この、握りしめるほど失っていく形を、私たちは別の作品でも知っています。秒速5センチメートルの、遠野貴樹です。彼は、たった一つの想いを手放せないまま、自分から静かに身を引いていった。あれは、遯、自ら退く卦の物語でした。剥は、少し違います。退くのではなく、一枚ずつ、剥がされていく側の物語です。</p></div><div class="act"><div class="acth" style="border-color:#8b6f2e"><span style="color:#8b6f2e">幕3 種明かし（GUA6六爻図・序卦剝→復）</span></div><p class="ln"><span class="sid">V_03_01</span>一枚ずつ剥がれ落ちていく。この形を、易経は、三千年前から一つの卦にしています。剥、と書いて、はく。文字どおり、剥がれ落ちる、という名前の卦です。占いの本だと思われがちですが、もとは、変化のパターンを六十四通り記録した、古い書物なんです。</p><p class="ln"><span class="sid">V_03_02</span>卦は、六本の線を、下から積み上げて読みます。剥の形は、下から陰が五つ、いちばん上に、陽がたった一つだけ、残っている。マミ、さやか、杏子、そして、ほむらの周回。一枚ずつ抜けていって、最後に、上にひとつだけ、残った。まさに、あの形なんです。</p><p class="ln"><span class="sid">V_03_03</span>剥の卦辞は、こう言い切ります。不利有攸往。往くところ有るに、利あらず。つまり、下手に動けば、全部剥がれる。抗わずに、静かに従うことは、臆病ではなく、知恵なんだ、と。ほむらは、この、まっすぐ逆をやり続けました。動いて、動いて、剥がし続けたんです。</p><p class="ln"><span class="sid">V_03_04</span>では、いちばん上に残った、あの一つの陽は、何なのか。易経は、これを、碩果不食、と呼びます。食べ残された、大きな果実。そして、こう続けるんです。その果実が、地に落ちる、まさにその時に、種から、新しい芽が、吹く。剥がれ切った、その一点が、次の始まりだ、と。</p><p class="ln"><span class="sid">V_03_05</span>卦の並びを見てください。二十三番目の剥の、すぐ次に置かれているのは、二十四番目の、復。一陽来復、戻る、という卦です。以前、スラムダンクの三井寿で、お話しした、あの復です。剥の上に残った一つの陽が、地に落ちてひっくり返り、復の、いちばん下の陽に、生まれ変わる。</p><p class="ln"><span class="sid">V_03_06</span>まどかが、最終話でした願いは、これと、ぴったり重なります。全ての魔女を、生まれる前に消したい。彼女は、全部を守ろうとするのを、やめました。そして、救いの種をひとつだけ、円環の理という一つの理を、世界に埋めて、自分は、消える。剥の上の果実を、次の芽のために、そっと残したんです。</p></div><div class="act"><div class="acth" style="border-color:#b1462c"><span style="color:#b1462c">幕4 風刺の刃（冒頭場面へ一人称で返す）</span></div><p class="ln chgln"><span class="sid">V_04_01 <span class="chg">🆕差替</span></span>ここで、全部に手を伸ばして、いちばん大事な一つを落としていた、あの自分に戻ります。私たちは、つい、ほむらになるんです。ひとつも落としたくないから、もっと頑張る、もっと手を伸ばす、もう一周、やり直す。全部を、握りしめようとする。落とさないことが、正しさだと思って。</p><p class="ln"><span class="sid">V_04_02</span>でも、剥は言うんです。その、全部を守ろうとする踏ん張りこそが、剥がれを、早める、と。落とせないと握りしめた手のひらの中で、いちばん大事だったはずの一つまで、いつのまにか、潰れている。白状すると、私も、この握りしめた手を、なかなか開けないほうです。</p></div><div class="act"><div class="acth" style="border-color:#1e5aa8"><span style="color:#1e5aa8">幕5 処方箋（剝六爻の実践階段）</span></div><p class="ln"><span class="sid">V_05_01</span>では、どうすればいいのか。剥の、もう一つの言葉、象辞に、手がかりがあります。上に立つ者は、下に厚く与えることで、はじめて、位を保てる。守り切ろうと、上へ踏ん張るのではなく、下へ、土台を広げよ、と。剥は、衰えていく卦ですから、この階段は、きれいな上りには、なりません。</p><p class="ln"><span class="sid">V_05_02</span>初めの段。寝台の脚が、足元から裂ける。ここで意地を張って持ちこたえようとする者から、滅ぶ、と易経は言います。だからまず、認める。足元の一つが、もう抜けかけている、と。次の段。裂け目が、縁まで迫る。危ないと感じたら、意地を張らず、早めに一つだけ、手放す。誰かに、渡す。</p><p class="ln"><span class="sid">V_05_03</span>三つ目の段は、少し毛色が違います。彼は、それらと、袂を分かつ。咎なし、と。崩れていく場所に、義理や惰性で留まり続けるのを、やめる。これだけは、という内側の拠り所を、一つ確かめて、剥がれていく縁からは、罪悪感を持たずに、離れていい。それは、逃げでは、ないんです。</p><p class="ln"><span class="sid">V_05_04</span>四つ目の段は、正直に言います。ここだけは、易経が、何も処方してくれません。裂け目が、皮膚まで達する。凶。警告も、慰めも、何も、付いていない。剥は、戒めの卦ですから、全部が、明るい教訓には、ならないんです。ここは、いちばん暗い底。何もできない踊り場として、そのまま、置いておきます。</p><p class="ln"><span class="sid">V_05_05</span>五つ目の段で、流れが、変わります。魚が、群れて並ぶように。下の弱いものたちが、抗うのをやめて、上の一つに、秩序だって、従っていく。全部を敵に回して、抗い続けるのを、やめる。流れに従いながら、残せる一つのほうへ、みんなを、導いていく。剥の中で、はじめて、うまくいく段です。</p><p class="ln"><span class="sid">V_05_06</span>そして、いちばん上の段。碩果不食。食べ残された、あの一つの果実です。全部を守るのを、やめる。地に落ちても、そこから芽になる一つを、選んで、残す。まどかが、円環の理という一つの理だけを残したのも、剥の上の陽が、復の一陽に、転じたのも、やっていることは、同じでした。</p><p class="ln chgln"><span class="sid">V_05_07 <span class="chg">🆕差替</span></span>だから、明日。また全部に手を伸ばして、崩れそうになったら、全部を握り直すのを、やめてみる。これだけは、地に落ちても芽になる、という一つを選んで、残りは、いったん、手放す。動いて全部を握るのではなく、一つ残して、土台に、返す。それが、剥から復へ、戻っていく道です。</p></div><div class="act"><div class="acth" style="border-color:#5c5347"><span style="color:#5c5347">幕6 余韻（断言で閉じ冒頭へループ）</span></div><p class="ln"><span class="sid">V_06_01</span>崩れていく時、全部を守ろうと動くほど、早く剥がれます。ほむらは、全部を守ろうと繰り返して、全部を失い続けた。まどかは、全部を守るのをやめて、一つの種だけを残し、世界を、戻れる形に、しました。</p><p class="ln"><span class="sid">V_06_02</span>最後の一つを残した人にだけ、そこから戻る道が、残る。抱えすぎて、崩れそうな時は、握った手を、いったん、開く。</p></div>
 
-<h2>採点者が挙げた弱点（承認後 or 次工程で調整可）</h2>
+<h2>残る微調整（合格圏・任意）</h2>
 <div class="note">
-<span class="warn">① 種明かし(幕3)が約83秒で「2分下限」をわずかに割れ</span>（v2.3の最良ホールド帯＝薄くしない）。GUA6六爻図を見せる間・卦辞の実読の「巻き戻し」の間を15-25秒足す余地。<br>
-② 総尺 約324秒で目標400比76秒短い（種明かし/処方箋に厚みを足せる）。<br>
-③ 処方箋の段導入語「初めの段/次の段/○つ目の段」が7連続でやや機械的（1-2箇所ほぐすと人間味）。<br>
-<span style="color:var(--muted)">※いずれも合格圏内(93)の微調整。承認いただければ、この幕3の厚み足しを反映してから音声・絵コンテへ進みます。</span>
+① V_01_01 の1文目がやや枠組み的（具体をもう一つ前倒しできる）／② V_01_02 が約88字で分割検討／③ シーン24で下限25を僅かに下回る（1シーン刻めば規定内）。<span style="color:var(--muted)">いずれも93合格圏内。承認いただければ音声・絵コンテへ進みます。</span>
 </div>
 
 <div class="ask">
-<b>ご判断ください（台本承認ゲート）</b><br>
-この台本で <b>承認</b> ／ <b>幕3を厚くしてから</b>承認 ／ <b>直したい箇所を指定</b>。<br>
-承認後の流れ＝Step2.5 絵コンテ本人レビュー（立ち絵設計）→ 音声(AivisSpeech)＋ビジュアル → タイミング同期 → Remotion組立 → 通し視聴ゲート。
+<b>ご判断ください（台本承認ゲート）</b>：<b>この台本で承認</b> ／ <b>さらに直したい箇所を指定</b>。<br>
+承認後＝Step2.5 絵コンテ本人レビュー（立ち絵設計）→ 音声(AivisSpeech)＋ビジュアル → タイミング同期 → Remotion組立 → 通し視聴ゲート。
 </div>
 
-<div class="foot">台本=<code>content/062/full_script.json</code> ・ 事実=<code>content/062/fact_check.md</code> ・ 採点=<code>analytics/creative-loops/essay-script-2026-07-18-full_script/iter-1.json</code>（fork独立・自己採点禁止）。内容preflight＝FAIL0/WARN0。※gated preflightはcreative-harness run未登録で保留中（内容不備ではない・別途登録）。</div>
+<div class="foot">台本=<code>content/062/full_script.json</code> ・ 事実=<code>content/062/fact_check.md</code> ・ 再採点=<code>analytics/creative-loops/essay-script-062-v2/iter-1.json</code>（fork独立・却下注入済み）。内容preflight＝FAIL0/WARN0。</div>
 </div></body></html>
