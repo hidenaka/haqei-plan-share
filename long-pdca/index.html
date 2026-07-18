@@ -1,0 +1,440 @@
+<!doctype html><html lang="ja"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex">
+<title>本編ロング 一次情報PDCA — 2026-07-18</title>
+<style>
+:root{--bg:#faf8f3;--fg:#1a1a1a;--muted:#5c5347;--line:#e3dccc;--card:#fff;--gold:#b5942f;--g:#2b6a4f;--m:#a8791c;--b:#b1462c;--na:#b8b0a0;--head:#efe9dc}
+@media(prefers-color-scheme:dark){:root{--bg:#16130d;--fg:#ece7db;--muted:#a89f8c;--line:#33301f;--card:#211d14;--gold:#d9bd6a;--g:#6fc79c;--m:#e6b45e;--b:#e57a5c;--na:#6b6553;--head:#2a2518}}
+:root[data-theme=dark]{--bg:#16130d;--fg:#ece7db;--muted:#a89f8c;--line:#33301f;--card:#211d14;--gold:#d9bd6a;--g:#6fc79c;--m:#e6b45e;--b:#e57a5c;--na:#6b6553;--head:#2a2518}
+:root[data-theme=light]{--bg:#faf8f3;--fg:#1a1a1a;--muted:#5c5347;--line:#e3dccc;--card:#fff;--gold:#b5942f;--g:#2b6a4f;--m:#a8791c;--b:#b1462c;--na:#b8b0a0;--head:#efe9dc}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font-family:-apple-system,"Hiragino Kaku Gothic ProN","Yu Gothic",system-ui,sans-serif;line-height:1.65;font-size:15px}
+.wrap{max-width:1120px;margin:0 auto;padding:22px 16px 80px}
+h1{font-size:22px;margin:4px 0}.kick{font-size:11px;letter-spacing:.14em;color:var(--gold);font-weight:700}
+.sub{color:var(--muted);font-size:13px}
+h2{font-size:16px;border-left:3px solid var(--gold);padding-left:8px;margin:28px 0 10px}
+.finding{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin:12px 0;font-size:14px}
+.finding b{color:var(--gold)}
+.kpis{display:flex;flex-wrap:wrap;gap:10px;margin:14px 0}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 14px;min-width:130px}
+.kpi .n{font-size:24px;font-weight:800}.kpi .l{font-size:11px;color:var(--muted)}
+.tblwrap{overflow-x:auto;border:1px solid var(--line);border-radius:10px;margin:10px 0}
+table{width:100%;border-collapse:collapse;font-size:12.5px;min-width:860px}
+th{background:var(--head);color:var(--muted);font-size:10.5px;letter-spacing:.04em;padding:7px 6px;position:sticky;top:0;text-align:right;white-space:nowrap}
+th:nth-child(3){text-align:left}
+td{padding:5px 6px;border-top:1px solid var(--line);text-align:right;white-space:nowrap}
+td.ep{font-weight:700}td.gua{color:var(--gold)}td.work{text-align:left;max-width:150px;overflow:hidden;text-overflow:ellipsis}
+td.src{text-align:left;color:var(--muted);font-size:11px;max-width:120px;overflow:hidden;text-overflow:ellipsis}
+td.g{color:var(--g);font-weight:700}td.m{color:var(--m);font-weight:700}td.b{color:var(--b);font-weight:700}
+.na{color:var(--na)}
+.lev{width:100%;border-collapse:collapse;font-size:13px}.lev td,.lev th{padding:6px 8px;border-bottom:1px solid var(--line);text-align:left}
+.lev .gain{color:var(--g);font-weight:700;text-align:right}.lev .num{text-align:right}
+.act{background:rgba(43,106,79,.09);border:1px solid var(--g);border-radius:10px;padding:14px 16px;margin:10px 0;font-size:14px}
+.act h3{margin:0 0 6px;font-size:14px;color:var(--g)}
+ul{margin:6px 0;padding-left:20px}li{margin:4px 0}
+.warn{color:var(--b)}.foot{margin-top:24px;font-size:11.5px;color:var(--muted);border-top:1px solid var(--line);padding-top:10px}
+code{background:rgba(128,128,128,.14);padding:1px 5px;border-radius:4px;font-size:11.5px}
+.legend{font-size:11px;color:var(--muted);margin:4px 2px}
+</style></head><body><div class="wrap">
+<div class="kick">HaQei / アニメと易経 ・ 一次情報PDCA（本編ロング）</div>
+<h1>本編ロング 精査レポート — 2026-07-18</h1>
+<div class="sub">views/伸速=YouTube Data API ・ CTR/インプレ/流入=Studio reach(28日窓・ts 09:03) ・ 維持率=Analytics API(ts 09:11)。すべて本日取り直した一次情報。</div>
+<div class="kpis">
+<div class="kpi"><div class="n">90</div><div class="l">登録（+1・直近5日+6）</div></div>
+<div class="kpi"><div class="n">85,840</div><div class="l">総インプレ(28日・33本)</div></div>
+<div class="kpi"><div class="n">1.1%</div><div class="l">CTR中央値（健全4-6%）</div></div>
+<div class="kpi"><div class="n">6-20秒</div><div class="l">最大離脱の集中帯</div></div>
+<div class="kpi"><div class="n">0.036%</div><div class="l">第一律速=ショート→登録</div></div>
+</div>
+<h2>3つの核心所見</h2>
+<div class="finding">① <b>大型IPがリーチを牽引</b>。/日 上位＝コードギアスep38(67)・ONE PIECEep29(38)・コナンep35(21)・ナウシカep36(18)・ドラゴンボールep30(11)。ニッチ/旧epは&lt;1/日。→大型IP題材戦略は正しい。</div>
+<div class="finding">② <b>CTR失敗が高インプレの大型IPに集中</b>。YouTubeは配っている（インプレ高い）のに、サムネ/タイトルがクリックを取れていない：ドラゴンボール=<b>imp9,469×0.9%</b>／呪術=6,757×0.6%／スラダン=6,187×0.6%／鬼滅=6,760×1.6%／ドラえもん=6,558×1.6%。<span class="warn">＝入口(クリック)の取りこぼしが可視化された。</span></div>
+<div class="finding">③ <b>高リーチ ↔ 低維持の逆相関</b>。大型IPの冷たい層が冒頭10秒で離脱：ep29師15%・ep18家人12%・ep16大過18%・ep1泰18%。逆に高維持はニッチ(ep32否72%・ep12咸62%・ep2乾60%・ep22坎51%)。<b>複利で効く律速は維持率側</b>＝CTRを回収しても漏れるバケツに水を注ぐだけ（funnel-diagnoseでも最高リーチepの拘束ゲートはG3/G4へ移動）。</div>
+<h2>CTR回収レバレッジ（現CTR→3%化で得る追加クリック/28日）</h2>
+<div class="finding" style="font-size:13px">高インプレ×低CTRに集中。上位7本にTier AサムネA/Bを打つと大半を回収できる。<span class="warn">ただし回収は主に「再生増」＝subs換算では約+8/28日</span>（維持率→登録が深い穴。登録の期待をロングCTRにかけない）。
+<table class="lev"><tr><th>ep</th><th>作品×卦</th><th class="num">インプレ</th><th class="num">CTR</th><th class="gain">+追加(3%化)</th></tr>
+<tr><td>30</td><td>ドラゴンボール・大有</td><td class="num">9,469</td><td class="num">0.9%</td><td class="gain">+199</td></tr>
+<tr><td>17</td><td>呪術廻戦・蹇</td><td class="num">6,757</td><td class="num">0.6%</td><td class="gain">+162</td></tr>
+<tr><td>3</td><td>スラムダンク・復</td><td class="num">6,187</td><td class="num">0.6%</td><td class="gain">+148</td></tr>
+<tr><td>5</td><td>黄泉のツガイ・睽</td><td class="num">5,021</td><td class="num">0.9%</td><td class="gain">+105</td></tr>
+<tr><td>24</td><td>鋼の錬金術師・損</td><td class="num">4,703</td><td class="num">0.9%</td><td class="gain">+99</td></tr>
+<tr><td>16</td><td>鬼滅・大過</td><td class="num">6,760</td><td class="num">1.6%</td><td class="gain">+95</td></tr>
+<tr><td>1</td><td>ドラえもん・泰</td><td class="num">6,558</td><td class="num">1.6%</td><td class="gain">+92</td></tr>
+<tr><td colspan="4" style="text-align:right;color:var(--muted)">上位14本 合計</td><td class="gain">≈ +1,334 clicks/28日</td></tr>
+</table></div>
+<h2>全ロング ファネル一覧（一次情報）</h2>
+<div class="legend">色: CTR 緑≥2.5% / 橙1.5-2.5% / 赤&lt;1.5% ・ 維持% 緑≥45 / 橙28-45 / 赤&lt;28 ・ 最大離脱% 赤≥25 / 橙18-25。「–」=Studio未取得(予約直後/データ不足)。</div>
+<div class="tblwrap"><table>
+<thead><tr><th>ep</th><th>卦</th><th style="text-align:left">作品</th><th>再生</th><th>/日</th><th>インプレ</th><th>CTR</th><th style="text-align:left">主流入</th><th>維持%</th><th>最大離脱@</th><th>落%</th><th>👍%</th></tr></thead>
+<tbody><tr>
+<td class="ep">1</td><td class="gua">泰</td><td class="work">ドラえもん</td>
+<td class="num">130</td><td class="num">3.4</td>
+<td class="num">6558</td><td class="num m">1.6%</td>
+<td class="src">ブラウジング機能</td>
+<td class="num b">18.4%</td>
+<td class="num">18s</td>
+<td class="num ">-15.5%</td>
+<td class="num">0.77%</td></tr>
+<tr>
+<td class="ep">2</td><td class="gua">乾</td><td class="work">DEATH NOTE</td>
+<td class="num">9</td><td class="num">0.2</td>
+<td class="num">447</td><td class="num b">1.3%</td>
+<td class="src">チャンネル ページ</td>
+<td class="num g">60%</td>
+<td class="num"><span class=na>–</span></td>
+<td class="num "><span class=na>–</span></td>
+<td class="num">11.11%</td></tr>
+<tr>
+<td class="ep">3</td><td class="gua">復</td><td class="work">スラムダンク(三井寿)</td>
+<td class="num">53</td><td class="num">1.5</td>
+<td class="num">6187</td><td class="num b">0.6%</td>
+<td class="src">関連動画</td>
+<td class="num b">23.5%</td>
+<td class="num">7s</td>
+<td class="num b">-32.7%</td>
+<td class="num">1.89%</td></tr>
+<tr>
+<td class="ep">4</td><td class="gua">謙</td><td class="work">アンパンマン</td>
+<td class="num">26</td><td class="num">0.7</td>
+<td class="num">1564</td><td class="num b">1%</td>
+<td class="src">関連動画</td>
+<td class="num m">42.9%</td>
+<td class="num">16s</td>
+<td class="num m">-20%</td>
+<td class="num">0%</td></tr>
+<tr>
+<td class="ep">5</td><td class="gua">睽</td><td class="work">黄泉のツガイ</td>
+<td class="num">58</td><td class="num">1.7</td>
+<td class="num">5021</td><td class="num b">0.9%</td>
+<td class="src">関連動画</td>
+<td class="num m">30.9%</td>
+<td class="num">8s</td>
+<td class="num ">-17.3%</td>
+<td class="num">3.45%</td></tr>
+<tr>
+<td class="ep">6</td><td class="gua">革</td><td class="work">進撃の巨人(エレン)</td>
+<td class="num">30</td><td class="num">0.9</td>
+<td class="num">648</td><td class="num m">2.3%</td>
+<td class="src">ブラウジング機能</td>
+<td class="num g">49.4%</td>
+<td class="num">12s</td>
+<td class="num ">-13.8%</td>
+<td class="num">6.67%</td></tr>
+<tr>
+<td class="ep">7</td><td class="gua">既済</td><td class="work">葬送のフリーレン</td>
+<td class="num">42</td><td class="num">1.3</td>
+<td class="num">3451</td><td class="num b">0.9%</td>
+<td class="src">関連動画</td>
+<td class="num m">41.1%</td>
+<td class="num">10s</td>
+<td class="num ">-17.1%</td>
+<td class="num">4.76%</td></tr>
+<tr>
+<td class="ep">8</td><td class="gua">比</td><td class="work">新世紀エヴァンゲリオン</td>
+<td class="num">16</td><td class="num">0.5</td>
+<td class="num">552</td><td class="num b">0.9%</td>
+<td class="src">関連動画</td>
+<td class="num m">37.1%</td>
+<td class="num">14s</td>
+<td class="num ">-13.3%</td>
+<td class="num">6.25%</td></tr>
+<tr>
+<td class="ep">9</td><td class="gua">遯</td><td class="work">秒速5センチメートル</td>
+<td class="num">37</td><td class="num">1.2</td>
+<td class="num">841</td><td class="num g">2.6%</td>
+<td class="src">ブラウジング機能</td>
+<td class="num b">24.6%</td>
+<td class="num">8s</td>
+<td class="num ">-10.8%</td>
+<td class="num">5.41%</td></tr>
+<tr>
+<td class="ep">10</td><td class="gua">履</td><td class="work">宇宙兄弟</td>
+<td class="num">8</td><td class="num">0.3</td>
+<td class="num">1794</td><td class="num b">0.3%</td>
+<td class="src">関連動画</td>
+<td class="num m">41.2%</td>
+<td class="num"><span class=na>–</span></td>
+<td class="num "><span class=na>–</span></td>
+<td class="num">12.5%</td></tr>
+<tr>
+<td class="ep">11</td><td class="gua">井</td><td class="work">ブルーピリオド</td>
+<td class="num">17</td><td class="num">0.6</td>
+<td class="num">878</td><td class="num b">1.1%</td>
+<td class="src">関連動画</td>
+<td class="num m">39.1%</td>
+<td class="num">13s</td>
+<td class="num ">-17.7%</td>
+<td class="num">11.76%</td></tr>
+<tr>
+<td class="ep">12</td><td class="gua">咸</td><td class="work">君の名は。</td>
+<td class="num">5</td><td class="num">0.2</td>
+<td class="num">459</td><td class="num b">0.4%</td>
+<td class="src">関連動画</td>
+<td class="num g">61.7%</td>
+<td class="num"><span class=na>–</span></td>
+<td class="num "><span class=na>–</span></td>
+<td class="num">20%</td></tr>
+<tr>
+<td class="ep">13</td><td class="gua">恒</td><td class="work">クレヨンしんちゃん(ひろし&みさえ)</td>
+<td class="num">41</td><td class="num">1.5</td>
+<td class="num">1335</td><td class="num g">2.5%</td>
+<td class="src">関連動画</td>
+<td class="num m">34.4%</td>
+<td class="num">8s</td>
+<td class="num ">-12.5%</td>
+<td class="num">7.32%</td></tr>
+<tr>
+<td class="ep">14</td><td class="gua">大壮</td><td class="work">るろうに剣心</td>
+<td class="num">36</td><td class="num">1.4</td>
+<td class="num">1914</td><td class="num m">1.5%</td>
+<td class="src">関連動画</td>
+<td class="num b">19.6%</td>
+<td class="num">8s</td>
+<td class="num ">-17.7%</td>
+<td class="num">2.78%</td></tr>
+<tr>
+<td class="ep">15</td><td class="gua">困</td><td class="work">NARUTO(うちはイタチ)</td>
+<td class="num">28</td><td class="num">1.1</td>
+<td class="num">1699</td><td class="num b">1.2%</td>
+<td class="src">関連動画</td>
+<td class="num b">27.6%</td>
+<td class="num">8s</td>
+<td class="num ">-17.9%</td>
+<td class="num">10.71%</td></tr>
+<tr>
+<td class="ep">16</td><td class="gua">大過</td><td class="work">鬼滅の刃(煉獄杏寿郎/猗窩座)</td>
+<td class="num">127</td><td class="num">5.4</td>
+<td class="num">6760</td><td class="num m">1.6%</td>
+<td class="src">ブラウジング機能</td>
+<td class="num b">18.3%</td>
+<td class="num">20s</td>
+<td class="num ">-15.9%</td>
+<td class="num">3.94%</td></tr>
+<tr>
+<td class="ep">17</td><td class="gua">蹇</td><td class="work">呪術廻戦(禪院真希)</td>
+<td class="num">62</td><td class="num">2.7</td>
+<td class="num">6757</td><td class="num b">0.6%</td>
+<td class="src">関連動画</td>
+<td class="num b">22.7%</td>
+<td class="num">7s</td>
+<td class="num b">-27.9%</td>
+<td class="num">3.23%</td></tr>
+<tr>
+<td class="ep">18</td><td class="gua">家人</td><td class="work">スパイファミリー(フォージャー家)</td>
+<td class="num">62</td><td class="num">2.9</td>
+<td class="num">3479</td><td class="num m">1.5%</td>
+<td class="src">ブラウジング機能</td>
+<td class="num b">12.2%</td>
+<td class="num">17s</td>
+<td class="num m">-22.6%</td>
+<td class="num">0%</td></tr>
+<tr>
+<td class="ep">19</td><td class="gua">漸</td><td class="work">ハイキュー!!(日向翔陽)</td>
+<td class="num">21</td><td class="num">1</td>
+<td class="num"><span class="na">–</span></td><td class="num "><span class="na">–</span></td>
+<td class="src"><span class=na>–</span></td>
+<td class="num "><span class="na">–</span></td>
+<td class="num"><span class=na>–</span></td>
+<td class="num "><span class=na>–</span></td>
+<td class="num">0%</td></tr>
+<tr>
+<td class="ep">20</td><td class="gua">升</td><td class="work">僕のヒーローアカデミア(緑谷出久/デク)</td>
+<td class="num">15</td><td class="num">0.8</td>
+<td class="num">1492</td><td class="num b">0.4%</td>
+<td class="src">関連動画</td>
+<td class="num m">31.5%</td>
+<td class="num">9s</td>
+<td class="num b">-33.3%</td>
+<td class="num">20%</td></tr>
+<tr>
+<td class="ep">21</td><td class="gua">賁</td><td class="work">【推しの子】</td>
+<td class="num">14</td><td class="num">0.8</td>
+<td class="num">579</td><td class="num m">1.6%</td>
+<td class="src">ブラウジング機能</td>
+<td class="num m">30.5%</td>
+<td class="num">8s</td>
+<td class="num m">-21.4%</td>
+<td class="num">7.14%</td></tr>
+<tr>
+<td class="ep">22</td><td class="gua">坎</td><td class="work">カイジ</td>
+<td class="num">11</td><td class="num">0.6</td>
+<td class="num">317</td><td class="num m">1.9%</td>
+<td class="src">チャンネル ページ</td>
+<td class="num g">51.2%</td>
+<td class="num">15s</td>
+<td class="num m">-18.2%</td>
+<td class="num">9.09%</td></tr>
+<tr>
+<td class="ep">23</td><td class="gua">蒙</td><td class="work">千と千尋の神隠し</td>
+<td class="num">7</td><td class="num">0.4</td>
+<td class="num">139</td><td class="num b">0.7%</td>
+<td class="src">関連動画</td>
+<td class="num g">48%</td>
+<td class="num"><span class=na>–</span></td>
+<td class="num "><span class=na>–</span></td>
+<td class="num">14.29%</td></tr>
+<tr>
+<td class="ep">24</td><td class="gua">損</td><td class="work">鋼の錬金術師(エドワード)</td>
+<td class="num">56</td><td class="num">3.6</td>
+<td class="num">4703</td><td class="num b">0.9%</td>
+<td class="src">関連動画</td>
+<td class="num m">34.9%</td>
+<td class="num">18s</td>
+<td class="num ">-14.3%</td>
+<td class="num">5.36%</td></tr>
+<tr>
+<td class="ep">25</td><td class="gua">明夷</td><td class="work">約束のネバーランド</td>
+<td class="num">56</td><td class="num">3.8</td>
+<td class="num">3015</td><td class="num m">1.5%</td>
+<td class="src">ブラウジング機能</td>
+<td class="num b">22.8%</td>
+<td class="num">18s</td>
+<td class="num ">-14.3%</td>
+<td class="num">3.57%</td></tr>
+<tr>
+<td class="ep">26</td><td class="gua">頤</td><td class="work">チェンソーマン</td>
+<td class="num">26</td><td class="num">1.9</td>
+<td class="num">3297</td><td class="num b">0.6%</td>
+<td class="src">関連動画</td>
+<td class="num b">27.8%</td>
+<td class="num">10s</td>
+<td class="num b">-26.9%</td>
+<td class="num">7.69%</td></tr>
+<tr>
+<td class="ep">27</td><td class="gua">訟</td><td class="work">PSYCHO-PASS(狡噛慎也)</td>
+<td class="num">51</td><td class="num">4.1</td>
+<td class="num">3572</td><td class="num b">1.1%</td>
+<td class="src">関連動画</td>
+<td class="num m">37.2%</td>
+<td class="num">40s</td>
+<td class="num ">-8.2%</td>
+<td class="num">5.88%</td></tr>
+<tr>
+<td class="ep">28</td><td class="gua">益</td><td class="work">暗殺教室</td>
+<td class="num">26</td><td class="num">2.2</td>
+<td class="num">2941</td><td class="num b">0.8%</td>
+<td class="src">関連動画</td>
+<td class="num m">31.4%</td>
+<td class="num">10s</td>
+<td class="num m">-23.1%</td>
+<td class="num">11.54%</td></tr>
+<tr>
+<td class="ep">29</td><td class="gua">師</td><td class="work">ONE PIECE(ルフィ)</td>
+<td class="num">404</td><td class="num">38.2</td>
+<td class="num">2</td><td class="num m">1.8%</td>
+<td class="src">ブラウジング機能</td>
+<td class="num b">15.3%</td>
+<td class="num">19s</td>
+<td class="num m">-19.7%</td>
+<td class="num">1.49%</td></tr>
+<tr>
+<td class="ep">30</td><td class="gua">大有</td><td class="work">ドラゴンボール(孫悟空)</td>
+<td class="num">105</td><td class="num">11</td>
+<td class="num">9469</td><td class="num b">0.9%</td>
+<td class="src">関連動画</td>
+<td class="num b">26.8%</td>
+<td class="num">8s</td>
+<td class="num b">-25%</td>
+<td class="num">2.86%</td></tr>
+<tr>
+<td class="ep">31</td><td class="gua">需</td><td class="work">となりのトトロ(サツキ&メイ)</td>
+<td class="num">14</td><td class="num">1.6</td>
+<td class="num">751</td><td class="num m">1.7%</td>
+<td class="src">チャンネル ページ</td>
+<td class="num b">20.8%</td>
+<td class="num">7s</td>
+<td class="num b">-30.8%</td>
+<td class="num">7.14%</td></tr>
+<tr>
+<td class="ep">32</td><td class="gua">否</td><td class="work">魔女の宅急便</td>
+<td class="num">20</td><td class="num">2.6</td>
+<td class="num">1441</td><td class="num b">1.1%</td>
+<td class="src">ブラウジング機能</td>
+<td class="num m">31.9%</td>
+<td class="num">6s</td>
+<td class="num m">-21.1%</td>
+<td class="num">10%</td></tr>
+<tr>
+<td class="ep">33</td><td class="gua">兌</td><td class="work">ぼっち・ざ・ろっく!(後藤ひとり)</td>
+<td class="num">22</td><td class="num">3.3</td>
+<td class="num">2072</td><td class="num b">0.6%</td>
+<td class="src">関連動画</td>
+<td class="num b">15.7%</td>
+<td class="num">15s</td>
+<td class="num b">-40%</td>
+<td class="num">13.64%</td></tr>
+<tr>
+<td class="ep">34</td><td class="gua">旅</td><td class="work">HUNTER×HUNTER</td>
+<td class="num">19</td><td class="num">3.4</td>
+<td class="num">1706</td><td class="num b">0.6%</td>
+<td class="src">関連動画</td>
+<td class="num m">37.1%</td>
+<td class="num">9s</td>
+<td class="num m">-23.5%</td>
+<td class="num">10.53%</td></tr>
+<tr>
+<td class="ep">35</td><td class="gua">蠱</td><td class="work">名探偵コナン</td>
+<td class="num">95</td><td class="num">20.7</td>
+<td class="num"><span class="na">–</span></td><td class="num "><span class="na">–</span></td>
+<td class="src"><span class=na>–</span></td>
+<td class="num b">23.2%</td>
+<td class="num">9s</td>
+<td class="num ">-17%</td>
+<td class="num">2.11%</td></tr>
+<tr>
+<td class="ep">36</td><td class="gua">坤</td><td class="work">風の谷のナウシカ</td>
+<td class="num">65</td><td class="num">18.1</td>
+<td class="num"><span class="na">–</span></td><td class="num "><span class="na">–</span></td>
+<td class="src"><span class=na>–</span></td>
+<td class="num b">17%</td>
+<td class="num">12s</td>
+<td class="num m">-23.1%</td>
+<td class="num">4.62%</td></tr>
+<tr>
+<td class="ep">37</td><td class="gua">震</td><td class="work">BLEACH(黒崎一護)</td>
+<td class="num">14</td><td class="num">5.4</td>
+<td class="num"><span class="na">–</span></td><td class="num "><span class="na">–</span></td>
+<td class="src"><span class=na>–</span></td>
+<td class="num b">16.1%</td>
+<td class="num">10s</td>
+<td class="num b">-40%</td>
+<td class="num">7.14%</td></tr>
+<tr>
+<td class="ep">38</td><td class="gua">夬</td><td class="work">コードギアス(ルルーシュ)</td>
+<td class="num">106</td><td class="num">67</td>
+<td class="num"><span class="na">–</span></td><td class="num "><span class="na">–</span></td>
+<td class="src"><span class=na>–</span></td>
+<td class="num b">0%</td>
+<td class="num"><span class=na>–</span></td>
+<td class="num "><span class=na>–</span></td>
+<td class="num">1.89%</td></tr>
+<tr>
+<td class="ep">40</td><td class="gua">小過</td><td class="work">Re:ゼロから始める異世界生活(ナツキ・スバ</td>
+<td class="num">0</td><td class="num">0</td>
+<td class="num"><span class="na">–</span></td><td class="num "><span class="na">–</span></td>
+<td class="src"><span class=na>–</span></td>
+<td class="num "><span class="na">–</span></td>
+<td class="num"><span class=na>–</span></td>
+<td class="num "><span class=na>–</span></td>
+<td class="num">0%</td></tr></tbody></table></div>
+<h2>判定ステータス</h2>
+<div class="finding" style="font-size:13.5px">
+<b>H52（冒頭「約束の確認」オーバーレイ→10秒離脱減）</b>：早期シグナル＝ep37(適用後)も<span class="warn">@10秒 -40%離脱</span>・ep38はデータ不足。<b>post-overlay n不足で判定不能・期日08-10のまま</b>。単発nullを反証扱いしない（exp-power規律）。ep39+で積み増して判定。<br>
+<b>H42（サムネ視認性→CTR）</b>：横断データで「高インプレ大型IPほど低CTR」＝サムネ視認性がリーチのレバーである傍証は得た。ただしH42本体はep3の個別A/B(Studio Test&Compare)なので<b>勝者確定はStudio UI読みが別途必要</b>。<br>
+<b>H44（1文目断定→冒頭維持+10pt）</b>：期日07-23。冒頭カーブの秒別抽出を要する（次サイクル）。
+</div>
+<h2>打ち手（PDCA・対応案）</h2>
+<div class="act"><h3>本命＝複利: 冒頭6-20秒の維持</h3><ul>
+<li>全ロング普遍の早期離脱が、大型IPの高リーチを無駄にしている最大要因。H52(オーバーレイ)＋H44(1文目断定)をep39+で継続適用し、post-treatment nを貯めてから判定（期日厳守・単発判定しない）。</li>
+<li>ep42企画は既にv2.3幕配分＋promise overlayを内蔵＝この打ち手に沿っている。</li>
+</ul></div>
+<div class="act"><h3>二次＝リーチ回収（効果集中の7本のみ）</h3><ul>
+<li>Tier AサムネA/B(Studio Test&Compare)を <b>ドラゴンボールep30・呪術ep17・スラダンep3・黄泉ep5・ハガレンep24・鬼滅ep16・ドラえもんep1</b> に。<span class="warn">再生増が主・登録増は限定的（約+8/28日）と正直に扱う</span>。</li>
+</ul></div>
+<div class="act"><h3>登録の第一律速はここではない</h3><ul>
+<li>登録の桁レバーは<b>ショート→登録変換(0.036%)</b>＝作品ショート・いいね率。ロングCTRに登録の期待をかけない（bottleneck.json rank4を新データが再確認）。</li>
+</ul></div>
+<h2>お伺い（対応の実行可否）</h2>
+<div class="finding" style="border-left:4px solid var(--gold)">
+今セッションで <b>Tier AサムネA/B（上位7本・Studio Test&Compare・ブラウザ操作）</b> を実行しますか？ それとも本命の<b>維持率側（H52/H44の積み増しは既にep39+で走行中）</b>に集中し、ロングPDCAは「診断＋pdca.md記録」で一旦締めて<b>ep42企画の選択(A/B)へ戻り</b>ますか？<br><span style="color:var(--muted);font-size:12.5px">※Tier A A/Bは登録ROIが低い（+8/28日）ので、私の推奨は「維持率に集中＋ep42を進める」です。ご判断ください。</span>
+</div>
+<div class="foot">一次情報=<code>analytics/_long-detail.json</code>・<code>ctr-summary.json</code>(ts 09:03)・<code>retention-summary.json</code>(ts 09:11)・<code>funnel.json</code>。記録=<code>docs/pdca.md</code>「一次情報PDCA・本編ロング精査」。※CTR/流入はData API非対応でStudio reach経由。</div>
+</div></body></html>
