@@ -1,0 +1,40 @@
+<!doctype html><html lang="ja"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex">
+<title>ep42 サムネ確定版（C・極太文字システム）</title>
+<style>
+:root{--bg:#faf8f3;--fg:#1a1a1a;--muted:#5c5347;--line:#e3dccc;--card:#fff;--gold:#b5942f;--ok:#2b6a4f;--chg:#7a3b6b}
+@media(prefers-color-scheme:dark){:root{--bg:#16130d;--fg:#ece7db;--muted:#a89f8c;--line:#33301f;--card:#211d14;--gold:#d9bd6a;--ok:#6fc79c;--chg:#d69ac2}}
+:root[data-theme=dark]{--bg:#16130d;--fg:#ece7db;--muted:#a89f8c;--line:#33301f;--card:#211d14;--gold:#d9bd6a;--ok:#6fc79c;--chg:#d69ac2}
+:root[data-theme=light]{--bg:#faf8f3;--fg:#1a1a1a;--muted:#5c5347;--line:#e3dccc;--card:#fff;--gold:#b5942f;--ok:#2b6a4f;--chg:#7a3b6b}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font-family:-apple-system,"Hiragino Kaku Gothic ProN","Yu Gothic",system-ui,sans-serif;line-height:1.6;font-size:15px}
+.wrap{max-width:820px;margin:0 auto;padding:22px 16px 80px}
+.kick{font-size:11px;letter-spacing:.14em;color:var(--gold);font-weight:700}
+h1{font-size:21px;margin:5px 0 3px}.sub{color:var(--muted);font-size:13px}
+h2{font-size:15px;border-left:3px solid var(--gold);padding-left:8px;margin:22px 0 8px}
+.big{width:100%;max-width:560px;border-radius:10px;border:1px solid var(--line);display:block;margin:8px auto}
+.pair{display:flex;gap:12px;flex-wrap:wrap}.pair figure{margin:0;flex:1;min-width:220px}.pair img{width:100%;border-radius:8px;border:1px solid var(--line)}.pair figcaption{font-size:12px;color:var(--muted);margin-top:4px}
+.new{border:2px solid var(--ok)!important}
+.finding{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin:10px 0;font-size:13px}.finding b{color:var(--gold)}
+.ask{background:rgba(43,106,79,.1);border:1px solid var(--ok);border-radius:10px;padding:14px 16px;margin:18px 0;font-size:14.5px}.ask b{color:var(--ok)}
+.foot{margin-top:18px;font-size:11.5px;color:var(--muted);border-top:1px solid var(--line);padding-top:10px}code{background:rgba(128,128,128,.14);padding:1px 5px;border-radius:4px;font-size:11px}
+</style></head><body><div class="wrap">
+<div class="kick">HaQei / アニメと易経 ・ サムネ確定版（C: 極太文字システム）</div>
+<h1>ep42 新サムネ — 極太・二重縁取り・多色へ作り替え</h1>
+<div class="sub">本人決定C＝サムネ生成システムを「勝ち組水準の極太・多色・縁取りの巨大文字」に格上げ（<code>BOLD_BENCH</code>を既定化）。以後の本編サムネもこの基準。</div>
+
+<img class="big new" src="images/new.png" alt="new">
+<div class="finding"><b>寄せた勝ち筋</b>：極太の黒縁取り＋白/黄の多色＋巨大文字（fontsize168）＋高彩度の金グロー＋好奇心ワード「なぜ」＋逆説（守るほど失う）。<b>顔は法務方針で不可</b>のため、文字圧・彩度・ワードで最大限ベンチに寄せた。</div>
+
+<h2>Before / After</h2>
+<div class="pair">
+<figure><img src="images/old.png"><figcaption>旧（上品な細字・暗い・引き弱い）</figcaption></figure>
+<figure><img class="new" src="images/new.png"><figcaption>🆕 新（極太縁取り・多色・高彩度・「なぜ」）</figcaption></figure>
+</div>
+
+<h2>世の中ベンチ（参考）</h2>
+<div class="pair"><figure><img src="images/ref_makima.jpg"><figcaption>チェンソーマン「マキマの正体」401万再生＝極太多色縁取り文字（顔は使用・うちは不可）</figcaption></figure></div>
+
+<div class="ask"><b>ご確認ください</b>：この新サムネで確定してよいですか？（<code>releases/062/thumbnail.png</code> 採用済み）／ 文字サイズ・色・コピー微調整があれば指定。<br>
+確定なら、残る公開キット（<b>ショート1本＝作品書き下ろし → TikTok素材</b>）へ進み、Step11で全素材そろえて本人承認後にまとめてアップします。</div>
+<div class="foot">システム＝<code>scripts/make-thumbnail-tierA.py</code>（BOLD_BENCH既定・bold_bench_headline＝極太二重縁取り）。ベース＝<code>content/062/visuals/THUMB_vivid.png</code>（V_05_06高彩度）。</div>
+</div></body></html>
