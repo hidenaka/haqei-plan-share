@@ -1,0 +1,62 @@
+<!doctype html><html lang="ja"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex">
+<title>ep42 サムネ — 世の中ベンチマーク分析</title>
+<style>
+:root{--bg:#faf8f3;--fg:#1a1a1a;--muted:#5c5347;--line:#e3dccc;--card:#fff;--gold:#b5942f;--ok:#2b6a4f;--bad:#b1462c;--head:#efe9dc}
+@media(prefers-color-scheme:dark){:root{--bg:#16130d;--fg:#ece7db;--muted:#a89f8c;--line:#33301f;--card:#211d14;--gold:#d9bd6a;--ok:#6fc79c;--bad:#e57a5c;--head:#2a2518}}
+:root[data-theme=dark]{--bg:#16130d;--fg:#ece7db;--muted:#a89f8c;--line:#33301f;--card:#211d14;--gold:#d9bd6a;--ok:#6fc79c;--bad:#e57a5c;--head:#2a2518}
+:root[data-theme=light]{--bg:#faf8f3;--fg:#1a1a1a;--muted:#5c5347;--line:#e3dccc;--card:#fff;--gold:#b5942f;--ok:#2b6a4f;--bad:#b1462c;--head:#efe9dc}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font-family:-apple-system,"Hiragino Kaku Gothic ProN","Yu Gothic",system-ui,sans-serif;line-height:1.6;font-size:15px}
+.wrap{max-width:880px;margin:0 auto;padding:22px 16px 80px}
+.kick{font-size:11px;letter-spacing:.14em;color:var(--gold);font-weight:700}
+h1{font-size:21px;margin:5px 0 3px}.sub{color:var(--muted);font-size:13px}
+h2{font-size:15px;border-left:3px solid var(--gold);padding-left:8px;margin:24px 0 8px}
+.mont{width:100%;border:1px solid var(--line);border-radius:8px;display:block;margin:6px 0}
+.cap{font-size:12px;color:var(--muted);margin:2px 0 10px}
+table{width:100%;border-collapse:collapse;font-size:13px;margin:8px 0}
+th,td{text-align:left;padding:7px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+th{background:var(--head);color:var(--muted);font-size:11px}
+.y{color:var(--ok);font-weight:700}.n{color:var(--bad);font-weight:700}
+.pair{display:flex;gap:12px;flex-wrap:wrap;margin:8px 0}
+.pair figure{margin:0;flex:1;min-width:240px}.pair img{width:100%;border-radius:8px;border:1px solid var(--line)}
+.pair figcaption{font-size:12px;color:var(--muted);margin-top:4px}
+.opt{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin:10px 0;font-size:13.5px}
+.opt.rec{border-left:4px solid var(--ok)}.opt b{color:var(--gold)}.opt.rec b{color:var(--ok)}
+.ask{background:rgba(43,106,79,.1);border:1px solid var(--ok);border-radius:10px;padding:14px 16px;margin:18px 0;font-size:14.5px}.ask b{color:var(--ok)}
+.foot{margin-top:18px;font-size:11.5px;color:var(--muted);border-top:1px solid var(--line);padding-top:10px}
+</style></head><body><div class="wrap">
+<div class="kick">HaQei / アニメと易経 ・ サムネ 世の中ベンチマーク</div>
+<h1>「世の中で伸びてる考察サムネ」に対して、うちは何が足りないか</h1>
+<div class="sub">YouTube Data APIで「アニメ考察/解説」を再生数順に取得（実際に数百万〜1500万再生の動画）。内部比較でなく世の中基準で見る。</div>
+
+<h2>実際に伸びてる18本のサムネ</h2>
+<img class="mont" src="images/world.png" alt="world">
+<div class="cap">エヴァ1572万・七つの大罪・チェンソーマン(マキマの正体)401万・ワンピ伏線・進撃(伏線10選)・呪術(御三家の全貌)・岡田斗司夫・ジブリ都市伝説・レゼの正体 等</div>
+
+<h2>勝ち筋の要素 × うちで出来るか</h2>
+<table>
+<tr><th>勝ち筋の要素</th><th>うち</th><th>レバー</th></tr>
+<tr><td><b>実キャラの顔・カラー原画/漫画コマ</b>（最大の駆動力）</td><td class="n">✗ 不可</td><td>2026-07-12 法務方針で顔・固有意匠を出さない。<b>ここが最も効くのに封じている</b>＝戦略判断（要オーナー）</td></tr>
+<tr><td><b>極太・多色・縁取りの巨大文字</b>（正体/全貌/○選）</td><td class="n">△ 弱い</td><td>今のmake-thumbnail-tierAは上品な白+金。<b>極太縁取り多色に作り替え可＝法務ノーリスクの最大レバー</b></td></tr>
+<tr><td><b>高彩度・ビビッド・高コントラスト</b></td><td class="y">◯ 可</td><td>ベース彩度/コントラストを上げる（今回実装）</td></tr>
+<tr><td><b>好奇心ワード</b>（正体・なぜ・○○・全貌）</td><td class="y">◯ 可</td><td>コピーを言い切り+好奇心ギャップへ（今回実装）</td></tr>
+<tr><td>コラージュ+赤矢印/丸</td><td class="y">◯ 可</td><td>複数カット+矢印は実装可（essay型に合うかは要検討）</td></tr>
+</table>
+
+<h2>制約内で「最大限ベンチマークに寄せた」ep42（顔なし・彩度↑・赤・好奇心ワード）</h2>
+<div class="pair">
+<figure><img src="images/ours_current.png"><figcaption>これまでの案（暗い・上品・引き弱い）</figcaption></figure>
+<figure><img src="images/bench1.png"><figcaption>寄せた版「守るほど、なぜ／早く失うのか」＝高彩度+赤+好奇心ワード。<b>ただし勝ち組の顔・極太縁取りには未達</b></figcaption></figure>
+</div>
+
+<h2>戦略の選択（ここはオーナー判断）</h2>
+<div class="opt rec"><b>C（最推奨・法務ノーリスク）</b>：<b>サムネ生成を「極太・多色・縁取りの巨大文字」システムに作り替える</b>。顔を使えなくても、文字の圧を勝ち組水準に上げるのが、うちが100%コントロールできる最大レバー。ep42はこれで作り直す。</div>
+<div class="opt"><b>A（今すぐ・低コスト）</b>：顔なしのまま彩度↑・赤・好奇心ワードだけ寄せる（上のbench1）。すぐ出せるが天井は低い。</div>
+<div class="opt"><b>B（要法務判断）</b>：顔・キャラ画の解禁を再検討。<b>勝ち筋の核だが、2026-07-12方針の反転＝翻案侵害リスクを取る決断</b>。世の中の勝ち組の多くも同じ橋を渡っている（黙認されているだけ）。ここは私では決められない。</div>
+
+<div class="ask"><b>ご判断ください</b>：<br>
+① <b>C（極太縁取り文字システムに作り替え・推奨）</b> ／ <b>A（今のbench1で確定）</b> ／ <b>B（顔解禁を検討＝別途法務）</b><br>
+② ワードは <b>「守るほど、なぜ／早く失うのか」</b>で良いか（好奇心ワード型）。<br>
+Cを選ぶなら、サムネ文字システムを作り替えてep42を再生成し、以後の本編サムネ基準に格上げします。</div>
+<div class="foot">一次情報＝YouTube search.list(order=viewCount) 6クエリ・上位61本→再生数上位18。生成＝make-thumbnail-tierA.py。※本編動画本体は既に完成・全ゲート緑（サムネは公開キットの一部で独立に詰められる）。</div>
+</div></body></html>
