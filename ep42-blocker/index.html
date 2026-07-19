@@ -1,0 +1,73 @@
+<!doctype html><html lang="ja"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex">
+<title>ショートproduce停止 — 何が未完了か</title>
+<style>
+:root{--bg:#faf8f3;--fg:#1a1a1a;--muted:#5c5347;--line:#e3dccc;--card:#fff;--gold:#b5942f;--ok:#2b6a4f;--bad:#b1462c;--head:#efe9dc}
+@media(prefers-color-scheme:dark){:root{--bg:#16130d;--fg:#ece7db;--muted:#a89f8c;--line:#33301f;--card:#211d14;--gold:#d9bd6a;--ok:#6fc79c;--bad:#e57a5c;--head:#2a2518}}
+:root[data-theme=dark]{--bg:#16130d;--fg:#ece7db;--muted:#a89f8c;--line:#33301f;--card:#211d14;--gold:#d9bd6a;--ok:#6fc79c;--bad:#e57a5c;--head:#2a2518}
+:root[data-theme=light]{--bg:#faf8f3;--fg:#1a1a1a;--muted:#5c5347;--line:#e3dccc;--card:#fff;--gold:#b5942f;--ok:#2b6a4f;--bad:#b1462c;--head:#efe9dc}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font-family:-apple-system,"Hiragino Kaku Gothic ProN","Yu Gothic",system-ui,sans-serif;line-height:1.65;font-size:15px}
+.wrap{max-width:820px;margin:0 auto;padding:22px 16px 80px}
+.kick{font-size:11px;letter-spacing:.14em;color:var(--gold);font-weight:700}
+h1{font-size:21px;margin:5px 0 3px}.sub{color:var(--muted);font-size:13px}
+h2{font-size:15px;border-left:3px solid var(--gold);padding-left:8px;margin:24px 0 8px}
+.tldr{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--bad);border-radius:10px;padding:14px 16px;margin:14px 0;font-size:14.5px}
+.tldr b{color:var(--bad)}
+table{width:100%;border-collapse:collapse;font-size:13px;margin:8px 0}
+th,td{text-align:left;padding:8px 9px;border-bottom:1px solid var(--line);vertical-align:top}
+th{background:var(--head);color:var(--muted);font-size:11px}
+.ok{color:var(--ok);font-weight:700}.bad{color:var(--bad);font-weight:700}
+.mono{font-family:ui-monospace,Menlo,monospace;font-size:12px}
+.flow{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 15px;font-size:13px;margin:8px 0}
+.flow .step{padding:3px 0}.flow .cur{color:var(--bad);font-weight:700}
+.why{background:rgba(181,148,47,.09);border-radius:8px;padding:12px 14px;font-size:13.5px;margin:10px 0}
+.ask{background:rgba(43,106,79,.1);border:1px solid var(--ok);border-radius:10px;padding:14px 16px;margin:18px 0;font-size:14.5px}.ask b{color:var(--ok)}
+.foot{margin-top:18px;font-size:11.5px;color:var(--muted);border-top:1px solid var(--line);padding-top:10px}code{background:rgba(128,128,128,.14);padding:1px 5px;border-radius:4px;font-size:11.5px}
+</style></head><body><div class="wrap">
+<div class="kick">HaQei / アニメと易経 ・ ショート produce 停止の中身</div>
+<h1>何が「未完了」で produce が止まっているのか</h1>
+<div class="sub">sh42-haku-tonari ／ 2026-07-20 実測（harness に問い合わせた生の状態）</div>
+
+<div class="tldr">
+一言でいうと：<b>produce は「音声・レンダを始める前に、3つの“選定トラック”が全部埋まっていること」を要求するゲート</b>。ところが、その<b>3トラックが全部カラ（候補ゼロ）</b>で、必要な実体ファイル2つも<b>まだ作っていない</b>。＝壊れているのではなく、<b>ハーネスが求める「候補を出して1つ選ぶ」手続きが1つも実行されていない</b>状態です。
+</div>
+
+<h2>実測：3つの選定トラックの中身（すべてカラ）</h2>
+<table>
+<tr><th>トラック</th><th>今の状態</th><th>必要</th><th>作った候補</th></tr>
+<tr><td>short-script（台本）</td><td>initialized</td><td>候補3つ→1つ選定</td><td class="bad">0 / 3</td></tr>
+<tr><td>vertical-hook（縦フックの文言）</td><td>initialized</td><td>候補4つ→1つ選定</td><td class="bad">0 / 4</td></tr>
+<tr><td>vertical-cover（縦カバー画像）</td><td>initialized</td><td>候補3つ→1つ選定</td><td class="bad">0 / 3</td></tr>
+</table>
+
+<h2>実測：必要な実体ファイルの有無</h2>
+<table>
+<tr><th>ファイル</th><th>状態</th><th>意味</th></tr>
+<tr><td class="mono">creative/request.json</td><td class="ok">✅ 有</td><td>依頼文（init で作成済み）</td></tr>
+<tr><td class="mono">creative/init-state.json</td><td class="ok">✅ 有</td><td>3トラックの登録（init で作成済み）</td></tr>
+<tr><td class="mono">creative/vertical-hook.json</td><td class="bad">❌ 無</td><td>縦フックの実体＝まだ作っていない</td></tr>
+<tr><td class="mono">creative/vertical-cover.png</td><td class="bad">❌ 無</td><td>縦カバー画像＝まだ作っていない</td></tr>
+<tr><td class="mono">releases/shorts/sh42-haku-tonari.mp4</td><td class="bad">❌ 無</td><td>完成動画＝まだレンダしていない</td></tr>
+</table>
+
+<h2>produce が通るまでの手順（今どこか）</h2>
+<div class="flow">
+<div class="step">1. init で3トラックを登録　<span class="ok">✅ 済</span></div>
+<div class="step cur">2. 各トラックに候補を出す（3+4+3＝10候補）＋SHA記録　◀ ここが未着手（0個）</div>
+<div class="step">3. 各トラックで1候補を選定（bon）</div>
+<div class="step">4. 選定を昇格（vertical-hook.json / vertical-cover.png を確定）</div>
+<div class="step">5. 3トラックの gate を ready にする</div>
+<div class="step">6. ← ここまで揃って初めて produce が 音声→DepthFlow→字幕→レンダ を始める</div>
+</div>
+
+<div class="why"><b>なぜこうなったか</b>：私は「台本を1本書いて produce」という素直な手順で進めましたが、この produce は「台本・フック文言・カバー画像は<b>複数案を出して選ぶ</b>」という手続き（＝10候補の選定トラック）を強制します。init でトラックの“枠”は作られましたが、中身（候補）を1つも入れていないため、ゲートが「まだ何も選ばれていない」と止めています。<b>ショートの創作物（台本・絵4枚・六爻図2枚）自体は完成しています</b>。足りないのは、この“選定の手続き”と最終レンダだけです。</div>
+
+<h2>⚠️ ここで注意（壊さないために）</h2>
+<div class="why" style="border-left:4px solid var(--bad)">このトラックは、途中で<b>台本(canonical)を編集すると全トラックが無効化され、同じ short_id では作り直せなくなる</b>仕様。だから10候補の選定を回すなら、台本を一切触らず慎重に進める必要があります。</div>
+
+<div class="ask"><b>この状態を踏まえた選択</b>：<br>
+<b>(a)</b> 10候補の選定トラックを私が慎重に回して produce まで到達させる（時間がかかる）<br>
+<b>(b)</b> 本編ロング（完成・承認済み）を先に公開予約して確定させ、ショートは選定トラックを最初から丁寧にやり直す<br>
+※ どちらでも本編ロングは今日公開予約できます。</div>
+<div class="foot">状態ソース＝<code>content/shorts/sh42-haku-tonari/creative/init-state.json</code> ＋ <code>node scripts/creative-harness.mjs next --run &lt;id&gt;</code> の実測。</div>
+</div></body></html>
