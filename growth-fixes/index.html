@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>修正プラン 実装進捗と残る意思決定</title>
+<style>
+  :root{
+    --ink:#1a1a1a;--ink-2:#4a4a4a;--bg:#f7f5ee;--paper:#fbf9f1;--line:#d8d2bf;
+    --accent:#cc785c;--accent-soft:#f5e0d6;--ok:#2e7d5b;--ok-soft:#d7ede2;
+    --warn:#c83a2c;--warn-soft:#f6dcd6;--yellow:#f4d35e;
+    --shadow:0 1px 0 rgba(0,0,0,.04),0 8px 24px rgba(0,0,0,.06);
+    --sans:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP","Yu Gothic","Meiryo",sans-serif;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  }
+  *{box-sizing:border-box}html,body{margin:0;padding:0}
+  body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1.7;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1000px;margin:0 auto;padding:56px 28px 96px}
+  .kicker{display:inline-block;background:var(--accent);color:#fff;font-size:12px;font-weight:700;letter-spacing:.12em;padding:6px 12px;border-radius:999px;margin-bottom:18px}
+  h1{font-size:34px;line-height:1.32;margin:0 0 12px;letter-spacing:-.01em}
+  .lede{font-size:17px;color:var(--ink-2);margin:0 0 8px;max-width:820px}
+  .meta{font-size:13px;color:var(--ink-2);margin-top:6px}
+  h2.sec{font-size:24px;margin:52px 0 6px;border-left:6px solid var(--accent);padding-left:12px}
+  p.sub{color:var(--ink-2);margin:0 0 20px;padding-left:18px}
+  .card{background:var(--paper);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow);padding:18px 20px;margin:14px 0}
+  .card h3{margin:0 0 8px;font-size:17px}
+  .tag{display:inline-block;font-size:11.5px;font-weight:700;padding:2px 9px;border-radius:999px;vertical-align:2px;margin-right:8px}
+  .tag.done{background:var(--ok-soft);color:var(--ok)}
+  .tag.dec{background:var(--yellow);color:#6b4e00}
+  .tag.rec{background:var(--accent-soft);color:var(--accent)}
+  ul{margin:8px 0;padding-left:20px}li{margin:5px 0}
+  .files{font-family:var(--mono);font-size:12.5px;color:var(--ink-2);background:#efeadb;border-radius:6px;padding:2px 6px}
+  table{width:100%;border-collapse:collapse;margin:10px 0;background:var(--paper);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+  th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);font-size:14px;vertical-align:top}
+  th{background:#efeadb;font-weight:700}tr:last-child td{border-bottom:0}
+  .callout{margin:14px 0;padding:14px 16px;border-left:4px solid var(--accent);background:var(--accent-soft);border-radius:0 10px 10px 0}
+  .callout.warn{border-color:var(--warn);background:var(--warn-soft)}
+  .callout p{margin:0}
+  .rec-line{margin-top:10px;padding-top:10px;border-top:1px dashed var(--line)}
+  footer{margin-top:44px;color:var(--ink-2);font-size:13px}
+  @media(max-width:720px){.wrap{padding:32px 18px 64px}h1{font-size:26px}table{display:block;overflow-x:auto}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <span class="kicker">修正プラン 実装進捗 ／ 監督: Claude・実装: codex</span>
+  <h1>機械化できる4項目は完了・検証済み。残る3項目はあなたの意思決定へ</h1>
+  <p class="lede">中間検証で出した7項目のうち、戦略リスクが無く機械化できる①③②④を、私が監督・codexが実装として完了しました。すべて作業ツリー編集のみ（未コミット＝あなたのレビュー待ち）。残る⑤⑥⑦は美意識・運用の判断が支配するので、論点として整理しました。</p>
+  <p class="meta">2026-07-20 ／ 全変更 git未コミット（レビュー後に取り込み判断） ／ 各項目は独立して検証済み</p>
+
+  <h2 class="sec">A. 完了（4項目・検証済み）</h2>
+  <p class="sub">各項目、受け入れ基準を私が独立に確認しました</p>
+
+  <div class="card">
+    <h3><span class="tag done">DONE</span>① 計器修理（P0・全判断の前提）</h3>
+    <ul>
+      <li>破損原因＝孤立サロゲート（絵文字の壊れ）。<span class="files">analytics/</span> の破損6ファイルを <span class="files">*.corrupt.bak</span> 退避のうえ修復。</li>
+      <li>再発防止ゲート <span class="files">scripts/lib/json-write-guard.mjs</span> を新設し、実writer（metrics-snapshot / funnel-diagnose / shorts系 / tiktok-stats）へ配線。</li>
+      <li><b>検証</b>: analytics配下 <b>479/479 parse成功（BAD=0）</b>・ユニットテストPASS（孤立サロゲート除去・正規絵文字😀は保持）。</li>
+    </ul>
+    <div class="callout warn"><p><b>監督フラグ</b>: codexがP0のついでにスコープ外の変更を2件混入（新関数・卦名正規化）。調査したところ、①は既存 creative-harness が呼んでおり消すと壊れる ②は明日公開ep42=剥の潜在バグ修正、で<b>いずれも安全にrevert不可かつ正しい方向</b>だったため保持。以降のcodex指示に「宣言ファイル以外を触るな」を明記し、実際に③④では遵守されました。</p></div>
+  </div>
+
+  <div class="card">
+    <h3><span class="tag done">DONE</span>③ 北極星の張り替え</h3>
+    <ul>
+      <li><span class="files">analytics/bottleneck.json</span> rank1 を最小差分で訂正: 目標 <b>0.1% → 0.127%</b>（残910人を365日で取るには2.493人/日必要・0.1%では約454日）。</li>
+      <li>第一レバーを「登録CTA配線」→「<b>"閉じない"設計＋冒頭の資格化</b>」へ再定義（CTA配線は副次・H35判定は継続）。</li>
+      <li>北極星指標を lifetime累積 → <b>書き下ろしショートd7/d14コホートの subs/1,000views</b>（判定計器=shorts-conversion.json）。</li>
+      <li><b>検証</b>: 日付付き <span class="files">correction_2026_07_20</span> で旧値を保存・rank2-4とevidence不変・growth-tickの古い値（63,500等）を解消・22テストPASS。</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3><span class="tag done">DONE</span>② "閉じない"設計（最大レバー・助言ゲート）</h3>
+    <ul>
+      <li>正典に明記: <span class="files">docs/format_v2.md</span> 幕6＋<span class="files">publishing.md</span> S06＝「主題に答える→次の卦/次の変化を一つだけ開ける→エンドカードへ」。</li>
+      <li><span class="files">scripts/shorts-qa.py</span> に<b>助言（WARN・非ブロッキング）</b>チェック追加＝終盤2シーンに「次の扉」が無さそうならWARN。</li>
+      <li><b>検証</b>: sh40（閉じている）→WARN・sh42（別卦「復」あり）→WARNなし・QA全体はexit 0のまま（合否に不使用＝あなたの創作を機械却下しない）。</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3><span class="tag done">DONE</span>④ 冒頭の資格化（本編のみ・助言ゲート）</h3>
+    <ul>
+      <li>正典に明記: <span class="files">docs/format_v2.md</span> 幕1＝「最初のシーンで固有名＋反転＋自分ごとを接着・登場を30秒以上遅らせない（実測9秒離脱）」。</li>
+      <li><span class="files">scripts/essay-preflight.py</span> に助言チェック＝最初のシーンに registry の作品/キャラ名が出なければWARN（非ブロッキング）。</li>
+      <li><b>ショートS01（作品名を出さない独立ゲート）には一切触れていない</b>（下の意思決定Aで扱う）。</li>
+    </ul>
+  </div>
+
+  <h2 class="sec">B. 残る意思決定（あなたが決める）</h2>
+  <p class="sub">美意識・公開済み資産・運用ペースに関わるので、私は推奨だけ添えて判断を仰ぎます</p>
+
+  <div class="card">
+    <h3><span class="tag dec">決定 A</span>ショートS01：作品名を「出さない」か「3秒で出す」か（正面衝突）</h3>
+    <p>現行S01は「身に覚えを先に・作品名も卦名もまだ出さない」＝<b>あなたが rejections 2026-07-11 で設定した独立ゲート</b>。一方、ショート専門家は「大型IPで呼んだ視聴者に最初アニメを見せず、8-10秒間"一般的な自己啓発動画"に見える。3秒以内に作品×自分の痛みを出せ」と提案。両者は矛盾します。</p>
+    <table>
+      <tr><th>案</th><th>内容</th><th>リスク</th></tr>
+      <tr><td>現状維持</td><td>身に覚え先行・作品名は後</td><td>フィード上で資格化が遅い可能性が残る</td></tr>
+      <tr><td>反転</td><td>0-2秒で作品×自分の痛みを同居</td><td>「身に覚え独立ゲート」の美意識を崩す恐れ</td></tr>
+      <tr><td>A/B検証</td><td>片方だけ変えて数本で比較</td><td>検出力が粗い（少数コホート）</td></tr>
+    </table>
+    <p class="rec-line"><span class="tag rec">推奨</span>いきなり反転せず、<b>「身に覚え（0-2秒）＋作品名（2-4秒）」を同じ一文で接着する折衷</b>を数本試す。身に覚え先行は守りつつ資格化を早める。あなたのGOが出れば型として明文化します。</p>
+  </div>
+
+  <div class="card">
+    <h3><span class="tag dec">決定 B</span>ポジショニング：サムネ方向とタイトルの話数・卦の退避</h3>
+    <ul>
+      <li><b>サムネ</b>: 現行「和風アート＋人生訓」は0.5秒で"何の動画か"が伝わらず、CTR約1%（健全域の1/4）の主因。専門家案＝「作品固有シンボル＋4〜8字の葛藤語」（浮世絵の質感は維持）。</li>
+      <li><b>タイトル</b>: 【第N話・卦】suffixは「36本見逃した」感＋卦名が非易経層に読めない負荷。ただしH49/H50実験が進行中なので<b>ep64まで割付は変えず結果を待つ</b>。終了後に話数・卦名を概要欄/プレイリストへ退避。</li>
+    </ul>
+    <p class="rec-line"><span class="tag rec">推奨</span>タイトルは実験終了まで触らない（現行方針通り）。<b>サムネだけ先に1本テスト</b>（既存の insight型ハーネスで「固有シンボル＋葛藤語」を1枚作りA/B）。公開済み動画のサムネ差し替えは慎重に＝新規から適用。GOなら1枚作って見せます。</p>
+  </div>
+
+  <div class="card">
+    <h3><span class="tag dec">決定 C</span>制作ペース：ハイブリッド化（⑤）と撤退線（⑦）</h3>
+    <ul>
+      <li><b>⑤ ハイブリッド</b>: 「1日1本 書き下ろし」は仕様自身が「回らない」と認める＝持続不能。専門家案＝週3=書き下ろし旗艦／週2=本編のfact・卦対応・画像資産を再利用する独立再構成（生の切り抜きはしない）。まず10-12本 H51作品を貯めてから判定。</li>
+      <li><b>⑦ 撤退線</b>: TikTok/外部は「低コストのフック実験場」であって第二成長エンジンではない＝専用フル制作はしない。本編は新規CTR実験を開かず既存A/Bの判定だけ。判定超過3件・coord超過19件・M1停滞18日を先に消化。</li>
+    </ul>
+    <p class="rec-line"><span class="tag rec">推奨</span>⑤⑦とも私は賛成。特に「1日1本ノルマを外し、品質を削らない」は今日から効く。GOなら、ハイブリッドの運用手順（fact pack共有・独立再構成テンプレ）をハーネス化し、撤退線を growth-tick の警告に落とします。</p>
+  </div>
+
+  <footer>監督: Claude ／ 実装: codex (gpt-5.6-sol) ／ 全変更は git未コミット（レビュー後に取り込み） ／ 2026-07-20</footer>
+</div>
+</body>
+</html>
