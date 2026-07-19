@@ -1,0 +1,103 @@
+<!doctype html><html lang="ja"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex">
+<title>ep42 制作ステータス — まどマギ×剥</title>
+<style>
+:root{--bg:#faf8f3;--fg:#1a1a1a;--muted:#5c5347;--line:#e3dccc;--card:#fff;--gold:#b5942f;--ok:#2b6a4f;--warn:#a8541c;--head:#efe9dc}
+@media(prefers-color-scheme:dark){:root{--bg:#16130d;--fg:#ece7db;--muted:#a89f8c;--line:#33301f;--card:#211d14;--gold:#d9bd6a;--ok:#6fc79c;--warn:#e6a15e;--head:#2a2518}}
+:root[data-theme=dark]{--bg:#16130d;--fg:#ece7db;--muted:#a89f8c;--line:#33301f;--card:#211d14;--gold:#d9bd6a;--ok:#6fc79c;--warn:#e6a15e;--head:#2a2518}
+:root[data-theme=light]{--bg:#faf8f3;--fg:#1a1a1a;--muted:#5c5347;--line:#e3dccc;--card:#fff;--gold:#b5942f;--ok:#2b6a4f;--warn:#a8541c;--head:#efe9dc}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font-family:-apple-system,"Hiragino Kaku Gothic ProN","Yu Gothic",system-ui,sans-serif;line-height:1.6;font-size:15px}
+.wrap{max-width:900px;margin:0 auto;padding:22px 16px 80px}
+.kick{font-size:11px;letter-spacing:.14em;color:var(--gold);font-weight:700}
+h1{font-size:22px;margin:5px 0 3px}.sub{color:var(--muted);font-size:13px}
+h2{font-size:16px;border-left:3px solid var(--gold);padding-left:8px;margin:26px 0 10px}
+.badge{display:inline-block;font-size:11px;font-weight:700;padding:2px 9px;border-radius:20px;margin-left:6px}
+.b-ok{background:rgba(43,106,79,.16);color:var(--ok)}.b-warn{background:rgba(168,84,28,.16);color:var(--warn)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;margin:12px 0}
+.card.done{border-left:4px solid var(--ok)}.card.wip{border-left:4px solid var(--warn)}
+.row{display:flex;gap:14px;flex-wrap:wrap;align-items:flex-start}
+.thumbimg{width:100%;max-width:360px;border-radius:8px;border:1px solid var(--line)}
+.frames{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.frames figure{margin:0;width:150px}.frames img{width:100%;border-radius:6px;border:1px solid var(--line);aspect-ratio:16/9;object-fit:cover}
+.frames figcaption{font-size:10.5px;color:var(--muted);margin-top:2px;text-align:center}
+.shorts{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.shorts figure{margin:0;width:110px}.shorts img{width:100%;border-radius:6px;border:1px solid var(--line);aspect-ratio:9/16;object-fit:cover;background:#000}
+.shorts figcaption{font-size:10px;color:var(--muted);margin-top:2px;text-align:center}
+table{width:100%;border-collapse:collapse;font-size:13px;margin-top:6px}
+th,td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--line)}th{background:var(--head);color:var(--muted);font-size:11px}
+.g{color:var(--ok);font-weight:700}.w{color:var(--warn);font-weight:700}
+.meta{font-size:13px;color:var(--muted)}.meta b{color:var(--fg)}
+.ask{background:rgba(43,106,79,.1);border:1px solid var(--ok);border-radius:10px;padding:14px 16px;margin:18px 0;font-size:14.5px}.ask b{color:var(--ok)}
+.foot{margin-top:20px;font-size:11.5px;color:var(--muted);border-top:1px solid var(--line);padding-top:10px}code{background:rgba(128,128,128,.14);padding:1px 5px;border-radius:4px;font-size:11px}
+</style></head><body><div class="wrap">
+<div class="kick">HaQei / アニメと易経 ・ ep42 制作ステータス</div>
+<h1>第42話 まどか☆マギカ × 剥 ── 現状報告</h1>
+<div class="sub">2026-07-20 ・ content/062 ・ 公開予定 2026-07-21 04:00 JST</div>
+
+<h2>① 本編ロング <span class="badge b-ok">完成・本人承認済み</span></h2>
+<div class="card done">
+<div class="meta"><b>464.5秒（7:44）・24シーン・696.9MB</b>／ タイトル：<b>まどか☆マギカは、願いが一枚ずつ剥がれ落ちる物語だった【第四十二話・剥】</b></div>
+<div class="row" style="margin-top:10px">
+<div style="flex:1;min-width:280px">
+<div class="meta" style="margin-bottom:4px">新サムネ（極太文字システム・勝ち組ベンチ準拠）</div>
+<img class="thumbimg" src="images/thumb.png" alt="thumb">
+</div>
+<div style="flex:1;min-width:280px">
+<div class="meta" style="margin-bottom:4px">本編キーフレーム</div>
+<div class="frames">
+<figure><img src="images/long_hook.jpg"><figcaption>冒頭＋約束overlay</figcaption></figure>
+<figure><img src="images/long_gua6.jpg"><figcaption>剥の六爻図</figcaption></figure>
+<figure><img src="images/long_end.jpg"><figcaption>余韻 剥→復</figcaption></figure>
+</div>
+</div>
+</div>
+<table>
+<tr><th>工程</th><th>状態</th></tr>
+<tr><td>台本（fork独立採点93・冒頭A案で唐突さ解消）</td><td class="g">✅ 承認</td></tr>
+<tr><td>identity-audit（全カット"不明"＝法務PASS）</td><td class="g">✅</td></tr>
+<tr><td>発音検証（杏子=きょうこ/陽=よう/卦=か/象=しょう/陰=いん/種=たね 等を修正）</td><td class="g">✅ 修正済</td></tr>
+<tr><td>timing / promise（冒頭overlay）/ mix（黒落ちなし）</td><td class="g">✅</td></tr>
+<tr><td>サムネ（新BOLD_BENCHシステム「守るほど、なぜ／早く失うのか」）</td><td class="g">✅</td></tr>
+<tr><td>概要欄（description.txt）</td><td class="g">✅</td></tr>
+<tr><td>通し視聴ゲート</td><td class="g">✅ 本人承認（おけ）</td></tr>
+</table>
+<div class="meta" style="margin-top:8px">→ <b>いつでも公開予約（Step11）できる状態。</b></div>
+</div>
+
+<h2>② ショート sh42-haku-tonari（剥→復 序卦型） <span class="badge b-warn">8割・produceで停止</span></h2>
+<div class="card wip">
+<div class="meta">台本「全部を守ろうとするほど…剥がれ落ちる → 二十三の剥の次が二十四の復 → 一つ残せば戻れる → 私もこの手を開けない」（S05で刃を自分へ）</div>
+<div class="shorts">
+<figure><img src="images/short_A01.png"><figcaption>S01 こぼれる</figcaption></figure>
+<figure><img src="images/short_A02.png"><figcaption>S02 剥がれ落ち</figcaption></figure>
+<figure><img src="images/short_GUA_A.png"><figcaption>S03 剥の六爻図</figcaption></figure>
+<figure><img src="images/short_GUA_PAIR.png"><figcaption>S04 剥→復</figcaption></figure>
+<figure><img src="images/short_A05.png"><figcaption>S05 握る手</figcaption></figure>
+<figure><img src="images/short_A06.png"><figcaption>S06 一つ残す</figcaption></figure>
+</div>
+<table>
+<tr><th>工程</th><th>状態</th></tr>
+<tr><td>台本 ＋ 一次情報ゲート（卦辞照合・作品事実web確認）</td><td class="g">✅ PASS</td></tr>
+<tr><td>絵カット4枚（木版浮世絵9:16・一般記号）＋ 六爻図2枚（剥/復 決定論）</td><td class="g">✅</td></tr>
+<tr><td>produce（音声→DepthFlow→字幕→レンダ）</td><td class="w">⛔ creative-harness vertical 3-run で停止</td></tr>
+</table>
+<div class="meta" style="margin-top:8px"><b>停止の正体</b>：produce が <code>short-script / vertical-hook / vertical-cover</code> の3 run × 各「候補3つ→選定→昇格→gate」＋実体2つ（vertical-hook.json / vertical-cover.png）を要求（20工程超）。<span class="w">canonicalを途中で触ると同一short_idで復旧不能のリスク帯</span>。</div>
+</div>
+
+<h2>③ 今セッションの横断改善（恒久化）</h2>
+<div class="card">
+<table>
+<tr><td>PC確認ビューアを<b>slug固定URL</b>化（show-pin.sh・localhost:4521/&lt;slug&gt;/・並列で被らない・画像同梱）</td><td class="g">✅</td></tr>
+<tr><td>サムネを<b>極太・多色・縁取り</b>システムへ格上げ（世の中ベンチ準拠・BOLD_BENCH既定化）</td><td class="g">✅</td></tr>
+<tr><td>share-to-phone を<b>画像・動画同梱</b>（ディレクトリ共有＋軽量プレビューMP4）</td><td class="g">✅</td></tr>
+<tr><td>発音：再発語（剥/象辞/碩果/一陽来復）を reading_dict 昇格</td><td class="g">✅</td></tr>
+<tr><td>short-artwork の 剥/剝（新字旧字）照合を修正</td><td class="g">✅</td></tr>
+</table>
+</div>
+
+<div class="ask"><b>ご判断（ショートの残工程）</b>：<br>
+<b>(a)</b> このまま vertical 3-run を押し切る（私が9候補〜レンダまで駆動・時間かかる・慎重に）<br>
+<b>(b)</b> 本編ロングを先に公開予約して確定 → ショートは次の集中セッションで安全に（推奨）<br>
+本編ロングはどちらでも今日公開予約できます。</div>
+<div class="foot">本編＝<code>releases/062/essay-062.mp4</code>／サムネ＝<code>releases/062/thumbnail.png</code>／ショート＝<code>content/shorts/sh42-haku-tonari/</code>。</div>
+</div></body></html>
