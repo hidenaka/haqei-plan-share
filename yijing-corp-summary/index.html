@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ここまでの総括と、次の分岐</title>
+<style>
+  :root{--ink:#1a1a1a;--ink-2:#4a4a4a;--bg:#f7f5ee;--paper:#fbf9f1;--line:#d8d2bf;
+    --accent:#2f5d8a;--accent-soft:#dbe6f0;--gold:#b8892b;--warn:#c83a2c;--warn-soft:#f6dcd6;
+    --ok:#2f7d55;--ok-soft:#d8ecdf;--yellow:#f4d35e;--shadow:0 1px 0 rgba(0,0,0,.04),0 8px 24px rgba(0,0,0,.06);
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    --sans:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP","Yu Gothic","Meiryo",sans-serif;}
+  *{box-sizing:border-box}html,body{margin:0;padding:0}
+  body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1.75;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:960px;margin:0 auto;padding:54px 26px 96px}
+  .kicker{display:inline-block;background:var(--accent);color:#fff;font-size:12px;font-weight:700;letter-spacing:.1em;padding:6px 12px;border-radius:999px;margin-bottom:16px}
+  h1{font-size:31px;line-height:1.38;margin:0 0 14px}
+  h1 b{color:var(--accent)}
+  .lede{font-size:17.5px;color:var(--ink-2);margin:0;max-width:850px}
+  section{margin:50px 0 0}
+  h2{font-size:24px;margin:0 0 6px;border-left:6px solid var(--accent);padding-left:12px}
+  h2 .num{color:var(--accent);margin-right:10px}
+  .sub{color:var(--ink-2);margin:0 0 16px}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0}
+  .box{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:15px 17px;box-shadow:var(--shadow)}
+  .box h4{margin:0 0 6px;font-size:14.5px;color:var(--accent)}
+  .box p{margin:0;font-size:13.5px;color:var(--ink-2)}
+  .box.ok{background:var(--ok-soft);border-color:var(--ok)}.box.ok h4{color:var(--ok)}
+  .box.warn{background:var(--warn-soft);border-color:var(--warn)}.box.warn h4{color:var(--warn)}
+  table.t{width:100%;border-collapse:collapse;margin:12px 0;background:var(--paper);border:1px solid var(--line);border-radius:12px;overflow:hidden;box-shadow:var(--shadow);font-size:14px}
+  table.t th,table.t td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+  table.t th{background:#efeadb;font-weight:700}table.t tr:last-child td{border-bottom:0}
+  .callout{margin:16px 0;padding:15px 18px;border-left:4px solid var(--accent);background:var(--accent-soft);border-radius:0 10px 10px 0}
+  .callout.ok{border-color:var(--ok);background:var(--ok-soft)}.callout.warn{border-color:var(--warn);background:var(--warn-soft)}
+  .callout p{margin:0}.callout strong{color:var(--accent)}.callout.ok strong{color:var(--ok)}.callout.warn strong{color:var(--warn)}
+  code.inline{font-family:var(--mono);font-size:.9em;background:#efeadb;padding:1px 6px;border-radius:4px}
+  .decide{margin-top:18px;display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .opt{border:2px solid var(--line);border-radius:14px;padding:18px 20px;background:var(--paper);box-shadow:var(--shadow)}
+  .opt.reco{border-color:var(--ok);background:var(--ok-soft)}
+  .opt h3{margin:0 0 6px;font-size:17px}.opt.reco h3{color:var(--ok)}
+  .opt p{margin:0;font-size:13.5px;color:var(--ink-2)}
+  .opt .tag{display:inline-block;font-size:11px;font-weight:700;color:#fff;background:var(--ok);border-radius:999px;padding:1px 9px;margin-bottom:6px}
+  .conc{margin-top:50px;padding:26px 28px 22px;background:var(--ink);color:#f6f3e8;border-radius:16px}
+  .conc h2{color:var(--yellow);border:0;padding:0;margin:0 0 12px}.conc ol{margin:0;padding-left:20px}.conc li{margin:6px 0}
+  footer{margin-top:34px;color:var(--ink-2);font-size:13px}
+  @media(max-width:720px){.wrap{padding:32px 16px 64px}h1{font-size:24px}.grid,.decide{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <span class="kicker">易経×企業分析 ／ ここまでの総括と、次の分岐</span>
+  <h1>1日で「仕組み」と「正直な検証」が<b>一周</b>した。<br>価格の優位はまだ無い。だが<b>それを正しく言える土台</b>ができた。</h1>
+  <p class="lede">Claude監督/Codex実装のループで、易経×企業分析を過去事例バックテストで回す仕組みを作り、実データ6社まで通した。都合の悪い結果（価格予測に優位なし）を後知恵で隠さず、pre-registrationで機械的に確認した。ここまでの棚卸しと、次の1手の選択。</p>
+
+  <section>
+    <h2><span class="num">01</span>作ったもの</h2>
+    <div class="grid">
+      <div class="box"><h4>決定論エンジン（全41テスト緑）</h4><p>db駆動の卦マッピング＋7ファンダ軸＋市場3軸＋価格予測。<code class="inline">cli.py run</code>で状態＋価格の二重verdict。</p></div>
+      <div class="box"><h4>4つの機械ゲート</h4><p>look-ahead排除／holdout分離／再現性／過学習乖離。捏造と後知恵を構造的に止める。</p></div>
+      <div class="box"><h4>実データ6社コーパス</h4><p>任天堂/Nokia/富士フイルム/ソニー(design)＋シャープ/Netflix(holdout)。全事実に出典URL＋as_of。</p></div>
+      <div class="box"><h4>pre-registration機構</h4><p>採点ルーブリックを事例採点前にコミット。後知恵を機械で剥がす。</p></div>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="num">02</span>分かったこと（正直に）</h2>
+    <div class="box ok" style="margin-bottom:12px"><h4>◎ 状態（ファンダ）側＝手応えあり</h4><p>「表面の売上・利益は結末を予測しない」を実データで確認（シャープは増収でも転落、ソニーは大赤字でも回復）。効いたのは④タイミング・⑤兆候・⑥経営者＝静的財務が見落とす軸。<b>易経で"変化の兆し"を読む価値はここにある。</b></p></div>
+    <div class="box warn"><h4>△ 価格予測側＝検証済み優位はまだ無い</h4><p>手採点5/6→pre-registerした機械採点で<b>3/6（偶然の範囲）</b>。realized_lossを足しても3/6のまま。<b>勝った3社は3つの別機序</b>（任天堂=新製品カタリスト／ソニー=ディープバリュー＋実績赤字／Netflix=センチメント総崩れ＋pivot）で、1本のルールでは捕まらない。<b>N=6では特徴量を強化しても優位は出ない</b>と判明。</p></div>
+    <div class="callout ok"><p><strong>これが一番の資産：</strong>ほとんどの発信は後知恵の5/6を「当たった！」で売る。この仕組みは<b>3/6を正直に出せる</b>。研究として信用されるのはこの姿勢。負けを負けと言える計器を持ったこと自体が成果。</p></div>
+  </section>
+
+  <section>
+    <h2><span class="num">03</span>次の分岐 ― feature強化は行き止まり。残る道は2つ</h2>
+    <p class="sub">N=6での特徴量いじりは今日で尽きた（realized_lossでも動かず）。診断は「もっとデータ」。</p>
+    <div class="decide">
+      <div class="opt reco"><span class="tag">推奨</span><h3>② コーパスをCodexで拡大</h3><p>数十〜数百社を量産収集（Codexが調査・指標抽出、Claudeがpre-reg＆ゲートで監督）。検出力を出して初めて「capitulation/catalystは効くか」を統計で言える。スケール作業こそCodexの本領。</p></div>
+      <div class="opt"><h3>③ ここで一旦とめる</h3><p>1日の成果（仕組み＋正直な検証＋発見）をこの総括で確定し、本業（アニメ×易経）に戻る。再開時はこのリポジトリの<code class="inline">corp-analysis/</code>とspec/planから続けられる。</p></div>
+    </div>
+    <div class="callout warn"><p><strong>法的な線（変わらず）：</strong>価格予測・売買判断は<b>自分用(private)＋的中率研究</b>に限定。公開層は個別銘柄の売買判断を出さない（銘柄判断語ガード）。有料化/会員制に踏み込む前は弁護士確認。</p></div>
+  </section>
+
+  <div class="conc">
+    <h2>結論</h2>
+    <ol>
+      <li>「Claude監督/Codex実装で易経×企業分析を過去事例バックテストする仕組み」が<b>実データで一周</b>。エンジン全41テスト緑・4ゲート・pre-registration完備。</li>
+      <li>状態(ファンダ)側は手応えあり（表面数字より兆し/タイミング/経営者）。価格側は<b>正直に優位なし(3/6)</b>＝勝ちは3機序で単一ルール不可、N=6では特徴量強化も無効。</li>
+      <li>次は<b>②Codexでコーパス拡大（検出力を出す）</b>が唯一の前進。または<b>③総括して一旦停止</b>。</li>
+    </ol>
+  </div>
+
+  <footer>総括 ／ ブランチ feat/yijing-corp-analysis ／ spec・plan・engine・corpus すべてcommit済 ／ 研究・教育目的であり投資助言ではない。示された的中率は仮説であり統計的結論ではない。</footer>
+
+</div>
+</body>
+</html>
