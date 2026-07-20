@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>「検証済み優位」実装ロードマップ ― 3者収束版</title>
+<style>
+  :root{--ink:#1a1a1a;--ink-2:#4a4a4a;--bg:#f7f5ee;--paper:#fbf9f1;--line:#d8d2bf;
+    --accent:#2f5d8a;--accent-soft:#dbe6f0;--gold:#b8892b;--warn:#c83a2c;--warn-soft:#f6dcd6;
+    --ok:#2f7d55;--ok-soft:#d8ecdf;--yellow:#f4d35e;--shadow:0 1px 0 rgba(0,0,0,.04),0 8px 24px rgba(0,0,0,.06);
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    --sans:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP","Yu Gothic","Meiryo",sans-serif;}
+  *{box-sizing:border-box}html,body{margin:0;padding:0}
+  body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1.72;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1000px;margin:0 auto;padding:54px 26px 96px}
+  .kicker{display:inline-block;background:var(--accent);color:#fff;font-size:12px;font-weight:700;letter-spacing:.1em;padding:6px 12px;border-radius:999px;margin-bottom:16px}
+  h1{font-size:30px;line-height:1.4;margin:0 0 14px}h1 b{color:var(--accent)}
+  .lede{font-size:17px;color:var(--ink-2);margin:0;max-width:870px}
+  .voices{margin-top:14px;display:flex;flex-wrap:wrap;gap:8px}
+  .v{font-size:12px;border-radius:999px;padding:4px 11px;font-weight:700}
+  .v.c{background:var(--accent);color:#fff}.v.r{background:var(--gold);color:#fff}.v.x{background:#5a6b7a;color:#fff}
+  section{margin:48px 0 0}
+  h2{font-size:23px;margin:0 0 6px;border-left:6px solid var(--accent);padding-left:12px}
+  h2 .num{color:var(--accent);margin-right:10px}
+  .sub{color:var(--ink-2);margin:0 0 16px}
+  table.t{width:100%;border-collapse:collapse;margin:12px 0;background:var(--paper);border:1px solid var(--line);border-radius:12px;overflow:hidden;box-shadow:var(--shadow);font-size:13.5px}
+  table.t th,table.t td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+  table.t th{background:#efeadb;font-weight:700}table.t tr:last-child td{border-bottom:0}
+  table.t td:first-child{font-weight:700;color:var(--accent);white-space:nowrap}
+  .agree{display:inline-block;font-size:10.5px;font-weight:700;color:#fff;background:var(--ok);border-radius:999px;padding:0 7px;margin-left:4px}
+  .steps{counter-reset:s;padding:0;list-style:none;margin:14px 0}
+  .steps li{position:relative;padding:12px 14px 12px 52px;background:var(--paper);border:1px solid var(--line);border-radius:12px;margin:8px 0;box-shadow:var(--shadow);font-size:14px}
+  .steps li::before{counter-increment:s;content:counter(s);position:absolute;left:12px;top:12px;width:28px;height:28px;border-radius:50%;background:var(--accent);color:#fff;font-weight:800;display:flex;align-items:center;justify-content:center}
+  .steps li b{color:var(--accent)}
+  .steps li.first{border:2px solid var(--ok)}.steps li.first::before{background:var(--ok)}
+  .callout{margin:16px 0;padding:15px 18px;border-left:4px solid var(--accent);background:var(--accent-soft);border-radius:0 10px 10px 0}
+  .callout.ok{border-color:var(--ok);background:var(--ok-soft)}.callout.warn{border-color:var(--warn);background:var(--warn-soft)}
+  .callout p{margin:0}.callout strong{color:var(--accent)}.callout.ok strong{color:var(--ok)}.callout.warn strong{color:var(--warn)}
+  code.inline{font-family:var(--mono);font-size:.9em;background:#efeadb;padding:1px 6px;border-radius:4px}
+  .conc{margin-top:48px;padding:26px 28px 22px;background:var(--ink);color:#f6f3e8;border-radius:16px}
+  .conc h2{color:var(--yellow);border:0;padding:0;margin:0 0 12px}.conc ol{margin:0;padding-left:20px}.conc li{margin:6px 0}
+  .conc code.inline{background:#2c2f33;color:#f6f3e8}
+  footer{margin-top:34px;color:var(--ink-2);font-size:13px}
+  .scroll{overflow-x:auto}
+  @media(max-width:720px){.wrap{padding:32px 16px 64px}h1{font-size:23px}h2{font-size:19px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <span class="kicker">易経×企業分析 ／ 「検証済み優位」実装ロードマップ</span>
+  <h1>大議題 → 小議題 → 決定。<br><b>Claude・独立レビュー・Codex の3者が収束</b>したロードマップ。</h1>
+  <p class="lede">「価格予想を本物にする」ために、何を・どの順で作るか。データ／因子／統計／実装／易経／成果物の6大議題を小議題へ落とし込み、3者の議論で決めた。核心は2つ——<b>易経は"学習前に固定した64卦の事前分布"として組み込み「易経あり vs なし」で検定</b>し、<b>まず正しい評価ハーネスを組んでから survivorship-free の大規模データへ広げる</b>。</p>
+  <div class="voices">
+    <span class="v x">Claude（実装・監督）</span>
+    <span class="v r">独立レビュー（査読）</span>
+    <span class="v c">Codex（設計相談）</span>
+    <span class="v" style="background:var(--ok);color:#fff">＝ 一致点にバッジ</span>
+  </div>
+
+  <section>
+    <h2><span class="num">01</span>6大議題 × 収束した決定</h2>
+    <div class="scroll">
+    <table class="t">
+      <thead><tr><th>議題</th><th>小議題と決定</th></tr></thead>
+      <tbody>
+        <tr><td>A. データ基盤</td><td>
+          A1 <b>survivorship-free</b>（倒産/廃止の delisting return 込み）＝交渉不可の要件。<b>Sharadar SEP+SF1</b>（低コスト・PIT財務＋delisting）が本命／CRSPの<code class="inline">DLRET</code>が金字塔だが有料／<b>yfinance+手作業は倒産・M&A・銘柄再利用を監査不能</b><span class="agree">3者一致</span><br>
+          A2 <b>point-in-time</b>＝EDGARの<code class="inline">filed</code>日を可用日にし、その日までforward-fill（look-ahead排除）<span class="agree">一致</span><br>
+          A3 <b>breadth（数百銘柄）＋pre-2010含む複数レジーム</b>＝有意化の前提（40社では実効breadthゼロ）</td></tr>
+        <tr><td>B. 因子設計</td><td>
+          B1 <b>value（book_yield）を軸に事前登録</b>。<b>後付けの合成は禁止</b>（value_safetyの二の舞回避）<span class="agree">一致</span><br>
+          B2 roe逆符号＝「割安×低質の平均回帰」の疑いも併記し、経済メカニズムと符号の整合を必須化</td></tr>
+        <tr><td>C. 統計プロトコル</td><td>
+          C1 <b>Newey-West/HAC ＋ ブロックブートストラップ</b>を既定（12M重複の系列相関を補正）<span class="agree">一致</span><br>
+          C2 <b>多重検定制御（Deflated Sharpe / SPA）＋事前登録</b>（試した仕様数を数える）<br>
+          C3 <b>真の walk-forward</b>＝合成・ハイパラは学習期間だけで確定、以後を一切触らず評価<span class="agree">一致</span></td></tr>
+        <tr><td>D. 実装可能性</td><td>
+          D1 <b>翌営業日約定</b>（filed/snapshot翌日の価格で執行）<span class="agree">一致</span><br>
+          D2 <b>ICでなくコスト後のlong-shortスプレッド</b>で経済的有意性（回転率・取引コスト・キャパシティ後）</td></tr>
+        <tr><td>E. 易経レイヤー</td><td>
+          E1 <b>(b) 64卦＝学習前に固定したクラスタ/階層正則化の事前分布</b>として組み込む（(a)純ラベルは無価値、(c)遷移制約は実証根拠なしで不適）<span class="agree">3者一致</span><br>
+          E2 <b>「易経あり vs なし」を walk-forward で head-to-head</b>比較＝易経が価値を足すかを反証可能に。<b>ここが唯一無二の差別化</b></td></tr>
+        <tr><td>F. 成果物・法</td><td>
+          F1 公開＝<b>的中率/IC/外れの研究</b>のみ／private＝個別銘柄の売買判断／<code class="inline">銘柄判断語ガード</code>（金商法）<span class="agree">一致</span></td></tr>
+      </tbody>
+    </table>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="num">02</span>実装順（3者の"順序の違い"を統合）</h2>
+    <p class="sub">レビュー＝「breadth/survivorshipが根本」。Codex＝「まず配管を正す」。矛盾でなく順番として統合した。</p>
+    <ol class="steps">
+      <li class="first"><b>評価ハーネスを正す（今ここから）</b>：現行大型株で、EDGAR filed日=可用日→翌営業日約定→<b>月次 walk-forward</b>＋<b>コスト計上</b>＋<b>HAC/ブートストラップ推論</b>を通す。<span style="color:var(--ok);font-weight:700">← Codexの最短案。全ての土台。</span></li>
+      <li><b>易経あり/なしを組み込む</b>：64卦=固定クラスタの事前分布を harness に足し、OOSで head-to-head。</li>
+      <li><b>survivorship-free × 大規模 × 複数レジームへ拡張</b>：Sharadar or 歴史的構成銘柄の再構築（倒産含む・pre-2010）。<span style="color:var(--gold);font-weight:700">← レビューの根本要件。検出力を出す。</span></li>
+      <li><b>最低条件を全て満たすか判定</b>：HAC有意＋多重検定制御＋真OOS＋コスト後＋レジーム跨ぎ＋符号がメカニズムと整合。<b>全部通って初めて"候補エッジ"</b>。</li>
+      <li><b>易経を解釈レイヤーで接続</b>：数値が出た銘柄に卦の物語を重ね「当てる占い」でなく「検証された数値＋変化のフレーム」に。</li>
+    </ol>
+  </section>
+
+  <section>
+    <h2><span class="num">03</span>最初の一手（今から作れる・環境内で完結）</h2>
+    <div class="callout ok"><p><strong>評価ハーネス v1：</strong>既存 <code class="inline">corp-analysis/panel</code> を発展させ、<b>①EDGAR filed日でPIT整合 ②snapshot翌営業日の価格で約定 ③月次リバランスの long-short（valueデシル）④取引コスト控除 ⑤Newey-West/ブロックブートストラップでt ⑥walk-forward（学習期間で確定→OOS評価）</b>を1本に。まだ survivorship-free ではないが、<b>look-ahead・約定遅延・コスト・正しい推論</b>という"間違えやすい配管"を先に固める。ここが正しければ、あとはデータを差し替えるだけ。</p></div>
+    <div class="callout warn"><p><strong>正直な見通し：</strong>この harness で現行大型株を見ても、おそらく<b>有意なエッジは出ない</b>（value は NW t≈2.1 の弱い示唆どまり）。それでいい。harness の目的は「勝つ」でなく<b>「正しく測る土台を作る」</b>。本番は step3 の survivorship-free 大規模データで、易経あり/なしを含めて検定する。</p></div>
+  </section>
+
+  <div class="conc">
+    <h2>結論</h2>
+    <ol>
+      <li>3者が収束：<b>易経は"学習前に固定した64卦の事前分布"（E1）として入れ、「易経あり vs なし」をOOSで検定（E2）</b>＝反証可能かつ唯一無二の差別化。</li>
+      <li>順序は<b>①評価ハーネスを正す→②易経を足す→③survivorship-free大規模データへ拡張→④最低条件を全判定→⑤易経解釈レイヤー</b>。レビュー(breadth)とCodex(配管先行)を順番として統合。</li>
+      <li>最初の一手＝<b>評価ハーネスv1</b>（PIT・翌日約定・コスト・walk-forward・HAC）。この環境で今すぐ着手可能。データ差し替えで本番へ。</li>
+    </ol>
+  </div>
+
+  <footer>実装ロードマップ ／ Claude＋独立レビュー＋Codex の収束 ／ 研究・教育目的であり投資助言ではない。示す設計は優位を保証しない。</footer>
+
+</div>
+</body>
+</html>
