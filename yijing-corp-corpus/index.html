@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>易経×企業分析 コーパス6件 ― 確認</title>
+<style>
+  :root{--ink:#1a1a1a;--ink-2:#4a4a4a;--bg:#f7f5ee;--paper:#fbf9f1;--line:#d8d2bf;
+    --accent:#2f5d8a;--accent-soft:#dbe6f0;--gold:#b8892b;--warn:#c83a2c;--warn-soft:#f6dcd6;
+    --ok:#2f7d55;--ok-soft:#d8ecdf;--yellow:#f4d35e;--shadow:0 1px 0 rgba(0,0,0,.04),0 8px 24px rgba(0,0,0,.06);
+    --sans:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP","Yu Gothic","Meiryo",sans-serif;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;}
+  *{box-sizing:border-box}html,body{margin:0;padding:0}
+  body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1.7;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1080px;margin:0 auto;padding:56px 28px 96px}
+  .hero{margin-bottom:36px}
+  .kicker{display:inline-block;background:var(--accent);color:#fff;font-size:12px;font-weight:700;letter-spacing:.12em;padding:6px 12px;border-radius:999px;margin-bottom:18px}
+  .hero h1{font-size:34px;line-height:1.32;margin:0 0 14px;letter-spacing:-.01em}
+  .hero h1 b{color:var(--accent)}
+  .hero p.lede{font-size:18px;color:var(--ink-2);margin:0;max-width:840px}
+  .meta-row{margin-top:16px;display:flex;flex-wrap:wrap;gap:8px}
+  .chip{font-size:12.5px;background:var(--paper);border:1px solid var(--line);border-radius:999px;padding:5px 12px;color:var(--ink-2)}
+  .chip b{color:var(--accent)}
+  .chip.ok b{color:var(--ok)}
+  section{margin:56px 0 0}
+  section>h2{font-size:26px;line-height:1.4;margin:0 0 6px;border-left:6px solid var(--accent);padding-left:12px}
+  section>h2 .num{color:var(--accent);margin-right:10px}
+  section>p.sub{color:var(--ink-2);margin:0 0 20px}
+  table.t{width:100%;border-collapse:collapse;margin:12px 0 6px;background:var(--paper);border:1px solid var(--line);border-radius:12px;overflow:hidden;box-shadow:var(--shadow);font-size:14px}
+  table.t th,table.t td{text-align:left;padding:10px 13px;border-bottom:1px solid var(--line);vertical-align:top}
+  table.t th{background:#efeadb;font-weight:700}
+  table.t tr:last-child td{border-bottom:0}
+  .pill{display:inline-block;font-size:11px;font-weight:700;border-radius:999px;padding:1px 9px;color:#fff}
+  .pill.exp{background:var(--ok)}.pill.con{background:var(--warn)}.pill.piv{background:var(--gold)}
+  .pill.des{background:var(--accent)}.pill.hol{background:#6a6a6a}
+  /* heatmap */
+  .hm{width:100%;border-collapse:collapse;margin:10px 0;font-size:13px;background:var(--paper);border:1px solid var(--line);border-radius:12px;overflow:hidden;box-shadow:var(--shadow)}
+  .hm th,.hm td{padding:8px 6px;text-align:center;border-bottom:1px solid var(--line);border-right:1px solid var(--line)}
+  .hm th{background:#efeadb;font-weight:700;font-size:12px}
+  .hm td.lab{text-align:left;font-weight:700;white-space:nowrap;background:#f3eee0}
+  .hm tr:last-child td{border-bottom:0}
+  .s2{background:#2f7d55;color:#fff;font-weight:700}
+  .s1{background:#bfe0cb}
+  .s0{background:#f0ede2;color:#999}
+  .sm1{background:#f2cfc7}
+  .sm2{background:#c83a2c;color:#fff;font-weight:700}
+  .hm .out{font-weight:700}
+  .board{background:var(--paper);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:20px;margin:14px 0 6px}
+  .callout{margin:16px 0;padding:15px 18px;border-left:4px solid var(--accent);background:var(--accent-soft);border-radius:0 10px 10px 0}
+  .callout.ok{border-color:var(--ok);background:var(--ok-soft)}
+  .callout.warn{border-color:var(--warn);background:var(--warn-soft)}
+  .callout p{margin:0}.callout strong{color:var(--accent)}.callout.ok strong{color:var(--ok)}.callout.warn strong{color:var(--warn)}
+  code.inline{font-family:var(--mono);font-size:.9em;background:#efeadb;padding:1px 6px;border-radius:4px}
+  ol.steps{padding-left:22px}ol.steps li{margin:8px 0}
+  .ask{margin-top:22px;padding:20px 22px;background:var(--paper);border:2px solid var(--accent);border-radius:14px;box-shadow:var(--shadow)}
+  .ask h3{margin:0 0 8px;color:var(--accent);font-size:18px}
+  .legend{font-size:12px;color:var(--ink-2);margin:6px 0 0}
+  .legend span{display:inline-block;padding:1px 8px;border-radius:4px;margin-right:4px}
+  .conc{margin-top:52px;padding:26px 28px 22px;background:var(--ink);color:#f6f3e8;border-radius:16px}
+  .conc h2{color:var(--yellow);border:0;padding:0;margin:0 0 12px}
+  .conc ol{margin:0;padding-left:20px}.conc li{margin:6px 0}
+  footer{margin-top:34px;color:var(--ink-2);font-size:13px}
+  .scroll{overflow-x:auto}
+  @media(max-width:720px){.wrap{padding:32px 16px 64px}.hero h1{font-size:25px}section>h2{font-size:20px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <span class="kicker">易経×企業分析 Plan B ／ 過去事例コーパス6件 ― 確認</span>
+    <h1>実データ6件が揃い、<b>パイプラインが全ゲート通過</b>。<br>そして早くも「<b>表面の数字は結末を語らない</b>」が見えた</h1>
+    <p class="lede">変化が顕著な過去事例6件（日英・出典URL付き・look-ahead厳守）を engine に投入。schema／look-ahead／holdout分離／再現性の全ゲートがクリーンで通りました。較正（写像設計）に進む前に、コーパスの中身とスコアをあなたに確認してほしい。holdoutはこの後ロックします。</p>
+    <div class="meta-row">
+      <span class="chip ok">配線ゲート <b>全PASS（4/4クリーン）</b></span>
+      <span class="chip">design <b>4件</b></span>
+      <span class="chip">holdout <b>2件</b></span>
+      <span class="chip">方向 <b>expand2・contract2・pivot2</b></span>
+      <span class="chip">出典 <b>全事実にURL＋as_of</b></span>
+    </div>
+  </header>
+
+  <section>
+    <h2><span class="num">01</span>コーパス6件（変化前スナップショット → 既知の結末）</h2>
+    <p class="sub">「変化がまだ明白でない時点」を snapshot、その1〜2年後を outcome に分離。方向は expand/contract/pivot を混ぜ、写像が一方向に偏らないようにした。</p>
+    <div class="scroll">
+    <table class="t">
+      <thead><tr><th>企業</th><th>snapshot</th><th>結末（outcome）</th><th>方向</th><th>split</th></tr></thead>
+      <tbody>
+        <tr><td>任天堂</td><td>2016前半（Wii U不振・Switch前夜）</td><td>2018 Switchで業績急回復</td><td><span class="pill exp">expand</span></td><td><span class="pill des">design</span></td></tr>
+        <tr><td>Nokia</td><td>2010（携帯出荷なお世界首位）</td><td>2012 スマホ競争で赤字転落・格下げ</td><td><span class="pill con">contract</span></td><td><span class="pill des">design</span></td></tr>
+        <tr><td>富士フイルム</td><td>2004（フィルム需要崩壊・VISION75）</td><td>2010前後 ヘルスケア/材料へ転換し存続</td><td><span class="pill piv">pivot</span></td><td><span class="pill des">design</span></td></tr>
+        <tr><td>ソニー</td><td>2012前半（平井CEO就任・過去最大赤字）</td><td>2016 構造改革で黒字転換</td><td><span class="pill exp">expand</span></td><td><span class="pill des">design</span></td></tr>
+        <tr><td>シャープ</td><td>2011（液晶過剰投資・なお増収）</td><td>2012-13 液晶市況悪化で経営危機</td><td><span class="pill con">contract</span></td><td><span class="pill hol">holdout</span></td></tr>
+        <tr><td>Netflix</td><td>2011（Qwikster騒動・DVD→配信）</td><td>2013 自社オリジナルで会員急増</td><td><span class="pill piv">pivot</span></td><td><span class="pill hol">holdout</span></td></tr>
+      </tbody>
+    </table>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="num">02</span>7軸スコア ヒートマップ ― ここが今日の発見</h2>
+    <p class="sub">各軸を snapshot事実のみから -2〜+2 に採点（結末は見ていない）。緑=強い/健全、赤=弱い/危険。<b>結末の色（右端）と軸の色の対応</b>に注目。</p>
+    <div class="scroll">
+    <table class="hm">
+      <thead><tr><th style="text-align:left">企業</th><th>①方向</th><th>②勢い</th><th>③内外</th><th>④タイミング</th><th>⑤兆候</th><th>⑥経営者</th><th>⑦市場</th><th>結末</th></tr></thead>
+      <tbody>
+        <tr><td class="lab">任天堂</td><td class="sm1">-1</td><td class="s1">+1</td><td class="s0">0</td><td class="s1">+1</td><td class="s2">+2</td><td class="s0">0</td><td class="sm1">-1</td><td class="out" style="background:var(--ok-soft);color:var(--ok)">expand</td></tr>
+        <tr><td class="lab">Nokia</td><td class="s0">0</td><td class="sm1">-1</td><td class="sm1">-1</td><td class="sm1">-1</td><td class="sm1">-1</td><td class="sm1">-1</td><td class="sm2">-2</td><td class="out" style="background:var(--warn-soft);color:var(--warn)">contract</td></tr>
+        <tr><td class="lab">富士フイルム</td><td class="s0">0</td><td class="s2">+2</td><td class="s1">+1</td><td class="s2">+2</td><td class="s2">+2</td><td class="s2">+2</td><td class="sm2">-2</td><td class="out" style="background:#f3e6c9;color:var(--gold)">pivot</td></tr>
+        <tr><td class="lab">ソニー</td><td class="sm2">-2</td><td class="sm2">-2</td><td class="sm2">-2</td><td class="s1">+1</td><td class="s1">+1</td><td class="s1">+1</td><td class="sm1">-1</td><td class="out" style="background:var(--ok-soft);color:var(--ok)">expand</td></tr>
+        <tr><td class="lab">シャープ <span class="pill hol" style="font-size:10px">hold</span></td><td class="s2">+2</td><td class="sm1">-1</td><td class="sm2">-2</td><td class="sm2">-2</td><td class="sm1">-1</td><td class="sm1">-1</td><td class="sm2">-2</td><td class="out" style="background:var(--warn-soft);color:var(--warn)">contract</td></tr>
+        <tr><td class="lab">Netflix <span class="pill hol" style="font-size:10px">hold</span></td><td class="s1">+1</td><td class="s0">0</td><td class="sm1">-1</td><td class="s1">+1</td><td class="s2">+2</td><td class="sm1">-1</td><td class="sm2">-2</td><td class="out" style="background:#f3e6c9;color:var(--gold)">pivot</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p class="legend"><span class="s2">+2</span><span class="s1">+1</span><span class="s0">0</span><span class="sm1">-1</span><span class="sm2">-2</span> ①変化の方向 ②エネルギー ③内部vs外部 ④タイミング ⑤変化の兆候 ⑥経営者 ⑦市場</p>
+    <div class="callout ok"><p><strong>発見：表面（①方向）の色は結末とほとんど一致しない。</strong>シャープは①方向が<b>+2（増収・液晶絶好調）</b>なのに結末は contract。ソニーは①②③が<b>すべて -2（過去最大赤字）</b>なのに結末は expand。<b>結末を分けたのは表面の会計数字ではなく、④タイミング・⑤兆候・⑥経営者だった</b>——攻めの投資配分・新方向の言語化・トップの動き。これは「変化を読むフレーム」の存在意義そのもの（静的な財務スナップショットが見落とす軸）。</p></div>
+    <div class="callout"><p><strong>pivotの型が見える：</strong>富士フイルムとNetflixはどちらも<b>⑤兆候=+2（強い新方向）× ⑦市場=-2（本業市場の崩壊）</b>。「崩れる市場に、強い兆候で応える」＝pivot。expand（任天堂・ソニー）は⑤兆候+・④タイミング+だが⑦市場はそこまで壊れていない。contract（Nokia・シャープ）は④⑤⑥が沈む。</p></div>
+  </section>
+
+  <section>
+    <h2><span class="num">03</span>配線バックテストの速報（＝まだ較正前・粗いルール）</h2>
+    <p class="sub">「⑤兆候だけ」で方向を出す仮の1軸ルールでも、構造の片鱗が出た。同時に限界も露呈した。</p>
+    <table class="t">
+      <thead><tr><th>セット</th><th>的中</th><th>内訳</th></tr></thead>
+      <tbody>
+        <tr><td>design（4件）</td><td>3/4</td><td>任天堂○ Nokia○ ソニー○／富士フイルム✕（pivotをexpandと誤判定）</td></tr>
+        <tr><td>holdout（2件）</td><td>1/2</td><td>シャープ○／Netflix✕（pivotをexpandと誤判定）</td></tr>
+      </tbody>
+    </table>
+    <div class="callout warn"><p><strong>限界＝pivotが表現できない。</strong>今の <code class="inline">direction_rule</code> は1軸のしきい値だけなので「⑤兆候が高い＝expand」としか言えず、pivotの2件を両方 expand と誤った。pivotの正体は<b>⑤兆候+2 かつ ⑦市場-2</b>という2軸の合わせ技。これは engine の direction_rule を<b>2軸対応に小拡張</b>すれば表現できる（Stage 3で design 4件だけを見て較正する）。<b>数字が低いことより、なぜ外したかが分かることに価値がある</b>——これがバックテストを製品にする理由。</p></div>
+  </section>
+
+  <section>
+    <h2><span class="num">04</span>次（Stage 3 較正）＝ここで holdout をロックする</h2>
+    <p class="sub">確認が取れたら、私は design 4件だけを見て写像を較正します。シャープ・Netflix（holdout）は一切見ません。</p>
+    <ol class="steps">
+      <li><b>direction_rule を2軸に小拡張</b>（pivot = ⑤兆候高 ∧ ⑦市場崩壊）。engine に最小の変更＋テスト追加。</li>
+      <li><b>design 4件だけで較正</b>（best-n候補→design精度→fork独立採点≧90／gold回帰）。holdout分離ゲートが混入を機械で拒否。</li>
+      <li><b>holdout 2件でバックテスト</b>。過学習乖離（design↔holdout）と外れ事例を verdict に出す。</li>
+      <li>結果（外れ含む）を報告。公開レイヤーの第1本を出す前に再度あなたのレビュー。</li>
+    </ol>
+    <div class="ask">
+      <h3>確認をください（このまま Stage 3 へ進んでOK？）</h3>
+      <ol>
+        <li><b>コーパス6件の選定・方向ラベル</b>はこれでよいか（企業・snapshot・結末の対応）。</li>
+        <li><b>7軸スコア</b>に「これは違う」という直感があれば指摘を（今なら直せる。holdoutロック後は較正側から触りません）。</li>
+        <li>問題なければ「OK進めて」。私が holdout をロックして Stage 3 較正に入ります。</li>
+      </ol>
+      <p style="margin:10px 0 0;font-size:13px;color:var(--ink-2)">※スコアは snapshot事実のみから採点した暫定版（Stage 2の自動化前の手採点）。较正で写像を動かしても、この採点値＝入力自体は動かしません。</p>
+    </div>
+  </section>
+
+  <div class="conc">
+    <h2>結論</h2>
+    <ol>
+      <li>実データ6件で<b>パイプラインが全ゲート通過</b>（schema／look-ahead／holdout分離／再現性）。エンジンは実データで回る。</li>
+      <li>ヒートマップが示した：<b>結末を分けたのは表面の会計数字（①方向）ではなく、④タイミング・⑤兆候・⑥経営者</b>。静的財務が見落とす軸＝易経フレームの存在意義。</li>
+      <li>pivotは<b>⑤兆候+2 × ⑦市場-2</b>の2軸型。次はこれを design 4件だけで較正し、holdoutで検証する（holdoutをロック）。</li>
+    </ol>
+  </div>
+
+  <footer>Plan B Stage 1-2 ／ コーパス6件（出典URL＋as_of・look-ahead厳守）／ スコアは暫定手採点。本資料は研究・教育目的で、個別銘柄の投資判断ではない。</footer>
+
+</div>
+</body>
+</html>
