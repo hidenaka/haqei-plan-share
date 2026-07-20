@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>状態×市場評価 → 価格方向 ― 技術設計 v3</title>
+<style>
+  :root{--ink:#1a1a1a;--ink-2:#4a4a4a;--bg:#f7f5ee;--paper:#fbf9f1;--line:#d8d2bf;
+    --accent:#2f5d8a;--accent-soft:#dbe6f0;--gold:#b8892b;--warn:#c83a2c;--warn-soft:#f6dcd6;
+    --ok:#2f7d55;--ok-soft:#d8ecdf;--yellow:#f4d35e;--shadow:0 1px 0 rgba(0,0,0,.04),0 8px 24px rgba(0,0,0,.06);
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    --sans:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP","Yu Gothic","Meiryo",sans-serif;}
+  *{box-sizing:border-box}html,body{margin:0;padding:0}
+  body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1.75;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1000px;margin:0 auto;padding:54px 26px 96px}
+  .kicker{display:inline-block;background:var(--accent);color:#fff;font-size:12px;font-weight:700;letter-spacing:.1em;padding:6px 12px;border-radius:999px;margin-bottom:16px}
+  h1{font-size:33px;line-height:1.34;margin:0 0 14px;letter-spacing:-.01em}
+  h1 b{color:var(--accent)}
+  .lede{font-size:17.5px;color:var(--ink-2);margin:0;max-width:860px}
+  .meta-row{margin-top:16px;display:flex;flex-wrap:wrap;gap:8px}
+  .chip{font-size:12.5px;background:var(--paper);border:1px solid var(--line);border-radius:999px;padding:5px 12px;color:var(--ink-2)}
+  .chip b{color:var(--accent)}.chip.warn b{color:var(--warn)}
+  section{margin:54px 0 0}
+  h2{font-size:25px;line-height:1.4;margin:0 0 6px;border-left:6px solid var(--accent);padding-left:12px}
+  h2 .num{color:var(--accent);margin-right:10px}
+  .sub{color:var(--ink-2);margin:0 0 18px}
+  table.t{width:100%;border-collapse:collapse;margin:12px 0;background:var(--paper);border:1px solid var(--line);border-radius:12px;overflow:hidden;box-shadow:var(--shadow);font-size:14px}
+  table.t th,table.t td{text-align:left;padding:10px 13px;border-bottom:1px solid var(--line);vertical-align:top}
+  table.t th{background:#efeadb;font-weight:700}
+  table.t tr:last-child td{border-bottom:0}
+  .new td:first-child{color:var(--accent);font-weight:700}
+  .new{background:var(--accent-soft)}
+  code.inline{font-family:var(--mono);font-size:.9em;background:#efeadb;padding:1px 6px;border-radius:4px}
+  .callout{margin:16px 0;padding:15px 18px;border-left:4px solid var(--accent);background:var(--accent-soft);border-radius:0 10px 10px 0}
+  .callout.warn{border-color:var(--warn);background:var(--warn-soft)}.callout.ok{border-color:var(--ok);background:var(--ok-soft)}
+  .callout p{margin:0}.callout strong{color:var(--accent)}.callout.warn strong{color:var(--warn)}.callout.ok strong{color:var(--ok)}
+  .board{background:var(--paper);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:20px;margin:14px 0}
+  /* mispricing matrix */
+  .matrix{display:grid;grid-template-columns:120px 1fr 1fr 1fr;gap:6px;font-size:13px}
+  .matrix .h{font-weight:700;text-align:center;padding:8px;background:#efeadb;border-radius:8px}
+  .matrix .rh{font-weight:700;display:flex;align-items:center;padding:8px;background:#f3eee0;border-radius:8px}
+  .cell{border-radius:8px;padding:10px;text-align:center;border:1px solid var(--line)}
+  .cell .dir{font-weight:700;font-size:15px}
+  .up{background:var(--ok-soft)}.up .dir{color:var(--ok)}
+  .flat{background:#f0ede2}.flat .dir{color:var(--ink-2)}
+  .down{background:var(--warn-soft)}.down .dir{color:var(--warn)}
+  .flow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:6px 0}
+  .fb{border:1px solid var(--line);border-radius:10px;background:#fff;padding:10px 13px;flex:1 1 150px}
+  .fb h4{margin:0 0 3px;font-size:13px;color:var(--accent)}.fb p{margin:0;font-size:12.5px;color:var(--ink-2)}
+  .arrow{font-size:20px;color:var(--accent);font-weight:700}
+  ol.steps{padding-left:22px}ol.steps li{margin:7px 0}
+  .conc{margin-top:52px;padding:26px 28px 22px;background:var(--ink);color:#f6f3e8;border-radius:16px}
+  .conc h2{color:var(--yellow);border:0;padding:0;margin:0 0 12px}
+  .conc ol{margin:0;padding-left:20px}.conc li{margin:6px 0}
+  .conc code.inline{background:#2c2f33;color:#f6f3e8}
+  footer{margin-top:34px;color:var(--ink-2);font-size:13px}
+  .scroll{overflow-x:auto}
+  @media(max-width:720px){.wrap{padding:32px 16px 64px}h1{font-size:25px}h2{font-size:20px}.matrix{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <span class="kicker">易経×企業分析 技術設計 v3 ／ 状態に市場評価を追加・価格方向へ接続</span>
+  <h1>ファンダの「状態」に<b>バリュエーションと株価モメンタム</b>を統合し、<br>予測を<b>株価の方向（TSR符号）</b>へ接続する</h1>
+  <p class="lede">v2は「状態＝ファンダメンタルズ7軸／予測＝変化方向」だった。v3では<b>市場が会社をどう織り込んでいるか（P/E・P/B・EV/EBITDA・価格モメンタム・織り込み期待）を状態に加え</b>、状態の読みとバリュエーションの差＝<b>ミスプライシング（expectations gap / variant perception）</b>から<b>フォワードの価格方向</b>を予測・バックテストする。ダムダウンしない技術版。</p>
+  <div class="meta-row">
+    <span class="chip">状態 <b>ファンダ7軸 ＋ 市場3軸</b></span>
+    <span class="chip">予測 <b>①状態変化 ＋ ②価格方向</b></span>
+    <span class="chip">橋渡し <b>mispricing / variant perception</b></span>
+    <span class="chip warn">価格予測 <b>private層＋研究に限定（金商法）</b></span>
+  </div>
+
+  <section>
+    <h2><span class="num">01</span>状態モデルの拡張 ― 市場評価3軸を追加</h2>
+    <p class="sub">既存のファンダメンタルズ7軸（①方向〜⑦市場）に、<b>「市場が会社をいくらで、どんな期待で織り込んでいるか」</b>の3軸を追加する。すべて snapshot時点で入手可能な指標（look-ahead厳守）。</p>
+    <div class="scroll">
+    <table class="t">
+      <thead><tr><th>軸</th><th>指標（専門用語）</th><th>読み</th></tr></thead>
+      <tbody>
+        <tr><td>①〜⑦（既存）</td><td>売上/セグメント推移・成長率・営業CF/投資CF・ROIC・FCF・負債資本比率・IRテキスト差分・経営者トーン・業界成長/シェア</td><td>ファンダメンタルズの状態</td></tr>
+        <tr class="new"><td>⑧ バリュエーション</td><td>trailing/forward <b>P/E</b>・<b>P/B</b>・<b>EV/EBITDA</b>・<b>FCF利回り</b>・配当利回り（自己時系列＆peer相対）</td><td>割安(+)〜割高(-)＝margin of safety</td></tr>
+        <tr class="new"><td>⑨ 価格モメンタム</td><td>直近6〜12M <b>トータルリターン</b>・対ベンチマーク<b>相対強度</b>・<b>最大ドローダウン</b>・ボラティリティ/β</td><td>上昇(+)/下降(-)トレンド</td></tr>
+        <tr class="new"><td>⑩ 織り込み期待</td><td><b>forward multiple</b>が含意する<b>implied growth</b>・アナリストコンセンサス・リビジョン方向</td><td>期待過小(+)/priced for perfection(-)</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <div class="callout"><p><strong>「状態に株価を入れる」の意味：</strong>株価そのもの＋バリュエーション＋モメンタムは<b>「市場という第三者が会社をどう評価しているか」という状態変数</b>。ファンダの7軸（会社の実体）と、市場評価の3軸（他者の織り込み）を<b>別レイヤーとして併記</b>することで、次章の「実体と価格のズレ」を測れるようになる。</p></div>
+  </section>
+
+  <section>
+    <h2><span class="num">02</span>二重ターゲット予測 ― 状態変化 ＋ 価格方向</h2>
+    <p class="sub">予測対象を1つから2つへ。卦は両方の解釈レイヤーとして併記する。</p>
+    <div class="scroll">
+    <table class="t">
+      <thead><tr><th>ターゲット</th><th>出力</th><th>正解ラベル（バックテスト）</th></tr></thead>
+      <tbody>
+        <tr><td>A：状態変化（既存）</td><td><code class="inline">expand / contract / pivot / stall</code></td><td>実際の事業の帰結（回復/転落/転換）</td></tr>
+        <tr class="new"><td>B：価格方向（新規）</td><td><code class="inline">up / flat / down</code>（＋確信度）</td><td>snapshot→horizonの<b>TSR</b>符号・<b>対ベンチマーク超過リターン</b></td></tr>
+      </tbody>
+    </table>
+    </div>
+    <div class="callout"><p><strong>なぜ分けるか：</strong>「良い会社（状態expand）」と「上がる株（価格up）」は<b>別物</b>。既に割高なら状態が良くても価格は伸びない（織り込み済み）。逆に状態が悪くても十分に叩き売られていれば反発する。<b>Bは A を入力の一部として使う</b>が、A＝Bではない。</p></div>
+  </section>
+
+  <section>
+    <h2><span class="num">03</span>橋渡し ＝ ミスプライシング（expectations gap / variant perception）</h2>
+    <p class="sub">状態の読み（ファンダ）と市場評価（バリュエーション）の<b>差</b>が価格方向を生む。これがこの手法の投資的な核。</p>
+    <div class="board">
+      <div class="matrix">
+        <div></div>
+        <div class="h">割安<br><span style="font-weight:400;font-size:11px">low P/E・high FCF利回り</span></div>
+        <div class="h">フェア</div>
+        <div class="h">割高<br><span style="font-weight:400;font-size:11px">priced for perfection</span></div>
+
+        <div class="rh">状態 強い<br>(expand/pivot)</div>
+        <div class="cell up"><div class="dir">↑ up</div>実体強×割安＝<b>最大の上値</b>(variant perception)</div>
+        <div class="cell up"><div class="dir">↑ up</div>実体が期待を牽引</div>
+        <div class="cell flat"><div class="dir">→ flat</div>良いが織り込み済み</div>
+
+        <div class="rh">状態 中立</div>
+        <div class="cell up"><div class="dir">↑ up</div>下値限定・見直し余地</div>
+        <div class="cell flat"><div class="dir">→ flat</div>市場と一致</div>
+        <div class="cell down"><div class="dir">↓ down</div>期待過剰</div>
+
+        <div class="rh">状態 弱い<br>(contract)</div>
+        <div class="cell flat"><div class="dir">→ flat</div>叩き売られ済み(逆張り注意)</div>
+        <div class="cell down"><div class="dir">↓ down</div>実体劣化が顕在化</div>
+        <div class="cell down"><div class="dir">↓ down</div><b>最大の下値</b>(実体弱×割高)</div>
+      </div>
+    </div>
+    <div class="callout ok"><p><strong>読み方：</strong>行＝ファンダ状態（7軸の合成）、列＝バリュエーション（⑧）。<b>対角の左下→右上が"実体と価格のズレ"の主軸</b>。左上（強い×割安）＝margin of safetyつきの上値、右下（弱い×割高）＝最大の下値。<b>富士フイルム/Netflix型のpivotは「実体は転換で強いのに市場が旧事業の衰退で叩き売った」左上ゾーンに入りやすい</b>——ここが妙味。価格モメンタム（⑨）と織り込み期待（⑩）でセルをさらに補正する。</p></div>
+  </section>
+
+  <section>
+    <h2><span class="num">04</span>バックテストの拡張 ― 価格方向の検定</h2>
+    <p class="sub">状態の的中に加え、価格方向の的中と<b>リターンの質</b>を測る。</p>
+    <ul style="padding-left:20px">
+      <li><b>hit rate（価格方向）</b>：up/flat/down の的中率を base rate（無情報の当てずっぽう）と比較。</li>
+      <li><b>超過リターン</b>：予測 up 群の対ベンチマーク（TOPIX/S&P500）<b>アルファ</b>、予測 down 群の劣後。</li>
+      <li><b>Information Coefficient（IC）</b>：予測スコアと実現リターンの順位相関（Spearman）。</li>
+      <li><b>過学習ゲート（既存）</b>：design↔holdout の乖離。<b>look-aheadゲート</b>：バリュエーション/モメンタムの as_of ≤ snapshot。</li>
+    </ul>
+    <div class="callout warn"><p><strong>統計的留保を明示：</strong>N=6 では検出力は皆無に近い。<b>価格方向の的中率で優位を主張しない</b>。ここでの価値は「配線が通り、IC/超過リターンを再現可能に計測する土台」。コーパス拡大（数十社）まで結論は保留（null を反証に使わない）。</p></div>
+  </section>
+
+  <section>
+    <h2><span class="num">05</span>法的ガードレール（重要・金商法）― 価格予測はここに置く</h2>
+    <p class="sub">価格方向の予測を持つと投資助言業（登録制）に近づく。レイヤーで隔離して安全側に倒す。</p>
+    <div class="scroll">
+    <table class="t">
+      <thead><tr><th>レイヤー</th><th>置くもの</th><th>出さないもの</th></tr></thead>
+      <tbody>
+        <tr><td>public（公開・研究/教育）</td><td>手法の的中率・IC・ケーススタディ・外れ分析（不特定多数・随時・オープン）</td><td><b>個別銘柄の売買判断（買え/売れ/目標株価/時期）</b></td></tr>
+        <tr class="new"><td>private（自分用）</td><td>個別銘柄の価格方向・ミスプライシング判定・自分の投資メモ</td><td>公開・有料配信・会員限定の銘柄シグナル</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <div class="callout warn"><p><strong>線引き：</strong>「価格方向を予測し的中率を研究として公開」は教育・研究に収まる。<b>規制の核は「特定銘柄の投資判断の助言 × 報酬 × 会員制」の同時成立</b>。だから価格予測・売買判断は<b>private層のみ</b>、公開層は<code class="inline">銘柄判断語ガード</code>（買え/売れ/目標株価を機械検出して停止）を通す。有料化・会員制・個別銘柄配信に踏み込む前に弁護士確認（免責文だけでは該当性は消えない）。</p></div>
+  </section>
+
+  <section>
+    <h2><span class="num">06</span>エンジン拡張（実装）と次の一手</h2>
+    <p class="sub">既存エンジン（全27テスト緑）への差分。いま6社の株価/バリュエーション実データを収集中。</p>
+    <div class="flow">
+      <div class="fb"><h4>features拡張</h4><p>⑧⑨⑩軸を追加（P/E・P/B・EV/EBITDA・momentum・implied growth）。as_of必須でlook-aheadゲート通過。</p></div>
+      <span class="arrow">→</span>
+      <div class="fb"><h4>price_rule追加</h4><p>状態合成×バリュエーションのミスプライシング行列→価格方向。design較正・holdout検定。</p></div>
+      <span class="arrow">→</span>
+      <div class="fb"><h4>backtest二重化</h4><p>状態の的中に加え価格方向hit/IC/超過リターン。verdictに価格指標を追加。</p></div>
+      <span class="arrow">→</span>
+      <div class="fb"><h4>guard</h4><p>公開出力の銘柄判断語ガードをpreflightに実装。</p></div>
+    </div>
+    <ol class="steps">
+      <li>収集中の6社株価データが返り次第、<code class="inline">features.json</code> に⑧⑨⑩を追記（look-aheadゲート再実行）。</li>
+      <li>各 <code class="inline">case.json</code> に <code class="inline">outcome_price_direction</code>（TSR符号）を追加。</li>
+      <li>engine に <code class="inline">price_rule</code>＋価格バックテストを追加（TDD・design較正/holdout検定）。</li>
+      <li>状態と価格の二重verdictを出して報告。</li>
+    </ol>
+  </section>
+
+  <div class="conc">
+    <h2>結論</h2>
+    <ol>
+      <li>状態に<b>市場評価3軸（バリュエーション・モメンタム・織り込み期待）</b>を追加＝「株価を状態に入れる」を専門用語で実装。</li>
+      <li>予測を<b>二重ターゲット（状態変化＋価格方向TSR）</b>化し、橋渡しは<b>ミスプライシング行列（variant perception）</b>。良い会社≠上がる株を分離。</li>
+      <li>価格予測・売買判断は<b>private層＋的中率研究</b>に限定し、公開層は<code class="inline">銘柄判断語ガード</code>で金商法の投資助言業を回避。次は6社の株価データでengineを拡張。</li>
+    </ol>
+  </div>
+
+  <footer>技術設計 v3 ／ 状態×市場評価→価格方向 ／ 本資料は研究・教育目的の設計であり、個別銘柄の投資助言ではない。価格予測機能は自己利用・研究用途に限定し、有料化/会員制/個別銘柄配信に踏み込む運用は弁護士確認が前提。</footer>
+
+</div>
+</body>
+</html>
