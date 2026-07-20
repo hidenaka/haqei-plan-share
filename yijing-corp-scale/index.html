@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>スケール検証の結果 ― 2071観測で測ったら</title>
+<style>
+  :root{--ink:#1a1a1a;--ink-2:#4a4a4a;--bg:#f7f5ee;--paper:#fbf9f1;--line:#d8d2bf;
+    --accent:#2f5d8a;--accent-soft:#dbe6f0;--gold:#b8892b;--warn:#c83a2c;--warn-soft:#f6dcd6;
+    --ok:#2f7d55;--ok-soft:#d8ecdf;--yellow:#f4d35e;--shadow:0 1px 0 rgba(0,0,0,.04),0 8px 24px rgba(0,0,0,.06);
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    --sans:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP","Yu Gothic","Meiryo",sans-serif;}
+  *{box-sizing:border-box}html,body{margin:0;padding:0}
+  body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1.75;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:960px;margin:0 auto;padding:54px 26px 96px}
+  .kicker{display:inline-block;background:var(--accent);color:#fff;font-size:12px;font-weight:700;letter-spacing:.1em;padding:6px 12px;border-radius:999px;margin-bottom:16px}
+  h1{font-size:31px;line-height:1.38;margin:0 0 14px}h1 b{color:var(--accent)}
+  .lede{font-size:17.5px;color:var(--ink-2);margin:0;max-width:860px}
+  .meta-row{margin-top:16px;display:flex;flex-wrap:wrap;gap:8px}
+  .chip{font-size:12.5px;background:var(--paper);border:1px solid var(--line);border-radius:999px;padding:5px 12px;color:var(--ink-2)}
+  .chip b{color:var(--accent)}.chip.warn b{color:var(--warn)}.chip.ok b{color:var(--ok)}
+  section{margin:52px 0 0}
+  h2{font-size:24px;margin:0 0 6px;border-left:6px solid var(--accent);padding-left:12px}
+  h2 .num{color:var(--accent);margin-right:10px}
+  .sub{color:var(--ink-2);margin:0 0 18px}
+  table.t{width:100%;border-collapse:collapse;margin:12px 0;background:var(--paper);border:1px solid var(--line);border-radius:12px;overflow:hidden;box-shadow:var(--shadow);font-size:14px}
+  table.t th,table.t td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+  table.t th{background:#efeadb;font-weight:700}table.t tr:last-child td{border-bottom:0}
+  .ns{color:var(--warn);font-weight:700}.weak{color:var(--gold);font-weight:700}
+  .callout{margin:16px 0;padding:15px 18px;border-left:4px solid var(--accent);background:var(--accent-soft);border-radius:0 10px 10px 0}
+  .callout.warn{border-color:var(--warn);background:var(--warn-soft)}.callout.ok{border-color:var(--ok);background:var(--ok-soft)}
+  .callout p{margin:0}.callout strong{color:var(--accent)}.callout.warn strong{color:var(--warn)}.callout.ok strong{color:var(--ok)}
+  code.inline{font-family:var(--mono);font-size:.9em;background:#efeadb;padding:1px 6px;border-radius:4px}
+  .box{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:15px 17px;box-shadow:var(--shadow);margin:10px 0}
+  .box h4{margin:0 0 6px;font-size:14px;color:var(--accent)}.box p{margin:0;font-size:13.5px;color:var(--ink-2)}
+  ol.steps{padding-left:22px}ol.steps li{margin:8px 0}
+  .conc{margin-top:50px;padding:26px 28px 22px;background:var(--ink);color:#f6f3e8;border-radius:16px}
+  .conc h2{color:var(--yellow);border:0;padding:0;margin:0 0 12px}.conc ol{margin:0;padding-left:20px}.conc li{margin:6px 0}
+  .conc code.inline{background:#2c2f33;color:#f6f3e8}
+  footer{margin-top:34px;color:var(--ink-2);font-size:13px}
+  .scroll{overflow-x:auto}
+  @media(max-width:720px){.wrap{padding:32px 16px 64px}h1{font-size:24px}h2{font-size:20px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <span class="kicker">易経×企業分析 ／ スケール検証（out-of-sample）の結果</span>
+  <h1>N=6の物語を、<b>2,071観測の測定</b>に置き換えた。<br>結果：<b>まだ優位なし</b>。ただし capitulation は<b>弱く正の方向</b>。</h1>
+  <p class="lede">40社×52四半期の point-in-time 価格パネル（yfinance・look-ahead clean）を組み、事前登録した2仮説を out-of-sample で検証した。検出力を出しても、価格のみのシグナルでは<b>統計的に有意な優位は出なかった</b>。都合の悪い結果を、今度は<b>2,071件の統計</b>で正直に出せた——計器が本物になった証拠です。</p>
+  <div class="meta-row">
+    <span class="chip">観測 <b>2,071（40社×52四半期）</b></span>
+    <span class="chip warn">H-DD capitulation <b>IC+0.025 / t0.75（有意でない）</b></span>
+    <span class="chip warn">H-MOM momentum <b>IC-0.004 / t-0.13（有意でない）</b></span>
+    <span class="chip ok">整合性 <b>仮説を事前登録</b></span>
+  </div>
+
+  <section>
+    <h2><span class="num">01</span>結果（事前登録した2仮説）</h2>
+    <div class="scroll">
+    <table class="t">
+      <thead><tr><th>仮説（事前登録）</th><th>平均IC</th><th>t統計</th><th>四半期でIC&gt;0</th><th>tercile長短スプレッド</th><th>判定</th></tr></thead>
+      <tbody>
+        <tr><td><b>H-DD</b> capitulation＝ドローダウンが深い→先12M超過リターン高い</td><td class="weak">+0.025</td><td>+0.75</td><td>56%</td><td>+0.003</td><td class="weak">方向は仮説どおり・有意でない</td></tr>
+        <tr><td><b>H-MOM</b> momentum＝直近12Mが強い→先12M超過リターン高い</td><td class="ns">-0.004</td><td>-0.13</td><td>46%</td><td>+0.025</td><td class="ns">有意でない・方向も逆</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <div class="callout"><p><strong>言葉の意味（かんたんに）：</strong><b>IC</b>＝シグナルの順位と「実際のその後の対市場リターン」の順位が、どれだけ一致したか（-1〜+1・0＝無関係）。<b>t統計</b>＝それが偶然でないと言える度合い（<b>|t|≥2 で有意</b>）。今回はどちらも t が小さく、<b>偶然と区別できない</b>。対市場（beat-SPY）で測るのは、強気相場で「ただ上がった」を優位と誤認しないため。</p></div>
+  </section>
+
+  <section>
+    <h2><span class="num">02</span>読み取り ― N=6の5/6は、スケールでこうなった</h2>
+    <div class="box"><h4>capitulation（叩き売られたら反発）</h4><p>IC=+0.025・56%の四半期で正＝<b>方向はN=6の物語と一致</b>。だが t=0.75 で有意でなく、tercile長短も+0.003＝実質ゼロ。<b>「気配はあるが、これ単体では効かない」</b>。</p></div>
+    <div class="box"><h4>momentum（勝ち馬に乗る）</h4><p>IC=-0.004＝ほぼ無。学術の12Mモメンタム因子は本来ありうるが、この40大型株×この期間では出ず。N=6には無かった軸で、<b>スケールで明確に否定</b>。</p></div>
+    <div class="callout ok"><p><strong>これが前進の本体：</strong>昨日まで「5/6！」と言えたかもしれない話が、<b>2,071観測の統計では「有意でない」</b>と分かった。ほとんどの個人発信はこの検証をしない。<b>負けを2,071件の統計で言えること</b>が、このプロジェクトの信用＝製品。</p></div>
+  </section>
+
+  <section>
+    <h2><span class="num">03</span>留保（この数字の限界）</h2>
+    <ol class="steps">
+      <li><b>生存バイアス</b>：今日まで生き残った40社を使った＝破綻・上場廃止した敗者が抜けている。capitulation（暴落→反発）の検証はまさにここが痛い（戻らず消えた銘柄が標本にない）。<b>point-in-time の指数構成銘柄</b>に置き換える必要。</li>
+      <li><b>価格のみ2信号</b>：バリュエーション・品質(ROIC)・実績赤字・アクルーアル等の<b>ファンダ因子が未投入</b>。単体で弱くても組み合わせで効く可能性。</li>
+      <li><b>40社・大型株のみ</b>：中小型・セクター分散で像が変わりうる。</li>
+    </ol>
+  </section>
+
+  <section>
+    <h2><span class="num">04</span>次の一手（優位を出すなら）</h2>
+    <ol class="steps">
+      <li><b>EDGARファンダ因子を投入</b>（Codexで量産）：P/B・ROIC・実績赤字・利益リビジョン等を point-in-time で。capitulationの弱い方向を<b>多因子で増幅</b>できるか。</li>
+      <li><b>生存バイアス除去</b>：point-in-time の指数構成銘柄（敗者も含む）で再検証。ここで capitulation の真価が出る（or 消える）。</li>
+      <li><b>多因子モデル＋事前登録＋多重検定規律</b>：因子を大量に試して当たりを拾う"p-hacking"を禁じる（試した数を記録・補正）。</li>
+      <li><b>正直な期待値</b>：単体因子の優位は市場でほぼ裁定済み。目標は「必ず勝つ」でなく<b>「事前登録して out-of-sample で正直に測る」</b>。易経は数値の後の解釈レイヤー。</li>
+    </ol>
+  </section>
+
+  <div class="conc">
+    <h2>結論</h2>
+    <ol>
+      <li>N=6の物語を<b>2,071観測の out-of-sample 測定</b>に置き換えた。価格のみでは<b>有意な優位なし</b>（capitulationは弱く正・momentumは無）。</li>
+      <li>これは失敗でなく<b>本物の計器での正直な負け</b>。5/6を統計で「有意でない」と言えたこと自体が信用。</li>
+      <li>優位を狙うなら<b>①EDGARファンダ多因子（Codex量産）②生存バイアス除去（point-in-time universe）③多重検定規律</b>。capitulationの弱い方向を多因子で増幅できるかが次の勝負所。</li>
+    </ol>
+  </div>
+
+  <footer>スケール検証 ／ パネル=corp-analysis/panel（yfinance・2011-2023・40社）／ 事前登録2仮説・IC/t検定 ／ 研究・教育目的であり投資助言ではない。生存バイアス等の留保あり、示したICは優位を保証しない。</footer>
+
+</div>
+</body>
+</html>
