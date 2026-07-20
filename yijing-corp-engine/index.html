@@ -1,0 +1,366 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>易経×企業分析 ループエンジン ― 設計案</title>
+<style>
+  :root {
+    --ink: #1a1a1a;
+    --ink-2: #4a4a4a;
+    --bg: #f7f5ee;
+    --paper: #fbf9f1;
+    --line: #d8d2bf;
+    --accent: #2f5d8a;            /* 藍 */
+    --accent-soft: #dbe6f0;
+    --gold: #b8892b;
+    --warn: #c83a2c;
+    --warn-soft: #f6dcd6;
+    --ok: #2f7d55;
+    --ok-soft: #d8ecdf;
+    --yellow: #f4d35e;
+    --shadow: 0 1px 0 rgba(0,0,0,.04), 0 8px 24px rgba(0,0,0,.06);
+    --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+    --sans: -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN",
+            "Hiragino Sans", "Noto Sans JP", "Yu Gothic", "Meiryo", sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 56px 28px 96px; }
+
+  .hero { margin-bottom: 40px; }
+  .hero .kicker {
+    display: inline-block;
+    background: var(--accent); color: #fff;
+    font-size: 12px; font-weight: 700; letter-spacing: .12em;
+    padding: 6px 12px; border-radius: 999px;
+    margin-bottom: 18px;
+  }
+  .hero h1 { font-size: 38px; line-height: 1.3; margin: 0 0 14px; letter-spacing: -.01em; }
+  .hero h1 b { color: var(--accent); }
+  .hero p.lede { font-size: 18px; color: var(--ink-2); margin: 0; max-width: 820px; }
+  .meta-row { margin-top: 18px; display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip { font-size: 12.5px; background: var(--paper); border: 1px solid var(--line);
+          border-radius: 999px; padding: 5px 12px; color: var(--ink-2); }
+  .chip b { color: var(--accent); }
+  .tldr {
+    margin-top: 26px; padding: 22px 24px;
+    background: var(--paper); border: 1px solid var(--line); border-radius: 12px;
+    box-shadow: var(--shadow);
+  }
+  .tldr h2 { font-size: 13px; letter-spacing: .15em; color: var(--accent); margin: 0 0 10px; }
+  .tldr ol { margin: 0; padding-left: 20px; }
+  .tldr li { margin: 5px 0; }
+
+  section { margin: 60px 0 0; }
+  section > h2 {
+    font-size: 27px; line-height: 1.4; margin: 0 0 6px;
+    border-left: 6px solid var(--accent); padding-left: 12px;
+  }
+  section > h2 .num { color: var(--accent); font-variant-numeric: tabular-nums; margin-right: 10px; }
+  section > p.sub { color: var(--ink-2); margin: 0 0 22px; }
+
+  figcaption { font-size: 13px; color: var(--ink-2); margin-top: 10px; text-align: center; }
+
+  .table {
+    width: 100%; border-collapse: collapse; margin: 14px 0 6px;
+    background: var(--paper); border: 1px solid var(--line); border-radius: 12px; overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+  .table th, .table td {
+    text-align: left; padding: 11px 14px; border-bottom: 1px solid var(--line);
+    vertical-align: top; font-size: 14px;
+  }
+  .table th { background: #efeadb; font-weight: 700; }
+  .table tr:last-child td { border-bottom: 0; }
+  .table .pick { background: var(--accent-soft); }
+  .table .pick td:first-child { font-weight: 700; color: var(--accent); }
+  .lv-h { color: var(--warn); font-weight: 700; }
+  .lv-l { color: var(--ok); font-weight: 700; }
+
+  .callout { margin: 18px 0; padding: 16px 18px; border-left: 4px solid var(--accent);
+    background: var(--accent-soft); border-radius: 0 10px 10px 0; }
+  .callout.warn { border-color: var(--warn); background: var(--warn-soft); }
+  .callout.ok { border-color: var(--ok); background: var(--ok-soft); }
+  .callout p { margin: 0; }
+  .callout strong { color: var(--accent); }
+  .callout.warn strong { color: var(--warn); }
+  .callout.ok strong { color: var(--ok); }
+
+  ul.clean { padding-left: 20px; } ul.clean li { margin: 6px 0; }
+  ol.steps { padding-left: 22px; } ol.steps li { margin: 8px 0; }
+
+  code.inline { font-family: var(--mono); font-size: .9em; background: #efeadb; padding: 1px 6px; border-radius: 4px; }
+
+  /* --- diagrams --- */
+  .board { background: var(--paper); border: 1px solid var(--line); border-radius: 14px;
+           box-shadow: var(--shadow); padding: 22px; margin: 14px 0 6px; }
+
+  /* space map */
+  .spacemap { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+  .cell { border: 1px solid var(--line); border-radius: 10px; padding: 14px; background: #fff; }
+  .cell h4 { margin: 0 0 6px; font-size: 14px; }
+  .cell p { margin: 0; font-size: 12.5px; color: var(--ink-2); }
+  .cell.blank { background: var(--accent-soft); border: 2px dashed var(--accent); grid-column: 2; }
+  .cell.blank h4 { color: var(--accent); }
+
+  /* pipeline */
+  .pipe { display: flex; flex-wrap: wrap; align-items: stretch; gap: 0; }
+  .pstep { flex: 1 1 120px; min-width: 120px; border: 1px solid var(--line); border-radius: 10px;
+           background: #fff; padding: 12px 10px; margin: 4px; position: relative; }
+  .pstep .st { font-size: 13.5px; font-weight: 700; }
+  .pstep .who { display: inline-block; font-size: 11px; font-weight: 700; border-radius: 999px;
+                padding: 1px 8px; margin-top: 6px; }
+  .who.cx { background: var(--gold); color: #fff; }
+  .who.cl { background: var(--accent); color: #fff; }
+  .who.det { background: #6a6a6a; color: #fff; }
+  .pstep .d { font-size: 12px; color: var(--ink-2); margin-top: 6px; }
+  .pipe-legend { margin-top: 10px; font-size: 12.5px; color: var(--ink-2); }
+  .pipe-legend .who { margin-right: 6px; }
+
+  /* mapping flow */
+  .flow { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+  .fbox { border: 1px solid var(--line); border-radius: 10px; background: #fff; padding: 12px 14px; flex: 1 1 150px; }
+  .fbox h4 { margin: 0 0 4px; font-size: 13.5px; color: var(--accent); }
+  .fbox p { margin: 0; font-size: 12.5px; color: var(--ink-2); }
+  .arrow { font-size: 22px; color: var(--accent); font-weight: 700; }
+
+  /* two layer */
+  .layers { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .layer { border-radius: 12px; padding: 16px 18px; }
+  .layer.pub { background: var(--ok-soft); border: 1px solid var(--ok); }
+  .layer.priv { background: #ece7dc; border: 1px solid var(--line); }
+  .layer h4 { margin: 0 0 8px; }
+  .layer.pub h4 { color: var(--ok); }
+  .layer ul { margin: 0; padding-left: 18px; } .layer li { font-size: 13px; margin: 4px 0; }
+  .gate { text-align: center; font-size: 13px; color: var(--warn); font-weight: 700; margin: 12px 0 0; }
+
+  .conclusion { margin-top: 56px; padding: 28px 28px 24px; background: var(--ink); color: #f6f3e8; border-radius: 16px; }
+  .conclusion h2 { color: var(--yellow); border: 0; padding: 0; margin: 0 0 12px; }
+  .conclusion ol { margin: 0; padding-left: 20px; } .conclusion li { margin: 6px 0; }
+  .conclusion code.inline { background: #2c2f33; color: #f6f3e8; }
+
+  .ask { margin-top: 24px; padding: 22px 24px; background: var(--paper); border: 2px solid var(--accent);
+         border-radius: 14px; box-shadow: var(--shadow); }
+  .ask h3 { margin: 0 0 10px; color: var(--accent); font-size: 18px; }
+  .ask ol { margin: 0; padding-left: 22px; } .ask li { margin: 8px 0; }
+
+  footer { margin-top: 36px; color: var(--ink-2); font-size: 13px; }
+
+  @media (max-width: 720px) {
+    .wrap { padding: 32px 18px 64px; }
+    .hero h1 { font-size: 28px; }
+    section > h2 { font-size: 21px; }
+    .spacemap, .layers { grid-template-columns: 1fr; }
+    .cell.blank { grid-column: 1; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <span class="kicker">易経 × 企業分析 ループエンジン ／ 設計案（判断用）</span>
+    <h1>易経を<b>「変化を読むフレーム」</b>として企業IRに当て、<br>仮説を時系列で検証し続ける ― <b>Claude監督 / Codex実装</b>の仕組み</h1>
+    <p class="lede">「当てる」のではなく「写像ルールを公開して検証し続ける」。それが唯一、この空白領域を差別化に変えつつ、法的に安全側（研究・教育）へ倒せる道。あなたの回答（目的物=両方／MVP=手法の設計書が先／分担=Codexに極力多く）を反映した設計です。承認 or 修正をください。</p>
+    <div class="meta-row">
+      <span class="chip">目的物 <b>両方（研究を表・判断は裏）</b></span>
+      <span class="chip">MVP <b>手法の設計書が先</b></span>
+      <span class="chip">分担 <b>Codexに極力多く実装</b></span>
+      <span class="chip">再利用資産 <b>db/（699エッジ・64卦）＋既存ハーネス</b></span>
+    </div>
+    <div class="tldr">
+      <h2>TL;DR</h2>
+      <ol>
+        <li>狙う交差点（IR/決算に易経を継続適用し、卦で分類→変爻で次を予測→翌期に検証）は<b>日英いずれにも先行者がいない本物の空白</b>。ただし空白の理由＝最大リスク（写像ルールが未検証）と同じ場所にある。</li>
+        <li>だから製品の中心は「当てること」ではなく<b>「写像ルールを公開して検証し続けること」</b>。外れも公開する研究フレームが、差別化かつ法的安全（金商法の非該当側）を同時に取る。</li>
+        <li>MVPは<b>方法論ルールブック（7軸→卦の再現可能な写像）＋1社の実証</b>。以降はCodexが取得・構造化・台帳・検証を量産し、Claudeが監督・無バイアス採点・却下の還流を担う。</li>
+      </ol>
+    </div>
+  </header>
+
+  <!-- 01 -->
+  <section>
+    <h2><span class="num">01</span>結論 ― 狙う空白と、その裏返しのリスク</h2>
+    <p class="sub">周辺は埋まっている。中心だけが空いている。そして空いている理由がそのままリスク。</p>
+    <div class="board">
+      <div class="spacemap">
+        <div class="cell"><h4>易経＝経営哲学の教養</h4><p>竹村亞希子ほか／日本易経協会。大局観・兆しを読む帝王学。個別企業の決算分析はしない。</p></div>
+        <div class="cell"><h4>易経×株価予測（学術）</h4><p>JDM/IGI論文ほか。時系列株価予測 or 概念フレーム。実企業IRの継続追跡ではない。</p></div>
+        <div class="cell"><h4>東洋占術×投資</h4><p>四柱推命の占い師ら。「相場は占わない」が業界規範。track record非公開。</p></div>
+        <div class="cell"><h4>IR構造化AI</h4><p>xenoBrain・バフェットコード・ai-berkshire。構造化→定量予測で止まる。</p></div>
+        <div class="cell blank"><h4>★ ここが空白</h4><p>64状態＋遷移を実企業IRに機械適用し、卦で分類→変爻で次を予測→翌期に<b>当たり外れを継続検証</b>する実装。先行者不在。</p></div>
+        <div class="cell"><h4>SWOT/5F/PEST</h4><p>状態の静的スナップショット分類。「次にどの状態へ動くか」の遷移軸を持たない。</p></div>
+      </div>
+      <figcaption>周辺4象限は既存プレイヤーで埋まり、中央の「遷移を検証し続ける」領域だけが空白。既存IR構造化AIも易経の"状態遷移モデル"は持たない。</figcaption>
+    </div>
+    <div class="callout"><p><strong>核心：</strong>易経の本質は「状態Aから隣の卦Bへの遷移（序卦・変爻・互卦）」という<b>動的・時系列モデル</b>。西洋フレームの静的分類に「今どの段階（六爻のどこ）か／次にどこへ動くか」を与える点が唯一の理論的空白。だが誰も検証していない＝妥当性が未証明。価値の源泉とリスクが同じ場所にある。</p></div>
+  </section>
+
+  <!-- 02 -->
+  <section>
+    <h2><span class="num">02</span>調査サマリ ― 空白の確認と法規制の線引き</h2>
+    <p class="sub">無バイアス調査（一次〜準一次情報）。詳細出典は末尾。</p>
+    <table class="table">
+      <thead><tr><th>論点</th><th>調査結果</th></tr></thead>
+      <tbody>
+        <tr><td>先行事例</td><td>「実在企業のIR/決算を継続適用し、卦で状態分類→変爻で予測→翌期に検証」するプロジェクトは<b>日英いずれにも見つからず</b>。</td></tr>
+        <tr><td>法規制の核</td><td>金商法2条8項11号。<b>①個別銘柄の投資判断の助言 × ②報酬を取る契約 × ③会員制など個別・相対性の高い提供</b>の3要件が揃うと投資助言業（要登録）。無登録営業は刑事罰。</td></tr>
+        <tr class="pick"><td>非該当側（安全）</td><td>企業の構造・業績・歴史の<b>一般的評論／教育</b>、不特定多数向け・随時単発購入可能・オープン、客観的事実と一般論。時系列の研究・検証公開。</td></tr>
+        <tr><td>最も危険</td><td>有料note/サロン/メンバーシップで「この銘柄を買え/売れ」＝3要件が同時に揃う。</td></tr>
+        <tr><td>免責文の限界</td><td>免責文だけでは該当性は消えない（<b>実態で判断</b>）。有料化・会員制・個別銘柄言及に踏み込む前に弁護士確認が必須。</td></tr>
+      </tbody>
+    </table>
+    <div class="callout ok"><p><strong>だから「研究を表・判断は裏」設計は法規制の線引きと完全に一致する。</strong>公開レイヤーを個別銘柄の売買判断に踏み込ませなければ、原則として非該当側（研究・教育）に留まる。</p></div>
+  </section>
+
+  <!-- 03 -->
+  <section>
+    <h2><span class="num">03</span>3つのアプローチと推奨</h2>
+    <p class="sub">推奨は A。空白を差別化に変えつつ法的安全を同時に取れるのは A だけ。</p>
+    <table class="table">
+      <thead><tr><th>案</th><th>中身</th><th>評価</th></tr></thead>
+      <tbody>
+        <tr class="pick"><td>A：写像ルールを公開する検証エンジン（推奨）</td><td>再現可能な写像ルール（客観指標→卦）をSSOTに固め、1社ずつrunを回して仮説→追跡→検証を台帳に積む。外れも公開。</td><td><span class="lv-l">空白かつ差別化／法的に安全側／db・既存ハーネス最大活用。</span>△ 初期ルール設計と検証時間（半年〜1年）。</td></tr>
+        <tr><td>B：「当てるショー」型</td><td>「今日はトヨタを乾為天！」を量産、当たり外れの派手さで見せる。</td><td><span class="lv-h">恣意的写像は信用されない／将来判断で法的グレー／占い師と同じ穴。</span></td></tr>
+        <tr><td>C：純財務AI＋易経は飾り</td><td>xenoBrain的な定量分析が主軸、易経は最後の一言だけ。</td><td><span class="lv-h">易経が飾りになり独自性が死ぬ／既存ツールとの差が消える。</span></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 04 -->
+  <section>
+    <h2><span class="num">04</span>方法論ルールブック ― MVPの本体（コードより先に固める）</h2>
+    <p class="sub">「企業のどの客観指標を、どの卦に、どのルールで対応づけるか」。後から誰でも同じ入力→同じ卦に辿り着けることを担保する。</p>
+    <table class="table">
+      <thead><tr><th>観測軸</th><th>何を見るか</th><th>客観データ源（例）</th></tr></thead>
+      <tbody>
+        <tr><td>①変化の方向</td><td>拡大／縮小／転換／停滞</td><td>売上・セグメント推移、設備投資、M&amp;A</td></tr>
+        <tr><td>②エネルギー</td><td>勢いか／無理をしているか</td><td>成長率、営業CF/投資CF、負債・自己資本比率</td></tr>
+        <tr><td>③内部 vs 外部</td><td>内部の苦境か外部環境か</td><td>粗利率・販管費（内部）× 市況・為替・規制（外部）</td></tr>
+        <tr><td>④タイミング</td><td>攻める時か守る時か</td><td>FCF、手元流動性、還元 vs 投資の配分</td></tr>
+        <tr><td>⑤変化の兆候</td><td>IR資料に増えた言葉</td><td>有報・中計・説明資料のテキスト差分（前年比の語の増減）</td></tr>
+        <tr><td>⑥経営者</td><td>CEO発言の前年比変化</td><td>社長メッセージ・説明会Q&amp;Aのトーン/論点の変化</td></tr>
+        <tr><td>⑦市場</td><td>追い風か逆風か</td><td>業界成長率、シェア変動、競合の動き</td></tr>
+      </tbody>
+    </table>
+    <div class="board">
+      <div class="flow">
+        <div class="fbox"><h4>7軸を離散スコア化</h4><p>方向=拡大+2…縮小-2 等、採点ルールを明文化。</p></div>
+        <span class="arrow">→</span>
+        <div class="fbox"><h4>八卦属性へ写像</h4><p>乾=剛健/坤=柔順/震=動/巽=入/坎=険/離=明/艮=止/兌=悦。<code class="inline">db/trigrams.json</code>参照。</p></div>
+        <span class="arrow">→</span>
+        <div class="fbox"><h4>上下卦で64卦を一意決定</h4><p>今の卦＝現状。</p></div>
+        <span class="arrow">→</span>
+        <div class="fbox"><h4>変爻→次の卦</h4><p>最も張力の高い軸＝動く爻。<code class="inline">db</code>の変爻エッジで次状態の仮説。序卦・互卦も補助。</p></div>
+      </div>
+      <figcaption>軸→八卦→64卦→変爻の写像はすべて db 駆動の決定論。出力は「今=○卦・第N爻／次=△卦」＋根拠（どの軸がどう効いたか）＋反証条件。</figcaption>
+    </div>
+    <div class="callout"><p><strong>易経を根拠に使わない。</strong>①IR→②財務→③経営者発言→④事業構造→⑤市場、を整理した<b>最後の解釈レイヤー</b>に卦を置く。卦は「読みやすくする言葉」であって予言ではない。</p></div>
+    <p><b>検証プロトコル：</b>run登録時に検証期日（+6ヶ月/+12ヶ月）を台帳に予約 → 期日到来で<b>事前に書いた反証条件</b>に照らし ○/×/△ を機械判定＋人間確認 → <b>外れも必ず公開</b>（「20社中13社合、7社外れ、なぜ外れたか」まで）。これが信用の源泉。</p>
+  </section>
+
+  <!-- 05 -->
+  <section>
+    <h2><span class="num">05</span>ループエンジン ― Claude監督 / Codex実装</h2>
+    <p class="sub">既存 creative-harness を企業分析版に転用。1社=1run。Codexに実装を極力寄せ、Claudeは監督・採点・却下の還流。</p>
+    <div class="board">
+      <div class="pipe">
+        <div class="pstep"><span class="st">1. ingest</span><br><span class="who cx">Codex</span><div class="d">有報・決算短信・説明資料を取得・構造化</div></div>
+        <div class="pstep"><span class="st">2. analyze</span><br><span class="who cx">Codex</span><div class="d">成長率/ROIC/FCF/競争優位/リスク整理</div></div>
+        <div class="pstep"><span class="st">3. axis-score</span><br><span class="who det">決定論</span><div class="d">7軸を客観データからスコア化（根拠つき）</div></div>
+        <div class="pstep"><span class="st">4. hexmap</span><br><span class="who det">db駆動</span><div class="d">軸→卦・変爻→次の卦</div></div>
+        <div class="pstep"><span class="st">5. hypothesis</span><br><span class="who cl">Claude</span><div class="d">仮説+反証条件＋fork独立採点</div></div>
+        <div class="pstep"><span class="st">6. ledger</span><br><span class="who cx">Codex</span><div class="d">検証期日を予約・台帳更新</div></div>
+        <div class="pstep"><span class="st">7. verify</span><br><span class="who cl">期日/Claude</span><div class="d">○×△判定＋外れ分析＋公開/非公開</div></div>
+      </div>
+      <div class="pipe-legend"><span class="who cx">Codex</span>データ取得・構造化・実装・台帳　<span class="who det">決定論</span>db参照で機械的　<span class="who cl">Claude</span>監督・仮説・採点・検証</div>
+    </div>
+    <table class="table">
+      <thead><tr><th></th><th>Claude（監督・少数精鋭）</th><th>Codex（実装・大半）</th></tr></thead>
+      <tbody>
+        <tr><td>役割</td><td>方針設計・写像ルールの妥当性検証・無バイアス採点・却下の還流・最終レビュー</td><td>データ取得/パース/構造化・スコアリング実装・卦マッピング実装・台帳更新・全スクリプト・QA自動化</td></tr>
+        <tr><td>起動</td><td>harnessが <code class="inline">codex exec</code> に構造化スペックを渡して実装させる</td><td>受けたスペックを実装しコミット、成果物JSONを返す</td></tr>
+      </tbody>
+    </table>
+    <div class="callout"><p><strong>最良解に収束させるループ（best-of-n）：</strong>Codexが<b>N候補</b>を生成 → Claude（またはfork独立evaluator）が<b>ブラインド採点</b> → 勝者採用 → ゲート未達なら<b>フィードバックを付けて再ディスパッチ</b>。品質ゲート＝<b>fork独立採点≧90</b>＋<b>再現性ゲート</b>（別のClaudeが同じ入力→同じ卦か）＋<b>gold回帰</b>（明快な既知事例を落とす採点表はブロック）。既存 creative-loop の機構をそのまま転用。</p></div>
+  </section>
+
+  <!-- 06 -->
+  <section>
+    <h2><span class="num">06</span>出力2レイヤー ＋ 法的セーフ設計</h2>
+    <p class="sub">同じ run から、表（研究・公開）と裏（自分の投資メモ・非公開）を分ける。公開側に銘柄判断語ガードを機械で掛ける。</p>
+    <div class="board">
+      <div class="layers">
+        <div class="layer pub"><h4>公開レイヤー（研究・発信）</h4><ul>
+          <li>「このフレームで見ると何が見え、どこで外れるか」のケーススタディ</li>
+          <li>時系列の仮説→検証・的中率・外れ分析</li>
+          <li><b>個別銘柄の売買判断は出さない</b>（買え/売れ/目標株価/時期）</li>
+        </ul></div>
+        <div class="layer priv"><h4>非公開レイヤー（自分用）</h4><ul>
+          <li>同じrunから、自分の投資メモ（判断の材料）</li>
+          <li>公開しない・課金しない・配らない</li>
+        </ul></div>
+      </div>
+      <p class="gate">⚠ preflightゲート：公開レイヤー出力に「買え/売れ/目標株価」等の銘柄判断語を検出したら機械で止める</p>
+    </div>
+    <p><b>法的セーフ設計5原則（調査由来・エンジンに組込）：</b></p>
+    <ol class="steps">
+      <li>公開レイヤーは<b>個別銘柄の投資判断（買え/売れ/価格/時期）に踏み込まない</b>。読むのは構造・歴史・力学（一般的評論・教育）。</li>
+      <li><b>不特定多数・随時単発・オープン</b>を貫く（会員限定の銘柄配信を作らない）。</li>
+      <li><b>報酬と個別銘柄推奨を切り離す</b>（課金するなら対象は書籍・教育・フレームそのもの）。</li>
+      <li><b>研究・時系列公開フレーム</b>を実態として担保（後講釈にしない・反証条件を事前公開）。</li>
+      <li><b>免責文＋実運用の一致</b>、有料化/会員制/個別銘柄言及に踏み込む前に<b>弁護士確認</b>（免責文だけでは該当性は消えない）。</li>
+    </ol>
+  </section>
+
+  <!-- 07 -->
+  <section>
+    <h2><span class="num">07</span>MVPの範囲 ― 最初にここまで</h2>
+    <p class="sub">あなたの回答＝手法の設計書が先。だからMVPは「動くコード全部」ではなくこの順。</p>
+    <ol class="steps">
+      <li><b><code class="inline">rules/mapping-rulebook.json</code> を固める</b>（04章＝7軸の採点ルール・軸→八卦→卦の写像・変爻の選び方・反証条件の書式）。← 本体。あなたとClaudeで詰め、Codexが叩き台を実装。</li>
+      <li><b>1社を手で通す</b>（例：任天堂 or トヨタ）＝ingest→axis-score→hexmap→hypothesis→ledger登録まで、ルール通りに1件動かして<b>再現可能か</b>を実証。</li>
+      <li><b>再現性ゲートを通す</b>（別のClaudeが同じ入力→同じ卦に辿り着くか）。ここまでで「設計書＋1件の実証」＝MVP完成。</li>
+      <li>（以降）Codexで ingest/analyze の自動化・台帳・検証スイープ・best-n収束を実装して量産へ。</li>
+    </ol>
+  </section>
+
+  <!-- 08 ASK -->
+  <section>
+    <h2><span class="num">08</span>あなたの判断が要る未決事項</h2>
+    <p class="sub">この設計でよければ、下の5点に答えてもらえれば spec 化 → 実装計画 → Codex実装へ進みます。</p>
+    <div class="ask">
+      <h3>回答をください（承認 or 修正 ＋ 以下5点）</h3>
+      <ol>
+        <li><b>対象企業の初手</b>：資料が厚い大型1社（任天堂/トヨタ等）から？ それとも<b>変化がはっきり出た過去事例</b>で後追い検証から？（後者は的中/外れを早く見られる）</li>
+        <li><b>発信チャネル</b>：既存のHaQei/易経YouTube・note・専用サイトのどれ？ <b>既存アニメ×易経chとは別ブランド</b>が安全か。</li>
+        <li><b>卦マッピングの厳密さ</b>：完全決定論（スコア→一意に卦）か、Claudeの解釈を1段挟む半決定論か（決定論は再現性◎だが機微を落とす）。</li>
+        <li><b>検証の時間軸</b>：半年/1年の実地検証だけか、<b>過去データでのバックテスト</b>（過去IRで卦→既知の結末で採点）も並走するか（信用を早く積める）。</li>
+        <li><b>Codex実行環境</b>：<code class="inline">codex exec</code> をこのリポジトリで回す前提でよいか（image_gen等でcodex使用実績あり）。</li>
+      </ol>
+    </div>
+  </section>
+
+  <div class="conclusion">
+    <h2>結論</h2>
+    <ol>
+      <li>狙う交差点は<b>本物の空白</b>。だが空白の理由＝写像ルールが未検証、という最大リスクと同じ場所。だから<b>「検証すること自体を製品にする」</b>のが唯一の勝ち筋。</li>
+      <li><b>「研究を表・判断は裏」の2レイヤー分離</b>は、金商法の非該当側（研究・教育）に留まりつつ差別化を取る、法と戦略が一致した設計。</li>
+      <li>MVPは<b>方法論ルールブック＋1社の実証＋再現性ゲート</b>。以降は <code class="inline">codex exec</code> でCodexが量産、Claudeが監督・fork独立採点≧90・却下の還流で品質を締める。</li>
+    </ol>
+  </div>
+
+  <footer>設計案 v1 ／ 題材: 易経×企業IR分析 ループエンジン ／ 調査=先行事例・金商法（一次〜準一次情報）。本設計は法的助言ではない。有料化・会員制・個別銘柄言及に踏み込む運用は弁護士確認が前提。</footer>
+
+</div>
+</body>
+</html>
