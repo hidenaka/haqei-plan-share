@@ -153,6 +153,22 @@
   .ask h3 { margin: 0 0 10px; color: var(--accent); font-size: 18px; }
   .ask ol { margin: 0; padding-left: 22px; } .ask li { margin: 8px 0; }
 
+  .diffbanner { margin: 18px 0 0; padding: 14px 18px; background: #6b4f1d; color:#fff; border-radius:12px; font-size:14px; line-height:1.6; }
+  .diffbanner b { color:#ffe6a8; }
+  .tag-new, .tag-chg { display:inline-block; font-size:11px; font-weight:700; border-radius:999px; padding:1px 9px; margin-right:6px; vertical-align:2px; }
+  .tag-new { background: var(--ok); color:#fff; }
+  .tag-chg { background: var(--gold); color:#fff; }
+  section.fresh > h2 { border-left-color: var(--gold); }
+  section.fresh > h2 .num { color: var(--gold); }
+  .split { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  .split .col { border:1px solid var(--line); border-radius:12px; background:#fff; padding:14px 16px; }
+  .split .col.design { border-color: var(--accent); }
+  .split .col.holdout { border-color: var(--warn); }
+  .split .col h4 { margin:0 0 6px; font-size:14px; }
+  .split .col.design h4 { color: var(--accent); } .split .col.holdout h4 { color: var(--warn); }
+  .split .col p { margin:0; font-size:12.5px; color:var(--ink-2); }
+  .loopring { text-align:center; font-size:13px; color:var(--ink-2); margin-top:12px; }
+  @media (max-width:720px){ .split { grid-template-columns:1fr; } }
   footer { margin-top: 36px; color: var(--ink-2); font-size: 13px; }
 
   @media (max-width: 720px) {
@@ -173,16 +189,18 @@
     <p class="lede">「当てる」のではなく「写像ルールを公開して検証し続ける」。それが唯一、この空白領域を差別化に変えつつ、法的に安全側（研究・教育）へ倒せる道。あなたの回答（目的物=両方／MVP=手法の設計書が先／分担=Codexに極力多く）を反映した設計です。承認 or 修正をください。</p>
     <div class="meta-row">
       <span class="chip">目的物 <b>両方（研究を表・判断は裏）</b></span>
-      <span class="chip">MVP <b>手法の設計書が先</b></span>
+      <span class="chip">MVP <b>過去事例バックテスト（分析先行）</b></span>
       <span class="chip">分担 <b>Codexに極力多く実装</b></span>
-      <span class="chip">再利用資産 <b>db/（699エッジ・64卦）＋既存ハーネス</b></span>
+      <span class="chip">対象 <b>日英問わず・変化が顕著な過去事例</b></span>
+      <span class="chip">ブランド <b>既存とは別</b></span>
     </div>
+    <div class="diffbanner">✏️ <b>v2更新（本人回答を反映）：</b> 「手法の設計書を先に固める」→ <b>過去事例バックテストの機械学習ループ版</b>に確定。写像ルールは先に手で固めず、<b>変化が顕著な過去事例（日英問わず）を集めて分析し、そこからデータ駆動で設計・較正</b>する。過学習を防ぐため<b>設計セット／検証セット（holdout）を分離</b>（下 §05b 🆕）。発信は<b>既存アニメ×易経chとは別ブランド</b>。卦マッピングの厳密さ（決定論/半決定論）は<b>分析後に確定</b>。<code class="inline" style="background:#ffffff33;color:#fff">codex exec</code>前提でGo。</div>
     <div class="tldr">
       <h2>TL;DR</h2>
       <ol>
         <li>狙う交差点（IR/決算に易経を継続適用し、卦で分類→変爻で次を予測→翌期に検証）は<b>日英いずれにも先行者がいない本物の空白</b>。ただし空白の理由＝最大リスク（写像ルールが未検証）と同じ場所にある。</li>
         <li>だから製品の中心は「当てること」ではなく<b>「写像ルールを公開して検証し続けること」</b>。外れも公開する研究フレームが、差別化かつ法的安全（金商法の非該当側）を同時に取る。</li>
-        <li>MVPは<b>方法論ルールブック（7軸→卦の再現可能な写像）＋1社の実証</b>。以降はCodexが取得・構造化・台帳・検証を量産し、Claudeが監督・無バイアス採点・却下の還流を担う。</li>
+        <li><span class="tag-chg">✏️v2</span>MVPは<b>変化が顕著な過去事例のコーパス構築＋分析＋バックテスト</b>。写像ルールはデータ分析から導き、<b>holdout事例</b>で当たり外れを即採点。Codexが取得・特徴量・台帳・バックテストを量産し、Claudeが監督・無バイアス採点・却下の還流。</li>
       </ol>
     </div>
   </header>
@@ -238,8 +256,8 @@
 
   <!-- 04 -->
   <section>
-    <h2><span class="num">04</span>方法論ルールブック ― MVPの本体（コードより先に固める）</h2>
-    <p class="sub">「企業のどの客観指標を、どの卦に、どのルールで対応づけるか」。後から誰でも同じ入力→同じ卦に辿り着けることを担保する。</p>
+    <h2><span class="num">04</span>方法論ルールブック ― 分析から導く写像（コードより先に「分析」が先）</h2>
+    <p class="sub"><span class="tag-chg">✏️v2</span>「企業のどの客観指標を、どの卦に、どのルールで対応づけるか」。<b>ルールは手で決め打ちせず、過去事例コーパスの分析から導き・較正する</b>（下 §05b）。ここに挙げる7軸は「分析の出発点となる特徴量の候補」であり、分析で取捨・追加されうる。最終的に「後から誰でも同じ入力→同じ卦」を担保する。</p>
     <table class="table">
       <thead><tr><th>観測軸</th><th>何を見るか</th><th>客観データ源（例）</th></tr></thead>
       <tbody>
@@ -294,6 +312,31 @@
     <div class="callout"><p><strong>最良解に収束させるループ（best-of-n）：</strong>Codexが<b>N候補</b>を生成 → Claude（またはfork独立evaluator）が<b>ブラインド採点</b> → 勝者採用 → ゲート未達なら<b>フィードバックを付けて再ディスパッチ</b>。品質ゲート＝<b>fork独立採点≧90</b>＋<b>再現性ゲート</b>（別のClaudeが同じ入力→同じ卦か）＋<b>gold回帰</b>（明快な既知事例を落とす採点表はブロック）。既存 creative-loop の機構をそのまま転用。</p></div>
   </section>
 
+  <!-- 05b NEW: ML backtest loop -->
+  <section class="fresh">
+    <h2><span class="num">05b</span><span class="tag-new">🆕新規</span>機械学習ループ ― 分析先行・写像はデータから・過学習を防ぐ</h2>
+    <p class="sub">「変化が顕著な過去事例」を教材に、写像（＝モデル）を作り、holdout事例で採点し、精度が上がるまで回す。これがあなたの言う「分析が先」の正体。</p>
+    <div class="board">
+      <div class="split">
+        <div class="col design"><h4>① 設計セット（design set）</h4><p>変化が顕著な過去事例の大半。<b>ここだけを見て</b>7軸の採点・軸→卦の写像・変爻の選び方を分析から設計・較正する。Claudeが仮説、Codexが特徴量抽出と集計。</p></div>
+        <div class="col holdout"><h4>② 検証セット（holdout）</h4><p>設計中は<b>絶対に触らない</b>別の過去事例。写像が固まってから初めて適用し、卦→既知の結末の当たり外れを採点。ここで初めて「後講釈でない実力」が出る。</p></div>
+      </div>
+      <p class="loopring">③ holdout精度が基準未満なら → 設計セットに戻って写像を修正 → 再バックテスト（best-of-n：Codexが複数の写像案、Claude/forkがブラインド採点で勝者採用）→ 収束するまでループ</p>
+      <figcaption>train/holdout分離が「ML版」の肝。同じ事例で写像を作り同じ事例で採点する＝過学習＝後講釈。分けて初めて信用が積める（既存の gold回帰・fork独立採点の規律と同型）。</figcaption>
+    </div>
+    <table class="table">
+      <thead><tr><th>ステップ</th><th>担当</th><th>中身</th></tr></thead>
+      <tbody>
+        <tr><td>コーパス構築</td><td>Codex</td><td>変化が顕著な過去事例を日英問わず収集（急回復/急失速/転換/破綻/大化け）。各事例に「変化が起きる前」のIR/財務スナップショット＋「実際の結末」＋変化タイプのラベル。</td></tr>
+        <tr><td>特徴量抽出</td><td>Codex</td><td>変化前データから7軸候補を機械抽出（決定論的な財務指標＋テキスト差分）。</td></tr>
+        <tr><td>写像分析・設計</td><td>Claude＋Codex</td><td>設計セットで「どの特徴パターンがどの結末に先行したか」を分析→軸→卦の写像とスコアを設計・較正。</td></tr>
+        <tr><td>バックテスト</td><td>Codex</td><td>holdoutに写像を適用→卦→結末の的中/外れを採点。的中率・混同・外れ事例を出力。</td></tr>
+        <tr><td>ループ</td><td>Claude監督</td><td>基準未満なら写像修正→再テスト。best-of-nで最良写像に収束。過学習検出（design↔holdout乖離）で警告。</td></tr>
+      </tbody>
+    </table>
+    <div class="callout warn"><p><strong>ML版の最大の落とし穴＝過学習（後講釈）。</strong>「変化が顕著」な事例だけ集めること自体に選択バイアス（生存者/後知恵）が乗る。だから①holdout厳格分離 ②「変化前」時点で実際に入手できた情報だけを使う（未来の情報を混ぜない＝look-ahead bias排除）を機械ゲートで強制する。この2つを守れないバックテストは数字が良くても信用できない。</p></div>
+  </section>
+
   <!-- 06 -->
   <section>
     <h2><span class="num">06</span>出力2レイヤー ＋ 法的セーフ設計</h2>
@@ -325,28 +368,37 @@
   <!-- 07 -->
   <section>
     <h2><span class="num">07</span>MVPの範囲 ― 最初にここまで</h2>
-    <p class="sub">あなたの回答＝手法の設計書が先。だからMVPは「動くコード全部」ではなくこの順。</p>
+    <p class="sub"><span class="tag-chg">✏️v2</span>分析が先。だからMVPは「コーパス→分析→写像設計→holdoutバックテスト」を1周完走させること。</p>
     <ol class="steps">
-      <li><b><code class="inline">rules/mapping-rulebook.json</code> を固める</b>（04章＝7軸の採点ルール・軸→八卦→卦の写像・変爻の選び方・反証条件の書式）。← 本体。あなたとClaudeで詰め、Codexが叩き台を実装。</li>
-      <li><b>1社を手で通す</b>（例：任天堂 or トヨタ）＝ingest→axis-score→hexmap→hypothesis→ledger登録まで、ルール通りに1件動かして<b>再現可能か</b>を実証。</li>
-      <li><b>再現性ゲートを通す</b>（別のClaudeが同じ入力→同じ卦に辿り着くか）。ここまでで「設計書＋1件の実証」＝MVP完成。</li>
-      <li>（以降）Codexで ingest/analyze の自動化・台帳・検証スイープ・best-n収束を実装して量産へ。</li>
+      <li><b>過去事例コーパスを作る</b>（Codex）＝変化が顕著な事例を日英問わず十数件、「変化前」IR/財務＋「結末」＋変化タイプで構造化。<b>design/holdoutに分割</b>。look-ahead混入を機械チェック。</li>
+      <li><b>設計セットを分析→写像を設計・較正</b>（Claude＋Codex）＝7軸候補の抽出、どの特徴が結末に先行したか、軸→卦の写像を<b>データから</b>組む（<code class="inline">rules/mapping-rulebook.json</code>）。</li>
+      <li><b>holdoutでバックテスト</b>（Codex）＝写像を触っていない事例に適用し、卦→結末の的中/外れを採点。<b>外れ事例を含めて</b>出力。</li>
+      <li><b>過学習ゲートを通す</b>＝design↔holdoutの精度乖離が基準内か／再現性（別Claudeが同じ入力→同じ卦か）。ここまでで「分析＋写像＋バックテスト1周」＝MVP完成。</li>
+      <li>（以降）Codexでコーパス拡大・特徴量・バックテスト自動化・best-n収束、そして<b>現役企業への前向き適用（半年後検証の予約）</b>へ。</li>
     </ol>
   </section>
 
   <!-- 08 ASK -->
   <section>
-    <h2><span class="num">08</span>あなたの判断が要る未決事項</h2>
-    <p class="sub">この設計でよければ、下の5点に答えてもらえれば spec 化 → 実装計画 → Codex実装へ進みます。</p>
+    <h2><span class="num">08</span>確定事項と、残りの小さな判断</h2>
+    <p class="sub"><span class="tag-chg">✏️v2</span>前回の5点は下記で確定。spec化の前に、残り2点だけ決めれば実装計画へ進めます。</p>
+    <table class="table">
+      <thead><tr><th>論点</th><th>あなたの決定</th></tr></thead>
+      <tbody>
+        <tr class="pick"><td>対象の初手</td><td>変化が顕著な過去事例（日英問わず）＝バックテスト先行</td></tr>
+        <tr class="pick"><td>写像設計の順序</td><td>分析が先。ルールはデータから導く</td></tr>
+        <tr class="pick"><td>検証</td><td>過去データのバックテスト</td></tr>
+        <tr class="pick"><td>ブランド</td><td>既存アニメ×易経chとは別</td></tr>
+        <tr class="pick"><td>Codex実行</td><td><code class="inline">codex exec</code> 前提でGo</td></tr>
+      </tbody>
+    </table>
     <div class="ask">
-      <h3>回答をください（承認 or 修正 ＋ 以下5点）</h3>
+      <h3>残り2点だけ（答えなければ私の推奨で進めます）</h3>
       <ol>
-        <li><b>対象企業の初手</b>：資料が厚い大型1社（任天堂/トヨタ等）から？ それとも<b>変化がはっきり出た過去事例</b>で後追い検証から？（後者は的中/外れを早く見られる）</li>
-        <li><b>発信チャネル</b>：既存のHaQei/易経YouTube・note・専用サイトのどれ？ <b>既存アニメ×易経chとは別ブランド</b>が安全か。</li>
-        <li><b>卦マッピングの厳密さ</b>：完全決定論（スコア→一意に卦）か、Claudeの解釈を1段挟む半決定論か（決定論は再現性◎だが機微を落とす）。</li>
-        <li><b>検証の時間軸</b>：半年/1年の実地検証だけか、<b>過去データでのバックテスト</b>（過去IRで卦→既知の結末で採点）も並走するか（信用を早く積める）。</li>
-        <li><b>Codex実行環境</b>：<code class="inline">codex exec</code> をこのリポジトリで回す前提でよいか（image_gen等でcodex使用実績あり）。</li>
+        <li><b>コーパスの「変化が顕著」の定義</b>：どのタイプを最初の教材にする？（例：❶急回復/V字 ❷急失速/転落 ❸事業転換/ピボット ❹破綻 ❺無名からの大化け）。<b>推奨＝❶❷❸を各数件で混ぜる</b>（方向の違う変化を入れないと写像が一方向に偏る）。銘柄名の当てはあってもなくてもOK。</li>
+        <li><b>卦マッピングの厳密さ</b>：分析後に確定でよいが、初期方針は<b>「決定論を第一候補・holdout精度が頭打ちなら半決定論（Claude解釈1段）を試す」</b>で進めてよいか。</li>
       </ol>
+      <p style="margin:12px 0 0;font-size:13.5px;color:var(--ink-2);">この2点に「推奨でOK」または修正をくれれば、<b>spec（docs/superpowers/specs/…md）を書き起こし → 実装計画 → Codex実装</b>へ進みます。</p>
     </div>
   </section>
 
@@ -359,7 +411,7 @@
     </ol>
   </div>
 
-  <footer>設計案 v1 ／ 題材: 易経×企業IR分析 ループエンジン ／ 調査=先行事例・金商法（一次〜準一次情報）。本設計は法的助言ではない。有料化・会員制・個別銘柄言及に踏み込む運用は弁護士確認が前提。</footer>
+  <footer>設計案 v2（過去事例バックテストのML版に確定・本人回答反映）／ 題材: 易経×企業IR分析 ループエンジン ／ 調査=先行事例・金商法（一次〜準一次情報）。本設計は法的助言ではない。有料化・会員制・個別銘柄言及に踏み込む運用は弁護士確認が前提。</footer>
 
 </div>
 </body>
