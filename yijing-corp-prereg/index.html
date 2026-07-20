@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>pre-registration の結果 ― 優位は消えた（それが正しい）</title>
+<style>
+  :root{--ink:#1a1a1a;--ink-2:#4a4a4a;--bg:#f7f5ee;--paper:#fbf9f1;--line:#d8d2bf;
+    --accent:#2f5d8a;--accent-soft:#dbe6f0;--gold:#b8892b;--warn:#c83a2c;--warn-soft:#f6dcd6;
+    --ok:#2f7d55;--ok-soft:#d8ecdf;--yellow:#f4d35e;--shadow:0 1px 0 rgba(0,0,0,.04),0 8px 24px rgba(0,0,0,.06);
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    --sans:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP","Yu Gothic","Meiryo",sans-serif;}
+  *{box-sizing:border-box}html,body{margin:0;padding:0}
+  body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1.75;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:960px;margin:0 auto;padding:54px 26px 96px}
+  .kicker{display:inline-block;background:var(--accent);color:#fff;font-size:12px;font-weight:700;letter-spacing:.1em;padding:6px 12px;border-radius:999px;margin-bottom:16px}
+  h1{font-size:31px;line-height:1.38;margin:0 0 14px;letter-spacing:-.01em}
+  h1 b{color:var(--accent)}
+  .lede{font-size:17.5px;color:var(--ink-2);margin:0;max-width:850px}
+  .meta-row{margin-top:16px;display:flex;flex-wrap:wrap;gap:8px}
+  .chip{font-size:12.5px;background:var(--paper);border:1px solid var(--line);border-radius:999px;padding:5px 12px;color:var(--ink-2)}
+  .chip b{color:var(--accent)}.chip.warn b{color:var(--warn)}.chip.ok b{color:var(--ok)}
+  section{margin:50px 0 0}
+  h2{font-size:24px;line-height:1.4;margin:0 0 6px;border-left:6px solid var(--accent);padding-left:12px}
+  h2 .num{color:var(--accent);margin-right:10px}
+  .sub{color:var(--ink-2);margin:0 0 18px}
+  .big{display:grid;grid-template-columns:1fr auto 1fr;gap:14px;align-items:center;margin:16px 0}
+  .card{border-radius:14px;padding:18px 20px;text-align:center;box-shadow:var(--shadow)}
+  .card.a{background:var(--warn-soft);border:1px solid var(--warn)}
+  .card.b{background:#ece7dc;border:1px solid var(--line)}
+  .card .lab{font-size:13px;color:var(--ink-2)}
+  .card .sc{font-size:40px;font-weight:800;line-height:1.1}
+  .card.a .sc{color:var(--warn)}.card.b .sc{color:var(--ink)}
+  .card .d{font-size:12.5px;color:var(--ink-2);margin-top:4px}
+  .to{font-size:26px;color:var(--accent);font-weight:800;text-align:center}
+  table.t{width:100%;border-collapse:collapse;margin:12px 0;background:var(--paper);border:1px solid var(--line);border-radius:12px;overflow:hidden;box-shadow:var(--shadow);font-size:13.5px}
+  table.t th,table.t td{text-align:left;padding:9px 11px;border-bottom:1px solid var(--line);vertical-align:top}
+  table.t th{background:#efeadb;font-weight:700}
+  table.t tr:last-child td{border-bottom:0}
+  .flip{background:var(--warn-soft)}
+  .ok{color:var(--ok);font-weight:700}.ng{color:var(--warn);font-weight:700}
+  .up{color:var(--ok);font-weight:700}.down{color:var(--warn);font-weight:700}.flat{color:var(--ink-2);font-weight:700}
+  .callout{margin:16px 0;padding:15px 18px;border-left:4px solid var(--accent);background:var(--accent-soft);border-radius:0 10px 10px 0}
+  .callout.warn{border-color:var(--warn);background:var(--warn-soft)}.callout.ok{border-color:var(--ok);background:var(--ok-soft)}
+  .callout p{margin:0}.callout strong{color:var(--accent)}.callout.warn strong{color:var(--warn)}.callout.ok strong{color:var(--ok)}
+  code.inline{font-family:var(--mono);font-size:.9em;background:#efeadb;padding:1px 6px;border-radius:4px}
+  ol.steps{padding-left:22px}ol.steps li{margin:8px 0}
+  .conc{margin-top:50px;padding:26px 28px 22px;background:var(--ink);color:#f6f3e8;border-radius:16px}
+  .conc h2{color:var(--yellow);border:0;padding:0;margin:0 0 12px}
+  .conc ol{margin:0;padding-left:20px}.conc li{margin:6px 0}
+  .conc code.inline{background:#2c2f33;color:#f6f3e8}
+  footer{margin-top:34px;color:var(--ink-2);font-size:13px}
+  .scroll{overflow-x:auto}
+  @media(max-width:720px){.wrap{padding:32px 16px 64px}h1{font-size:24px}h2{font-size:20px}.big{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <span class="kicker">易経×企業分析 ／ pre-registration（事前登録）の結果</span>
+  <h1>後知恵を機械で外したら、<b>優位は消えた</b>。<br>そして<b>それこそが、この仕組みの信頼性の証明</b>です。</h1>
+  <p class="lede">前回の「5/6」は、私が結末を見た後に capitulation を採点していた＝後知恵が入っていた疑いがあった。そこで採点ルールを<b>先にコミット（pre-register）</b>し、客観指標（52週高値からのドローダウン・PBR）だけで<b>結末を見ずに再採点</b>した。結果、的中は <b>5/6 → 3/6（ほぼ偶然）</b> へ。都合の悪い結果を隠さず出すのが、このプロジェクトの約束です。</p>
+  <div class="meta-row">
+    <span class="chip warn">手採点(後知恵込) <b>5/6</b></span>
+    <span class="chip">機械採点(事前登録) <b>3/6</b></span>
+    <span class="chip ok">整合性 <b>ルーブリックを先にcommit</b></span>
+    <span class="chip warn">結論 <b>検証済み優位なし（N=6）</b></span>
+  </div>
+
+  <section>
+    <h2><span class="num">01</span>何が起きたか</h2>
+    <div class="big">
+      <div class="card a"><div class="lab">手採点（後知恵の疑い）</div><div class="sc">5/6</div><div class="d">私が結末を見て⑩を採点</div></div>
+      <div class="to">→</div>
+      <div class="card b"><div class="lab">機械採点（pre-registered）</div><div class="sc">3/6</div><div class="d">DD%とPBRだけ・結末を見ず</div></div>
+    </div>
+    <div class="callout"><p><strong>手順の整合性：</strong>採点ルーブリック（<code class="inline">capitulation_rubric.py</code>＝ドローダウン閾値45/25/15%・PBR 0.7/4.0）を<b>事例のスコアを付ける前にgitへコミット</b>した。だから「結果に合わせて閾値を逆算した」ことはあり得ない。<b>むしろ的中が下がった</b>こと自体が、恣意的に勝たせていない証拠。</p></div>
+  </section>
+
+  <section>
+    <h2><span class="num">02</span>手採点 → 機械採点 で何が変わったか</h2>
+    <div class="scroll">
+    <table class="t">
+      <thead><tr><th>企業</th><th>客観指標</th><th>⑩手採点</th><th>⑩機械</th><th>機械の予測</th><th>結末</th><th></th></tr></thead>
+      <tbody>
+        <tr><td>ソニー</td><td>DD47%・PBR0.55</td><td>+2</td><td>+2</td><td class="up">up</td><td class="up">up</td><td class="ok">○</td></tr>
+        <tr><td>富士フイルム</td><td>DD3%(新高値圏)・PBR1.1</td><td>-2</td><td>-1</td><td class="down">down</td><td class="down">down</td><td class="ok">○</td></tr>
+        <tr><td>Netflix</td><td>DD77%・PBR6.0</td><td>+2</td><td>+1</td><td class="up">up</td><td class="up">up</td><td class="ok">○</td></tr>
+        <tr class="flip"><td>Nokia</td><td>DD20%・PBR2.0</td><td>-1</td><td>0</td><td class="flat">flat</td><td class="down">down</td><td class="ng">✕</td></tr>
+        <tr class="flip"><td>シャープ</td><td>DD29%・PBR≈1</td><td>-1</td><td>+1</td><td class="up">up</td><td class="down">down</td><td class="ng">✕</td></tr>
+        <tr><td>任天堂</td><td>DD10%・PBR取得不可</td><td>-1</td><td>-1</td><td class="down">down</td><td class="up">up</td><td class="ng">✕</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <div class="callout warn"><p><strong>崩れた2社が教えること（＝後知恵の正体）：</strong><br>
+    ・<b>シャープ</b>：株価はこの時点で高値から-29%＝客観的には「そこそこ売られた（capitulation気味＝+1→up予測）」に見える。だが実際は<b>そこからさらに-75%</b>。「本当の崩落はこれから」はドローダウンの数字に映らない。私は結末を知っていたから手採点で-1（下げ）にできていた。<br>
+    ・<b>Nokia</b>：-20%も「中程度＝どちらとも言えない(0→flat)」。手採点の-1は後知恵。<br>
+    ＝<b>「叩き売られ切ったソニー」と「まだ落ちる途中のシャープ」を、ドローダウン%とPBRだけでは区別できない。</b></p></div>
+  </section>
+
+  <section>
+    <h2><span class="num">03</span>これは「失敗」ではなく「正しい負の結果」</h2>
+    <div class="callout ok"><p><strong>ほとんどの個人発信は、この段階の後知恵5/6を「当たった！」と出して終わる。</strong>このプロジェクトは逆で、<b>事前登録して後知恵を機械で剥がし、3/6（＝優位なし）を正直に出した</b>。これは信用を落とすどころか、<b>「この人の数字は後知恵で盛られていない」という信頼の土台</b>になる。研究として売れるのはこの姿勢の方。ちなみに<b>状態(ファンダ)側の予測は変えていない</b>（design 3/4・holdout 1/2のまま）＝今回いじったのは価格軸だけ。</p></div>
+  </section>
+
+  <section>
+    <h2><span class="num">04</span>だから次に必要なこと（明確になった）</h2>
+    <p class="sub">「capitulation は効くかも」は仮説として残るが、DD%+PBRでは測れない。何が足りないかが分かった。</p>
+    <ol class="steps">
+      <li><b>capitulationのより良い客観指標</b>：ソニー（叩き売られ切った）とシャープ（まだ落ちる途中）を分ける変数＝<b>PBRの絶対的低さ（簿価割れの深さ）・赤字がもう"出た"か"これから"か（実績赤字 vs 予想赤字）・信用スプレッド/格付け・強制売り(需給)</b>。DD%単体を卒業する。</li>
+      <li><b>コーパス拡大（数十〜数百社）</b>：N=6では3/6も5/6も偶然の範囲。検出力を出して初めて「効く/効かない」を言える。</li>
+      <li><b>catalyst軸</b>：任天堂型（新製品サイクルによる上げ）は capitulation では永遠に取れない。別軸が要る。</li>
+      <li>スケール作業は<b>Codexに寄せる</b>（コーパス収集・指標抽出の量産）。Claudeは pre-register とゲートで監督。</li>
+    </ol>
+  </section>
+
+  <div class="conc">
+    <h2>結論</h2>
+    <ol>
+      <li>採点ルーブリックを<b>先にコミット</b>して後知恵を機械で剥がしたら、価格的中は <b>5/6 → 3/6（偶然の範囲）</b>。<b>検証済みの優位はまだ無い。</b></li>
+      <li>これは失敗でなく<b>正しい負の結果</b>＝「後知恵で盛らない」というこのプロジェクトの信頼性そのもの。崩れたのはシャープ/Nokia＝<b>DD%とPBRでは"叩き売られ切った"と"まだ落ちる途中"を区別できない</b>という具体的な学び。</li>
+      <li>次は<b>capitulationの客観指標を強化（簿価割れの深さ・実績赤字vs予想赤字・信用）＋コーパス拡大＋catalyst軸</b>。スケールはCodex、監督はClaude。</li>
+    </ol>
+  </div>
+
+  <footer>pre-registration結果 ／ ルーブリック=capitulation_rubric.py（事例採点前にcommit済）／ 全数値は出典付き・look-ahead厳守 ／ 研究・教育目的であり投資助言ではない。N=6は検出力を持たず、3/6も5/6も統計的結論ではない。</footer>
+
+</div>
+</body>
+</html>
