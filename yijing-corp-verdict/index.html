@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>最終検証 ― 生存バイアスを削ったら、優位は消えた</title>
+<style>
+  :root{--ink:#1a1a1a;--ink-2:#4a4a4a;--bg:#f7f5ee;--paper:#fbf9f1;--line:#d8d2bf;
+    --accent:#2f5d8a;--accent-soft:#dbe6f0;--gold:#b8892b;--warn:#c83a2c;--warn-soft:#f6dcd6;
+    --ok:#2f7d55;--ok-soft:#d8ecdf;--yellow:#f4d35e;--shadow:0 1px 0 rgba(0,0,0,.04),0 8px 24px rgba(0,0,0,.06);
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    --sans:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP","Yu Gothic","Meiryo",sans-serif;}
+  *{box-sizing:border-box}html,body{margin:0;padding:0}
+  body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1.75;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:960px;margin:0 auto;padding:54px 26px 96px}
+  .kicker{display:inline-block;background:var(--accent);color:#fff;font-size:12px;font-weight:700;letter-spacing:.1em;padding:6px 12px;border-radius:999px;margin-bottom:16px}
+  h1{font-size:30px;line-height:1.4;margin:0 0 14px}h1 b{color:var(--accent)}
+  .lede{font-size:17.5px;color:var(--ink-2);margin:0;max-width:860px}
+  .meta-row{margin-top:16px;display:flex;flex-wrap:wrap;gap:8px}
+  .chip{font-size:12.5px;background:var(--paper);border:1px solid var(--line);border-radius:999px;padding:5px 12px;color:var(--ink-2)}
+  .chip b{color:var(--accent)}.chip.warn b{color:var(--warn)}.chip.ok b{color:var(--ok)}
+  section{margin:50px 0 0}
+  h2{font-size:24px;margin:0 0 6px;border-left:6px solid var(--accent);padding-left:12px}
+  h2 .num{color:var(--accent);margin-right:10px}
+  .sub{color:var(--ink-2);margin:0 0 16px}
+  table.t{width:100%;border-collapse:collapse;margin:12px 0;background:var(--paper);border:1px solid var(--line);border-radius:12px;overflow:hidden;box-shadow:var(--shadow);font-size:14px}
+  table.t th,table.t td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+  table.t th{background:#efeadb;font-weight:700}table.t tr:last-child td{border-bottom:0}
+  tr.mirage td:first-child{color:var(--warn);font-weight:700}
+  tr.honest{background:var(--ok-soft)}tr.honest td:first-child{color:var(--ok);font-weight:700}
+  .big{font-size:30px;font-weight:800;text-align:center;margin:6px 0}
+  .arrowrow{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:8px;align-items:center;margin:16px 0;text-align:center}
+  .stage{border:1px solid var(--line);border-radius:12px;padding:12px;background:var(--paper);box-shadow:var(--shadow);font-size:12.5px}
+  .stage .v{font-size:20px;font-weight:800}
+  .stage.s1 .v{color:var(--warn)}.stage.s2 .v{color:var(--warn)}.stage.s3{border:2px solid var(--ok);background:var(--ok-soft)}.stage.s3 .v{color:var(--ok)}
+  .to{font-size:22px;color:var(--accent);font-weight:800}
+  .callout{margin:16px 0;padding:15px 18px;border-left:4px solid var(--accent);background:var(--accent-soft);border-radius:0 10px 10px 0}
+  .callout.warn{border-color:var(--warn);background:var(--warn-soft)}.callout.ok{border-color:var(--ok);background:var(--ok-soft)}
+  .callout p{margin:0}.callout strong{color:var(--accent)}.callout.warn strong{color:var(--warn)}.callout.ok strong{color:var(--ok)}
+  code.inline{font-family:var(--mono);font-size:.9em;background:#efeadb;padding:1px 6px;border-radius:4px}
+  .cols{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin:14px 0}
+  .card{border-radius:12px;padding:15px 16px;box-shadow:var(--shadow);border:1px solid var(--line);background:var(--paper)}
+  .card h4{margin:0 0 6px;font-size:14px;color:var(--accent)}.card p{margin:0;font-size:12.5px;color:var(--ink-2)}
+  .card.reco{border:2px solid var(--ok);background:var(--ok-soft)}.card.reco h4{color:var(--ok)}
+  ol.steps{padding-left:22px}ol.steps li{margin:7px 0}
+  .conc{margin-top:50px;padding:26px 28px 22px;background:var(--ink);color:#f6f3e8;border-radius:16px}
+  .conc h2{color:var(--yellow);border:0;padding:0;margin:0 0 12px}.conc ol{margin:0;padding-left:20px}.conc li{margin:6px 0}
+  .conc code.inline{background:#2c2f33;color:#f6f3e8}
+  footer{margin-top:34px;color:var(--ink-2);font-size:13px}
+  .scroll{overflow-x:auto}
+  @media(max-width:720px){.wrap{padding:32px 16px 64px}h1{font-size:24px}h2{font-size:20px}.arrowrow{grid-template-columns:1fr}.to{transform:rotate(90deg)}.cols{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <span class="kicker">易経×企業分析 ／ 最終検証（生存バイアス削減）</span>
+  <h1>正しいデータを作ったら、<b>「優位」は +16.6% → +1.6% に消えた</b>。<br>これが、最後まで正直にやった答えです。</h1>
+  <p class="lede">歴史的S&P500の構成銘柄を"当時の顔ぶれ"で復元し（後に指数から外れた敗者を含む）、458社・13,163観測・<b>1四半期あたり228銘柄</b>の実効breadthで検証した。すると book_yield（割安）の long-short は、40生存者で見えた<b>年+16.6%（t+3.23）から +1.6%（t+0.74・有意でない）へ崩壊</b>。あの魅惑的なエッジは、約9割が生存バイアスと無分散の産物だった。</p>
+  <div class="meta-row">
+    <span class="chip warn">40生存者 <b>+16.6% / t+3.23（蜃気楼）</b></span>
+    <span class="chip ok">458社(敗者含) <b>+1.6% / NW t+0.74</b></span>
+    <span class="chip">breadth <b>片側6-7銘柄 → 数十銘柄</b></span>
+    <span class="chip warn">結論 <b>検証済みの価格優位なし</b></span>
+  </div>
+
+  <section>
+    <h2><span class="num">01</span>厳密さを一段上げるたびに、幻の優位は縮んだ</h2>
+    <div class="arrowrow">
+      <div class="stage s1"><div>N=6 手採点</div><div class="v">5/6</div><div>選択バイアス＋後知恵</div></div>
+      <div class="to">→</div>
+      <div class="stage s2"><div>40生存者・tercile</div><div class="v">+16.6%</div><div>t+3.23（生存＋無分散）</div></div>
+      <div class="to">→</div>
+      <div class="stage s3"><div>458社・敗者含・228/Q</div><div class="v">+1.6%</div><div>NW t+0.74（有意でない）</div></div>
+    </div>
+    <div class="callout ok"><p><strong>これが科学の正しい振る舞い：</strong>各段階で「盛られた要素」を1つずつ剥がすたびに、優位はゼロへ近づいた。ほとんどの発信は最初の「5/6！」や「+16%！」で止めて売る。<b>ここでは最後まで剥がして +1.6%（有意でない）を出した。</b>負けを正しく負けと言える計器を作ったこと自体が成果。</p></div>
+  </section>
+
+  <section>
+    <h2><span class="num">02</span>正しいデータでの、正直な数字</h2>
+    <div class="scroll">
+    <table class="t">
+      <thead><tr><th>検定（458社・敗者含・2010-18）</th><th>結果</th><th>判定</th></tr></thead>
+      <tbody>
+        <tr class="honest"><td>book_yield L-S（tercile・net）</td><td>+1.6%/年・annual t+0.57・quarterly NW t+0.74</td><td>有意でない</td></tr>
+        <tr><td>book_yield L-S（decile＝より極端）</td><td>+3.5%・NW t+1.25</td><td>有意でない</td></tr>
+        <tr><td>book_yield IC</td><td>+0.019・NW t+0.58</td><td>有意でない</td></tr>
+        <tr><td>roe IC</td><td>+0.040・NW t+1.52</td><td>有意でない（前は逆符号＝不安定）</td></tr>
+        <tr><td>leverage IC</td><td>+0.032・NW t+0.80</td><td>有意でない</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <div class="callout warn"><p><strong>正直な読み：</strong>単純ファクター（割安・品質・低レバ）に、この米国大型株2010-18・survivorship削減データでは<b>統計的に有意な価格優位は無い</b>。バリュープレミアムの正直な大きさは +1.6〜3.5%/年で、学術の値（数%）の範囲だが9年・単一地域では有意化できない。roeが前回と符号反転した事実が、40生存者の結果がいかに歪んでいたかを示す。残存の穴＝yfinanceで解決できない廃止銘柄257はまだ欠落（真の底は更に低い可能性）。</p></div>
+  </section>
+
+  <section>
+    <h2><span class="num">03</span>では、この研究の価値はどこにあるか</h2>
+    <div class="callout"><p><strong>「市場に勝つエッジ」は（正直にやると）無かった。</strong>それでも残る価値は2つ。①<b>後知恵・生存バイアス・無分散・オーバーラップを機械で剥がし、幻の優位を正しく棄却できる"検証エンジン"</b>＝個人でこれを持つ人はほぼいない。②<b>易経を"当てる占い"でなく、数値を出した後の解釈レイヤー</b>として重ねる語り＝コンテンツの独自性。つまり売り物は「勝つ手法」でなく<b>「正直な検証の物語」</b>。</p></div>
+  </section>
+
+  <section>
+    <h2><span class="num">04</span>ここからの選択肢</h2>
+    <div class="cols">
+      <div class="card reco"><h4>A. 研究/教育コンテンツへ（推奨）</h4><p>「私はこう検証し、幻のエッジをこう棄却した」を<b>易経の語りで見せる研究コンテンツ</b>に。投資助言でなく教育＝法的に安全・独自・正直。あなたの本業(アニメ×易経)とも地続き。</p></div>
+      <div class="card"><h4>B. さらに深掘り（低期待）</h4><p>数十年史＋有料delisting return（Sharadar/CRSP）＋多因子ML＋複数地域。<b>それでも期待エッジは小さく不確実</b>。手間対効果は低い。</p></div>
+      <div class="card"><h4>C. ここで区切る</h4><p>「価格優位は正直に無かった」を確定成果として記録し、本業へ戻る。エンジンとデータは残る。</p></div>
+    </div>
+  </section>
+
+  <div class="conc">
+    <h2>結論</h2>
+    <ol>
+      <li>生存バイアスを削り breadth を出したら、book_yield の優位は<b>+16.6% → +1.6%（有意でない）へ崩壊</b>。あのエッジは約9割が蜃気楼だった。</li>
+      <li>正直なデータでは、単純ファクターに<b>検証済みの価格優位は無い</b>（IC/長ショートいずれも NW t&lt;2）。市場効率＋小さな因子プレミアムと整合。</li>
+      <li>売り物は「勝つ手法」でなく<b>「後知恵・生存・無分散・重複を剥がして幻を棄却できる正直な検証エンジン＋易経の語り」</b>。次は<b>A：研究/教育コンテンツ化</b>を推奨。</li>
+    </ol>
+  </div>
+
+  <footer>最終検証 ／ corp-analysis/panel（歴史的S&P500構成銘柄・458社・13,163obs・2010-18）／ NW t・tercile/decile L-S・IC ／ 研究・教育目的であり投資助言ではない。残存survivorship（廃止257銘柄欠落）ありICは優位を保証しない。</footer>
+
+</div>
+</body>
+</html>
