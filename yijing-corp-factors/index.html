@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>全因子を試した結果 ― 何を入れ、何を外すか</title>
+<style>
+  :root{--ink:#1a1a1a;--ink-2:#4a4a4a;--bg:#f7f5ee;--paper:#fbf9f1;--line:#d8d2bf;
+    --accent:#2f5d8a;--accent-soft:#dbe6f0;--gold:#b8892b;--warn:#c83a2c;--warn-soft:#f6dcd6;
+    --ok:#2f7d55;--ok-soft:#d8ecdf;--yellow:#f4d35e;--shadow:0 1px 0 rgba(0,0,0,.04),0 8px 24px rgba(0,0,0,.06);
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    --sans:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP","Yu Gothic","Meiryo",sans-serif;}
+  *{box-sizing:border-box}html,body{margin:0;padding:0}
+  body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1.75;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:980px;margin:0 auto;padding:54px 26px 96px}
+  .kicker{display:inline-block;background:var(--accent);color:#fff;font-size:12px;font-weight:700;letter-spacing:.1em;padding:6px 12px;border-radius:999px;margin-bottom:16px}
+  h1{font-size:31px;line-height:1.38;margin:0 0 14px}h1 b{color:var(--accent)}
+  .lede{font-size:17.5px;color:var(--ink-2);margin:0;max-width:870px}
+  .meta-row{margin-top:16px;display:flex;flex-wrap:wrap;gap:8px}
+  .chip{font-size:12.5px;background:var(--paper);border:1px solid var(--line);border-radius:999px;padding:5px 12px;color:var(--ink-2)}
+  .chip b{color:var(--accent)}.chip.ok b{color:var(--ok)}.chip.warn b{color:var(--warn)}
+  section{margin:52px 0 0}
+  h2{font-size:24px;margin:0 0 6px;border-left:6px solid var(--accent);padding-left:12px}
+  h2 .num{color:var(--accent);margin-right:10px}
+  .sub{color:var(--ink-2);margin:0 0 18px}
+  table.t{width:100%;border-collapse:collapse;margin:12px 0;background:var(--paper);border:1px solid var(--line);border-radius:12px;overflow:hidden;box-shadow:var(--shadow);font-size:13.5px}
+  table.t th,table.t td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+  table.t th{background:#efeadb;font-weight:700}table.t tr:last-child td{border-bottom:0}
+  tr.win{background:var(--ok-soft)}tr.win td:first-child{font-weight:700;color:var(--ok)}
+  .ic-pos{color:var(--ok);font-weight:700}.ic-neg{color:var(--warn);font-weight:700}
+  .v-in{color:var(--ok);font-weight:700}.v-watch{color:var(--gold);font-weight:700}.v-out{color:var(--warn)}
+  .cols{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin:14px 0}
+  .card{border-radius:12px;padding:15px 16px;box-shadow:var(--shadow)}
+  .card.in{background:var(--ok-soft);border:1px solid var(--ok)}
+  .card.watch{background:#f4ecd6;border:1px solid var(--gold)}
+  .card.out{background:var(--warn-soft);border:1px solid var(--warn)}
+  .card h4{margin:0 0 6px;font-size:14px}
+  .card.in h4{color:var(--ok)}.card.watch h4{color:var(--gold)}.card.out h4{color:var(--warn)}
+  .card p{margin:0;font-size:12.5px;color:var(--ink-2)}
+  .callout{margin:16px 0;padding:15px 18px;border-left:4px solid var(--accent);background:var(--accent-soft);border-radius:0 10px 10px 0}
+  .callout.warn{border-color:var(--warn);background:var(--warn-soft)}.callout.ok{border-color:var(--ok);background:var(--ok-soft)}
+  .callout p{margin:0}.callout strong{color:var(--accent)}.callout.warn strong{color:var(--warn)}.callout.ok strong{color:var(--ok)}
+  code.inline{font-family:var(--mono);font-size:.9em;background:#efeadb;padding:1px 6px;border-radius:4px}
+  ol.steps{padding-left:22px}ol.steps li{margin:8px 0}
+  .conc{margin-top:50px;padding:26px 28px 22px;background:var(--ink);color:#f6f3e8;border-radius:16px}
+  .conc h2{color:var(--yellow);border:0;padding:0;margin:0 0 12px}.conc ol{margin:0;padding-left:20px}.conc li{margin:6px 0}
+  .conc code.inline{background:#2c2f33;color:#f6f3e8}
+  footer{margin-top:34px;color:var(--ink-2);font-size:13px}
+  .scroll{overflow-x:auto}
+  @media(max-width:720px){.wrap{padding:32px 16px 64px}h1{font-size:24px}h2{font-size:20px}.cols{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <span class="kicker">易経×企業分析 ／ 全因子を試した結果と、採否の判断</span>
+  <h1>8因子＋合成を out-of-sample＋多重検定にかけた。<br>生き残ったのは<b>「割安さ（バリュエーション）」だけ</b>だった。</h1>
+  <p class="lede">「優位を出すために必要なことを全部」——EDGARからファンダ因子を投入し、2,071観測で各因子の予測力を out-of-sample の IC で測り、多数の因子を試すことによる見せかけの当たり（p-hacking）を Bonferroni で補正した。結果、<b>頑健に生き残ったのは value（割安）とその親戚だけ</b>。N=6の capitulation/momentum の物語は<b>スケールで有意にならなかった</b>。何を入れ、何を外すかが数字で決まった。</p>
+  <div class="meta-row">
+    <span class="chip ok">採用 <b>value + 低レバ（t+3.41）</b></span>
+    <span class="chip warn">不採用 <b>momentum/capitulation/roe 他</b></span>
+    <span class="chip">検証 <b>2071obs・52四半期・Bonferroni</b></span>
+    <span class="chip warn">最大の穴 <b>生存バイアス（§04）</b></span>
+  </div>
+
+  <section>
+    <h2><span class="num">01</span>全因子の成績（out-of-sample IC・多重検定補正）</h2>
+    <p class="sub">IC＝シグナルとその後の対市場リターンの順位一致（0=無関係）。t＝偶然でない度合い（|t|≥2で有意／9因子なので Bonferroni では|t|≈3.1以上が"本物"）。</p>
+    <div class="scroll">
+    <table class="t">
+      <thead><tr><th>因子</th><th>意味</th><th>mean IC</th><th>t</th><th>判定</th></tr></thead>
+      <tbody>
+        <tr class="win"><td>value_safety</td><td>割安×低レバの合成</td><td class="ic-pos">+0.131</td><td class="ic-pos">+3.41</td><td class="v-in">✅ 採用（頑健）</td></tr>
+        <tr class="win"><td>book_yield</td><td>割安さ（簿価/時価）</td><td class="ic-pos">+0.093</td><td class="ic-pos">+3.20</td><td class="v-in">✅ 採用（頑健）</td></tr>
+        <tr><td>leverage</td><td>負債/資産（低いほど良と登録）</td><td class="ic-neg">-0.062</td><td>-2.22</td><td class="v-watch">△ 監視（raw有意のみ）</td></tr>
+        <tr><td>drawdown_52w</td><td>capitulation（叩き売られ度）</td><td class="ic-pos">+0.025</td><td>+0.75</td><td class="v-out">✗ 不採用（有意でない）</td></tr>
+        <tr><td>earnings_yield</td><td>益回り（もう一つの割安）</td><td>+0.015</td><td>+0.39</td><td class="v-out">✗ 不採用</td></tr>
+        <tr><td>composite(素朴4因子)</td><td>value+quality+capの単純平均</td><td>+0.061</td><td>+1.46</td><td class="v-out">✗ 不採用（薄めた）</td></tr>
+        <tr><td>net_margin</td><td>利益率（品質）</td><td>-0.005</td><td>-0.17</td><td class="v-out">✗ 不採用</td></tr>
+        <tr><td>mom_12m</td><td>モメンタム</td><td class="ic-neg">-0.004</td><td>-0.13</td><td class="v-out">✗ 不採用（逆）</td></tr>
+        <tr><td>realized_loss</td><td>実績赤字（capitulation代理）</td><td>-0.007</td><td>-0.23</td><td class="v-out">✗ 不採用（逆）</td></tr>
+        <tr><td>roe</td><td>自己資本利益率（品質）</td><td class="ic-neg">-0.061</td><td>-2.10</td><td class="v-out">✗ 不採用（逆符号）</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="num">02</span>採否の判断（＝何を入れ、何を外すか）</h2>
+    <div class="cols">
+      <div class="card in"><h4>✅ 入れる</h4><p><b>book_yield（割安さ）＋低レバ</b>の合成 <code class="inline">value_safety</code>。out-of-sample・多重検定を通過した唯一の頑健シグナル（t+3.41）。<b>これが優位の候補。</b></p></div>
+      <div class="card watch"><h4>△ 監視（単体では入れない）</h4><p><b>leverage単体</b>（raw有意だが多重検定を通らず）。合成の一部としてのみ採用。追加データで再判定。</p></div>
+      <div class="card out"><h4>✗ 外す</h4><p><b>momentum・drawdown(capitulation)・roe・net_margin・earnings_yield・realized_loss</b>。有意でない or 逆符号。N=6の物語はスケールで生き残らず。</p></div>
+    </div>
+    <div class="callout ok"><p><strong>2つの重要な学び：</strong>①<b>N=6で光った「capitulation」はスケールで有意にならなかった</b>（+0.025・t0.75）＝あの5/6は選択バイアス＋偶然だった。②私が作った"良さそうな4因子合成"は、強い因子(value)を弱い因子で薄めて<b>単体より悪化</b>（IC+0.061 vs +0.093）＝<b>「良さそう」で足すと壊れる。数字が通った因子だけを残す規律</b>が効いた。</p></div>
+  </section>
+
+  <section>
+    <h2><span class="num">03</span>見つかったのは、由緒正しい「バリュー効果」</h2>
+    <div class="callout"><p><strong>正体：</strong>生き残ったのは<b>value（割安な会社が、その後 市場を上回りやすい）</b>という、金融の学術で最も有名な因子の一つ。roe が逆符号だったのも整合的＝高ROEの優良株は<b>既に高く買われている</b>ので、その後の超過リターンはむしろ低い。つまり効いていたのは「良い会社」でなく<b>「安い会社」</b>。易経の言葉なら、華やかな乾ではなく、<b>底で力を蓄える復・地の卦</b>に妙味があった、という読み。</p></div>
+  </section>
+
+  <section>
+    <h2><span class="num">04</span>重大な留保 ― この +0.13 は"盛られている"可能性が高い</h2>
+    <div class="callout warn"><p><strong>生存バイアス：</strong>使った40社は<b>今日まで生き残った会社</b>。「安くて→復活した」会社が標本に多く、「安くて→倒産・上場廃止で消えた」会社が抜けている。<b>バリュー効果はまさにここで過大評価される</b>（学術のvalue IC は概ね0.03〜0.05。今回の0.09〜0.13は高すぎ＝survivorship inflation の疑い）。<b>この数字を信じる前に、倒産・廃止銘柄を含む point-in-time ユニバースで再検証</b>が必須。さらにバリューは2010年代に長期不振の時期もあり、"常勝"ではない（レジーム依存）。</p></div>
+  </section>
+
+  <section>
+    <h2><span class="num">05</span>次にやること（優先順）</h2>
+    <ol class="steps">
+      <li><b>生存バイアス除去（最優先）</b>：point-in-time の指数構成銘柄（消えた敗者も含む）で <code class="inline">value_safety</code> を再検証。ここで残れば本物、消えれば「幻の優位」。<b>Codexで敗者含む銘柄リスト＋データを量産</b>。</li>
+      <li><b>ユニバース拡大＋取引コスト/回転率</b>：中小型も入れ、リバランス頻度・売買コスト後でも残るか。</li>
+      <li><b>易経を解釈レイヤーに接続</b>：数値が出した「割安×安全」の各銘柄に、卦（復/謙/坤 等＝底で力を蓄える型）を重ねて<b>「なぜ効くのか」の物語</b>を付ける。当てる占いでなく「検証された数値＋変化のフレーム」。</li>
+      <li><b>公開/private分離は不変</b>：的中率・IC の研究は公開、個別銘柄の売買判断は private＋銘柄判断語ガード（金商法）。</li>
+    </ol>
+  </section>
+
+  <div class="conc">
+    <h2>結論</h2>
+    <ol>
+      <li>全部試した結果、out-of-sample＋多重検定を生き残ったのは<b>value（割安）＋低レバ＝<code class="inline">value_safety</code>（t+3.41）だけ</b>。momentum/capitulation/roe等は<b>外す</b>。N=6の capitulation 物語はスケールで消えた。</li>
+      <li>効いていたのは「良い会社」でなく<b>「安い会社」</b>（roeは逆符号）＝由緒正しいバリュー効果。素朴な合成は強い因子を薄めて悪化＝<b>数字が通った因子だけ残す規律</b>が要。</li>
+      <li>ただし +0.13 は<b>生存バイアスで盛られている疑いが濃厚</b>。次は<b>敗者を含む point-in-time ユニバースで再検証</b>（最優先）→残れば本物。その後に易経を解釈レイヤーで接続。</li>
+    </ol>
+  </div>
+
+  <footer>多因子検証 ／ corp-analysis/panel（EDGAR+yfinance・40社・2011-2023・2071obs）／ 事前登録8因子＋合成・OOS IC・Bonferroni ／ 研究・教育目的であり投資助言ではない。生存バイアス等によりICは優位を保証しない。</footer>
+
+</div>
+</body>
+</html>
