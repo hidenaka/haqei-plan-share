@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>株価データ投入 → 2仮説対決の結果</title>
+<style>
+  :root{--ink:#1a1a1a;--ink-2:#4a4a4a;--bg:#f7f5ee;--paper:#fbf9f1;--line:#d8d2bf;
+    --accent:#2f5d8a;--accent-soft:#dbe6f0;--gold:#b8892b;--warn:#c83a2c;--warn-soft:#f6dcd6;
+    --ok:#2f7d55;--ok-soft:#d8ecdf;--yellow:#f4d35e;--shadow:0 1px 0 rgba(0,0,0,.04),0 8px 24px rgba(0,0,0,.06);
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    --sans:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP","Yu Gothic","Meiryo",sans-serif;}
+  *{box-sizing:border-box}html,body{margin:0;padding:0}
+  body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1.75;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1000px;margin:0 auto;padding:54px 26px 96px}
+  .kicker{display:inline-block;background:var(--accent);color:#fff;font-size:12px;font-weight:700;letter-spacing:.1em;padding:6px 12px;border-radius:999px;margin-bottom:16px}
+  h1{font-size:32px;line-height:1.36;margin:0 0 14px;letter-spacing:-.01em}
+  h1 b{color:var(--accent)}
+  .lede{font-size:17.5px;color:var(--ink-2);margin:0;max-width:870px}
+  .meta-row{margin-top:16px;display:flex;flex-wrap:wrap;gap:8px}
+  .chip{font-size:12.5px;background:var(--paper);border:1px solid var(--line);border-radius:999px;padding:5px 12px;color:var(--ink-2)}
+  .chip b{color:var(--accent)}.chip.win b{color:var(--ok)}.chip.warn b{color:var(--warn)}
+  section{margin:52px 0 0}
+  h2{font-size:24px;line-height:1.4;margin:0 0 6px;border-left:6px solid var(--accent);padding-left:12px}
+  h2 .num{color:var(--accent);margin-right:10px}
+  .sub{color:var(--ink-2);margin:0 0 18px}
+  table.t{width:100%;border-collapse:collapse;margin:12px 0;background:var(--paper);border:1px solid var(--line);border-radius:12px;overflow:hidden;box-shadow:var(--shadow);font-size:13.5px}
+  table.t th,table.t td{text-align:left;padding:9px 11px;border-bottom:1px solid var(--line);vertical-align:top}
+  table.t th{background:#efeadb;font-weight:700}
+  table.t tr:last-child td{border-bottom:0}
+  .col-hi{background:var(--accent-soft)}
+  .up{color:var(--ok);font-weight:700}.down{color:var(--warn);font-weight:700}.flat{color:var(--ink-2);font-weight:700}
+  .ok{color:var(--ok);font-weight:700}.ng{color:var(--warn);font-weight:700}
+  .callout{margin:16px 0;padding:15px 18px;border-left:4px solid var(--accent);background:var(--accent-soft);border-radius:0 10px 10px 0}
+  .callout.warn{border-color:var(--warn);background:var(--warn-soft)}.callout.ok{border-color:var(--ok);background:var(--ok-soft)}
+  .callout p{margin:0}.callout strong{color:var(--accent)}.callout.warn strong{color:var(--warn)}.callout.ok strong{color:var(--ok)}
+  code.inline{font-family:var(--mono);font-size:.9em;background:#efeadb;padding:1px 6px;border-radius:4px}
+  .vs{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:14px 0}
+  .hy{border:1px solid var(--line);border-radius:12px;padding:16px 18px;background:var(--paper);box-shadow:var(--shadow)}
+  .hy.lose{opacity:.75}.hy.win{border:2px solid var(--ok);background:var(--ok-soft)}
+  .hy h4{margin:0 0 4px;font-size:15px}.hy .score{font-size:26px;font-weight:800}
+  .hy.win .score{color:var(--ok)}.hy.lose .score{color:var(--warn)}
+  .hy .d{font-size:12.5px;color:var(--ink-2)}
+  ol.steps{padding-left:22px}ol.steps li{margin:8px 0}
+  .conc{margin-top:52px;padding:26px 28px 22px;background:var(--ink);color:#f6f3e8;border-radius:16px}
+  .conc h2{color:var(--yellow);border:0;padding:0;margin:0 0 12px}
+  .conc ol{margin:0;padding-left:20px}.conc li{margin:6px 0}
+  .conc code.inline{background:#2c2f33;color:#f6f3e8}
+  footer{margin-top:34px;color:var(--ink-2);font-size:13px}
+  .scroll{overflow-x:auto}
+  @media(max-width:720px){.wrap{padding:32px 16px 64px}h1{font-size:24px}h2{font-size:20px}.vs{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <span class="kicker">易経×企業分析 ／ 株価データ投入 → 2仮説対決の結果</span>
+  <h1>私が設計した「割安/割高」ロジックは、<b>データに負けた</b>。<br>勝ったのは<b>「悪材料の織り込み段階（capitulation）」</b>だった</h1>
+  <p class="lede">6社の株価・バリュエーション実データ（出典付き・look-ahead厳守）を投入し、価格方向（up/flat/down）を2つの仮説でバックテスト。<b>設計者の思い込み（バリュエーション行列）をデータが正した</b>——これがバックテストを製品にする価値そのものです。ただしN=6で統計的優位は主張しません（後述の留保が本体）。</p>
+  <div class="meta-row">
+    <span class="chip warn">仮説A バリュエーション行列 <b>3/6</b></span>
+    <span class="chip win">仮説B capitulation1軸 <b>5/6</b></span>
+    <span class="chip">状態(A)＋価格(B)の <b>二重verdict稼働</b></span>
+    <span class="chip warn">留保 <b>N=6・採点バイアス（§04）</b></span>
+  </div>
+
+  <section>
+    <h2><span class="num">01</span>6社の市場評価データ（snapshot時点・look-ahead厳守）</h2>
+    <p class="sub">株価・バリュエーション・モメンタムに加え、⑩<b>capitulation（悪材料が株価にどこまで出たか）</b>を採点。右端が結末の株価方向。</p>
+    <div class="scroll">
+    <table class="t">
+      <thead><tr><th>企業</th><th>snapshot株価</th><th>⑧バリュエーション</th><th>⑨モメンタム</th><th class="col-hi">⑩capitulation</th><th>結末リターン</th><th>方向</th></tr></thead>
+      <tbody>
+        <tr><td>任天堂</td><td>¥14,700</td><td>PER≈120（割高）</td><td>≈横ばい</td><td class="col-hi">-1 楽観(NX期待)</td><td>約+200%</td><td class="up">up</td></tr>
+        <tr><td>Nokia</td><td>€7.65/$10.3</td><td>PER15/PBR2.0</td><td>-18.6%</td><td class="col-hi">-1 崩落未織込</td><td>時価総額-62%</td><td class="down">down</td></tr>
+        <tr><td>富士フイルム</td><td>¥3,740</td><td>PER23/PBR1.1</td><td>+8.1%（上昇中）</td><td class="col-hi">-2 優良株と楽観</td><td>-21.5%</td><td class="down">down</td></tr>
+        <tr><td>ソニー</td><td>¥1,123</td><td>PBR0.55（激安）</td><td>-47%</td><td class="col-hi">+2 32年ぶり安値</td><td>約+192〜245%</td><td class="up">up</td></tr>
+        <tr><td>シャープ🔒</td><td>¥673</td><td>PBR≈1/PER38</td><td>-21%</td><td class="col-hi">-1 崩落は未到来</td><td>-75〜79%</td><td class="down">down</td></tr>
+        <tr><td>Netflix🔒</td><td>$69.29</td><td>PBR6.0（割高）</td><td>-60%（暴落）</td><td class="col-hi">+2 目標株価連続下げ</td><td>約+430%</td><td class="up">up</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p style="font-size:12.5px;color:var(--ink-2)">🔒＝holdout（較正で見ない2社）。⑩は「悲観が出尽くした＝+」「まだ楽観/悪材料未織込＝-」。数値・出典は各 <code class="inline">features.json</code> に格納。</p>
+  </section>
+
+  <section>
+    <h2><span class="num">02</span>2仮説の対決（同じデータ・違うルール）</h2>
+    <div class="vs">
+      <div class="hy lose">
+        <h4>仮説A：バリュエーション行列</h4>
+        <div class="score">3/6</div>
+        <div class="d">「実体が強い×割安→上げ」。私が設計した仮説。<b>割安ソニーは当てたが、割安Nokia/割高Netflixを外した</b>。design 2/4・holdout 1/2。</div>
+      </div>
+      <div class="hy win">
+        <h4>仮説B：capitulation 1軸（⑩）</h4>
+        <div class="score">5/6</div>
+        <div class="d">「悪材料が出尽くした→上げ／まだ→下げ」。データが示唆した仮説。design 3/4・<b>holdout 2/2</b>。唯一の外し＝任天堂。</div>
+      </div>
+    </div>
+    <div class="scroll">
+    <table class="t">
+      <thead><tr><th>企業</th><th>結末</th><th>仮説A 予測</th><th>A</th><th class="col-hi">仮説B 予測</th><th class="col-hi">B</th></tr></thead>
+      <tbody>
+        <tr><td>任天堂 (des)</td><td class="up">up</td><td>flat</td><td class="ng">✕</td><td class="col-hi">down</td><td class="col-hi ng">✕</td></tr>
+        <tr><td>Nokia (des)</td><td class="down">down</td><td>down</td><td class="ok">○</td><td class="col-hi">down</td><td class="col-hi ok">○</td></tr>
+        <tr><td>富士フイルム (des)</td><td class="down">down</td><td>up</td><td class="ng">✕</td><td class="col-hi">down</td><td class="col-hi ok">○</td></tr>
+        <tr><td>ソニー (des)</td><td class="up">up</td><td>up</td><td class="ok">○</td><td class="col-hi">up</td><td class="col-hi ok">○</td></tr>
+        <tr><td>シャープ (hold)</td><td class="down">down</td><td>down</td><td class="ok">○</td><td class="col-hi">down</td><td class="col-hi ok">○</td></tr>
+        <tr><td>Netflix (hold)</td><td class="up">up</td><td>down</td><td class="ng">✕</td><td class="col-hi">up</td><td class="col-hi ok">○</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="num">03</span>発見 ― 「割安かどうか」でなく「悲観が出尽くしたか」</h2>
+    <div class="callout ok"><p><strong>バリュエーション水準は方向を予測しない。</strong>割安（低PBR）は上げ（ソニー）にも暴落（Nokia・シャープ）にもなり、割高（高PER/PBR）も上げた（任天堂・Netflix）。効いたのは<b>「悪材料がどこまで株価に織り込まれたか」</b>——極度の悲観・利益トラフ・大幅ドローダウンで<b>悲観が出尽くした</b>3社（ソニー・Netflix・…）は反発し、下落がまだ市場並みで<b>本当の崩落がこれからだった</b>3社（Nokia・富士・シャープ）は続落した。これは逆張り/mean-reversion／"expectations exhaustion"の古典と整合。</p></div>
+    <div class="callout warn"><p><strong>唯一の外し＝任天堂が教えること。</strong>任天堂は悲観が出尽くしていない（むしろ高PERで市場は楽観）のに上げた＝<b>capitulation型でなくcatalyst型（NX/Switchという新製品サイクル）</b>。今のモデルは「叩き売られた株の反発」は掴むが「新しい成長ドライバーによる上げ」は掴めない。次に<b>catalyst軸（⑤兆候の質）を価格モデルへ足す</b>動機になる。</p></div>
+  </section>
+
+  <section>
+    <h2><span class="num">04</span>重大な留保 ― ここを読まずに数字を信じないでください</h2>
+    <p class="sub">この5/6は「面白い仮説」であって「実証された優位」ではない。正直に3点。</p>
+    <ol class="steps">
+      <li><b>N=6＝検出力ほぼゼロ。</b>6サンプルなら偶然でも5/6は起こりうる。<b>優位性を主張しない。</b>これは confirmation でなく hypothesis-generation。</li>
+      <li><b>採点バイアス（最大の弱点）。</b>⑩capitulationのスコアを<b>私が結末を見た後に付けた</b>ので、後知恵が混入している疑いがある。次の必須対策＝<b>⑩を客観指標だけで機械採点</b>（52週高値からのドローダウン%・PBRの絶対水準・アナリスト目標株価リビジョン数）する<b>ルーブリックをpre-register（事前登録）</b>し、結末を見ずに再採点してから holdout を開ける。</li>
+      <li><b>状態≠株価。</b>任天堂は「状態＝強い(expand)」だが capitulation モデルは price を外した＝<b>良い会社と上がる株は別物</b>という設計思想がそのまま出た。二重ターゲットを分けている意義はここ。</li>
+    </ol>
+  </section>
+
+  <section>
+    <h2><span class="num">05</span>次の一手</h2>
+    <ol class="steps">
+      <li><b>⑩capitulationの機械採点ルーブリックをpre-register</b>（ドローダウン/PBR/リビジョン）。後知恵を排除して再バックテスト。</li>
+      <li><b>コーパス拡大（数十社）</b>。検出力を上げ、5/6が持続するか・base rateをどれだけ超えるか（IC・超過リターン）を測る。</li>
+      <li><b>catalyst軸を価格モデルへ追加</b>（任天堂型の"新成長ドライバーによる上げ"を捕捉）。</li>
+      <li>公開レイヤーは<b>的中率と外れの研究</b>のみ（個別銘柄の売買判断は private＋銘柄判断語ガード）。</li>
+    </ol>
+    <div class="callout"><p><strong>今のエンジン状態：</strong>全33テスト緑。<code class="inline">cli.py run</code> が状態(A)＋価格(B)の二重verdictを出力（state design3/4・holdout1/2 ／ price design3/4・holdout2/2）。price_ruleは <code class="inline">0.3-capitulation</code> に更新済み。</p></div>
+  </section>
+
+  <div class="conc">
+    <h2>結論</h2>
+    <ol>
+      <li>株価を状態に統合し価格方向を予測した結果、<b>設計者の「割安/割高」仮説(3/6)はデータに負け、「capitulation＝織り込み段階」仮説(5/6)が勝った</b>。バックテストが思い込みを正した。</li>
+      <li>ただし<b>N=6＋⑩を結末を見て採点したバイアス</b>があり、これは実証でなく仮説。次は<b>客観指標での機械採点をpre-registerして再検証</b>、コーパス拡大、catalyst軸追加。</li>
+      <li><b>状態(良い会社)≠価格(上がる株)</b>が任天堂で顕在化＝二重ターゲット分離の意義。価格予測は private＋研究に限定（公開は売買判断を出さない）。</li>
+    </ol>
+  </div>
+
+  <footer>株価データ投入・価格予測較正 ／ 全数値は出典URL付き・snapshot指標はlook-ahead厳守 ／ 本資料は研究・教育目的であり個別銘柄の投資助言ではない。N=6は統計的検出力を持たず、示された的中率は仮説であって優位性の証明ではない。</footer>
+
+</div>
+</body>
+</html>
