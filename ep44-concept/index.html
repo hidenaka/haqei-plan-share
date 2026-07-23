@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>ep44 企画案（あの花×解 / NARUTO×晉）</title>
+<style>
+  :root{
+    --bg:#faf7f2; --card:#fff; --ink:#1c1a17; --sub:#5b544a;
+    --line:#e6ddcf; --accent:#c8471f; --gold:#b8892b; --indigo:#26406b;
+    --good:#2e7d4f; --warnbg:#fff7e6; --warn:#a8760d;
+    --recbg:#eef7f0; --recline:#2e7d4f;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{ --bg:#14120f; --card:#1e1b17; --ink:#f1ebe0; --sub:#b3a998;
+      --line:#3a342b; --accent:#ff7a4d; --gold:#e0b455; --indigo:#8fb0e0;
+      --good:#6cc492; --warnbg:#2a2213; --warn:#e0b455; --recbg:#17241b; --recline:#3f9c66; }
+  }
+  :root[data-theme="dark"]{ --bg:#14120f; --card:#1e1b17; --ink:#f1ebe0; --sub:#b3a998; --line:#3a342b; --accent:#ff7a4d; --gold:#e0b455; --indigo:#8fb0e0; --good:#6cc492; --warnbg:#2a2213; --warn:#e0b455; --recbg:#17241b; --recline:#3f9c66; }
+  :root[data-theme="light"]{ --bg:#faf7f2; --card:#fff; --ink:#1c1a17; --sub:#5b544a; --line:#e6ddcf; --accent:#c8471f; --gold:#b8892b; --indigo:#26406b; --good:#2e7d4f; --warnbg:#fff7e6; --warn:#a8760d; --recbg:#eef7f0; --recline:#2e7d4f; }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,sans-serif;
+    line-height:1.75;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:860px;margin:0 auto;padding:32px 20px 80px}
+  .kicker{font-size:.8rem;letter-spacing:.18em;color:var(--accent);font-weight:700}
+  h1{font-size:1.9rem;line-height:1.35;margin:.3em 0 .2em}
+  .lede{color:var(--sub);font-size:1.02rem;margin:.2em 0 1em}
+  .tldr{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--gold);
+    border-radius:10px;padding:14px 18px;margin:18px 0 26px}
+  .tldr b{color:var(--gold)}
+  figure{margin:0 0 30px}
+  figure img{width:100%;max-width:100%;border-radius:12px;border:1px solid var(--line);display:block}
+  figcaption{color:var(--sub);font-size:.82rem;margin-top:8px;text-align:center}
+  h2{font-size:1.3rem;margin:34px 0 12px;padding-bottom:6px;border-bottom:2px solid var(--line)}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px 22px;margin:16px 0}
+  .card.rec{border:1.5px solid var(--recline);background:var(--recbg)}
+  .badge{display:inline-block;font-size:.72rem;font-weight:700;padding:3px 10px;border-radius:999px;vertical-align:middle}
+  .badge.rec{background:var(--recline);color:#fff}
+  .badge.alt{background:var(--line);color:var(--sub)}
+  .gua{font-size:1.05rem;color:var(--gold);font-weight:700}
+  ol.acts{margin:10px 0 0;padding-left:1.2em}
+  ol.acts li{margin:6px 0}
+  ol.acts li b{color:var(--indigo)}
+  .kv{margin:10px 0;padding:12px 14px;background:var(--warnbg);border-radius:8px;font-size:.94rem}
+  .decision{background:var(--card);border:2px dashed var(--accent);border-radius:14px;padding:22px 24px;margin:30px 0}
+  .decision h2{border:0;margin-top:0;color:var(--accent)}
+  .opt{display:flex;gap:12px;align-items:flex-start;margin:12px 0}
+  .opt .tag{font-weight:800;font-size:1.1rem;min-width:28px}
+  table{width:100%;border-collapse:collapse;margin:10px 0;font-size:.92rem}
+  th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+  th{background:var(--card);color:var(--sub);font-weight:700}
+  .concl{margin-top:30px;color:var(--sub);border-top:1px solid var(--line);padding-top:16px}
+  small.src{color:var(--sub)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="kicker">第44話 企画ゲート — 本人承認</div>
+  <h1>ep44、どちらの卦で作りますか？</h1>
+  <p class="lede">未使用卦22個から、大型IP × 卦の密着度で2案に絞りました。<b>タイトルは台本確定後（Step8.5）に決めます。ここでは「卦・題材・6幕アウトライン」の承認だけ</b>お願いします。</p>
+
+  <div class="tldr">
+    <b>TL;DR</b><br>
+    ① <b>推奨A案：あの花 × 解（かい・第40卦）</b>＝わだかまりが氷解する卦。物語と一対一で密着・新規IP・情緒。<br>
+    ② B案：NARUTO × 晉（しん・第35卦）＝日が昇る栄達の卦。超大型IPだが卦と物語の密着はやや弱い。<br>
+    ③ 選んだ案で台本（Step2）へ進みます。序卦ショートも同時に設計（A=解→損 / B=晉→明夷）。
+  </div>
+
+  <figure>
+    <img src="images/overview-01.png" alt="ep44 企画2案の比較俯瞰図">
+    <figcaption>2案の比較俯瞰（★＝推奨A案）</figcaption>
+  </figure>
+
+  <h2>A案 <span class="badge rec">推奨</span> あの花 × <span class="gua">解（かい・第40卦）</span></h2>
+  <div class="card rec">
+    <p><b>なぜこの卦・この作品か</b></p>
+    <ul>
+      <li><b>解 = 雷水解。DELIVERANCE＝氷解</b>。凍っていたわだかまりが、雷雨のように一気にほどける卦。</li>
+      <li>卦辞：「解けたら、行くあてがなければ戻れば吉（＝復）／やるべきことがあるなら早く動け」<small class="src">（出典：db/hexagrams.json 卦40 judgment）</small></li>
+      <li>象辞：「君子は過ちを赦し、罪を宥（ゆる）す」＝<b>赦しと和解そのもの</b></li>
+      <li><b>物語との密着（一対一）</b>：めんま（本間芽衣子）の事故死で凍りついた幼馴染「超平和バスターズ」。数年後、めんまの幽霊の"願い"を叶えるため皆が再集結し、こじれた罪悪感が一気にほどけ、めんまが成仏する。<b>これは「解」そのもの</b>。</li>
+    </ul>
+    <p><b>6幕アウトライン（v2.3）</b></p>
+    <ol class="acts">
+      <li><b>違和感(30秒)</b>：「もう終わったこと、と自分に言い聞かせているのに、ふとした瞬間に戻ってくる。あの頃のこと。」＝凍ったまま解けていない感情（日常語・身に覚え）</li>
+      <li><b>観察(1.5–2.5分)</b>：じんたんの引きこもり／めんまの願い／あなる・ゆきあつ・つるこ・ぽっぽ、それぞれの罪悪感の形。固有名＋名場面で積む</li>
+      <li><b>種明かし(2–3分)</b>：これが「解」。雷雨のように凍ったものが一気にゆるむ卦。六爻図で提示</li>
+      <li><b>刃(30秒–1分)</b>：私たちも「もう平気」と蓋をして、解かずに固めている。赦していないのは相手ではなく自分</li>
+      <li><b>処方箋(1.5–3分・本体)</b>：解の六爻を"赦しの階段"に。初爻＝まず咎めない／二爻＝隠れた狐（偽りの言い訳）を狩る／四爻＝親指のしがらみ（いちばん近い執着）から自分を解く／上爻＝高い壁の隼（最後の頑固なしこり）を自分で射抜く</li>
+      <li><b>余韻(30秒)</b>：解けたら、行くあてがなければ戻ればいい</li>
+    </ol>
+    <div class="kv">🎬 <b>序卦ショート</b>：40解 → 41損。「ほどけた次は、あえて手放して減らす」＝超平和バスターズが解散し各々の道へ（減らすことがむしろ益になる）。序卦の反転が「へえ」の本体。</div>
+    <p><small class="src">狙い：新規IP・情緒枠。「赦し／わだかまり」は最も自分ごと化しやすい＝rank1律速（ショート→登録変換の"これ自分の話だ"）を作りやすい。</small></p>
+  </div>
+
+  <h2>B案 <span class="badge alt">代替</span> NARUTO うずまきナルト × <span class="gua">晉（しん・第35卦）</span></h2>
+  <div class="card">
+    <ul>
+      <li><b>晉 = 火地晋。PROGRESS＝日が地上に昇る・栄達</b>。ただし爻は「進むが引き返す／憂いながら進む／焦って角で押すと危険」＝<b>"焦りの危うさ"</b>がテーマ。</li>
+      <li>落ちこぼれのナルトが火影へ昇る＝地上に日が昇る（晉）。だが爻の警告＝承認を焦って角を突くな。</li>
+    </ul>
+    <p><b>6幕</b>：違和感「認められたくて空回りするほど遠ざかる」→観察（ナルトの孤独・空回り）→種明かし晉→刃（承認欲求で"角を突く"私たち）→処方箋（焦らず／憂いを抱えても正しく持す／自分の城を正すためだけに角を使う）→余韻</p>
+    <div class="kv">🎬 序卦ショート：35晉 → 36明夷。「昇りつめた次に、光をあえて隠す」</div>
+    <p><small class="src">評価：超big-IP・承認欲求テーマは強い。ただし卦と物語の密着はA案ほど強くない（晉の爻は"焦りの危険"が主で、ナルトの熱血上昇と少しズレる）。作品NARUTOはep15（イタチ×困）で既出＝作品2回目。</small></p>
+  </div>
+
+  <h2>2案 早見比較</h2>
+  <table>
+    <tr><th>観点</th><th>A案 あの花×解 ★</th><th>B案 NARUTO×晉</th></tr>
+    <tr><td>卦と物語の密着</td><td>◎ 一対一（解＝物語構造そのもの）</td><td>○ 上昇は合うが爻の"焦り"とズレ</td></tr>
+    <tr><td>IPの新規性</td><td>◎ 新規作品</td><td>△ 作品2回目（ep15イタチ）</td></tr>
+    <tr><td>処方箋の具体性</td><td>◎ 六爻＝赦しの階段</td><td>○ 焦りへの戒め</td></tr>
+    <tr><td>自分ごと化（登録変換）</td><td>◎ 赦し/わだかまり</td><td>○ 承認欲求</td></tr>
+    <tr><td>認知度・点火力</td><td>○ 中〜高（名作・情緒）</td><td>◎ 超大型</td></tr>
+  </table>
+
+  <div class="decision">
+    <h2>▼ あなたの選択</h2>
+    <div class="opt"><span class="tag">A</span><div><b>あの花 × 解（推奨）</b>で台本へ進む</div></div>
+    <div class="opt"><span class="tag">B</span><div><b>NARUTO × 晉</b>で台本へ進む</div></div>
+    <div class="opt"><span class="tag">他</span><div>別の卦・別の作品にしたい（希望を書いてください。未使用卦は22個あります）</div></div>
+  </div>
+
+  <p class="concl">この企画（卦・題材・6幕アウトライン）を承認いただいたら、Step2 台本執筆に入ります。台本は fact_check（一次情報で作中事実を裏取り）→ 機械ゲート → fork独立採点≧90 を通してから、改めて本人に台本を提示します。タイトルはその後（Step8.5）に3案を出します。</p>
+</div>
+<script>
+  // theme toggle honor (viewer stamps data-theme)
+</script>
+</body>
+</html>
