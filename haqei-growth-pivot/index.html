@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>HaQeiが広まるために ― Codex深掘り議論の収束(判断用)</title>
+<style>
+  :root{--ink:#1a1a1a;--ink-2:#4a4a4a;--bg:#f7f5ee;--paper:#fbf9f1;--line:#d8d2bf;
+    --accent:#2f5d8a;--accent-soft:#dbe6f0;--gold:#b8892b;--warn:#c83a2c;--warn-soft:#f6dcd6;
+    --ok:#2f7d55;--ok-soft:#d8ecdf;--yellow:#f4d35e;--shadow:0 1px 0 rgba(0,0,0,.04),0 8px 24px rgba(0,0,0,.06);
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    --sans:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP","Yu Gothic","Meiryo",sans-serif;}
+  *{box-sizing:border-box}html,body{margin:0;padding:0}
+  body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1.78;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1000px;margin:0 auto;padding:54px 26px 96px}
+  .kicker{display:inline-block;background:var(--accent);color:#fff;font-size:12px;font-weight:700;letter-spacing:.1em;padding:6px 12px;border-radius:999px;margin-bottom:16px}
+  h1{font-size:30px;line-height:1.42;margin:0 0 14px}h1 b{color:var(--accent)}
+  .lede{font-size:17.5px;color:var(--ink-2);margin:0;max-width:880px}
+  .meta-row{margin-top:16px;display:flex;flex-wrap:wrap;gap:8px}
+  .chip{font-size:12.5px;background:var(--paper);border:1px solid var(--line);border-radius:999px;padding:5px 12px;color:var(--ink-2)}
+  .chip b{color:var(--accent)}.chip.warn b{color:var(--warn)}.chip.ok b{color:var(--ok)}
+  section{margin:52px 0 0}
+  h2{font-size:24px;margin:0 0 6px;border-left:6px solid var(--accent);padding-left:12px}
+  h2 .num{color:var(--accent);margin-right:10px}
+  h3{font-size:17px;margin:20px 0 6px;color:var(--accent)}
+  .sub{color:var(--ink-2);margin:0 0 16px}
+  table.t{width:100%;border-collapse:collapse;margin:12px 0;background:var(--paper);border:1px solid var(--line);border-radius:12px;overflow:hidden;box-shadow:var(--shadow);font-size:14px}
+  table.t th,table.t td{text-align:left;padding:10px 13px;border-bottom:1px solid var(--line);vertical-align:top}
+  table.t th{background:#efeadb;font-weight:700}table.t tr:last-child td{border-bottom:0}
+  .bad{color:var(--warn);font-weight:700}.good{color:var(--ok);font-weight:700}
+  .callout{margin:16px 0;padding:15px 18px;border-left:4px solid var(--accent);background:var(--accent-soft);border-radius:0 10px 10px 0}
+  .callout.warn{border-color:var(--warn);background:var(--warn-soft)}.callout.ok{border-color:var(--ok);background:var(--ok-soft)}
+  .callout p{margin:0}.callout strong{color:var(--accent)}.callout.warn strong{color:var(--warn)}.callout.ok strong{color:var(--ok)}
+  code.inline{font-family:var(--mono);font-size:.9em;background:#efeadb;padding:1px 6px;border-radius:4px}
+  .vs{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0}
+  .vbox{border:1px solid var(--line);border-radius:12px;padding:14px 16px;background:var(--paper);box-shadow:var(--shadow)}
+  .vbox.old{border-color:var(--warn)}.vbox.new{border-color:var(--ok);background:var(--ok-soft)}
+  .vbox h4{margin:0 0 6px;font-size:14px}.vbox.old h4{color:var(--warn)}.vbox.new h4{color:var(--ok)}
+  .vbox p{margin:0;font-size:13.5px;color:var(--ink-2)}
+  .quote{border-left:3px solid var(--gold);padding:10px 16px;background:#f6f1e2;border-radius:0 10px 10px 0;margin:14px 0;font-size:15px}
+  .quote .who{font-size:11.5px;color:var(--gold);font-weight:700;letter-spacing:.06em}
+  ol.steps{padding-left:22px}ol.steps li{margin:8px 0}
+  ul.clean{padding-left:20px}ul.clean li{margin:6px 0}
+  .week{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:14px 17px;margin:10px 0;box-shadow:var(--shadow)}
+  .week h4{margin:0 0 6px;font-size:15px;color:var(--accent)}
+  .week p{margin:4px 0;font-size:13.5px}
+  .decide{margin-top:22px;padding:22px 24px;background:var(--accent-soft);border:2px solid var(--accent);border-radius:16px;box-shadow:var(--shadow)}
+  .decide h3{margin:0 0 10px;color:var(--accent);font-size:19px}
+  .decide .opt{background:#fff;border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin:8px 0;font-size:15px}
+  .decide .opt b{color:var(--accent)}
+  .conc{margin-top:52px;padding:26px 28px 22px;background:var(--ink);color:#f6f3e8;border-radius:16px}
+  .conc h2{color:var(--yellow);border:0;padding:0;margin:0 0 12px}.conc ol{margin:0;padding-left:20px}.conc li{margin:6px 0}
+  footer{margin-top:34px;color:var(--ink-2);font-size:13px}
+  .scroll{overflow-x:auto}
+  @media(max-width:720px){.wrap{padding:32px 16px 64px}h1{font-size:23px}h2{font-size:20px}.vs{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <span class="kicker">HaQei 成長戦略 ／ Claude×Codex 2ラウンド深掘り議論の収束（判断用）</span>
+  <h1>データが示した結論：<b>「アニメ×易経」はブランドの説明であって、視聴理由ではない</b>。<br>入口を「作品と卦」から<b>「誰かに送りたくなる痛み」</b>へ転換する。</h1>
+  <p class="lede">実測データ（growth-state/律速台帳/維持率/CTR）を全てCodexに渡し、2ラウンドの深掘り議論（診断→反駁と具体化）を実施。私の事前ポジションと突き合わせて収束した「広まるための転換案」。<b>既存戦略SSOT（毎日投稿・作品名先頭タイトル）を変更する提案なので、あなたの承認が要ります。</b></p>
+  <div class="meta-row">
+    <span class="chip warn">現在 <b>登録91人・+0.57人/日（必要2.5の1/4）</b></span>
+    <span class="chip warn">シェア率 <b>0.015%・コメント6件/30日</b></span>
+    <span class="chip">診断 <b>市場適合60% / 配線30% / 時間10%</b></span>
+    <span class="chip ok">提案 <b>痛み先頭への転換＋週2ロング（4週判定）</b></span>
+  </div>
+
+  <section>
+    <h2><span class="num">01</span>現在地の実測（2026-07-24・growth-state）</h2>
+    <div class="scroll">
+    <table class="t">
+      <thead><tr><th>指標</th><th>実測</th><th>読み</th></tr></thead>
+      <tbody>
+        <tr><td>登録者</td><td>91人（動画121本・44日毎日投稿）</td><td class="bad">ペース+0.57人/日 ＝ 1000人まで約4.4年</td></tr>
+        <tr><td>変換率</td><td>ショート 80,820再生→28登録(0.035%)／本編 2,102再生→13登録(0.618%)</td><td>本編は17.7倍効率だが流量が2千しかない</td></tr>
+        <tr><td>リーチ構造</td><td>30日53,973再生の94.2%がSHORTSフィード</td><td class="bad">フィードの外に出ていない</td></tr>
+        <tr><td>共有・会話</td><td>シェア8件(0.015%)・コメント6件/30日</td><td class="bad">「人に話したくなる理由」が生まれていない</td></tr>
+        <tr><td>本編CTR</td><td>中央値1.0%（健全は4-6%・3%超ゼロ）・サムネA/Bはno_lift</td><td class="bad">入口でほぼ全員を失う</td></tr>
+        <tr><td>本編維持率</td><td>30秒42.9%・最大離脱9秒・平均視聴28.8%</td><td class="bad">冒頭9秒で大量離脱</td></tr>
+        <tr><td>重要な対照</td><td>完視聴96-98%のショート2本でも登録ゼロ／いいね→登録率は本編15.1%・ショート11.9%でほぼ同じ</td><td><b>心が動いた人の登録率は正常。心が動く人の絶対数が少ない</b></td></tr>
+      </tbody>
+    </table>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="num">02</span>診断の収束 ― 何が壊れているのか</h2>
+    <p class="sub">Codex（2ラウンド）と私の事前ポジションが一致した点。</p>
+    <div class="callout"><p><strong>主因＝コンテンツと市場の翻訳不全（60%）。</strong>8万回「見られた」うえで、シェア8件・コメント6件＝<b>視聴されていないのではなく、人に話したくなる理由が生まれていない</b>。配線（CTA・導線）は30%、時間不足は10%。44日・121本・8.3万再生は判断材料として十分。</p></div>
+    <div class="quote"><span class="who">CODEX（断定）</span><br>壊れているのは6幕構成ではない。その手前の<b>翻訳</b>だ。タイトルでは「この作品と卦の話」、冒頭では「このキャラに起きた違和感」——だが視聴者が欲しいのは<b>「自分や誰かの現在を説明する言葉」</b>。順序を「作品→易経→人生」から<b>「現代の痛み→作品という証拠→易経による診断」</b>へ入れ替える。</div>
+    <h3>律速台帳への修正（両者一致）</h3>
+    <p>rank1「ショート→登録変換0.127%」は算術上は正しいが因果として浅い。登録・シェア・コメント・いいねは全て下流指標で、真のrank1は<b>「これは自分の話だ／誰かに送りたい」と感じる共鳴の発生率</b>。変換配線（閉じない設計・CTA）は補助施策に降格。なお私の事前案「シェア→リーチ拡大をレバーに」はCodexに修正された——<b>シェアは強い価値の"結果"であって直接操作できるレバーではない</b>。</p>
+    <h3>美学（問いかけ禁止）は守る。ただし運用を変える（私の疑問への回答）</h3>
+    <p>コメント6件の主因は美学ではなく母数不足（9秒離脱でコメント地点まで届く人が少なすぎる）。ただし「きれいに完結しすぎる断言」は視聴者が付け足す余地まで消す。守るべきは「反応を要求しないこと」であって「閉じ切ること」ではない——<b>反論可能な断言・立場が割れる指摘・棘で閉じる余韻</b>なら、美学を保ったまま会話が生まれる。<br>例）悪い幕6:「剥は、手放すことの大切さを教えてくれます」→ 良い幕6:<b>「剥がれたことが敗北なのではない。もう剥がれているのに、元の形を演じ続けることが敗北です」</b></p>
+  </section>
+
+  <section>
+    <h2><span class="num">03</span>具体例 ― ep42（まどか☆マギカ×剥）ならこう変わる</h2>
+    <div class="vs">
+      <div class="vbox old"><h4>現行（作品名先頭・卦suffix）</h4><p>「魔法少女まどか☆マギカ鹿目まどかは、○○○○【第四十二話・剥】」<br>→ ファン向け作品考察に分類され、視聴者自身の利益が見えない。「第42話」が途中参加感、「剥」が難解さとして働く。</p></div>
+      <div class="vbox new"><h4>転換後（痛み先頭・作品と卦は証明として後置）</h4><p>「<b>限界の人ほど、ちゃんとして見える。</b>｜まどか☆マギカ×剥」<br>→ 短く、身近な誰かを想起させ、<b>「これ、あなたのこと」と言わずに送れる</b>。</p></div>
+    </div>
+    <h3>タイトル案（Codex 5案から抜粋）</h3>
+    <ul class="clean">
+      <li>限界の人ほど、ちゃんとして見える。｜まどか☆マギカ×剥　<b>←第一候補</b></li>
+      <li>壊れる直前ほど、人は「まだ大丈夫」と言う。｜まどか☆マギカ×剥</li>
+      <li>助ける側の人から、先に削れていく。｜鹿目まどかと「剥」</li>
+    </ul>
+    <h3>冒頭9秒の書き換え（最大離脱点への処方）</h3>
+    <div class="quote"><span class="who">案1（身近な人物想起型）</span><br>「本当に限界の人は、助けてと言いません。いつも通り笑って、周りを先に助けます。壊れる音は、そのあとに来ます。」<br><span style="font-size:12.5px;color:var(--ink-2)">→ 直後に作品説明へ行かず「鹿目まどかの優しさは、その崩れ方を異様なほど正確に見せています」と接続＝痛み→作品の証拠の順。</span></div>
+    <h3>「誰かに送りたくなる一文」（シェアの単位・1本1文に絞る）</h3>
+    <p><b>「限界の人ほど、助けを求める代わりに、他人を助け始める。」</b>——短く、対象が明確で、説明なしで意味が通る。</p>
+  </section>
+
+  <section>
+    <h2><span class="num">04</span>4週間の移行計画（1人運用・撤退基準つき）</h2>
+    <p class="sub">42本を捨てるのではなく「作品別の完成品」→「痛み別の素材庫」へ再分類。公開ペースは<b>ロング週2＋ショート週4</b>。人間の時間は企画と冒頭の精度に集中。</p>
+    <div class="week"><h4>第1週：停止と再分類</h4>
+      <p><b>止める</b>：毎日投稿／卦の順番優先の題材決定／作品名先頭タイトル／冒頭の作品説明／1本に複数の教訓。</p>
+      <p><b>残す</b>：6幕構成／易経の構造分析／幕4の刃／幕5の処方箋／問いかけ禁止／自動化工程。</p>
+      <p><b>やる</b>：既存42本から「送りたくなる一文」を各1本抽出し5分類（限界/人間関係/仕事評価/執着別れ/決断）でタグ付け。インプレ上位10本のタイトルを痛み先頭型へ変更。新型ロング1本公開。</p></div>
+    <div class="week"><h4>第2週：同一仮説の反復</h4><p>新作ロング2本（別作品×同じ痛み系統）＋ショート4本。タイトル・冒頭・シェア文を<b>1つの約束に統一</b>。題材を広げず「共鳴仮説の再現」を確認。</p></div>
+    <div class="week"><h4>第3週：勝ち筋への集中</h4><p>反応が強かった痛み分類に絞り、既存資産の再包装（タイトル・サムネ・冒頭差し替え）2本を併走。新規:再包装≒1:1。</p></div>
+    <div class="week"><h4>第4週：継続判定</h4><p>転換仕様ロング7本前後を1つの群として、下の基準で判定。</p></div>
+    <h3>判定基準（4週間後・中央値で判定・1本の大当たりでなく7本中4本の再現を要求）</h3>
+    <div class="scroll">
+    <table class="t">
+      <thead><tr><th>判定</th><th>条件</th></tr></thead>
+      <tbody>
+        <tr><td class="good">転換を正とする</td><td>CTR中央値 <b>1.0%→2.0%以上</b> ＋ 30秒到達率 <b>旧比1.4倍以上</b>（必須2つ）＋ シェア率0.3%/コメント旧比2倍/登録率旧比1.5倍の<b>いずれか1つ</b> ＋ 7本中4本以上で再現</td></tr>
+        <tr><td>継続修正</td><td>CTRだけ改善→冒頭が約束不履行／30秒到達だけ改善→タイトル・サムネが失敗／維持は改善だがシェア無し→他人を想起させる言葉になっていない</td></tr>
+        <tr><td class="bad">戻す（＝仮説棄却）</td><td>7本中5本以上でCTR1.5%未満・30秒到達±10%以内・シェア合計0-1件。<b>ただし戻す先は毎日投稿ではない</b>（投稿量と成長に因果は無い）——別の視聴理由仮説を試す</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="num">05</span>Premortem ― 先に言っておく失敗の形（Codex）</h2>
+    <div class="callout warn"><p><strong>この転換でも届かない最大のリスク＝痛み先頭にした結果、一般的な自己啓発に近づき「HaQeiでなければ得られない発見」が消えること。</strong>「限界の人ほど、ちゃんとして見える」だけなら競合は無数。勝つ形は三段構造の役割分担——<b>痛み＝視聴理由／作品の場面＝証拠／易経＝他では得られない診断装置（予想外だが実行可能な処方箋）</b>。この分担が崩れればCTRが一時上がっても登録につながらない。</p></div>
+    <div class="callout"><p><strong>整合性の注記：</strong>この提案は既存SSOT（毎日投稿・作品名先頭タイトル規則・H49/H50タイトルアーム）の変更を含む。承認された場合、`docs/growth-1000-strategy.md`・タイトル規則・律速台帳（rank1の再定義）・配信ペースを整合させて更新する（実験群のタイトルはアーム外の新実験として採番）。</p></div>
+  </section>
+
+  <section>
+    <div class="decide">
+      <h3>あなたの判断（3択）</h3>
+      <div class="opt">✅ <b>A. 転換を承認</b> — 4週間の移行計画を第1週から実行（毎日投稿停止・痛み先頭型へ・撤退基準つき）。SSOT類を整合更新。</div>
+      <div class="opt">🔬 <b>B. 小さく試す</b> — 毎日投稿は維持したまま、新作のみ痛み先頭型で2週間・4本だけ試して差分を見る（変化は遅いが低リスク）。</div>
+      <div class="opt">✋ <b>C. 保留</b> — 現行戦略（律速台帳rank1=変換配線）を継続し、H35等の判定を待ってから再検討。</div>
+      <p style="margin:10px 0 0;font-size:13.5px;color:var(--ink-2)">私の推奨は<b>A</b>。理由＝現行ペース+0.57人/日は4.4年コースで、待つコストが最大。撤退基準が数値で切ってあるので、外れても4週間で戻れる。</p>
+    </div>
+  </section>
+
+  <div class="conc">
+    <h2>結論（議論の収束）</h2>
+    <ol>
+      <li>主因は配線でなく<b>翻訳</b>——「アニメ×易経」はブランドの説明であって視聴理由ではない。入口を<b>「誰かに送りたくなる痛み」</b>へ、順序を<b>痛み→作品（証拠）→易経（診断）</b>へ。</li>
+      <li>美学（問いかけ禁止）は守り、<b>「閉じ切る断言」を「反論可能な断言・棘で閉じる」へ</b>運用変更。ロングは毎日→<b>週2本</b>に落とし冒頭9秒とタイトルへ制作力を集中。</li>
+      <li>4週間・7本・数値基準（CTR2.0%＋30秒到達1.4倍＋共鳴1つ＋4本再現）で判定し、外れたら<b>毎日投稿ではなく別仮説へ</b>。最大リスク＝自己啓発への一般化で独自性消失（三段構造の役割分担で防ぐ）。</li>
+    </ol>
+  </div>
+
+  <footer>Claude×Codex 2ラウンド深掘り議論（2026-07-24）／ データ=growth-state・律速台帳・retention・CTR実測 ／ 判断はあなた（A/B/C）。</footer>
+
+</div>
+</body>
+</html>
