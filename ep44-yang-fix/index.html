@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
+<title>ep44 陽爻バグ修正の確認 — あの花×解</title>
+<style>
+  :root{
+    --bg:#0f1115; --panel:#171a21; --panel2:#1e222b; --ink:#e8eaed; --sub:#a2a8b4;
+    --line:#2a2f3a; --gold:#d8b25a; --ai:#5aa9e6; --boku:#111;
+    --ok:#5ecb8b; --ng:#e46a6a; --warn:#e6b45a;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,"Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,sans-serif;
+    line-height:1.75;font-size:16px}
+  .wrap{max-width:920px;margin:0 auto;padding:32px 20px 80px}
+  .kicker{color:var(--gold);font-weight:700;letter-spacing:.08em;font-size:.82rem}
+  h1{font-size:1.9rem;line-height:1.3;margin:.3em 0 .2em}
+  .lede{color:var(--sub);font-size:1.02rem;margin:.4em 0 1.2em}
+  .tldr{background:var(--panel);border:1px solid var(--line);border-left:4px solid var(--gold);
+    border-radius:10px;padding:16px 20px;margin:0 0 26px}
+  .tldr b{color:var(--gold)}
+  figure{margin:0 0 30px}
+  figure img{width:100%;border-radius:12px;border:1px solid var(--line);display:block}
+  figcaption{color:var(--sub);font-size:.82rem;text-align:center;margin-top:8px}
+  h2{font-size:1.25rem;margin:34px 0 12px;padding-bottom:6px;border-bottom:1px solid var(--line)}
+  h3{font-size:1.02rem;margin:22px 0 8px;color:var(--gold)}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px 18px;margin:14px 0}
+  table{width:100%;border-collapse:collapse;margin:12px 0;font-size:.92rem}
+  th,td{border:1px solid var(--line);padding:9px 11px;vertical-align:top;text-align:left}
+  th{background:var(--panel2);color:var(--sub);font-weight:600}
+  code{background:#0b0d11;border:1px solid var(--line);border-radius:5px;padding:1px 6px;font-size:.86em}
+  .mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+  .before{color:var(--ng)}
+  .after{color:var(--ok)}
+  .old{background:rgba(228,106,106,.10);border-left:3px solid var(--ng);padding:10px 14px;border-radius:6px;margin:8px 0}
+  .new{background:rgba(94,203,139,.10);border-left:3px solid var(--ok);padding:10px 14px;border-radius:6px;margin:8px 0}
+  .tag{display:inline-block;font-size:.72rem;font-weight:700;padding:2px 8px;border-radius:20px;margin-right:6px}
+  .tag.ng{background:rgba(228,106,106,.18);color:#f0a3a3}
+  .tag.ok{background:rgba(94,203,139,.18);color:#a7e3c1}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:640px){.grid{grid-template-columns:1fr}}
+  .decide{background:linear-gradient(180deg,#1c2230,#171a21);border:1px solid #33405a;
+    border-radius:12px;padding:20px 22px;margin:30px 0}
+  .decide h2{border:0;margin-top:0}
+  .opt{background:var(--panel2);border:1px solid var(--line);border-radius:9px;padding:14px 16px;margin:10px 0}
+  .opt.reco{border-color:var(--gold);box-shadow:0 0 0 1px rgba(216,178,90,.25) inset}
+  .opt .h{font-weight:700;font-size:1.02rem}
+  .opt.reco .h::before{content:"★ 推奨　";color:var(--gold)}
+  .small{font-size:.82rem;color:var(--sub)}
+  .hex{font-family:ui-monospace,monospace;letter-spacing:.15em;font-size:1.4rem;line-height:1.5}
+  ul{margin:.3em 0 .3em 1.1em;padding:0}
+  li{margin:.25em 0}
+  .foot{color:var(--sub);font-size:.82rem;margin-top:40px;border-top:1px solid var(--line);padding-top:14px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="kicker">確認 / 承認ゲート — 第44話「あの花」× 解（かい・第40卦）</div>
+  <h1>ep44 台本 陽爻バグの修正確認 <span class="small">content/064</span></h1>
+  <p class="lede">種明かし（幕3）の「陽の本数」が六爻図と矛盾していた1点を修正しました。中身を確認いただき、OKなら重い harness 再走に進みます。</p>
+
+  <div class="tldr">
+    <b>TL;DR</b>
+    <ul>
+      <li><b>確定バグ</b>：解＝<code>010100</code>＝<b>陽2本</b>（二爻・四爻）。だが台本は「陽が一本だけ」と語り、六爻図GUA6（陽2本を決定論描画）と矛盾していた。</li>
+      <li><b>修正済み・機械検証OK</b>：旧文言（一本だけ／ひとつ差し込む／力がひとつ）を全消去（grep=0）、陽2本の表現へ。処方箋思想「力任せは要らない／小さな一手」は保持。</li>
+      <li><b>あなたの判断</b>：この書き換えでOKか。OKなら harness 再走（codex再選定＋fork採点≥90＋preflight）→ 通過後に台本フルをHTML提示（本承認ゲート）。</li>
+    </ul>
+  </div>
+
+  <figure>
+    <img src="images/overview-01.png" alt="ep44 陽爻バグ修正の俯瞰図">
+    <figcaption>修正の全体像（左：解の六爻図＝陽2本／中：Before-After／右：再走フロー）</figcaption>
+  </figure>
+
+  <h2>1. なぜバグか（一次情報で確定）</h2>
+  <div class="card">
+    <p><b>解（第40卦・雷水解）</b>　<span class="mono">binary_le = 010100</span>（little-endian＝初陰・<b>二陽</b>・三陰・<b>四陽</b>・五陰・上陰）</p>
+    <p class="hex">
+      ䷧　上爻 ▬ ▬（陰）<br>
+      　　 五爻 ▬ ▬（陰）<br>
+      　　 四爻 ▬▬▬（<span class="after">陽</span>）← 上卦 震＝雷・動き の主爻<br>
+      　　 三爻 ▬ ▬（陰）<br>
+      　　 二爻 ▬▬▬（<span class="after">陽</span>）← 下卦 坎＝水・悩み の主爻<br>
+      　　 初爻 ▬ ▬（陰）
+    </p>
+    <p class="small">出典：<code>db/hexagrams.json</code> 卦40（binary_le / upper=Thunder / lower=Water）。六爻図カード <code>GUA6</code> はこの <code>binary_le</code> から陽2本を決定論描画する＝図は必ず陽2本。台詞が「陽1本」だと<b>物証（図）と語りが食い違い、"証拠で殴る回"の土台が崩れる</b>。</p>
+  </div>
+
+  <h2>2. 修正内容（幕3の3シーン・Before → After）</h2>
+
+  <h3>V_03_03（六爻図GUA6が出るカット）</h3>
+  <div class="old"><span class="tag ng">Before</span>…かたく塞いでいたものの真ん中に、動く力が<b>ひとつ差し込んで</b>、詰まりが、すっと抜けていく。…</div>
+  <div class="new"><span class="tag ok">After</span>…かたく塞いでいたものの中に、動く力が、<b>二筋（ふたすじ）通っている</b>。<b>ひとつは詰まりの芯に、もうひとつは、その上に</b>。この二筋が、詰まりを、すっと抜いていく。…</div>
+
+  <h3>V_03_04（上下＝坎と震の組み合わせを語るカット）</h3>
+  <div class="old"><span class="tag ng">Before</span>…抱えていた重さの中から、<b>力がひとつ跳ね上がって</b>、外へ出ていく。…</div>
+  <div class="new"><span class="tag ok">After</span>…<b>悩みの芯にある力と、その上で跳ね上がる力。二つの動く力が呼応して</b>、抱えていた重さが、外へ出ていく。…</div>
+
+  <h3>V_03_05（処方箋の核＝力任せは要らない）</h3>
+  <div class="old"><span class="tag ng">Before</span>…要所に、正しい動きが、<b>たった一本だけ入る</b>。それだけで、固まっていた全体が、ゆるむ。…</div>
+  <div class="new"><span class="tag ok">After</span>…要所に、正しい動きが、<b>二つ入るだけ</b>。それだけで、固まっていた全体が、ゆるむ。溶かすのは、大きな決断ではなく、<b>小さな一手</b>からなんです。</div>
+
+  <div class="card">
+    <p class="small">💡 <b>二爻・四爻の陽が、むしろ処方箋を強くする</b>：ひとつ（二爻）は<b>悩みの芯そのものの中</b>にある動く力、もうひとつ（四爻）は<b>その上で跳ね上がって外へ出す</b>力。「悩みの真ん中にすでに解く力がある」という構造が、台詞と図で一対一に噛み合うようになりました。tts_text も「にほん→日本」誤読を避けて<b>ふたすじ／ふたつ</b>で同時修正。</p>
+  </div>
+
+  <h2>3. 機械検証（長文Readを信じず grep 実数で）</h2>
+  <table>
+    <tr><th>チェック</th><th>結果</th><th>判定</th></tr>
+    <tr><td><code>一本だけ</code> の出現</td><td class="mono">0</td><td class="after">✅ 消去</td></tr>
+    <tr><td><code>ひとつ差し込</code> の出現</td><td class="mono">0</td><td class="after">✅ 消去</td></tr>
+    <tr><td><code>力がひとつ</code> の出現</td><td class="mono">0</td><td class="after">✅ 消去</td></tr>
+    <tr><td><code>二筋 / ふたすじ</code>（text+tts）</td><td class="mono">2</td><td class="after">✅ 追加</td></tr>
+    <tr><td><code>二つの動く力 / ふたつのうごく</code></td><td class="mono">2</td><td class="after">✅ 追加</td></tr>
+    <tr><td><code>二つ入る / ふたついる</code></td><td class="mono">2</td><td class="after">✅ 追加</td></tr>
+    <tr><td>JSON妥当性・scenes数</td><td class="mono">valid / 27</td><td class="after">✅ 無傷</td></tr>
+    <tr><td><code>fact_check.md</code> の整合</td><td>実態に合わせて更新</td><td class="after">✅ 済</td></tr>
+  </table>
+  <p class="small">参考：この修正のトリガーは、独立3体（台本89・企画c1 89・企画c2 91）が揃って<b>同じ陽爻矛盾のみ</b>を指摘したこと。冒頭フック・題材整合・企画核のゲートは全て通過（<code>hook_gate_passed=true</code>）。落ちていたのは陽爻の1点だけでした。</p>
+
+  <h2>4. この後の harness 再走（承認後に自律走行）</h2>
+  <div class="card">
+    <p>台本（選定済み成果物）を編集したため、harness の下流証跡は設計通り無効化されます（<i>edit to selected artifact invalidates downstream evidence</i>）。促成の抜け道は無く、<b>1周だけ回し直します</b>：</p>
+    <ol>
+      <li>修正版を候補へ再登録（<code>record-candidate</code>）</li>
+      <li>再選定（<code>start-selection</code>＝codex judge・decoy2本より final が勝つはず）→ <code>record-selection</code></li>
+      <li>昇格（<code>promote-selection</code>＝修正版が canonical になる）</li>
+      <li>creative-loop fork独立採点 ≥90（陽爻矛盾が消えたので通過見込み）→ <code>link-quality</code></li>
+      <li><code>essay-preflight script 064</code> PASS</li>
+    </ol>
+    <p class="small">⚠️ 再走は約数十分。codex stall / integrity deadlock のリスクは残ります。詰まったらその時点の状態をまた提示します（現状は clean・復旧可能な状態で保持中）。</p>
+  </div>
+
+  <div class="decide">
+    <h2>▶ あなたの判断</h2>
+    <div class="opt reco">
+      <div class="h">A：この修正でOK → harness 再走へ進む</div>
+      <p class="small">上の3シーンの書き換えを承認。私が再走を最後まで自律で回し、preflight 通過後に<b>台本フルをHTMLで提示（本承認ゲート）</b>。ここではまだ公開しません。</p>
+    </div>
+    <div class="opt">
+      <div class="h">B：文言を直したい</div>
+      <p class="small">「二筋」「二つの動く力」等の言い回しや、処方箋の締め（小さな一手）に注文があれば指示ください。反映してから再走します。</p>
+    </div>
+    <div class="opt">
+      <div class="h">C：今日は修正だけで止める</div>
+      <p class="small">陽爻修正と fact_check 整合まで確定させ、harness 再走は次セッションに。現状は clean で保持します。</p>
+    </div>
+  </div>
+
+  <p class="foot">
+    対象：<code>content/064/full_script.json</code>（あの花＝あの日見た花の名前を僕達はまだ知らない × 解／第40卦）<br>
+    根拠：<code>db/hexagrams.json</code> 卦40（binary_le=010100・陽2本）／六爻図 <code>GUA6</code> 決定論描画<br>
+    生成：2026-07-24・確認HTML（noindex）
+  </p>
+
+</div>
+</body>
+</html>
