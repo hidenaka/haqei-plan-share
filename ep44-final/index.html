@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
+<title>ep44 承認ゲート — あの花×解｜企画選択＋台本</title>
+<style>
+  :root{
+    --bg:#0f1115; --panel:#171a21; --panel2:#1e222b; --ink:#e8eaed; --sub:#a2a8b4;
+    --line:#2a2f3a; --gold:#d8b25a; --ok:#5ecb8b; --ng:#e46a6a; --warn:#e6b45a; --blue:#5aa9e6;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,"Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,sans-serif;
+    line-height:1.8;font-size:16px}
+  .wrap{max-width:940px;margin:0 auto;padding:32px 20px 90px}
+  .kicker{color:var(--gold);font-weight:700;letter-spacing:.08em;font-size:.82rem}
+  h1{font-size:1.85rem;line-height:1.3;margin:.3em 0 .2em}
+  .lede{color:var(--sub);font-size:1.02rem;margin:.4em 0 1.2em}
+  .tldr{background:var(--panel);border:1px solid var(--line);border-left:4px solid var(--gold);
+    border-radius:10px;padding:16px 20px;margin:0 0 26px}
+  .tldr b{color:var(--gold)}
+  figure{margin:0 0 30px}
+  figure img{width:100%;border-radius:12px;border:1px solid var(--line);display:block}
+  figcaption{color:var(--sub);font-size:.82rem;text-align:center;margin-top:8px}
+  h2{font-size:1.3rem;margin:38px 0 12px;padding-bottom:6px;border-bottom:1px solid var(--line)}
+  h3{font-size:1.05rem;margin:22px 0 8px;color:var(--gold)}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px 18px;margin:14px 0}
+  table{width:100%;border-collapse:collapse;margin:12px 0;font-size:.92rem}
+  th,td{border:1px solid var(--line);padding:9px 11px;vertical-align:top;text-align:left}
+  th{background:var(--panel2);color:var(--sub);font-weight:600}
+  code{background:#0b0d11;border:1px solid var(--line);border-radius:5px;padding:1px 6px;font-size:.85em}
+  .mono{font-family:ui-monospace,Menlo,monospace}
+  .ok{color:var(--ok)} .ng{color:var(--ng)} .warn{color:var(--warn)}
+  .pill{display:inline-block;font-size:.74rem;font-weight:700;padding:2px 9px;border-radius:20px}
+  .pill.g{background:rgba(94,203,139,.18);color:#a7e3c1}
+  .pill.b{background:rgba(90,169,230,.18);color:#a9d4f2}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:680px){.grid{grid-template-columns:1fr}}
+  .opt-card{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:16px 18px}
+  .opt-card.reco{border-color:var(--gold);box-shadow:0 0 0 1px rgba(216,178,90,.22) inset}
+  .opt-card h3{margin-top:0}
+  .script{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:8px 18px 16px;margin:10px 0}
+  .act{margin:16px 0 4px;font-weight:700;color:var(--blue);font-size:.98rem;border-top:1px dashed var(--line);padding-top:12px}
+  .act:first-child{border-top:0}
+  .sc{margin:8px 0;padding-left:12px;border-left:2px solid var(--line)}
+  .sc .id{color:var(--sub);font-size:.72rem;font-family:ui-monospace,monospace}
+  .sc.fix{border-left-color:var(--ok);background:rgba(94,203,139,.06)}
+  .sc.fix .id::after{content:" ← 陽2本に修正";color:var(--ok);font-weight:700}
+  .decide{background:linear-gradient(180deg,#1c2230,#171a21);border:1px solid #33405a;border-radius:12px;padding:20px 22px;margin:30px 0}
+  .decide h2{border:0;margin-top:0}
+  .step{background:var(--panel2);border:1px solid var(--line);border-radius:9px;padding:14px 16px;margin:10px 0}
+  .step b{color:var(--gold)}
+  .small{font-size:.83rem;color:var(--sub)}
+  ul{margin:.3em 0 .3em 1.1em;padding:0} li{margin:.25em 0}
+  .foot{color:var(--sub);font-size:.82rem;margin-top:40px;border-top:1px solid var(--line);padding-top:14px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="kicker">承認ゲート — 第44話「あの花」× 解（かい・第40卦）／ content/064</div>
+  <h1>企画を1案選んで承認 ＋ 台本の通し確認</h1>
+  <p class="lede">陽爻バグを直し、harness の機械ゲートは全て緑になりました。残るは<b>あなたの2つの承認</b>だけです。①企画 c1/c2 のどちらか、②台本。</p>
+
+  <div class="tldr">
+    <b>TL;DR — 機械ゲートは全通過。判断は2つ</b>
+    <ul>
+      <li>✅ <b>台本</b>：陽爻バグ修正済み・独立fork採点 <b>93/92</b>（両合格・冒頭/接続ゲートtrue・db照合で陽2本＝図と一致）</li>
+      <li>✅ <b>企画</b>：c1・c2 とも独立fork採点 <b>90</b>（両合格）。concept は<b>両方合格→あなたが1案選択</b>の設計</li>
+      <li>🖐 <b>あなたの判断</b>：（1）企画 <b>c1（氷解フレーム）か c2（解／宥 二層フレーム）</b>を選ぶ（2）台本を承認。OKなら preflight を通し、次工程（音声・ビジュアル）へ</li>
+    </ul>
+  </div>
+
+  <figure>
+    <img src="images/overview-01.png" alt="ep44 企画2案の選択と台本承認の俯瞰図">
+    <figcaption>企画2案（c1 氷解 / c2 二層）はどちらも90点合格。台本は93点で陽爻修正済み。</figcaption>
+  </figure>
+
+  <h2>1. まず企画を1案選ぶ（題材はどちらも あの花×解）</h2>
+  <p class="small">題材＝<b>あの日見た花の名前を僕たちはまだ知らない（あの花）× 解（第40卦・雷水解）</b>は本人承認済みのA案。c1/c2 は同じ題材の<b>「へえ」の設計＝フレームの違い</b>です。<b>実際に作った台本（下の第3節）は c1 の"氷解＝赦しの階段"フレームで書いています。</b></p>
+  <div class="grid">
+    <div class="opt-card reco">
+      <h3>c1｜氷解フレーム <span class="pill g">90点</span></h3>
+      <p class="small"><b>背骨</b>＝「凍っていたものが、雷雨のように一気にほどける」。六爻を<b>"赦しの階段"</b>（初爻＝犯人探しをやめる → 上爻＝いちばん認めたくない一点を射抜く）に翻訳。</p>
+      <ul class="small">
+        <li>👍 シンプルで一直線。冒頭の痛み→処方箋まで一本の線</li>
+        <li>👍 <b>今の台本93点はこの案で執筆済み</b>＝選べば即通し確認へ</li>
+        <li>💡 採点者の残指摘：二爻と三爻の行動対象を台本で明確に分ける（対応済み）</li>
+      </ul>
+    </div>
+    <div class="opt-card">
+      <h3>c2｜解／宥 二層フレーム <span class="pill g">90点</span></h3>
+      <p class="small"><b>背骨</b>＝「解ける＝自然」と「宥す＝意志」を分ける。あの花の山場は"勝手にほどけた"のではなく<b>各人が自分の口で言葉にして初めて溶けた</b>＝解を宥で仕上げた、という読み替え。</p>
+      <ul class="small">
+        <li>👍 「へえ」の密度が高い（自然/意志の二層が発見的）</li>
+        <li>⚠️ 概念を2つ抱えるぶん、幕3冒頭で"解/宥"の一線を早く示さないと視聴者が迷子になりうる</li>
+        <li>🔁 選ぶ場合、台本を c2 フレームへ一部書き直し＋再採点が必要（+1周）</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2>2. 陽爻バグの修正（今回の起点）</h2>
+  <div class="card">
+    <p>解＝<code>010100</code>＝<b>陽2本</b>（二爻＝坎/水の芯・四爻＝震/雷）。旧台本は「陽が一本だけ」と語り、六爻図GUA6（陽2本を決定論描画）と矛盾していた。<b>独立3体（台本89・企画78/88）が同じ矛盾を指摘</b>したのが起点。db一次確認のうえ、幕3の3シーンを陽2本表現へ修正（下の <span class="ok">緑</span> の行）。処方箋思想「力任せは要らない／小さな一手」は保持。</p>
+  </div>
+
+  <h2>3. 台本 通し（6幕v2.3・27シーン・提示用ナレーション）</h2>
+  <div class="script">
+    <div class="act">幕1 違和感（フック）</div>
+    <div class="sc"><span class="id">V_01_01</span><br>気まずくなったまま、会わなくなった人が、いませんか。もう昔のこと、と自分に言い聞かせているのに、ふとした瞬間に、あの時の場面だけが、戻ってくる。</div>
+    <div class="sc"><span class="id">V_01_02</span><br>時間が解決したはずなのに、なぜか一箇所だけ、凍ったまま溶けていない。三千年前の本に、その凍りついたものを溶かす、という名前のついた形があります。今日は、その話です。</div>
+
+    <div class="act">幕2 観察（あの花・全体20.8%＝離脱帯を25%以内に抑制）</div>
+    <div class="sc"><span class="id">V_02_01</span><br>あの日見た花の名前を僕たちはまだ知らない。通称、あの花。幼い頃いつも一緒だった六人の幼馴染。その真ん中にいた、めんまと呼ばれる少女が、ある日、川の事故で亡くなります。</div>
+    <div class="sc"><span class="id">V_02_02</span><br>それから数年。残された仲間は、バラバラに。真ん中にいたじんたんは、学校にも行かず引きこもっている。あんなに仲の良かった六人が、いつのまにか口をきかなくなっていた。</div>
+    <div class="sc"><span class="id">V_02_03</span><br>ある夏、じんたんの前に、めんまが幽霊のような姿で現れます。記憶の中のめんまはあの夏のまま子供で止まっているのに、現れた彼女は背が伸びていた。止まっていたのは、亡くなった側ではなく、残された側の時間だったんです。</div>
+    <div class="sc"><span class="id">V_02_04</span><br>めんまは、願いを叶えてほしい、と言う。ところが本人もそれが何か思い出せない。それを探すため、離ればなれだった五人が、もう一度集まることに。</div>
+    <div class="sc"><span class="id">V_02_05</span><br>集まって見えてきたのは、全員が同じ棘を隠していたこと。あの子が死んだのは自分のせいだ、と。じんたんは突き放す一言を投げていた。あなるは自分の一言がきっかけだったと悔やんでいた。</div>
+    <div class="sc"><span class="id">V_02_06</span><br>ゆきあつは告白がうやむやのままだったことを抱えていた。誰も悪くない。なのに全員が自分を責めている。六人の時間はあの日から凍ったまま、溶かし方が誰にもわからなかった。</div>
+
+    <div class="act">幕3 種明かし（解の構造・2分＝最良ホールド帯）</div>
+    <div class="sc"><span class="id">V_03_01</span><br>ここで易経の話を。人に起きる変化のパターンが六十四、順番に並べて記録されている。その四十番目に、解、という形があります。解、という字はそのまま、ほどける、という意味です。</div>
+    <div class="sc"><span class="id">V_03_02</span><br>卦の絵は雷と水でできています。雷水解。上が雷、下が水。冬の間かたく凍っていた地面が、春の雷と雨でどっと溶けていく。季節が変わる瞬間を、そのまま形にしたものです。</div>
+    <div class="sc fix"><span class="id">V_03_03</span><br>線で見ると、こうです。かたく塞いでいたものの中に、動く力が、<b>二筋通っている。ひとつは詰まりの芯に、もうひとつは、その上に</b>。この二筋が、詰まりを、すっと抜いていく。溜めて、溜めて、あるとき一気にほどける。</div>
+    <div class="sc fix"><span class="id">V_03_04</span><br>下にある水は危険や悩み、上にある雷は動き。悩みのちょうど真上で動きが起こる。<b>悩みの芯にある力と、その上で跳ね上がる力。二つの動く力が呼応して</b>、抱えていた重さが外へ出ていく。それが、ほどける、ということ。</div>
+    <div class="sc fix"><span class="id">V_03_05</span><br>解くのに力任せは要らない。無理やり砕くのではない。要所に、正しい動きが、<b>二つ入るだけ</b>。それだけで固まっていた全体がゆるむ。溶かすのは大きな決断ではなく、小さな一手から。</div>
+    <div class="sc"><span class="id">V_03_06〜08</span><br>並び順が面白い。解のすぐ前は蹇（けん）＝足が凍って進めない行き悩み。行き詰まりの次に、ほどける、が置いてある。凍っているのは終わりでなく溶ける直前の姿。卦辞＝解けたら行くあてがなければ戻ればいい／やり残しがあれば早く動け。</div>
+
+    <div class="act">幕4 風刺の刃（自分へ返す）</div>
+    <div class="sc"><span class="id">V_04_01</span><br>この目で自分を見ると、私も、けっこう凍らせている方です。気まずくなった相手を「もう終わったこと」と箱にしまう。世の中も、水に流せ、時間が解決する、と教えてくれる。しまえば、とりあえず楽だから。</div>
+    <div class="sc"><span class="id">V_04_02</span><br>でも、しまうのと溶かすのは違う。箱の中でそれは凍ったまま残る。時々ふたを開けてはまだ自分を責める。赦していないのは、たぶん相手ではなくて、自分自身なんです。</div>
+
+    <div class="act">幕5 処方箋（解の六爻＝赦しの階段・離脱ゼロ帯）</div>
+    <div class="sc"><span class="id">V_05_01</span><br>では凍ったものをどう溶かすのか。解の卦は六つの段でその順番を教えてくれます。象辞＝君子は過ちを赦し罪をゆるす。溶かすとは、なかったことにするのではなく、赦す、と自分で決めること。</div>
+    <div class="sc"><span class="id">V_05_02 初爻</span><br>咎なし。まず自分を責めるのをやめていい。溶かす前に<b>犯人探しをやめる</b>。じんたんが「自分のせいだ」で固まっているのをほどくところからでした。</div>
+    <div class="sc"><span class="id">V_05_03 二爻</span><br>野原で三匹の狐を狩り黄色い矢を得る。狐は心の中の言い訳やごまかし。一匹ずつ捕まえると、まっすぐな一本の本音が戻る。<b>あなるが隠していた気持ちをやっと口にした</b>ように。</div>
+    <div class="sc"><span class="id">V_05_04 三爻</span><br>荷物を背負ったまま車に乗ると盗賊を呼ぶ。前の関係の重さをそっくり背負ったまま次の人へ進もうとして、かえって拗らせたこと。<b>過去を抱えたままの前進</b>は新しい厄介を呼び込む。</div>
+    <div class="sc"><span class="id">V_05_05 四爻</span><br>足の親指から自分を解け。いちばん近い小さなしがらみから、ひとつ外す。<b>大きな和解をいきなり狙わなくていい</b>。あの五人も、まずもう一度集まる、という一歩からでした。</div>
+    <div class="sc"><span class="id">V_05_06 五爻</span><br>まず君子が自分を解けば吉。誰かが先に溶ければその温度はまわりにうつる。じんたんがやっと声をあげて泣けた夜、凍っていた仲間がつられて一緒に泣けた。<b>溶けるのはいつも誰か一人が先</b>。</div>
+    <div class="sc"><span class="id">V_05_07 上爻</span><br>高い壁の上の隼を射てこれを得る。あなたにとっての隼は何でしょう。いちばん頑固で認めたくない一点。<b>最後にそれを自分の手で射抜く瞬間が要る</b>。あの物語ではそれがかくれんぼ。「見つけた」と声に出して、めんまはようやく成仏していく。</div>
+
+    <div class="act">幕6 余韻</div>
+    <div class="sc"><span class="id">V_06_01</span><br>凍らせた気持ちは箱にしまっても消えてくれない。溶かすしかない。解の卦はその溶かし方を、犯人探しをやめること、から順番に並べてくれています。</div>
+    <div class="sc"><span class="id">V_06_02</span><br>溶けたら遠くまで行かなくていい。行くあてがなければ戻ってくればいい。あの六人があの秘密基地に戻ってきたように。凍ったものを溶かすいちばん近い道は、赦す、と自分で決めることなんです。</div>
+  </div>
+
+  <h2>4. 機械証跡（fork独立採点・全ゲート緑）</h2>
+  <table>
+    <tr><th>対象</th><th>採点（独立fork）</th><th>ゲート</th><th>harness状態</th></tr>
+    <tr><td>台本 essay-script</td><td class="ok">93 / 92</td><td class="ok">hook・story_bridge 両true</td><td><code>qualified</code>（承認待ち）</td></tr>
+    <tr><td>企画 c1（氷解）</td><td class="ok">90</td><td class="ok">出典ゲートtrue</td><td>shortlist・合格</td></tr>
+    <tr><td>企画 c2（二層）</td><td class="ok">90</td><td class="ok">出典ゲートtrue</td><td>shortlist・合格</td></tr>
+  </table>
+  <p class="small">全採点で <code>intent_violation=false</code>・db卦40（解）の六爻/卦辞/象辞/爻辞を逐語照合済み。台本の残指摘は軽微なテロップ折返し（V_02_03=57字・V_01_01=46字を2分割推奨＝次工程の字幕分割で吸収）。</p>
+
+  <div class="decide">
+    <h2>▶ あなたの判断（2つ）</h2>
+    <div class="step">
+      <b>判断1：企画をどちらにするか</b><br>
+      <span class="small">・<b>c1（氷解フレーム）＝推奨</b>：今の台本93点はこの案。選べば即、通し確認・次工程へ。<br>・c2（解／宥 二層）：フレームが発見的。選ぶ場合は台本を一部書き直し＋再採点（+1周）。</span>
+    </div>
+    <div class="step">
+      <b>判断2：台本（上の通し）を承認するか</b><br>
+      <span class="small">この6幕・27シーンで音声→ビジュアル→モーション→レンダへ進めてよいか。文言に注文があれば指示ください（反映して再採点）。</span>
+    </div>
+    <p class="small">承認をいただいたら：concept承認（<code>--choose</code>）を記録→concept昇格→script preflight PASS→台本の人間ゲートを閉じ、essay-episode の次ステップ（音声合成）へ自走します。<b>公開はしません</b>（社内工程）。</p>
+  </div>
+
+  <p class="foot">
+    対象：<code>content/064/</code>（あの花 × 解／第40卦・雷水解）<br>
+    根拠：<code>db/hexagrams.json</code> 卦40（binary_le=010100・陽2本＝二爻/四爻）／六爻図 <code>GUA6</code>／fork独立採点<br>
+    公開ペース：本編ロング週2・朝4:00 JST（痛み先頭転換H58コホート・判定2026-08-21）／生成：2026-07-24（noindex）
+  </p>
+
+</div>
+</body>
+</html>
