@@ -65,7 +65,8 @@
 
 <div class="tldr">
   <b>結論:</b> ep39完成動画（7分31秒）の最終承認をお願いします。承認いただければ <b>明日 2026-07-25(土) 朝4:00</b> に予約公開します（公開枠claim済み）。
-  動画は <b>7/15にレビューコピーを作ったものと同一バイト</b>（SHA-256一致・mix preflight PASS済み）。公開予定日を6日超過している唯一の未公開回で、これが最後のゲートです。
+  動画は <b>7/15にレビューコピーを作ったものと同一バイト</b>（SHA-256一致・mix preflight PASS済み）。公開予定日を6日超過している唯一の未公開回で、これが最後のゲートです。<br>
+  <b style="color:#f43f5e">⚠️ 作業中に判明した分岐が1つ:</b> サムネイルのfork独立採点が84点・83点（2回・同一画像）で品質ゲート90点に届かず、<b>現サムネのままでは台帳のpublishゲートを正規に通せません</b>。Q2で扱いを決めてください（動画・タイトルには影響しません）。
 </div>
 
 <h2>① 完成動画（プレビュー 854×480。実物は1080p・SHA束縛済み）</h2>
@@ -76,8 +77,9 @@
 <div class="title-box">ジョナサンは、路地で自分を襲ってきた男と一緒に旅に出た【第三十九話・同人】</div>
 <p class="note">ep39はpivot転換コホート外（pre-pivot legacy）のため、痛み先頭型ではなくH49/H50アーム準拠のままが正です。</p>
 
-<h2>③ サムネイル（harness run証跡とSHA一致・変更不可）</h2>
+<h2>③ サムネイル（⚠️ fork採点 84点・83点 ＝ 90点ゲート未達）</h2>
 <img src="thumbnail.png" alt="ep39 thumbnail">
+<p class="note">採点者の指摘（要旨）: 題字の可読性は良好。ただし「左上の赤系タグ＋左側の白/金2行題字」の骨格が直近サムネ（055/056/057）と反復しており、特に057と近い＝独自性の軸で減点。タグを廃止または移動し、単一アンカー（両手と白円モチーフ）へ視線を集める改稿を提案されています。</p>
 
 <h2>④ コンタクトシート（黒落ち・崩壊チェック済み証跡）</h2>
 <img src="contact-sheet.jpg" alt="ep39 contact sheet">
@@ -119,6 +121,15 @@
   <textarea name="q1_note" placeholder="補足 (任意)"></textarea>
 </div>
 
+<div class="q" data-qid="q2">
+  <h3>Q2. サムネイルの品質ゲート未達（84・83点）をどう扱いますか？</h3>
+  <label><input type="radio" name="q2" value="A"><b>A. 採点指摘に沿って改稿し、再選抜・再採点して公開へ進む</b><span class="rec">(推奨)</span>
+    <div class="opt-d">同じベース絵からタグ位置/題字構成をPILで組み直し（AI画像枠は消費しない）、bon再選抜→fork再採点≧90→preflight。正規ルートのまま07-25 04:00公開を目指します。改稿後のサムネはこのページを更新して再提示します。</div></label>
+  <label><input type="radio" name="q2" value="B"><b>B. 現サムネを維持する（公開は延期し指揮セッションへ差し戻し）</b>
+    <div class="opt-d">品質証跡が作れないため正規のpublishゲートを通せません。ゲート迂回は禁止事項（台帳の完全性）なので、この場合は07-25公開を見送り扱いを再協議します。</div></label>
+  <textarea name="q2_note" placeholder="補足 (任意)"></textarea>
+</div>
+
 <h2>全体への赤ペン</h2>
 <div class="q redpen">
   <p class="kv">訂正・追加要望・「そもそも」の指摘はここへ。</p>
@@ -134,7 +145,8 @@
 </div>
 <script>
 var QUESTIONS = {
-  q1: "Q1. ep39 final-video を承認しますか？"
+  q1: "Q1. ep39 final-video を承認しますか？",
+  q2: "Q2. サムネ品質ゲート未達の扱い"
 };
 var DRAFT_KEY = "akapen-ep39-final-video-01";
 var DOC = "ep39-final-video-01";
