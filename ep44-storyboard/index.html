@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
+<title>ep44 絵コンテ（立ち絵設計）レビュー — あの花×解</title>
+<style>
+  :root{--bg:#0f1115;--panel:#171a21;--panel2:#1e222b;--ink:#e8eaed;--sub:#a2a8b4;--line:#2a2f3a;--gold:#d8b25a;--ok:#5ecb8b;--blue:#5aa9e6;--warn:#e6b45a}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,"Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,sans-serif;line-height:1.7;font-size:15px}
+  .wrap{max-width:960px;margin:0 auto;padding:30px 18px 80px}
+  .kicker{color:var(--gold);font-weight:700;letter-spacing:.08em;font-size:.8rem}
+  h1{font-size:1.7rem;line-height:1.3;margin:.3em 0 .2em}
+  .lede{color:var(--sub);margin:.4em 0 1.1em}
+  .tldr{background:var(--panel);border:1px solid var(--line);border-left:4px solid var(--gold);border-radius:10px;padding:14px 18px;margin:0 0 22px}
+  .tldr b{color:var(--gold)}
+  h2{font-size:1.15rem;margin:30px 0 6px;padding-bottom:5px;border-bottom:1px solid var(--line)}
+  .act{margin:22px 0 8px;color:var(--blue);font-weight:700;font-size:1.02rem}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:9px;padding:12px 14px;margin:9px 0}
+  .card.show{border-color:var(--gold);box-shadow:0 0 0 1px rgba(216,178,90,.18) inset}
+  .sid{font-family:ui-monospace,monospace;font-size:.72rem;color:var(--sub)}
+  .role{font-weight:700;margin:2px 0 6px}
+  .show .role::after{content:" ★見せ場";color:var(--gold);font-size:.78rem}
+  .row{display:grid;grid-template-columns:1fr 1fr;gap:6px 16px;font-size:.9rem}
+  @media(max-width:640px){.row{grid-template-columns:1fr}}
+  .k{color:var(--sub);font-size:.8rem}
+  .swatch{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:4px;vertical-align:middle;border:1px solid #0006}
+  .tag{display:inline-block;font-size:.7rem;font-weight:700;padding:1px 7px;border-radius:20px;margin-left:6px}
+  .tag.card{background:rgba(90,169,230,.18);color:#a9d4f2}
+  .tag.img{background:rgba(94,203,139,.15);color:#a7e3c1}
+  .tag.gua{background:rgba(216,178,90,.2);color:#e8cd8a}
+  .policy{background:rgba(228,106,106,.08);border:1px solid #4a2e33;border-radius:9px;padding:12px 16px;margin:14px 0}
+  .decide{background:linear-gradient(180deg,#1c2230,#171a21);border:1px solid #33405a;border-radius:12px;padding:18px 20px;margin:28px 0}
+  .decide h2{border:0;margin-top:0}
+  .small{font-size:.82rem;color:var(--sub)}
+  ul{margin:.3em 0 .3em 1.1em;padding:0}li{margin:.2em 0}
+  .foot{color:var(--sub);font-size:.8rem;margin-top:36px;border-top:1px solid var(--line);padding-top:12px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="kicker">絵コンテ 本人レビュー（Step 2.5・人間ゲート）— 第44話 あの花 × 解</div>
+  <h1>立ち絵・構図の設計を先に確定する</h1>
+  <p class="lede">台本承認の次は、音声・画像に進む前に「誰を・どの型で・どの象徴で描くか」を確定します（レンダ後に初見で手戻りしないため）。画像はこの承認の<b>後</b>に生成します。</p>
+
+  <div class="tldr">
+    <b>TL;DR</b>
+    <ul>
+      <li>画風＝<b>木版浮世絵</b>（藍と墨＋金の差し色・和紙・顔は描かない／後ろ姿・シルエット）</li>
+      <li>27カット。<b>六爻図(GUA6)は決定論描画</b>（解=陽2本＝二爻/四爻を金で強調・AI枠を使わない）。漢字/卦カードはRemotion描画</li>
+      <li>処方箋の六爻＝<b>「赦しの階段」</b>を六段の象徴で一段ずつ着地。見せ場★は6カット</li>
+    </ul>
+  </div>
+
+  <div class="policy">
+    <b>⚠️ キャラ識別方針（2026-07-12 法務反転）</b>：<b>画像であの花のキャラを識別させません</b>。めんまの白ワンピの具体デザインや各キャラの髪型・固有色は描かず、<b>一般記号</b>（子供たちのシルエット群／白い夏服の人物の後ろ姿／木の秘密基地／夏の川）で表現します。「誰か」はナレーションとテロップが伝えます。ここは崩さない前提で設計しています。
+  </div>
+
+  <h2>立ち絵・構図 設計表（27カット）</h2>
+
+  <div class="act">幕1 違和感（フック）</div>
+  <div class="card"><span class="sid">V_01_01</span><span class="tag img">img</span><div class="role">気まずさで距離のある二人（誰とも特定しない）</div><div class="row"><div><span class="k">立ち絵</span> 斜め後ろ・遠景シルエット</div><div><span class="k">象徴</span> 間に空いた椅子ひとつ／閉じたスマホ</div><div><span class="k">色</span> <span class="swatch" style="background:#2b3a5a"></span>藍（冷え）＋墨</div><div><span class="k">場面</span> 薄曇りの窓</div></div></div>
+  <div class="card"><span class="sid">V_01_02</span><span class="tag img">img</span><div class="role">凍ったまま溶けていない一箇所</div><div class="row"><div><span class="k">立ち絵</span> 静物クローズ</div><div><span class="k">象徴</span> 薄氷・その下のかすかな流れ</div><div><span class="k">色</span> <span class="swatch" style="background:#2b3a5a"></span>藍・白・<span class="swatch" style="background:#d8b25a"></span>金の兆し</div><div><span class="k">場面</span> 全面凍った水の一点</div></div></div>
+
+  <div class="act">幕2 観察（あの花・全体20.8%）</div>
+  <div class="card"><span class="sid">V_02_01</span><span class="tag img">img</span><div class="role">6人の幼馴染とめんまの死（一般記号）</div><div class="row"><div><span class="k">立ち絵</span> 遠景・後ろ姿群像</div><div><span class="k">象徴</span> 川辺の6つの子供シルエット／中央に白い夏服の小さな後ろ姿</div><div><span class="k">色</span> <span class="swatch" style="background:#3a5a45"></span>藍緑＋生成り＋<span class="swatch" style="background:#d8b25a"></span>金</div><div><span class="k">場面</span> 夏の川辺・中央の人影が消える予兆</div></div></div>
+  <div class="card"><span class="sid">V_02_02</span><span class="tag img">img</span><div class="role">数年後・引きこもり</div><div class="row"><div><span class="k">立ち絵</span> 室内・斜め後ろ</div><div><span class="k">象徴</span> 閉じたカーテン・消えたテレビ・膝を抱えた後ろ姿</div><div><span class="k">色</span> <span class="swatch" style="background:#1a1d24"></span>墨・藍（沈み）</div><div><span class="k">場面</span> 光を閉ざした薄暗い部屋</div></div></div>
+  <div class="card show"><span class="sid">V_02_03</span><span class="tag img">img</span><div class="role">対比＝反転：止まっていたのは残された側の時間</div><div class="row"><div><span class="k">立ち絵</span> 二つの後ろ姿を左右対置</div><div><span class="k">象徴</span> 左＝子供の背丈の白い夏服／右＝背の伸びた白い夏服・足元に同じ花</div><div><span class="k">色</span> 白・生成り＋<span class="swatch" style="background:#d8b25a"></span>金</div><div><span class="k">意図</span> 記憶は子供のまま・現れた姿は成長＝残された側の時間だけが止まった、を視覚で反転</div></div></div>
+  <div class="card"><span class="sid">V_02_04</span><span class="tag img">img</span><div class="role">願い・五人が再集結</div><div class="row"><div><span class="k">立ち絵</span> 俯瞰・点が集まる</div><div><span class="k">象徴</span> 散らばった5つのシルエット→木の秘密基地へ</div><div><span class="k">色</span> <span class="swatch" style="background:#2b3a5a"></span>藍＋<span class="swatch" style="background:#d8b25a"></span>金の灯</div><div><span class="k">場面</span> 小道・提灯のような灯り</div></div></div>
+  <div class="card"><span class="sid">V_02_05</span><span class="tag img">img</span><div class="role">全員が同じ棘＝自分のせい</div><div class="row"><div><span class="k">立ち絵</span> 横並び・後ろ姿</div><div><span class="k">象徴</span> 5つの後ろ姿の胸元に同じ黒い棘・俯いた肩</div><div><span class="k">色</span> <span class="swatch" style="background:#1a1d24"></span>墨の棘＋藍</div><div><span class="k">場面</span> 同じ罪悪感を隠す</div></div></div>
+  <div class="card"><span class="sid">V_02_06</span><span class="tag img">img</span><div class="role">溶かし方が誰にもわからない</div><div class="row"><div><span class="k">立ち絵</span> 象徴・氷塊</div><div><span class="k">象徴</span> 氷の中に閉じ込められた6つの小さな灯・外に手がかりなし</div><div><span class="k">色</span> <span class="swatch" style="background:#2b3a5a"></span>藍氷・墨・かすかな金</div><div><span class="k">場面</span> 固まった六人の時間</div></div></div>
+
+  <div class="act">幕3 種明かし（解の構造）</div>
+  <div class="card"><span class="sid">V_03_01</span><span class="tag card">card</span><div class="role">易経・解の提示</div><div class="row"><div><span class="k">描画</span> Remotion漢字カード</div><div><span class="k">象徴</span> 六十四卦の並びの四十番目に灯る『解』</div><div><span class="k">色</span> 生成り紙・墨字・<span class="swatch" style="background:#d8b25a"></span>金</div></div></div>
+  <div class="card show"><span class="sid">V_03_02</span><span class="tag img">img</span><div class="role">雷水解＝雷と水／季節の氷解</div><div class="row"><div><span class="k">立ち絵</span> 象徴・上下二層</div><div><span class="k">象徴</span> 上＝金の稲妻／下＝藍の水・溶け出す凍土</div><div><span class="k">色</span> <span class="swatch" style="background:#2b3a5a"></span>藍・墨・<span class="swatch" style="background:#d8b25a"></span>金</div><div><span class="k">場面</span> 春雷で凍土がどっと溶ける</div></div></div>
+  <div class="card"><span class="sid">V_03_03</span><span class="tag gua">六爻図 GUA6</span><div class="role">陽は二筋（二爻／四爻）＝図と台詞を一致</div><div class="row"><div><span class="k">生成</span> 決定論描画 <span class="small">gen-hexagram-diagram.py 064 --yao 4</span></div><div><span class="k">象徴</span> 六本の爻線・陽=二爻/四爻を金で強調（詰まりの芯と その上）</div><div><span class="k">色</span> 墨線＋<span class="swatch" style="background:#d8b25a"></span>金の陽二筋</div><div><span class="k">担保</span> db(010100)駆動＝幻覚ゼロ・AI枠を使わない</div></div></div>
+  <div class="card"><span class="sid">V_03_04</span><span class="tag img">img</span><div class="role">悩みの真上で動き＝二つの動く力の呼応</div><div class="row"><div><span class="k">立ち絵</span> 象徴・上下呼応</div><div><span class="k">象徴</span> 下＝渦の芯の金／上＝跳ね上がる金の弧</div><div><span class="k">色</span> <span class="swatch" style="background:#2b3a5a"></span>藍の水＋二筋の<span class="swatch" style="background:#d8b25a"></span>金</div></div></div>
+  <div class="card"><span class="sid">V_03_05</span><span class="tag img">img</span><div class="role">力任せは要らない・小さな二手</div><div class="row"><div><span class="k">立ち絵</span> 象徴・氷塊と要所</div><div><span class="k">象徴</span> 大きな氷に二つの小さな金の点→全体に走る亀裂</div><div><span class="k">色</span> <span class="swatch" style="background:#2b3a5a"></span>藍氷＋<span class="swatch" style="background:#d8b25a"></span>金の要所</div></div></div>
+  <div class="card"><span class="sid">V_03_06</span><span class="tag card">card</span><div class="role">序卦：解の一つ前は蹇（行き悩み）</div><div class="row"><div><span class="k">描画</span> Remotion漢字カード</div><div><span class="k">象徴</span> 39蹇→40解の並び（足が凍る形／ほどける形）</div><div><span class="k">色</span> 生成り紙・墨字・<span class="swatch" style="background:#d8b25a"></span>金</div></div></div>
+  <div class="card"><span class="sid">V_03_07</span><span class="tag img">img</span><div class="role">凍りは終わりでなく溶ける直前</div><div class="row"><div><span class="k">立ち絵</span> クローズ・自然</div><div><span class="k">象徴</span> 氷の枝・落ちかける雫・小さな芽</div><div><span class="k">色</span> <span class="swatch" style="background:#2b3a5a"></span>藍氷＋<span class="swatch" style="background:#d8b25a"></span>金＋<span class="swatch" style="background:#3a5a45"></span>緑の芽</div></div></div>
+  <div class="card"><span class="sid">V_03_08</span><span class="tag img">img</span><div class="role">卦辞：戻れる／早く動け</div><div class="row"><div><span class="k">立ち絵</span> 象徴・道</div><div><span class="k">象徴</span> 分岐する小道・来た道へ戻る金の印</div><div><span class="k">色</span> 生成り・墨・<span class="swatch" style="background:#d8b25a"></span>金</div></div></div>
+
+  <div class="act">幕4 風刺の刃（自分へ）</div>
+  <div class="card"><span class="sid">V_04_01</span><span class="tag img">img</span><div class="role">箱にしまう私自身の手</div><div class="row"><div><span class="k">立ち絵</span> 手元アップ・後ろから</div><div><span class="k">象徴</span> 木箱・閉じる蓋・中に凍った小さな塊</div><div><span class="k">色</span> <span class="swatch" style="background:#1a1d24"></span>墨・藍・箱の木肌</div></div></div>
+  <div class="card"><span class="sid">V_04_02</span><span class="tag img">img</span><div class="role">赦していないのは相手でなく自分</div><div class="row"><div><span class="k">立ち絵</span> 象徴・箱の内</div><div><span class="k">象徴</span> 開いた箱・凍ったまま残る塊・自分の影</div><div><span class="k">色</span> <span class="swatch" style="background:#2b3a5a"></span>藍氷・墨</div></div></div>
+
+  <div class="act">幕5 処方箋（解の六爻＝赦しの階段）</div>
+  <div class="card show"><span class="sid">V_05_01</span><span class="tag img">img</span><div class="role">処方箋の入口・象辞（過ちを赦す）</div><div class="row"><div><span class="k">立ち絵</span> 象徴・階段全景</div><div><span class="k">象徴</span> 六段の石段・上るほど金が差す</div><div><span class="k">色</span> <span class="swatch" style="background:#1a1d24"></span>墨石・昇る<span class="swatch" style="background:#d8b25a"></span>金</div></div></div>
+  <div class="card"><span class="sid">V_05_02</span><span class="tag img">img</span><div class="role">初爻：犯人探しをやめる</div><div class="row"><div><span class="k">象徴</span> 自分を指していた指をそっと下ろす手元・一段目に灯</div><div><span class="k">色</span> <span class="swatch" style="background:#1a1d24"></span>墨＋一点の金</div></div></div>
+  <div class="card"><span class="sid">V_05_03</span><span class="tag img">img</span><div class="role">二爻：言い訳の狐を狩り本音を得る</div><div class="row"><div><span class="k">象徴</span> 逃げる三匹の狐の影・手に戻る一本の金の矢</div><div><span class="k">色</span> <span class="swatch" style="background:#2b3a5a"></span>藍野＋<span class="swatch" style="background:#d8b25a"></span>金の矢</div></div></div>
+  <div class="card"><span class="sid">V_05_04</span><span class="tag img">img</span><div class="role">三爻：過去を背負ったままの前進をやめる</div><div class="row"><div><span class="k">象徴</span> 重い荷を背負って車に乗る後ろ姿・忍び寄る盗賊の影</div><div><span class="k">色</span> <span class="swatch" style="background:#1a1d24"></span>墨・藍（警戒）</div></div></div>
+  <div class="card"><span class="sid">V_05_05</span><span class="tag img">img</span><div class="role">四爻：足の親指＝小さなしがらみを一つ外す</div><div class="row"><div><span class="k">象徴</span> 足の親指に絡む細い糸一本を そっと外す</div><div><span class="k">色</span> <span class="swatch" style="background:#1a1d24"></span>墨・生成り＋<span class="swatch" style="background:#d8b25a"></span>金</div></div></div>
+  <div class="card show"><span class="sid">V_05_06</span><span class="tag img">img</span><div class="role">五爻：自分が先に溶ける・温度がうつる</div><div class="row"><div><span class="k">象徴</span> 先にともる一つの金の灯→つられてともる周囲の凍った灯</div><div><span class="k">色</span> <span class="swatch" style="background:#1a1d24"></span>藍闇＋広がる<span class="swatch" style="background:#d8b25a"></span>金</div></div></div>
+  <div class="card"><span class="sid">V_05_07</span><span class="tag img">img</span><div class="role">上爻：一番認めたくない一点を射抜く</div><div class="row"><div><span class="k">象徴</span> 高い壁の上の一羽の影を射抜く金の矢（かくれんぼ＝見つけた の象徴）</div><div><span class="k">色</span> <span class="swatch" style="background:#1a1d24"></span>墨壁＋<span class="swatch" style="background:#d8b25a"></span>金の矢</div></div></div>
+
+  <div class="act">幕6 余韻</div>
+  <div class="card"><span class="sid">V_06_01</span><span class="tag img">img</span><div class="role">溶かすしかない</div><div class="row"><div><span class="k">象徴</span> 溶け出した氷から流れ出す一筋の水・その先の道</div><div><span class="k">色</span> <span class="swatch" style="background:#2b3a5a"></span>藍から<span class="swatch" style="background:#d8b25a"></span>金へ</div></div></div>
+  <div class="card show"><span class="sid">V_06_02</span><span class="tag img">img</span><div class="role">断言で閉じる：戻ればいい・赦すと決める</div><div class="row"><div><span class="k">立ち絵</span> 遠景・後ろ姿・帰還</div><div><span class="k">象徴</span> 夏の秘密基地へ戻る小道・温かい灯・歩み寄る後ろ姿</div><div><span class="k">色</span> <span class="swatch" style="background:#2b3a5a"></span>藍暮れ＋<span class="swatch" style="background:#d8b25a"></span>金の灯</div></div></div>
+
+  <div class="decide">
+    <h2>▶ あなたの判断</h2>
+    <ul>
+      <li><b>A：この設計で画像生成へ</b>（承認）→ 音声合成 → 木版浮世絵の画像生成 → 六爻図 → モーション → Remotion。識別監査（ブラインドで作品/キャラが当てられない＝PASS）も通します。</li>
+      <li><b>B：一部直したい</b> → 特定カットの立ち絵/象徴/色に注文をください（例: V_02_03の対比の見せ方、赦しの階段の象徴、氷の使いすぎ 等）。反映して再提示します。</li>
+    </ul>
+    <p class="small">承認後、まず音声（AivisSpeech morioki・卦名読みは辞書参照・平坦イントネーション）から自走し、画像→六爻図→モーション→レンダまで進めます。<b>次の停止点は通し視聴（Step 8）</b>です。</p>
+  </div>
+
+  <p class="foot">対象: <code>content/064/storyboard.json</code>（あの花 × 解／第40卦）／画風=木版浮世絵（藍墨＋金・顔なし）／識別はナレーション・テロップが担う（画像は一般記号）／生成 2026-07-25（noindex）</p>
+</div>
+</body>
+</html>
