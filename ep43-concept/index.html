@@ -1,239 +1,71 @@
-<!doctype html>
-<html lang="ja">
-<head>
+<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ep43 企画2案 選択 — 四月は君の嘘×離</title>
 <meta name="robots" content="noindex,nofollow,noarchive">
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>第43話 企画A/B 決定ゲート</title>
 <style>
-  :root{
-    --ink:#1a1a1a; --ink2:#4a4a4a; --bg:#f7f5ee; --paper:#fbf9f1; --line:#d8d2bf;
-    --a:#c9762b; --a-soft:#f6e6d4;   /* A=火/離 */
-    --b:#3a72b0; --b-soft:#dbe7f4;   /* B=雷雨/解 */
-    --ok:#2e8b57; --warn:#c83a2c; --gold:#b8912b;
-    --shadow:0 1px 0 rgba(0,0,0,.04),0 8px 24px rgba(0,0,0,.06);
-    --sans:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP","Yu Gothic","Meiryo",sans-serif;
-  }
-  *{box-sizing:border-box}
-  html,body{margin:0;padding:0}
-  body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1.75;-webkit-font-smoothing:antialiased}
-  .wrap{max-width:1120px;margin:0 auto;padding:48px 24px 96px}
-  .kicker{display:inline-block;background:#1a1a1a;color:#fff;font-size:12px;font-weight:700;letter-spacing:.12em;padding:6px 12px;border-radius:999px;margin-bottom:16px}
-  h1{font-size:34px;line-height:1.3;margin:0 0 12px}
-  .lede{font-size:17px;color:var(--ink2);margin:0;max-width:860px}
-  .tldr{margin-top:24px;padding:20px 22px;background:var(--paper);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow)}
-  .tldr h2{font-size:12px;letter-spacing:.15em;color:var(--ink2);margin:0 0 8px}
-  .tldr ol{margin:0;padding-left:20px}
-  figure{margin:36px 0 8px}
-  figure img{width:100%;height:auto;border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow);display:block}
-  figcaption{font-size:13px;color:var(--ink2);margin-top:8px;text-align:center}
-  section{margin-top:48px}
-  h2.sec{font-size:22px;margin:0 0 6px;border-left:5px solid var(--gold);padding-left:12px}
-  .sub{color:var(--ink2);font-size:14px;margin:0 0 18px;padding-left:17px}
-  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
-  @media(max-width:760px){.grid2{grid-template-columns:1fr}}
-  .card{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:22px 22px 20px;box-shadow:var(--shadow)}
-  .card.A{border-top:6px solid var(--a)}
-  .card.B{border-top:6px solid var(--b)}
-  .badge{display:inline-block;font-weight:700;font-size:13px;padding:4px 10px;border-radius:999px;color:#fff}
-  .badge.A{background:var(--a)} .badge.B{background:var(--b)}
-  .score{float:right;font-size:13px;font-weight:700;color:var(--ok);background:#e5f3ec;border:1px solid #bfe0cd;padding:4px 10px;border-radius:999px}
-  .card h3{font-size:19px;margin:12px 0 6px}
-  .thesis{font-size:15px;background:#fff;border:1px dashed var(--line);border-radius:10px;padding:12px 14px;margin:10px 0}
-  .pain{font-size:14px;color:var(--warn);font-weight:600;margin:8px 0}
-  .flip{font-size:14px;color:var(--ok);font-weight:600;margin:8px 0}
-  h4{font-size:13px;letter-spacing:.08em;color:var(--ink2);margin:16px 0 6px;border-bottom:1px solid var(--line);padding-bottom:4px}
-  ul.tight{margin:6px 0;padding-left:18px}
-  ul.tight li{margin:3px 0;font-size:14px}
-  ol.acts{margin:6px 0;padding-left:20px}
-  ol.acts li{margin:4px 0;font-size:14px}
-  .yao{font-size:13.5px}
-  .yao li{margin:5px 0}
-  .yao b{color:var(--gold)}
-  table{border-collapse:collapse;width:100%;font-size:14px;margin-top:8px}
-  th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
-  th{background:#efe9d8}
-  .decision{margin-top:52px;border:2px solid var(--gold);border-radius:16px;background:#fffdf5;padding:26px 26px 22px;box-shadow:var(--shadow)}
-  .decision h2{font-size:22px;margin:0 0 6px;color:#8a6d1e}
-  .opt{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:start;padding:14px 0;border-top:1px dashed var(--line)}
-  .opt:first-of-type{border-top:none}
-  .optlabel{font-weight:800;font-size:16px;min-width:64px}
-  .A .optlabel{color:var(--a)} .B .optlabel{color:var(--b)}
-  .note{font-size:13px;color:var(--ink2)}
-  .pill{display:inline-block;font-size:12px;background:#eee;border:1px solid var(--line);border-radius:999px;padding:2px 9px;margin:2px 3px 0 0}
-  .conc{margin-top:44px;font-size:16px;padding:20px 22px;background:var(--paper);border:1px solid var(--line);border-radius:12px}
-  .meta{font-size:12.5px;color:var(--ink2);margin-top:6px}
-</style>
-</head>
-<body>
-<div class="wrap">
-
-  <div class="kicker">HaQei / アニメと易経 — 第43話 企画ゲート</div>
-  <h1>第43話は、どちらの卦で作りますか？</h1>
-  <p class="lede">残り22卦から「大型IP × 常識反転フック」で企画を2案立てました。両案とも独立採点で<b>91点（合格ライン90）</b>・卦辞爻辞は db と完全一致・冒頭ゲートも通過。<b>どちらも作れる状態</b>です。あなたが1案を選んで承認すると、その卦で台本制作に入ります。</p>
-
-  <div class="tldr">
-    <h2>TL;DR</h2>
-    <ol>
-      <li><b>A：四月は君の嘘 × 離（火）</b>— 「火は薪に付いて初めて燃える＝依存は輝きの条件」。一人で立ち直れない自分を責めなくていい。</li>
-      <li><b>B：あの花 × 解（雷雨）</b>— 「凍った後悔は時間でなく"降らせて"ほどく」。5年蓋をしてきた後悔に、雷雨のように一度降らせる。</li>
-      <li>両案とも <b>91点合格</b>・序卦ショート連動あり（A=坎→離／B=蹇→解）・処方箋は六爻を"今日やめる/小さく始める"具体行動に接地。<b>→ あなたがA/Bを選ぶだけ。</b></li>
-    </ol>
-  </div>
-
-  <figure>
-    <img src="images/overview-01.png" alt="第43話 企画A/B 比較ボード">
-    <figcaption>A（四月は君の嘘×離＝火）と B（あの花×解＝雷雨）の比較。どちらも「再生のプロセス」を別アプローチで描く。</figcaption>
-  </figure>
-
-  <section>
-    <h2 class="sec">現状（一次情報・2026-07-23）</h2>
-    <p class="sub">yt-stats 実測。ep43をどう設計するかの前提。</p>
-    <table>
-      <tr><th>指標</th><th>実態</th><th>ep43への反映</th></tr>
-      <tr><td>登録者</td><td><b>91</b> / 1000（総再生 82,964）</td><td>登録1000まで最優先。ショート→登録変換が第一律速</td></tr>
-      <tr><td>ロング初速</td><td>ep42=44再生・ep41=16再生と低い（入口=サムネ/タイトルが律速だが H-CTR-1 で no_lift 判明済）</td><td>CTRは監視のみ。複利の本命＝冒頭維持(H52)と常識反転フック</td></tr>
-      <tr><td>ショート</td><td>787〜1113再生で回っている（いいね率が登録変換の律速＝H51）</td><td>ep43ショート＝序卦型・<b>いいね率主指標</b>（再生数で判定しない）</td></tr>
-      <tr><td>幕配分</td><td>v2.3（観察1.5-2.5分/種明かし2-3分下限/処方箋1.5-3分）</td><td>両案とも v2.3 で設計。冒頭0-8秒 約束オーバーレイ(H52)適用</td></tr>
-    </table>
-  </section>
-
-  <section>
-    <h2 class="sec">2案の中身</h2>
-    <p class="sub">卦辞・爻辞は db/hexagrams.json から実引き（記憶で書かない）。作品事実は台本Step2でweb一次裏取り。</p>
-    <div class="grid2">
-
-      <!-- A -->
-      <div class="card A">
-        <span class="badge A">A案</span><span class="score">独立採点 91点 ✓合格</span>
-        <h3>四月は君の嘘 × 離（火・#30 ䷝）</h3>
-        <div class="thesis"><b>中心命題：</b>有馬公生は、かをりという火に付いて初めて、失った音を取り戻した——離（火）は薪に付いて燃える卦。依存は弱さではなく、公生が再び弾くための条件だった。</div>
-        <p class="pain">痛点：誰かがいないと前に進めない自分を、依存的で弱いと責める</p>
-        <p class="flip">反転：火は薪に付いて初めて燃える。付着（依存）は弱さでなく輝きの条件</p>
-
-        <h4>卦（db実引き）</h4>
-        <ul class="tight">
-          <li>卦辞「離、利貞、亨。畜牝牛吉」＝柔順を養えば吉</li>
-          <li>象「明両作、離。大人以継明照于四方」＝明かりを継いで四方を照らす</li>
-          <li>核＝麗（つく）。火は単独で存在できず薪に付いて燃える。二爻・五爻が陰＝「柔らかく寄る」が輝きの芯</li>
-        </ul>
-
-        <h4>6幕（v2.3）</h4>
-        <ol class="acts">
-          <li>違和感：「一人で立ち直らなきゃ、と思う夜」（日常語）</li>
-          <li>観察：音を失った公生がかをりに引きずられ再び弾く</li>
-          <li>種明かし：離＝火は薪に付いて燃える（六爻図）</li>
-          <li>刃：「自立」を美徳にしすぎて火を借りるのを恥じ、くすぶっていないか（自分へ）</li>
-          <li>処方箋：↓六爻</li>
-          <li>余韻：一人で燃えられないのは欠陥でなく、火という生き方</li>
-        </ol>
-
-        <h4>処方箋＝離の六爻（今日やめる/小さく始める）</h4>
-        <ul class="yao">
-          <li><b>初</b>「履錯然」＝頼り先を決めきる前に、違う3人に小さく1つずつ頼る</li>
-          <li><b>二</b>「黄離元吉」＝一人に全部を預けず、頼み事を週1つに絞る</li>
-          <li><b>三</b>「日昃之離」＝火が傾く前に受け取り切る（燃え尽きも延命もしない中庸）</li>
-          <li><b>四</b>「焚如死如棄如」＝一晩で全部をぶつける依存をやめ2〜3人に分散</li>
-          <li><b>五</b>「出涕沱若」＝火が去るとき平気なふりをやめ、一度ちゃんと寂しがる</li>
-          <li><b>上</b>「王用出征」＝燃えていない惰性の依存を一つ断ち切る</li>
-        </ul>
-
-        <h4>序卦ショート連動</h4>
-        <p class="note">坎(#29・既出ep22カイジ)→離(#30)。「穴に落ちた者は何かに付いて身を支える」。ショート「二十九の次が、三十」。</p>
-      </div>
-
-      <!-- B -->
-      <div class="card B">
-        <span class="badge B">B案</span><span class="score">独立採点 91点 ✓合格</span>
-        <h3>あの花 × 解（雷雨・#40 ䷧）</h3>
-        <div class="thesis"><b>中心命題：</b>超平和バスターズは、めんまの死に蓋をして5年間凍りついていた。解（雷雨）が教えるのは——ほどくのは相手を赦すためでなく、自分が前に進むため。凍った緊張は時間では解けず、一度降らせて（泣いて/言って）初めてゆるむ。</div>
-        <p class="pain">痛点：蓋をした後悔が何年も自分を止めている。時間が解決すると放置している</p>
-        <p class="flip">反転：時間では解けない。雷雨のように一度降らせて初めてほどける。赦すのは自分のため</p>
-
-        <h4>卦（db実引き）</h4>
-        <ul class="tight">
-          <li>卦辞「解、利西南。无所往、其来復吉。有攸往、夙吉」</li>
-          <li>象「雷雨作、解。君子以赦過宥罪」＝過ちを赦し罪をゆるめる</li>
-          <li>核＝緩（ほどける）。冬の張りつめ（蹇＝凍結）の後、雷雨で一気に氷が解ける</li>
-        </ul>
-
-        <h4>6幕（v2.3）</h4>
-        <ol class="acts">
-          <li>違和感：「何年も前なのに、ふと胸が締まる言えなかった一言」（日常語）</li>
-          <li>観察：5人がめんまの死で離散し5年触れず、幽霊で噴き出す</li>
-          <li>種明かし：解＝雷雨。時間でなく降らせて解ける（六爻図）</li>
-          <li>刃：「もう済んだこと」と凍らせたまま持ち歩いていないか（自分へ）</li>
-          <li>処方箋：↓六爻</li>
-          <li>余韻：凍ったものは時間でなく雷雨でほどく。泣いていい</li>
-        </ol>
-
-        <h4>処方箋＝解の六爻（今日やめる/小さく始める）</h4>
-        <ul class="yao">
-          <li><b>初</b>「无咎」＝「まだ勇気がない」と待つのをやめ、今日その名前を一度声に出す</li>
-          <li><b>二</b>「田獲三狐、得黄矢」＝言い訳を3つ書き出して線で消す</li>
-          <li><b>三</b>「負且乗」＝半分話し半分隠すのをやめる（核心まで言うか、触れないか）</li>
-          <li><b>四</b>「解而拇」＝一番硬いこだわりを一つ手放す（もう責めない相手を一人選ぶ）</li>
-          <li><b>五</b>「君子維有解」＝相手が変わるのを待たず、自分が先に終わりにする</li>
-          <li><b>上</b>「公用射隼」＝避けてきた核心に、一度だけ決めていた言葉を伝える</li>
-        </ul>
-
-        <h4>序卦ショート連動</h4>
-        <p class="note">蹇(#39・既出ep17呪術廻戦)→解(#40)。「行き悩みは終わり続けない、ほどける番が来る」。ショート「三十九の次が、四十」。</p>
-      </div>
-
-    </div>
-  </section>
-
-  <section>
-    <h2 class="sec">共通の設計（両案とも適用）</h2>
-    <ul class="tight">
-      <li>常識反転フック（H56）＝痛点を日常語で示し、卦で裏返す</li>
-      <li>幕配分 v2.3・冒頭0-8秒 約束オーバーレイ（H52）・処方箋は六爻を具体行動に接地</li>
-      <li>成長仮説 <b>H56</b>：常識反転フックの自己投影コメント率/保存率が ep29-42中央値超えか（ショートはいいね率H51主指標・再生数で判定しない）</li>
-      <li>タイトルは台本確定後（Step8.5）に決定。arm＝assert/ep_gua（title-arm assign予定）</li>
-      <li>刃は冒頭の場面・自分自身へ返す（社会/群衆へ飛ばさない）</li>
-    </ul>
-  </section>
-
-  <div class="decision">
-    <h2>◆ 判断：どちらの卦で第43話を作りますか？</h2>
-    <p class="note">両案とも作れる状態（91点合格）。差は「切り口」です。どちらか一つを選んで承認してください。決定後、その卦で content/063 に台本制作へ入ります。</p>
-
-    <div class="opt A">
-      <div class="optlabel">A</div>
-      <div>
-        <b>四月は君の嘘 × 離（火）</b>「依存は輝きの条件」<br>
-        <span class="note">向く題材＝つながり/才能が花開く再生。世界級IP。感情の色は温かく明るい。序卦＝坎→離。</span>
-      </div>
-    </div>
-    <div class="opt B">
-      <div class="optlabel">B</div>
-      <div>
-        <b>あの花 × 解（雷雨）</b>「凍った後悔を降らせてほどく」<br>
-        <span class="note">向く題材＝喪失/後悔に区切りをつける再生。世界級IP。感情の色は切なさ→解放。序卦＝蹇→解。</span>
-      </div>
-    </div>
-    <div class="opt">
-      <div class="optlabel" style="color:#888">他</div>
-      <div>
-        <span class="note">両方を別エピソード（ep43/ep44）で作る／どちらも保留して別の残り卦（屯・晋・豊・巽・中孚 等）で立て直す、等があればその旨を。</span>
-      </div>
-    </div>
-
-    <p class="meta" style="margin-top:16px">
-      <span class="pill">残り卦 22</span>
-      <span class="pill">A: 離#30（坎→離）</span>
-      <span class="pill">B: 解#40（蹇→解）</span>
-      <span class="pill">仮説 H56</span>
-      <span class="pill">公開枠 未claim（次工程で確保）</span>
-    </p>
-  </div>
-
-  <div class="conc">
-    <b>まとめ：</b>第43話は「大型IP × 常識反転 × 六爻の処方箋」という現行の勝ち筋で、A（火・依存の肯定）とB（雷雨・後悔の解放）の2案を用意しました。両案とも独立採点91点・db照合済みで、品質はどちらも担保されています。<b>あなたがA/Bを選ぶだけで、その日のうちに台本へ進めます。</b>
-    <p class="meta">採点証跡：analytics/creative-harness/concept-ep43/fork-scores.json ｜ 企画書：scratchpad/ep43-concept-A / -B.md ｜ 卦辞爻辞：db/hexagrams.json #30 離 / #40 解</p>
-  </div>
-
+:root{--bg:#faf7f2;--fg:#211d18;--sub:#6b6157;--card:#fff;--line:#e6ddd0;--accent:#b3202c;--gold:#a9832f;--ok:#1f7a4d}
+@media(prefers-color-scheme:dark){:root{--bg:#16130f;--fg:#ece4d8;--sub:#a99e8f;--card:#211c16;--line:#382f25;--accent:#e0616b;--gold:#d5ad55;--ok:#5ec98d}}
+:root[data-theme=dark]{--bg:#16130f;--fg:#ece4d8;--sub:#a99e8f;--card:#211c16;--line:#382f25;--accent:#e0616b;--gold:#d5ad55;--ok:#5ec98d}
+:root[data-theme=light]{--bg:#faf7f2;--fg:#211d18;--sub:#6b6157;--card:#fff;--line:#e6ddd0;--accent:#b3202c;--gold:#a9832f;--ok:#1f7a4d}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font-family:-apple-system,"Hiragino Sans","Noto Sans JP",sans-serif;line-height:1.7}
+.wrap{max-width:840px;margin:0 auto;padding:28px 20px 80px}
+.eyebrow{font-size:13px;letter-spacing:.14em;color:var(--gold);font-weight:700}
+h1{font-size:24px;margin:6px 0 10px}
+.badges{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.badge{font-size:12px;padding:4px 10px;border-radius:999px;background:var(--card);border:1px solid var(--line);color:var(--sub)}
+.badge.ok{color:var(--ok);border-color:var(--ok)}
+.ask{background:color-mix(in srgb,var(--accent) 10%,transparent);border:1px solid var(--accent);border-radius:12px;padding:16px 18px;margin:16px 0}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px}
+@media(max-width:680px){.two{grid-template-columns:1fr}}
+.opt{border:1px solid var(--line);border-radius:12px;padding:16px 18px;background:var(--card)}
+.opt.rec{border-color:var(--accent);box-shadow:0 0 0 2px color-mix(in srgb,var(--accent) 25%,transparent)}
+.opt h2{font-size:17px;margin:0 0 2px}
+.tag{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:6px;margin-bottom:8px}
+.tag.c1{background:var(--accent);color:#fff}.tag.c3{background:var(--gold);color:#fff}
+.score{float:right;font-size:13px;color:var(--ok);font-weight:700}
+.k{font-size:11px;color:var(--sub);margin-top:10px;font-weight:700;letter-spacing:.05em}
+.v{font-size:14.5px;margin:2px 0}
+.pain{font-size:15px;font-weight:700;color:var(--accent)}
+.title{font-size:15px;font-weight:700}
+.recnote{font-size:12px;color:var(--accent);font-weight:700;margin-top:10px}
+.foot{margin-top:30px;color:var(--sub);font-size:12px;text-align:center}
+</style></head><body><div class="wrap">
+<div class="eyebrow">第43話 · 企画2案 選択（concept 承認ゲート）</div>
+<h1>四月は君の嘘 × 離（火）— どちらの切り口で正典化するか</h1>
+<div class="badges">
+<span class="badge ok">✅ 独立採点 両方合格</span>
+<span class="badge">c1=94 / c3=93</span>
+<span class="badge">H58 痛み先頭転換コホート</span>
 </div>
-</body>
-</html>
+<div class="ask">
+<b>選んでほしいこと：</b> 2案とも fork独立採点で合格（94/93）です。1案を選んで正典（concept.md）へ昇格します。<br>
+<b>※ 台本はこのセッションで既に「案A（依存＝入口）」方向で確定・承認済み</b>（タイトル案A「人に頼って立ち直ると、どこかで後ろめたい。」・棘の結び）。台本と一致させるなら<b>A推奨</b>。
+</div>
+<div class="two">
+<div class="opt rec">
+<span class="tag c1">案A（依存＝入口）</span><span class="score">94点</span>
+<h2>依存は、もう一度燃えるための条件</h2>
+<div class="k">痛みの一文（入口）</div>
+<div class="v pain">落ち込んだとき、一人で立ち直らなきゃと気負って、人に頼れず後ろめたくなる。</div>
+<div class="k">タイトル案</div>
+<div class="v title">人に頼って立ち直ると、どこかで後ろめたい。｜四月は君の嘘×離</div>
+<div class="k">share_line</div>
+<div class="v">一人で立ち直れた人なんて、たぶん一人もいない。</div>
+<div class="k">中心命題</div>
+<div class="v">火は薪に付いて（clinging）初めて燃える。公生がかをりの火で音を取り戻したのは弱さでなく、再点火の条件。</div>
+<div class="recnote">▶ 台本確定済みの方向・推奨</div>
+</div>
+<div class="opt">
+<span class="tag c3">案C（リレー＝出口）</span><span class="score">93点</span>
+<h2>借りた火は、いつか自分の松明になる</h2>
+<div class="k">痛みの一文（入口）</div>
+<div class="v pain">助けられて立ち直った自分が、いつまでも借りもののようで、独り立ちできていない気がする。</div>
+<div class="k">タイトル案</div>
+<div class="v title">助けてもらって戻れた自分を、なぜか責めてしまう。｜四月は君の嘘×離</div>
+<div class="k">share_line</div>
+<div class="v">借りた火は、いつか自分の松明になる。それまでは、借りていい。</div>
+<div class="k">中心命題</div>
+<div class="v">離＝受容→持続→他者へ広げる（明両作）。借りた火はやがて自分の松明になり、誰かを照らす側へ回る。</div>
+<div class="recnote" style="color:var(--sub)">※選ぶ場合は台本の入口を差し替え要</div>
+</div>
+</div>
+<div class="foot">選択後 → concept.md へ昇格（promotion）→ essay-script証跡 → gate通過 → 画像生成 → モーション → レンダ → 通し視聴ゲート</div>
+</div></body></html>
