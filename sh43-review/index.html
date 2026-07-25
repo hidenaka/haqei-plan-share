@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>ep43 ショート確認 ＋ 採点表の裁定（88点で止まった件）</title>
+<style>
+  :root{ --sumi:#14161a; --kin:#c9a227; --kinari:#f4f1e8; --line:#2b3038; }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--sumi);color:var(--kinari);font-family:-apple-system,"Hiragino Sans","Noto Sans JP",sans-serif;line-height:1.75}
+  .wrap{max-width:900px;margin:0 auto;padding:28px 18px 80px}
+  h1{font-size:22px;line-height:1.5;margin:0 0 6px;border-left:5px solid var(--kin);padding-left:12px}
+  .sub{color:#9aa3ae;font-size:13px;margin:0 0 26px;padding-left:17px}
+  h2{font-size:18px;margin:34px 0 12px;padding-bottom:8px;border-bottom:1px solid var(--line)}
+  .card{background:#191c22;border:1px solid var(--line);border-radius:10px;padding:16px 18px;margin:14px 0}
+  .ask{border-color:var(--kin);background:#1e1c14}
+  .ask strong{color:var(--kin)}
+  table{width:100%;border-collapse:collapse;font-size:14px;margin:10px 0}
+  th,td{border-bottom:1px solid var(--line);padding:8px 6px;text-align:left;vertical-align:top}
+  th{color:#9aa3ae;font-weight:600;white-space:nowrap}
+  .ok{color:#7bc47f}.warn{color:#e0b755}.ng{color:#e07a7a}
+  video{width:100%;max-width:340px;border-radius:10px;background:#000;display:block;margin:0 auto}
+  img{max-width:100%;height:auto;border-radius:8px;display:block}
+  code{background:#0f1116;border:1px solid var(--line);border-radius:4px;padding:2px 6px;font-size:13px}
+  pre{background:#0f1116;border:1px solid var(--line);border-radius:8px;padding:12px;overflow-x:auto;font-size:13px;white-space:pre-wrap}
+  ul{padding-left:20px;margin:8px 0}
+  li{margin:5px 0}
+  .small{font-size:13px;color:#9aa3ae}
+  .scroll{overflow-x:auto}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<h1>ep43 ショート「sh43-ri-tonari」確認<br>＋ 採点表の裁定（88点で止まりました）</h1>
+<p class="sub">四月は君の嘘 × 離 → 隣の卦「咸」／ 59.9秒 ／ 2026-07-25</p>
+
+<div class="card ask">
+<strong>判断してほしいこと：この1本を出すか、採点表を見直すか。</strong>
+<ul>
+<li>機械QA（動き・字幕同期・黒落ち・尺）は<strong>全項目PASS</strong></li>
+<li>fork独立採点は<strong>3周回して最高88点</strong>（合格ライン90）。ハーネスの停止則が「最良版を採用し、<strong>目標を疑え</strong>（threshold過大／採点軸の無理）」と言っている状態です</li>
+</ul>
+</div>
+
+<h2>できたもの（59.9秒）</h2>
+<video controls preload="metadata" playsinline src="preview.mp4"></video>
+
+<h2>台本（隣の卦型）</h2>
+<pre>S01 締切の前の日に、私の分の会議へ、代わりに出てもらったことがあります。
+    ありがたいはずなのに、あとから少しだけ、後ろめたい。自分の力じゃなかったな、って。
+S02 四月は君の嘘の有馬公生も、母を亡くして音が聞こえなくなった。戻れたのは、伴奏を頼まれたからです。
+S03 易経の三十番目は、離。離れる、と書くのに、意味は、付く、なんですよね。
+S04 離は、同じ火を二つ重ねただけの形です。次の形が、面白い。三十一番目、咸。
+    上は沢、下は山。火が、どこにも残っていない。受け止める側と、支える側になった、と私は読んでいます。
+S05 借りた火は、いつか誰かの薪になる。でも次の締切でも、たぶん私は頼みません。
+    返す順番を、自分で勝手に決めているだけなのに。
+S06 薪がなければ、火は燃えません。後ろめたさは、まだ順番が来ていないだけです。</pre>
+
+<h2>なぜ90に届かなかったか（採点者の言い分）</h2>
+<div class="card">
+<p><strong>減点はほぼ1点に集中しています：「S04の“へえ”が、六爻図で目に見える証拠になっていない」。</strong></p>
+<ul>
+<li>離(101101) → 咸(001110) は<strong>6本中4本が変わる</strong>ので、図を見ても「火が消えた」ことが一目で分からない（sh38の夬→姤が強かったのは、陰1本の移動が目で追えたから）</li>
+<li>言い直しを3案試しました：①爻の移動で言う → <strong>dbから導けない（事実の顔をした比喩）と却下</strong> ②三爻（火火→沢山）で言う → 88点 ③「火を載せる台と受け皿が残る」と正の事実で言い切る → <strong>77点に下落</strong>（同じ採点者役が、前の周で自分が勧めた言い方を今度は捏造と判定）</li>
+<li>つまり<strong>採点のブレが大きい</strong>（同じ核の台本で 88 / 77 / 88）。3周使い切ったので、ハーネスの規則どおり最良版に戻して止めています</li>
+</ul>
+<p class="small">満点だった軸：close_and_loop 10/10（S01「後ろめたい」→S06「後ろめたさは、まだ順番が来ていないだけです」で語ごと冒頭へ戻る・CTA無し）。self_recognition 18/20（締切という同じ場面に刃が返っている）。事実面は db 逐語・出典URL付きで<strong>破綻ゼロ</strong>、かをりの結末・手紙にも触れていません。</p>
+</div>
+
+<h2>私の見立て（推奨）</h2>
+<div class="card">
+<p><strong>このまま出す</strong>のが良いと思っています。理由は3つ。</p>
+<ul>
+<li>主指標は<strong>いいね率</strong>で、「これ、自分の話だ」の線（締切→後ろめたさ→次も頼まない）は1本で通っている。採点者も self_recognition と close_and_loop はほぼ満点を付けている</li>
+<li>落ちている軸は「図で一目で分かるか」という<strong>この卦の並び固有の難しさ</strong>（4本変わる）で、台本の言い回しで詰め切るのは筋が悪い。直すなら六爻図カード側（上卦/下卦の区切り線と自然名を焼く）＝ハーネスの改修</li>
+<li>採点の再現性が低い状態で90を追うと、<strong>ep37と同じ「採点表に合わせて痩せる」事故</strong>に近づく</li>
+</ul>
+<p class="small">別案：出さずに、六爻図カードに「上卦／下卦の区切り＋自然名（火・火／沢・山）」を描く改修をしてから作り直す（半日仕事・以降の全ショートに効く）。</p>
+</div>
+
+<h2>機械QA</h2>
+<div class="scroll">
+<table>
+<tr><th>項目</th><th>結果</th></tr>
+<tr><td>尺</td><td class="ok">59.9s（45-60s）</td></tr>
+<tr><td>モーション</td><td class="ok">絵カット全4枚にDepthFlow（六爻図はKenBurns固定＝対象外）</td></tr>
+<tr><td>字幕同期</td><td class="ok">全シーン カバレッジ≥85%・時刻単調</td></tr>
+<tr><td>黒落ち / 左右対称</td><td class="ok">なし / なし</td></tr>
+<tr><td>一次情報</td><td class="ok">db逐語（離#30 上下とも火／咸#31 上=兌沢・下=艮山）＋作品事実は出典URL付き</td></tr>
+<tr><td>fork独立採点</td><td class="warn">88 / 90（3周・最良版採用）</td></tr>
+</table>
+</div>
+
+<h2>全カットのコンタクトシート</h2>
+<img src="images/contact.jpg" alt="sh43 コンタクトシート">
+
+</div>
+</body>
+</html>
