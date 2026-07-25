@@ -1,0 +1,75 @@
+<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex"><title>ep45 絵コンテ — 立ち絵設計レビュー</title><style>
+:root{--ink:#17202b;--sub:#5b6672;--line:#e2e6ea;--bg:#fbfaf7;--card:#fff;--gold:#b8860b;--accent:#1f4f82;--warn:#a8420f}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans JP",sans-serif;line-height:1.8}
+.wrap{max-width:1000px;margin:0 auto;padding:28px 20px 90px}
+.kicker{font-size:13px;letter-spacing:.14em;color:var(--gold);font-weight:700}
+h1{font-size:27px;line-height:1.45;margin:.3em 0 .2em}.lede{color:var(--sub);font-size:15px;margin:0 0 18px}
+.tldr{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--gold);border-radius:10px;padding:14px 18px;margin:0 0 24px}
+.tldr ol{margin:0;padding-left:1.2em}.tldr li{margin:.25em 0;font-size:15px}
+figure{margin:0 0 26px;text-align:center}figure img{max-width:min(100%,360px);border:1px solid var(--line);border-radius:12px}
+figcaption{font-size:12px;color:var(--sub);margin-top:8px}
+h2{font-size:20px;margin:32px 0 12px;padding-bottom:7px;border-bottom:2px solid var(--line)}
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:13.5px;display:block;overflow-x:auto}
+th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}th{background:#f2efe8;white-space:nowrap}
+td.sid{font-family:ui-monospace,monospace;font-size:11px;color:#9aa5b1;white-space:nowrap}
+.small{font-size:12px;color:var(--sub)}
+.warn{background:#fdf6f2;border:1px solid #f0d8c9;border-left:5px solid var(--warn);border-radius:10px;padding:13px 17px;margin:16px 0;font-size:14px}
+.decide{background:#101a24;color:#f4f1ea;border-radius:14px;padding:22px 24px;margin:32px 0 18px}
+.decide h2{color:#f4f1ea;border-bottom-color:#33414f;margin-top:0}
+.opt{background:#1b2833;border-radius:10px;padding:13px 16px;margin:10px 0}.opt b{color:#e9c46a}.opt .small{color:#b9c4cf}
+footer{margin-top:40px;font-size:12px;color:var(--sub);border-top:1px solid var(--line);padding-top:14px}
+code{background:#f1efe9;padding:1px 5px;border-radius:4px;font-size:12.5px}
+</style></head><body><div class="wrap">
+<div class="kicker">HaQei / アニメと易経 — 第45話 絵コンテ（音声の前の確認）</div>
+<h1>ep45 の絵、この設計で描き始めていいですか</h1>
+<p class="lede">ワンパンマン（サイタマ）× 豊（ほう） ／ 31カット ／ 画風＝木版浮世絵（固定スタイル行・変更なし）</p>
+<div class="tldr"><ol>
+<li><b>キャラを絵で識別させません</b>。黄色いスーツ・赤い手袋・白マント・つるりとした頭の強調・機械の腕・顔の三本傷・協会の記章は<b>一切描きません</b>。怪人は輪郭だけの黒い塊。識別はナレーションとテロップが担います（2026-07-12の法務方針）</li>
+<li><b>六爻図（GUA6）だけはAI生成しません</b>。dbのbinary_le=101100から機械描画済み＝卦が崩れる事故が構造的に起きません</li>
+<li><b>モーションの見せ場は7カットだけ</b>（★印）。残りはDepthFlowの静かな2.5D。コストと崩れのリスクを抑えます</li>
+</ol></div>
+<figure><img src="images/gua6.png" alt="豊の六爻図"><figcaption>生成済みの六爻図。金の線が三爻＝この回が読む位置。</figcaption></figure>
+<div class="warn"><b>いちばん見てほしいのは「冒頭と幕4が同じ会議机に戻る」設計です。</b>V_01_01（白紙のままの一枚）と V_04_01（同じ机・同じ構図）を対にして、刃が冒頭の場面へ返るようにしています。ここが繋がっていないと、刃が別の場所へ飛んで罪がすり替わります。<br>
+もう一つは<b>門の対</b>：V_03_08（閉じた門の内側が黒い＝上爻の警告）と V_05_07（閉じかけた門に一条の灯＝今日の一手）、そして V_06_02（並んで閉じた二つの門＝棘）。</div>
+<h2>立ち絵設計表（31カット）</h2>
+<table><thead><tr><th>ID</th><th>幕</th><th>役割 / 場面</th><th>何を描くか（一般記号）</th><th>アングル・小道具・色</th><th>種別</th></tr></thead><tbody>
+<tr><td class='sid'>V_01_01</td><td>幕1</td><td><b>違和感（身に覚え）：議事録から名前が消える</b><br><span class='small'>決まったことだけが残り、やった人の欄が空いている机上</span></td><td>長机に並ぶ背中の列と、手前に置かれた白紙のままの一枚</td><td class='small'>室内・斜め後ろ・浅い俯瞰<br>会議机／積まれた紙束／消えかけた墨<br>墨＋藍（曇り）</td><td>AI画像</td></tr>
+<tr><td class='sid'>V_01_02</td><td>幕1</td><td><b>半年後の空白／三千年前の本</b><br><span class='small'>誰も開かなくなった記録。空白だけが残っている</span></td><td>埃をかぶった書類束の奥に、小さく遠い人影ひとつ</td><td class='small'>静物・遠景<br>紙束／薄い埃の光<br>墨＋生成り</td><td>AI画像</td></tr>
+<tr><td class='sid'>V_02_01</td><td>幕2 観察</td><td><b>作品着地：一撃で終わる男</b><br><span class='small'>決着はもう着いている。過程はどこにも残っていない</span></td><td>黒い塊が砕け散る只中に、背を向けて立つ人物のシルエット</td><td class='small'>遠景・後ろ姿・低いアングル<br>砕けた黒い塊（怪物は輪郭だけの影）／土煙<br>墨＋藍＋金の飛沫</td><td>AI画像★</td></tr>
+<tr><td class='sid'>V_02_02</td><td>幕2 観察</td><td><b>鍛錬：毎日、雪の日も嵐の日も</b><br><span class='small'>同じ道を、季節が変わっても走り続けている</span></td><td>夜明けの道を走る一人の後ろ姿を、雪・雨・炎天の三段で重ねる</td><td class='small'>遠景・連続構図（三段）<br>走る道／降る雪／横なぐりの雨<br>藍＋墨＋わずかな金</td><td>AI画像</td></tr>
+<tr><td class='sid'>V_02_03</td><td>幕2 観察</td><td><b>無敵と引き換えに失ったもの</b><br><span class='small'>冷房のない部屋。強くなるほど、手応えが消えていく</span></td><td>無風の部屋で、汗の粒だけが光る人物の後ろ姿</td><td class='small'>室内・斜め後ろ・クローズ<br>閉じた窓／動かない団扇／畳の目<br>墨＋生成り＋朱の一点</td><td>AI画像</td></tr>
+<tr><td class='sid'>V_02_06</td><td>幕2 観察</td><td><b>登録試験：満点なのに最下位</b><br><span class='small'>強ければ認められると信じて並んだ列の、いちばん後ろ</span></td><td>番号札のような木札が列をなし、その最後尾に一人だけ立つ</td><td class='small'>俯瞰・遠景<br>整列した無地の木札／長い列<br>藍＋墨</td><td>AI画像</td></tr>
+<tr><td class='sid'>V_02_04</td><td>幕2 対比</td><td><b>対比：高い台に立つ人</b><br><span class='small'>持ち上げられている人。何をしたのかは誰も見ていない</span></td><td>高い台座の上の人影と、それを見上げる群衆の後頭部</td><td class='small'>仰角・遠景<br>台座／掲げられた旗（無地）<br>金＋藍</td><td>AI画像</td></tr>
+<tr><td class='sid'>V_02_05</td><td>幕2 対比</td><td><b>同じ覆いが、二人に逆向きに掛かる</b><br><span class='small'>一つの覆いが、隠す側と照らす側に分かれている</span></td><td>厚い雲が二つに割れ、片方は人影を隠し、片方は人影を照らす</td><td class='small'>対称構図・遠景<br>厚い雲／二筋の光<br>墨＋金</td><td>AI画像★</td></tr>
+<tr><td class='sid'>V_02_07</td><td>幕2 観察</td><td><b>隕石：助かったのに、感謝は残らない</b><br><span class='small'>命は残った。感謝は残らなかった</span></td><td>空から落ちる火の玉と、砕けた破片、指を差す群衆の背中</td><td class='small'>広景・仰角<br>火の玉／砕けた岩／群衆の後頭部<br>朱＋墨＋金</td><td>AI画像★</td></tr>
+<tr><td class='sid'>V_02_09</td><td>幕2 観察</td><td><b>深海王：汚れ役を買って出る</b><br><span class='small'>勝った人が、悪く見えるほうへ歩いていく</span></td><td>倒れた複数の人影の奥に立つ一人が、背を向けて去っていく</td><td class='small'>遠景・後ろ姿<br>倒れた人影群／濡れた地面<br>藍＋墨</td><td>AI画像</td></tr>
+<tr><td class='sid'>V_03_01</td><td>幕3 種明かし</td><td><b>卦の提示：豊（ほう）</b><br><span class='small'>絶頂を扱う卦の名乗り</span></td><td>漢字カード「豊」＋上に雷、下に火の象（Remotion動的描画）</td><td class='small'>カード・中央<br>雷の意匠／火の意匠<br>墨地＋金の題字</td><td>Remotion描画</td></tr>
+<tr><td class='sid'>V_03_02</td><td>幕3 種明かし</td><td><b>卦辞：真昼の太陽のようであれ</b><br><span class='small'>いちばん高いところ。ここから翳りが始まる</span></td><td>南中する金の太陽と、その下の小さな人影</td><td class='small'>広景・仰角<br>真昼の太陽／短い影<br>金＋生成り</td><td>AI画像</td></tr>
+<tr><td class='sid'>V_03_02B</td><td>幕3 種明かし</td><td><b>明るさと動き、二つで一組</b><br><span class='small'>見抜く力と、進める力</span></td><td>灯（下）と雷（上）が並び立つ象徴図</td><td class='small'>静物・対構図<br>灯明／雷紋<br>藍＋金</td><td>AI画像</td></tr>
+<tr><td class='sid'>V_03_03</td><td>幕3 種明かし</td><td><b>六爻図（GUA6・決定論描画）</b><br><span class='small'>dbのbinary_le=101100から機械描画（AI生成しない）</span></td><td>豊の六本の線。三爻を金で強調</td><td class='small'>図・中央<br>六爻図<br>藍地＋金</td><td>六爻図(決定論)</td></tr>
+<tr><td class='sid'>V_03_04</td><td>幕3 種明かし</td><td><b>二爻・四爻：真昼なのに星が見える</b><br><span class='small'>太陽はそこにあるのに、星のほうが見えている</span></td><td>昼の空に北斗七星が浮かび、太陽は厚い幕の向こうにある</td><td class='small'>広景・空<br>厚い幕／七つの星<br>藍＋金</td><td>AI画像★</td></tr>
+<tr><td class='sid'>V_03_05</td><td>幕3 種明かし</td><td><b>三爻：茂りすぎた下生え／腕を折る</b><br><span class='small'>動けない。だが咎はない</span></td><td>背丈を越える草叢の中で、腕を垂らした人影</td><td class='small'>遠景・草叢越し<br>繁茂した草／垂れた腕<br>墨＋藍緑</td><td>AI画像</td></tr>
+<tr><td class='sid'>V_03_06</td><td>幕3 種明かし</td><td><b>開示：本文が言う覆いは党派の争い</b><br><span class='small'>覆いは外から掛かってくる</span></td><td>人影が互いに影を投げ合い、渦になっている</td><td class='small'>俯瞰・群像<br>重なり合う影<br>墨</td><td>AI画像</td></tr>
+<tr><td class='sid'>V_03_07</td><td>幕3 種明かし</td><td><b>当てはめの開示：折られたのは評価へ届く腕</b><br><span class='small'>行動する腕は動く。届く腕だけが折れている</span></td><td>二本の腕。一方は拳を握り、一方は途中で断たれている</td><td class='small'>静物・対比クローズ<br>拳／断ち切られた腕の線<br>墨＋朱</td><td>AI画像</td></tr>
+<tr><td class='sid'>V_03_08</td><td>幕3 種明かし</td><td><b>上爻：門から覗いても誰も見えない</b><br><span class='small'>豊かさの果ての、完全な暗さ</span></td><td>豪奢な門の内側が、黒く塗り潰されている</td><td class='small'>正面・門<br>大きな門扉／閉じた閂<br>金＋墨</td><td>AI画像★</td></tr>
+<tr><td class='sid'>V_04_01</td><td>幕4 刃</td><td><b>刃：書く一手間を誰も引き受けなかった</b><br><span class='small'>覆ったのは上司ではなく、その場の全員</span></td><td>冒頭と同じ会議机に戻る。背中が並び、白紙は白紙のまま</td><td class='small'>室内・斜め後ろ（冒頭と同構図）<br>会議机／白紙<br>墨＋藍</td><td>AI画像</td></tr>
+<tr><td class='sid'>V_04_02</td><td>幕4 刃</td><td><b>刃：私も確かめなかった</b><br><span class='small'>確かめないほうが楽だと、知っていた</span></td><td>席を立つ一人の後ろ姿。机には確かめられなかった紙が残る</td><td class='small'>室内・後ろ姿<br>置き去りの紙／引かれた椅子<br>墨＋生成り</td><td>AI画像</td></tr>
+<tr><td class='sid'>V_05_01</td><td>幕5 処方箋</td><td><b>処方の入口：覆いは外せない</b><br><span class='small'>爻の言葉と、そこから考えた一手を分ける</span></td><td>下から上へ伸びる六段の階段（金の線）</td><td class='small'>静物・垂直構図<br>六段の階段<br>藍地＋金</td><td>AI画像</td></tr>
+<tr><td class='sid'>V_05_02</td><td>幕5 処方箋</td><td><b>初爻：届け先を一人に決める</b><br><span class='small'>全員ではなく、一人へ流す</span></td><td>多数へ伸びる糸を断ち、一本の糸だけが灯へ繋がる</td><td class='small'>静物・象徴<br>細い糸／灯明<br>藍＋金</td><td>AI画像</td></tr>
+<tr><td class='sid'>V_05_03</td><td>幕5 処方箋</td><td><b>二爻：事実だけを淡々と残す</b><br><span class='small'>論破ではなく、記録</span></td><td>小さな石を一つずつ積む手元</td><td class='small'>手元クローズ（顔は描かない）<br>積まれた石／墨の一行<br>墨＋生成り</td><td>AI画像</td></tr>
+<tr><td class='sid'>V_05_04</td><td>幕5 処方箋</td><td><b>三爻：一行だけ書き残す</b><br><span class='small'>動かせなかった、という事実を残す</span></td><td>草叢の中で、膝の上に置いた紙へ一行だけ引く手元</td><td class='small'>手元クローズ<br>紙／筆／繁茂した草<br>墨＋藍緑</td><td>AI画像</td></tr>
+<tr><td class='sid'>V_05_05</td><td>幕5 処方箋</td><td><b>四爻：同じ質の人へ、一度だけ</b><br><span class='small'>返事が来なくてもいい</span></td><td>離れた二つの灯が、同じ高さで灯る</td><td class='small'>遠景・対構図<br>二つの灯<br>藍＋金</td><td>AI画像</td></tr>
+<tr><td class='sid'>V_05_06</td><td>幕5 処方箋</td><td><b>五爻：助言を一つ、そのまま採る</b><br><span class='small'>自己流の完成度を上げ続けない</span></td><td>差し出された手から、器を受け取る手元</td><td class='small'>手元クローズ<br>器／差し出された手<br>生成り＋金</td><td>AI画像</td></tr>
+<tr><td class='sid'>V_05_07</td><td>幕5 処方箋</td><td><b>上爻＝警告：門を閉じない</b><br><span class='small'>今日、決めた一人へ一つだけ渡す</span></td><td>閉じかけた門の隙間から、一条の灯が差し込む</td><td class='small'>正面・門（V_03_08と対）<br>門扉／細い光の筋<br>墨＋金</td><td>AI画像★</td></tr>
+<tr><td class='sid'>V_05_08</td><td>幕5 処方箋</td><td><b>象辞：明るさで調べ、動きで決着</b><br><span class='small'>覆いは外せないが、照らすことと届けることはできる</span></td><td>灯（調べる）と雷（決める）が同じ画面に並ぶ</td><td class='small'>静物・対構図<br>灯明／雷紋<br>藍＋金</td><td>AI画像</td></tr>
+<tr><td class='sid'>V_06_01</td><td>幕6 余韻</td><td><b>余韻：それでも今日も一撃で終わる</b><br><span class='small'>世界はまだ、正しく見ていない</span></td><td>遠景に小さく、背を向けて立つ人物。周囲は静か</td><td class='small'>遠景・引き<br>開けた地面／薄い光<br>生成り＋墨</td><td>AI画像</td></tr>
+<tr><td class='sid'>V_06_02</td><td>幕6 余韻</td><td><b>棘：閉じた門は同じ形をしている</b><br><span class='small'>傲慢で閉じても、諦めで閉じても</span></td><td>並んで閉じた二つの門。外からは見分けがつかない</td><td class='small'>正面・対構図<br>二つの同じ門扉<br>墨＋金</td><td>AI画像★</td></tr></tbody></table>
+<p class="small">★＝モーションの見せ場候補（7カット）。種別「AI画像」＝木版浮世絵で生成、「Remotion描画」＝漢字カード（AI生成しない）、「六爻図」＝db駆動の決定論描画。</p>
+<div class="decide"><h2>判断してください</h2>
+<div class="opt"><b>A</b> — <b>この設計で画像生成へ進む</b>（推奨）。<span class="small">承認後：画像31枚生成 → 識別監査（ブラインドで「誰か分からない」ならPASS）→ DepthFlow → 字幕同期 → レンダ。次に止まるのは通し視聴です。</span></div>
+<div class="opt"><b>B</b> — <b>カットを指定して直す</b>。<span class="small">カットID（V_02_05 など）と「何が違うか」をください。</span></div>
+<div class="opt"><b>C</b> — <b>立ち絵の見えが不安なので、主要カットだけ先に1〜2枚出して見たい</b>。<span class="small">見せ場（★）から2枚だけ先行生成します。</span></div>
+</div>
+<footer>絵コンテ＝<code>content/065/storyboard.json</code>／識別方針＝<code>content/065/identity_map.json</code>／六爻図＝<code>content/065/visuals/GUA6.png</code>（<code>gen-hexagram-diagram.py 065 --yao 3</code>）。スタイル行は <code>docs/format_v2.md</code> の固定文（一字も変えていません）。</footer>
+</div></body></html>
