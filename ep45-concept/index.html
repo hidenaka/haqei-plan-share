@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>ep45 企画 2案 — 本人選択・承認ゲート</title>
+<style>
+:root{
+  --ink:#17202b; --sub:#5b6672; --line:#e2e6ea; --bg:#fbfaf7; --card:#fff;
+  --gold:#b8860b; --accent:#1f4f82; --warn:#a8420f; --ok:#1e6b45;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans JP",sans-serif;
+  line-height:1.85;-webkit-text-size-adjust:100%}
+.wrap{max-width:960px;margin:0 auto;padding:28px 20px 90px}
+.kicker{font-size:13px;letter-spacing:.14em;color:var(--gold);font-weight:700}
+h1{font-size:30px;line-height:1.4;margin:.3em 0 .2em;letter-spacing:.01em}
+.lede{color:var(--sub);font-size:15px;margin:0 0 18px}
+.tldr{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--gold);
+  border-radius:10px;padding:14px 18px;margin:0 0 26px}
+.tldr ol{margin:0;padding-left:1.2em}
+.tldr li{margin:.25em 0;font-size:15px}
+figure{margin:0 0 30px}
+figure img{width:100%;height:auto;border:1px solid var(--line);border-radius:12px;display:block}
+figcaption{font-size:12px;color:var(--sub);margin-top:8px}
+h2{font-size:21px;margin:34px 0 12px;padding-bottom:7px;border-bottom:2px solid var(--line)}
+h3{font-size:16px;margin:22px 0 8px}
+p{margin:.6em 0;font-size:15px}
+table{width:100%;border-collapse:collapse;margin:14px 0;font-size:14px;display:block;overflow-x:auto}
+th,td{border:1px solid var(--line);padding:9px 11px;text-align:left;vertical-align:top}
+th{background:#f2efe8;font-weight:700;white-space:nowrap}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px 20px;margin:16px 0}
+.card.a{border-top:5px solid var(--accent)}
+.card.c{border-top:5px solid var(--ok)}
+.badge{display:inline-block;font-size:12px;font-weight:700;padding:2px 9px;border-radius:999px;
+  background:#eef3f8;color:var(--accent);margin-right:6px}
+.badge.ok{background:#e9f5ee;color:var(--ok)}
+.badge.warn{background:#fdeee6;color:var(--warn)}
+.quote{font-size:17px;font-weight:700;line-height:1.7;margin:.4em 0 .6em;color:#0e1620}
+.small{font-size:13px;color:var(--sub)}
+ul{padding-left:1.2em;margin:.5em 0}
+li{margin:.22em 0;font-size:14.5px}
+.warn{background:#fdf6f2;border:1px solid #f0d8c9;border-left:5px solid var(--warn);
+  border-radius:10px;padding:13px 17px;margin:16px 0;font-size:14px}
+.decide{background:#101a24;color:#f4f1ea;border-radius:14px;padding:22px 24px;margin:34px 0 18px}
+.decide h2{color:#f4f1ea;border-bottom-color:#33414f;margin-top:0}
+.opt{background:#1b2833;border-radius:10px;padding:13px 16px;margin:10px 0}
+.opt b{color:#e9c46a}
+.opt .small{color:#b9c4cf}
+footer{margin-top:40px;font-size:12px;color:var(--sub);border-top:1px solid var(--line);padding-top:14px}
+code{background:#f1efe9;padding:1px 5px;border-radius:4px;font-size:12.5px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="kicker">HaQei / アニメと易経 — 第45話 企画ゲート（3種承認の1つ目）</div>
+<h1>ep45 の企画、この2案から1つ選んでください</h1>
+<p class="lede">content/065 ／ 公開枠 2026-08-04 04:00 JST（claim済） ／ H58「痛み先頭転換」コホートの3本目。<br>
+候補3案を作り、独立採点（制作会話を見ていない別プロセス）で2案に絞り、両方とも90点以上を通過しています。</p>
+
+<div class="tldr">
+<ol>
+<li><b>A案＝ワンパンマン（サイタマ）× 豐（ほう）</b>「一番働いている人ほど、いなかったことになる。」／痛み分類＝<b>仕事・評価</b>／独立採点 <b>93点</b>（bon比較でも97点で最上位）</li>
+<li><b>C案＝Dr.STONE（石神千空）× 鼎（てい）</b>「肩書きがなくなったら、自分には何も残らない気がする。」／痛み分類＝<b>決断</b>（要修正・後述）／独立採点 <b>91点</b>（bon比較95点）</li>
+<li>落選＝B案 聲の形×巽（89点／84点）。巽三爻「反復熟慮」を「反復謝罪」と読み替えた飛躍が最後まで埋まらず。</li>
+</ol>
+</div>
+
+<figure>
+  <img src="images/overview-01.png" alt="ep45 企画2案の比較図">
+  <figcaption>2案の比較（1枚俯瞰・自動生成のグラレコ）。<b>図中の「20:00〜」と「コメント誘導は必ず入れる」は生成器が勝手に足した誤りです</b>（正しくは <b>朝4:00 JST 公開</b>／<b>定型CTA・コメントbaitは禁止</b>）。正はこのページの本文と各 <code>concept-candidates/*.md</code>。</figcaption>
+</figure>
+
+<h2>なぜこの2案なのか（選定の経路）</h2>
+<p>ep43＝限界（頼れない）、ep44＝執着・別れ（赦し）と来たので、<b>痛み分類が重ならない3案</b>を未使用卦20個 × radar未使用の大型IPから作りました。選定はブラインド（どれを誰が書いたか採点者に見せない）で、<code>analytics/eval-schemas/concept.json</code> の5軸。</p>
+<table>
+<thead><tr><th>案</th><th>作品 × 卦</th><th>痛み分類</th><th>独立採点</th><th>結果</th></tr></thead>
+<tbody>
+<tr><td>A</td><td>ワンパンマン（サイタマ）× 豐 #55</td><td>仕事・評価</td><td>93 / 97</td><td>通過</td></tr>
+<tr><td>C</td><td>Dr.STONE（石神千空）× 鼎 #50</td><td>決断</td><td>91 / 95</td><td>通過</td></tr>
+<tr><td>B</td><td>聲の形（西宮硝子）× 巽 #57</td><td>人間関係</td><td>89 / 84</td><td>落選</td></tr>
+</tbody>
+</table>
+<p class="small">※ 左＝creative-loop の fork独立採点（閾値90）、右＝bon ブラインド比較時の点。いずれも「処方箋がdb本文に接地しているか」のゲートは全案 true。</p>
+
+<h2>A案：ワンパンマン × 豐（ほう・第55卦）</h2>
+<div class="card a">
+<p><span class="badge">痛み＝仕事・評価</span><span class="badge ok">独立採点 93</span></p>
+<p class="quote">「一番働いている人ほど、いなかったことになる。」</p>
+<p class="small">タイトル案（痛み先頭型）：<b>一番働いている人ほど、いなかったことになる。｜ワンパンマン×豐</b><br>
+送りたくなる一文：いなかったことになっている人が、たぶん一番働いている。</p>
+
+<h3>この回が読むもの</h3>
+<p>豐＝ABUNDANCE の爻辞が繰り返し描くのは <b>「覆いが厚いために、真昼なのに星が見える」</b> という一つの絵です。db本文は三爻でこう言い切ります——<b>「腕を折られたように動けない。だが、それは彼のせいではない（No blame）」</b>。<br>
+つまり<b>評価されない理由を、卦のほうが先に「本人の落ち度ではない」と言っている</b>。サイタマは一撃で終わらせてしまうがゆえに、過程が誰にも見えない。この回は<b>サイタマを三爻（覆われて動けない側）に固定して</b>読みます。</p>
+
+<h3>処方箋の背骨</h3>
+<p><b>「アピールが上手くなること」ではなく「届け先を一人に絞ること」</b>。覆いは自分では外せないので、六爻すべてを<b>届け先の限定</b>の方向で統一しました（初爻＝進捗を流す相手を一人決める／三爻＝動かせなかった事実を一行記録／上爻＝決めた一人に、やったことを一つ渡す）。</p>
+
+<h3>幕6（棘で閉じる）</h3>
+<p>「評価されないことが不幸なのではない。評価されないまま、門を閉じることが不幸だ。傲慢で閉じても、諦めで閉じても、閉じた門は同じ形をしている」</p>
+
+<h3>比較（幕2）</h3>
+<p>同作の<b>キング</b>。サイタマ＝実績はあるが見えない／キング＝見えているが実績が本人のものではない。<b>同じ一つの覆いが、二人に正反対の形で掛かっている</b>。ショートは 豐→旅（55の次が56＝大を窮めた者は居場所を失う）。</p>
+</div>
+
+<h2>C案：Dr.STONE × 鼎（てい・第50卦）</h2>
+<div class="card c">
+<p><span class="badge">痛み＝決断</span><span class="badge ok">独立採点 91</span></p>
+<p class="quote">「肩書きがなくなったら、自分には何も残らない気がする。」</p>
+<p class="small">タイトル案（痛み先頭型）：<b>肩書きがなくなったら、自分には何も残らない気がする。｜Dr.STONE×鼎</b><br>
+送りたくなる一文：肩書きを全部はがして残ったものが、その人の中身だ。</p>
+
+<h3>この回が読むもの</h3>
+<p>鼎＝THE CALDRON は<b>文明の器</b>の卦。db注釈は「井（せい）が生活の土台なら、鼎は文化の上部構造」と言い、初爻は <b>「鼎を逆さにして、澱んだものを出す」</b>——作り直しは足し算ではなく、<b>器を空にするところから</b>始まる。<br>
+千空が石化後にやったのは知識の暗唱ではなく、<b>知識を「再現可能な手順」と「人に配れる役割」へ変えて器を組み直すこと</b>。鼎は器だけでなく<b>助け手と継承（五爻・上爻）まで含む卦</b>で、「一人で持つ器」から「人が担げる器」への移りが物語と重なります。</p>
+
+<h3>処方箋の背骨</h3>
+<p>初爻＝「いまの肩書きが無ければ成立しない前提を一つ特定し、今週はその前提を使わずに一件やる」／四爻＝「役目に対して足りていない一点を、名指しで助けを頼む」／上爻＝「自分の手順を一人に、順番どおり書いて渡す（結論だけ言わない）」。</p>
+
+<h3>幕6（棘で閉じる）</h3>
+<p>「肩書きが消えることが怖いのではない。肩書きを捨てたら何も残らないと、自分がいちばん先に知っていることが怖いのだ」</p>
+</div>
+
+<div class="warn">
+<b>⚠️ C案を選ぶ場合の申し送り（採点者の指摘・私も同意）</b><br>
+C案の痛みの実体は「肩書き＝職業的な自己評価」であって、企画に書いた痛み分類 <b>「決断」とは一致していません</b>。このまま出すと、H58の7本が揃ったときの<b>分類別比較が汚れます</b>。対処は2つ:<br>
+① 分類を<b>「仕事・評価」に直す</b>（＝A案と同じ枠になるので、分散を作るという今回の狙いは弱まる）<br>
+② 「残るか、肩書きを捨てるか」の<b>選択の葛藤を痛み・中心命題・幕構成に通して、本当に「決断」の回にする</b>（台本工程で一段の作り込みが要る）<br>
+A案にはこの問題はありません（痛み＝仕事・評価で一貫）。
+</div>
+
+<h2>共通の条件（どちらを選んでも変わらない）</h2>
+<ul>
+<li>公開＝2026-08-04 04:00 JST（枠claim済）／ロングは週2本ペース</li>
+<li>タイトルは痛み先頭型・「第N話」suffix なし（旧H49/H50アームは転換コホートに適用しない）</li>
+<li>冒頭9秒は作品説明でなく<b>痛みの断言</b>から。幕2は全体25%上限、幕3は2-3分の下限厳守、幕5（処方箋）が価値の本体</li>
+<li>判定＝公開後7日値・中央値。CTR中央値2.0%以上 かつ 30秒到達率 旧比1.4倍（両方必須）＋共鳴系いずれか1つ＋7本中4本で再現（2026-08-21）</li>
+<li>作中事実の一次情報裏取り（fact_check.md）と「どの場面がどの爻か」の一対一照合は<b>台本工程</b>でやります（企画段階の範囲外＝ep43の泥沼の是正済み）</li>
+</ul>
+
+<div class="decide">
+<h2>判断してください</h2>
+<div class="opt"><b>A</b> — <b>ワンパンマン × 豐</b> で進める（推奨）。<span class="small">理由＝採点が両方式で最上位・痛み分類が一貫・処方箋の背骨（届け先の限定）が既存回と重複しない新しい形。</span></div>
+<div class="opt"><b>B</b> — <b>Dr.STONE × 鼎</b> で進める。<span class="small">選ぶ場合は上の申し送り①②のどちらを採るかも指定してください。</span></div>
+<div class="opt"><b>C</b> — <b>どちらも違う</b>。<span class="small">その場合は「何が刺さらなかったか」を本人の言葉で一言ください（<code>creative-loop reject</code> へ流して採点表に還流します。却下からしか"刺さったか"は学べないので、直す前に必ず記録します）。</span></div>
+<div class="opt"><b>D</b> — 卦か題材を指定して作り直し。<span class="small">未使用卦は残り20個（屯・小畜・豫・随・臨・観・噬嗑・無妄・大畜・晋・姤・萃・鼎・艮・豐・巽・渙・節・中孚・未済）。</span></div>
+</div>
+
+<footer>
+出典 = <code>content/065/concept-candidates/c1.md</code>（A案）/ <code>c3.md</code>（C案）/ <code>c2.md</code>（落選B案）。
+採点証跡 = <code>analytics/creative-loops/ep45-concept-c1|c3/state.json</code>（fork独立・自己採点なし）、
+選定証跡 = creative-harness run <code>chr_20260725064433805…</code>（shortlist＝c3,c1／両方 qualified）。
+卦の本文は <code>db/hexagrams.json</code>（Wilhelm英訳）から逐語引用・記憶で書いていません。
+</footer>
+
+</div>
+</body>
+</html>
