@@ -98,7 +98,21 @@ code{background:#efeadf;padding:1px 5px;border-radius:4px;font-size:12.5px}
 </div>
 </div>
 
-<h2>4. 承認後（自走します）</h2>
+
+<h2>5. 最後の1点：サムネイルが90点に届きません <span class="badge">要判断</span></h2>
+<figure>
+<img src="images/thumb-compare.jpg" alt="直近3本と今回案の比較（360px実寸）">
+<figcaption>左から ep41 / ep42 / ep43 / <b>ep44案</b>（すべて360px実寸）。独立採点が落としたのは <b>distinctiveness 14/25</b>：4本とも「1行目=白／2行目=黄・黒フチ・下段2行・同じ書体」の題字ロックアップが完全に同一で、フィードで共食いする、という指摘です。</figcaption>
+</figure>
+<p>背景は暖色に振って型を崩しましたが（濃紺→明るい夏の空）、<b>題字の型そのもの</b>は <code>make-thumbnail-tierA.py</code> が固定していて変えられません。5案・3回の独立採点を回して、最高が <b>83点</b>（可読性24/25・約束の回収5/5・ポリシー9/10は満点圏、distinctivenessだけが落ちる）。</p>
+<p class="small">もう一点：卦「解」の象徴＝<b>足元から溶け出す藍の氷</b>が2行目の題字にほぼ隠れています。題字を縦組みか上段へ逃がせば氷が立ちます。</p>
+<div class="decide">
+<b>選択肢</b>
+<div class="opt"><b>A: サムネ生成器にレイアウト型を足す（推奨）</b><br>縦組み／1行特大／反転配色（生成り箱＋藍文字）を <code>make-thumbnail-tierA.py</code> に追加し、今回は縦組みで作り直して90点を取ってから公開。実装＋再採点で1時間ほど。以後の全話で使える恒久修正。</div>
+<div class="opt"><b>B: 83点のまま公開する</b><br>可読性・約束の回収は満点圏。あなたの目で採用を決め、その判断を証跡として記録する（公開ゲートの thumbnail 要件を「本人採用」で満たす運用を新設）。</div>
+<div class="opt"><b>C: 公開を1回ずらす（7/28 → 7/31）</b><br>サムネを作り込む時間を取る。本編は完成しているので他は動かない。</div>
+</div>
+<h2>6. 承認後（自走します）</h2>
 <ol>
 <li>サムネ・概要欄の最終確認 → <code>yt-publish</code> で <b>private＋2026-07-28 04:00 JST 予約</b>（公開ボタンは押しません）</li>
 <li><code>yt-schedule-verify</code> で予約の裏取り</li>
