@@ -36,22 +36,29 @@
 <div class="wrap">
 
 <h1>第43話「四月は君の嘘 × 離（り）」<br>通し視聴レビュー＋台本1文字の再承認</h1>
-<p class="sub">content/063 ／ 8分34秒 ／ H58 痛み先頭コホート ／ 2026-07-25</p>
+<p class="sub">content/063 ／ 8分29秒 ／ H58 痛み先頭コホート ／ 2026-07-25</p>
 
 <div class="card ask">
-<strong>お願いしたい判断は2つです。</strong>
-<ul>
-<li><strong>① 台本の1文字修正の再承認</strong>（読み注記の誤字。話す言葉・字幕・映像は一切変わりません）</li>
-<li><strong>② 本編の通し視聴OK</strong>（品質ゲート5項目・4/5で合格）</li>
-</ul>
+<strong>お願いしたい判断は1つです：本編の通し視聴OK</strong>（品質ゲート5項目・4/5で合格）<br>
+<span class="small">※ ①台本1文字修正の再承認は受領済み・証跡記録済み。</span>
 </div>
 
-<h2><span class="n">①</span>台本の1文字修正（再承認をお願いします）</h2>
+<div class="card">
+<strong>🆕 字幕の指摘（「たまに表示されていない」）を調べて、2箇所直しました</strong>
+<ul>
+<li><strong>字幕が消えている点は0件でした</strong>。本編マスターと共有プレビューの両方で、全28シーンの発話区間を0.5秒刻みに機械走査（1,008点）して、字幕帯と文字の有無を判定。すべて表示されていました。</li>
+<li>ただし調べる過程で<strong>実バグを1つ発見</strong>：字幕は「発話終了＋12フレーム」で消える固定実装なのに、シーン間の無音は15フレーム。<strong>シーン境界ごとに0.1秒だけ字幕が消えて瞬断</strong>していました（28箇所・計2.8秒）。→ 無音の長さ分だけ最後の字幕を保持するよう修正。<strong>再レンダ後の実測で瞬断0件</strong>。</li>
+<li>もう1つ：<strong>台本が指定するシーン間の無音 0.35秒が合成側に効かず、全話一律0.5秒</strong>で焼かれていました（尺ゲートが3.3秒の差で検出）。ep43は痛み先頭でテンポを詰める設計なので台本どおり0.35秒に。話ごとに指定できるよう <code>essay-meta-{id}.json</code> の <code>gapSec</code> を新設。</li>
+</ul>
+<p class="small">下の動画・コンタクトシートは<strong>この修正を反映した再レンダ版</strong>（8分29秒）に差し替え済みです。</p>
+</div>
+
+<h2><span class="n">①</span>台本の1文字修正（✅ 承認済み・記録済み）</h2>
 <p>機械ゲート（TTS発音検証）が拾った、台本 <code>full_script.json</code> の <code>tts_text</code>（読みの注記）の誤字です。<strong>字幕に出る本文は元から正しく、音声も正しく喋っています</strong>。注記だけが1文字欠けていました。</p>
 <div class="diff"><span class="del">- …セットになったかんです。</span>
 <span class="add">+ …セットになったかなんです。</span></div>
 <p class="small">該当シーン V_03_02b（幕3・種明かし）。字幕本文は「セットになった<strong>卦</strong>なんです。」で変更なし。<br>
-この修正で台本ファイルのハッシュが変わるため、ハーネスの規約どおり <strong>選定（bon）→ fork独立採点 → preflight</strong> を取り直しました（採点 <strong>92点</strong>・冒頭ゲート/物語橋ゲートとも通過）。残るのは、あなたの承認だけです。</p>
+この修正で台本ファイルのハッシュが変わるため、ハーネスの規約どおり <strong>選定（bon）→ fork独立採点 → preflight</strong> を取り直しました（採点 <strong>92点</strong>・冒頭ゲート/物語橋ゲートとも通過）。<strong>承認は受領済み</strong>（akapenマーカーに記録・script/visualsゲートとも復旧）。</p>
 
 <h2><span class="n">②</span>本編（通し視聴）</h2>
 <video controls preload="metadata" playsinline src="preview.mp4"></video>
@@ -81,7 +88,8 @@
 <tr><td>画像 fork独立採点</td><td class="ok">91点</td><td>ブラインド識別監査 全28「不明」＝作品もキャラも特定されない（法務方針どおり）</td></tr>
 <tr><td>TTS発音検証</td><td class="ok">誤読0件</td><td>修正前は45件（卦→ケ／離→ハナレ／公生→キミオ／薪→タキギ等）→ 読み辞書overrideで解消</td></tr>
 <tr><td>timing preflight</td><td class="ok">PASS</td><td>28シーン 字幕同期・語境界・冒頭オーバーレイ（四月は君の嘘 有馬公生／易経・離）</td></tr>
-<tr><td>mix preflight（黒落ち）</td><td class="warn">承認待ち</td><td>①の承認後に実行（ハーネスが台本承認を前提にしているため）</td></tr>
+<tr><td>mix preflight（黒落ち）</td><td class="ok">PASS</td><td>尺509.5s（期待510.4s）・ピーク−3.9dB・幕間BGM−34.4dB・<strong>シーン境界27箇所すべて黒落ちなし</strong>（警告0件）</td></tr>
+<tr><td class="add">🆕 字幕の連続性</td><td class="ok">瞬断0件</td><td>境界前後を1フレーム刻みで実測。1,008点走査でも欠落0</td></tr>
 </table>
 </div>
 
