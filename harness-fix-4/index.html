@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>制作ハーネス改善 — 4つの不満の診断と修正案</title>
+<style>
+  :root {
+    --ink: #1a1a1a;
+    --ink-2: #4a4a4a;
+    --bg: #f7f5ee;
+    --paper: #fbf9f1;
+    --line: #d8d2bf;
+    --accent: #cc785c;
+    --accent-soft: #f5e0d6;
+    --warn: #c83a2c;
+    --warn-soft: #f6dcd6;
+    --yellow: #f4d35e;
+    --shadow: 0 1px 0 rgba(0,0,0,.04), 0 8px 24px rgba(0,0,0,.06);
+    --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+    --sans: -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN",
+            "Hiragino Sans", "Noto Sans JP", "Yu Gothic", "Meiryo", sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 56px 28px 96px; }
+  .hero { margin-bottom: 56px; }
+  .hero .kicker {
+    display: inline-block;
+    background: var(--accent); color: #fff;
+    font-size: 12px; font-weight: 700; letter-spacing: .12em;
+    padding: 6px 12px; border-radius: 999px;
+    margin-bottom: 18px;
+  }
+  .hero h1 { font-size: 40px; line-height: 1.3; margin: 0 0 14px; letter-spacing: -.01em; }
+  .hero h1 b { color: var(--accent); }
+  .hero p.lede { font-size: 18px; color: var(--ink-2); margin: 0; max-width: 780px; }
+  .tldr {
+    margin-top: 28px; padding: 22px 24px;
+    background: var(--paper); border: 1px solid var(--line); border-radius: 12px;
+    box-shadow: var(--shadow);
+  }
+  .tldr h2 { font-size: 13px; letter-spacing: .15em; color: var(--accent); margin: 0 0 10px; }
+  .tldr ol { margin: 0; padding-left: 20px; }
+  .tldr li { margin: 4px 0; }
+  section { margin: 64px 0 0; }
+  section > h2 {
+    font-size: 28px; line-height: 1.4; margin: 0 0 6px;
+    border-left: 6px solid var(--accent); padding-left: 12px;
+  }
+  section > h2 .num { color: var(--accent); font-variant-numeric: tabular-nums; margin-right: 10px; }
+  section > p.sub { color: var(--ink-2); margin: 0 0 22px; }
+  figure {
+    margin: 0 0 24px; padding: 12px;
+    background: var(--paper); border: 1px solid var(--line); border-radius: 14px;
+    box-shadow: var(--shadow);
+  }
+  figure img { display: block; width: 100%; height: auto; border-radius: 8px; }
+  figcaption { font-size: 13px; color: var(--ink-2); margin-top: 10px; text-align: center; }
+  .thumb-row { display: flex; gap: 16px; flex-wrap: wrap; margin: 0 0 24px; }
+  .thumb-row figure { flex: 1 1 300px; margin: 0; }
+  .table {
+    width: 100%; border-collapse: collapse; margin: 12px 0 6px;
+    background: var(--paper); border: 1px solid var(--line); border-radius: 12px; overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+  .table th, .table td {
+    text-align: left; padding: 12px 14px; border-bottom: 1px solid var(--line);
+    vertical-align: top; font-size: 14.5px;
+  }
+  .table th { background: #efeadb; font-weight: 700; }
+  .table tr:last-child td { border-bottom: 0; }
+  .table .pick { background: var(--accent-soft); }
+  .table .pick td:first-child { font-weight: 700; color: var(--accent); }
+  code.inline {
+    font-family: var(--mono); font-size: .92em;
+    background: #efeadb; padding: 1px 6px; border-radius: 4px;
+  }
+  .callout {
+    margin: 18px 0; padding: 16px 18px;
+    border-left: 4px solid var(--accent); background: var(--accent-soft);
+    border-radius: 0 10px 10px 0;
+  }
+  .callout.warn { border-color: var(--warn); background: var(--warn-soft); }
+  .callout p { margin: 0; }
+  .callout strong { color: var(--accent); }
+  .callout.warn strong { color: var(--warn); }
+  .quote { border-left: 3px solid var(--line); padding: 6px 16px; color: var(--ink-2); font-size: 14.5px; margin: 18px 0; }
+  .conclusion {
+    margin-top: 56px; padding: 28px 28px 24px;
+    background: var(--ink); color: #f6f3e8; border-radius: 16px;
+  }
+  .conclusion h2 { color: var(--yellow); border: 0; padding: 0; margin: 0 0 12px; }
+  .conclusion ol { margin: 0; padding-left: 20px; }
+  .conclusion li { margin: 6px 0; }
+  footer { margin-top: 36px; color: var(--ink-2); font-size: 13px; }
+  @media (max-width: 720px) {
+    .wrap { padding: 32px 18px 64px; }
+    .hero h1 { font-size: 30px; }
+    section > h2 { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <span class="kicker">制作ハーネス改善 — 本人承認用</span>
+    <h1>フック・再生・サムネ・トークン — <b>4つの不満</b>の診断と修正案</h1>
+    <p class="lede">一次データ（growth-state / 却下台帳 / creative-harness run集計 / 判定計器）で4課題を診断し、文脈ゼロの独立red-teamに叩かせた上での修正案。承認された分だけルール・採点表・configへ実装します。</p>
+    <div class="tldr">
+      <h2>TL;DR</h2>
+      <ol>
+        <li>フック却下<b>8件中7件が冒頭起因</b>。fork採点≧90は本人vetoを予測できていない。根因は「痛みの一文」が実在の言葉に接地していないこと — ただし<b>視聴者に刺さるか</b>はショート実弾テストでしか測れない</li>
+        <li>トークン過食の元凶は「フル台本3候補×再走」の<b>best-of-N選抜レジーム</b>（ep44はessay-scriptだけでフル台本21本を生成・採点）。判断を安い順に直列化し、本人承認後の採点は床チェックへ降格する</li>
+        <li>サムネの暗号化は<b>採点表が構造的に生んだ</b>（1行7字×2行＋作品名の再出現減点）。再生停滞はH58投薬済み・効果未測定 — 8/21判定は検出力ゼロなので「束」として再宣言する</li>
+      </ol>
+    </div>
+  </header>
+
+  <section>
+    <h2><span class="num">01</span>現状の一次データ — どこが本当に詰まっているか</h2>
+    <p class="sub">2026-07-27実測（growth-state / yt-stats / rejections.json / run集計）</p>
+    <table class="table">
+      <thead><tr><th>指標</th><th>実測値</th><th>読み</th></tr></thead>
+      <tbody>
+        <tr><td>本編ロング直近3本の再生</td><td>ep40=30 / ep41=22 / ep42=60</td><td>インプレッションがほぼ出ていない。サムネ/フック以前に「見られる土俵」に載っていない</td></tr>
+        <tr><td>ショートの再生</td><td>700〜1,100/本</td><td>唯一の流量。再生全体の93.9%がショートフィード</td></tr>
+        <tr><td>シェア率</td><td>0.017%（ほぼゼロ）</td><td>「誰かに送りたい」が発生していない＝rank1（共鳴の発生率）が律速のまま</td></tr>
+        <tr><td>変換率</td><td>ショート0.035% / 本編0.60%</td><td>本編は17倍効率の変換装置だが流量が無い</td></tr>
+        <tr class="pick"><td>却下台帳</td><td>8件中7件が冒頭フック/構成起因</td><td>本人vetoの集中点は一貫して「冒頭」。最新は7/26 ep45（痛み先頭転換後も却下）</td></tr>
+        <tr class="pick"><td>制作run数</td><td>ep43=26run / ep44=26run</td><td>essay-script 7run×3候補＝フル台本21本生成+採点。thumbnail 8run。証跡95MB</td></tr>
+      </tbody>
+    </table>
+    <div class="callout"><p><strong>4つの不満は1本の構造で繋がっている。</strong>「本人が却下する冒頭」を「フル台本3候補を書き終えた後」に発見する工程が、トークンを食い（26run/話）、フック改善を遅らせ（却下→全再生成の周回）、サムネにも同じ採点表事故を起こしている。</p></div>
+  </section>
+
+  <section>
+    <h2><span class="num">02</span>フックが刺さらない — 二重最適化の罠</h2>
+    <p class="sub">証拠は全部「本人の却下」。視聴者側の計器は、まだ存在しない</p>
+    <figure>
+      <img src="images/concept-02-01.png" alt="二重最適化の罠の図解">
+      <figcaption>fork採点≧90は的A（本人veto）を外し続け、的B（視聴者）はそもそも計器が無い</figcaption>
+    </figure>
+    <p>fork独立採点≧90＋hook独立ゲートを<b>通過した</b>台本を、本人が冒頭を理由に却下する事故が反復している（ep37・ep41・ep42・ep45…）。却下の還流（rejections.json→採点プロンプト注入）を実装した後も止まっていない：</p>
+    <div class="quote">「なんかフックが良くわからないからやり直して」（7/26 ep45）／「冒頭のフックのところが全然親近感のようじゃない。これ私だってこととは全然違う」（ep41）</div>
+    <p>根因は2つ。<b>①接地の欠如</b> — 「痛みの一文」はLLMの発想だけで生成されており、実在の人の言葉への一次情報ゲートが無い（作品事実には <code class="inline">_facts.work</code> ゲートがあるのに、痛みには無い。正典が計画した「痛み別素材庫」も未実装）。<b>②視聴者計器の不在</b> — ロング数十再生では維持率カーブに統計的意味が無く、「視聴者に刺さったか」は今まで一度も測定できていない。</p>
+    <div class="callout warn"><p><strong>red-team指摘（最重要）:</strong> 却下台帳への最適化は「<b>本人承認への最適化</b>」であって「<b>視聴者への最適化</b>」ではない。この2つを混同したまま工程を磨くと、「本人好みだが伸びない動画を効率良く作る機械」が完成する。視聴者接地を持つ打ち手はショート実弾テスト（次節C）だけ。</p></div>
+  </section>
+
+  <section>
+    <h2><span class="num">03</span>修正案（フック）— 安い順に関所を並べ直す</h2>
+    <p class="sub">C（視聴者計器）＞ B（本人ゲート前倒し）＞ A（最小コーパス）の順</p>
+    <figure>
+      <img src="images/concept-03-01.png" alt="フック工程の直列化の図解">
+      <figcaption>却下が集中する冒頭の判断を最安の段階へ前倒し。フル台本3本を書いてから全却下される構造を断つ</figcaption>
+    </figure>
+    <table class="table">
+      <thead><tr><th>案</th><th>内容</th><th>設計上の注意（red-team反映）</th></tr></thead>
+      <tbody>
+        <tr class="pick"><td>C. ショートで<br>フック実弾テスト</td><td>週4本の書き下ろしショートのS01に、ロング候補の「痛みの一文」を載せて先行公開。勝った痛みだけロング制作へ（「勝った題材だけロングへ」の痛み版。S01とロング冒頭は正典が同型と明言済み）</td><td>判定は<b>維持率系</b>（3秒/15秒残存・スワイプ率）。いいねは1本2〜3個でノイズ＝使わない。1痛み文=1ショート・公開後7日・既存ショート維持率中央値比、と標本設計を先に固定する</td></tr>
+        <tr><td>B. 痛み一文の<br>concept前倒し</td><td>conceptゲートの提示物を「痛みの一文×5案＋冒頭9秒」中心の1枚に変え、<b>concept承認＝痛み一文の選択</b>を兼ねる。フル台本はその後に書く</td><td>owner approval 3種（concept/essay-script/final-video）は<b>増やさない</b>（正典整合）。却下時は「文の選定ミスか／台本での実行の失敗か」を却下台帳に区別記録し、Bの効果を検証可能にする</td></tr>
+        <tr><td>A. 最小痛み<br>コーパス</td><td><code class="inline">analytics/pain-library.json</code> をまず最小構成（rejections.jsonの本人の言葉＋承認済みフック＋自chの高評価コメント）で作り、フック<b>生成側</b>のプロンプトに正例/負例として注入</td><td>外部ソース収集・5分類の作り込みは「却下率が実際に下がる」実証後。引用義務ゲートは後付け紐づけ（引用ロンダリング）で骨抜きになるため、機械ゲート化はしない</td></tr>
+      </tbody>
+    </table>
+    <p>効果の測り方: <b>フック却下率</b>（rejections件数/エピソード）と<b>concept→台本承認までのrun数</b>。どちらも既存台帳から機械集計できる。</p>
+  </section>
+
+  <section>
+    <h2><span class="num">04</span>トークン過食の解剖 — 何が食っているか</h2>
+    <p class="sub">候補数ではなく、選抜レジームを直す（F案）</p>
+    <figure>
+      <img src="images/concept-04-01.png" alt="トークン消費の解剖図">
+      <figcaption>最大の漏れはフル台本のbest-of-N選抜。ep44はessay-scriptだけでフル台本21本を生成・採点した</figcaption>
+    </figure>
+    <table class="table">
+      <thead><tr><th>工程</th><th>現行</th><th>修正後</th></tr></thead>
+      <tbody>
+        <tr class="pick"><td>essay-script</td><td>3候補×multi生成（subagent+codex）→ fork採点選抜 → 却下で再走（ep44実績: 7run＝フル台本21本）</td><td>痛み一文・冒頭を本人確定した<b>後</b>に、フル台本<b>1候補＋改稿ループ</b>（max3）。vetoの集中点が冒頭確定済みなら3候補の分散投資は冗長</td></tr>
+        <tr><td>却下時の再走</td><td>3候補まるごと再生成</td><td>却下語を握った<b>1候補の改稿run</b>を既定に</td></tr>
+        <tr class="pick"><td>fork採点の役割</td><td>常時best-of-N選抜・毎回≧90</td><td>本人がフックを承認した後は<b>床チェック（≧80の健全性確認・1採点者）</b>に降格。機械preflightをLLM採点の<b>前</b>に置き、落ちる候補を採点しない</td></tr>
+        <tr><td>thumbnail</td><td>候補4×最大8run</td><td>候補2・rubric改訂1回（§05）</td></tr>
+        <tr><td>gold較正</td><td>ep01/ep03（H58転換前の作品）のみ</td><td>H58承認フック（ep43）を正例に追加して再calibrate（旧goldだけでは新スタイルを構造的に減点しうる）</td></tr>
+      </tbody>
+    </table>
+    <div class="callout"><p><strong>品質の守り:</strong> 本人承認ゲート3種は不変。削るのは「本人が選んだ後のAI同士の選抜戦」だけ。概算でessay-script段の生成+採点トークンは1/3〜1/5になる（21本→1本+改稿2〜3周）。</p></div>
+  </section>
+
+  <section>
+    <h2><span class="num">05</span>サムネ — 採点表が暗号文を作っていた</h2>
+    <p class="sub">直近の現物2枚（実寸360px）。作品名も題材も分からない</p>
+    <div class="thumb-row">
+      <figure><img src="images/063_360.png" alt="ep43サムネ"><figcaption>ep43「その強がりが火を消している」— 作品名タグ無し</figcaption></figure>
+      <figure><img src="images/065_360.png" alt="ep45サムネ"><figcaption>ep45「議事録に名前がない」— 文脈ゼロの断片</figcaption></figure>
+    </div>
+    <p>原因は制作者ではなく<b>採点表</b>。<code class="inline">readability_360px</code>（1行7字以内×2行＝最大14字）と <code class="inline">complementarity</code>（タイトルの語＝<b>作品名を含む</b>の再出現は1語ごとに減点）の掛け算で、「文脈ゼロの短い断片」が構造的に最高得点になる。ep37の採点表事故（92点合格を本人が全却下）と同じ型 — <b>rubricが本人の意図と逆へ最適化していた</b>。</p>
+    <ul>
+      <li>題字は「<b>主語＋述語で意味が立つ痛みの文</b>」を要求（体言止め断片・暗号化は減点へ反転）</li>
+      <li><b>作品名タグ（左上小）を必須ゲート化</b>。insight型サムネで実証済みの解で、complementarityの減点対象から除外する</li>
+      <li>fork採点者に「タイトル併記の実寸モックを見て、初見が3秒で<b>内容を一文で言えるか</b>」を答えさせる</li>
+      <li>改訂後はgold再calibrate（rubric改訂時の義務）</li>
+    </ul>
+    <div class="callout warn"><p><strong>位置づけ（red-team反映）:</strong> CTRはA/Bでno_lift実証済みの「効かないレバー」。これは成長施策ではなく<b>衛生修理</b>。コスト上限＝rubric改訂1回＋進行中エピソードの再生成のみ。ここに周回トークンを投資しない。</p></div>
+  </section>
+
+  <section>
+    <h2><span class="num">06</span>再生数とH58 — 投薬済み・未測定・検出力ゼロ</h2>
+    <p class="sub">「もう一回方針転換」はしない。計器を直して束で判定する</p>
+    <p>ロング22〜60再生の直接原因は、サムネでもフックでもなく<b>インプレッションがほぼ出ていない</b>こと（91登録・ブラウズ未点火・ショート→本編の橋はH8=refuted）。処方箋である痛み先頭転換（H58）は7/24に投薬済みだが、該当ロングは<b>公開0本</b>（ep43=7/28・ep44=7/31公開予定）＝まだ効果測定前。ここで別の転換を重ねるとコホートが汚染される。</p>
+    <div class="callout warn"><p><strong>red-team指摘:</strong> 8/21判定は約8本×数十再生で<b>検出力ほぼゼロ</b>。「差なし」が出ても何の情報も無い。判定を再宣言する — (a) CTR/登録の差でなく<b>分母系</b>（インプレッション数・ブラウズ流入の発生有無）を主指標に併記する。(b) 本提案の工程変更と交絡するため「<b>H58＋新フック工程の束</b>」として判定すると明記する。</p></div>
+    <p>即実装する計器修理（破壊なし・保守扱い）: ① <code class="inline">timeseries.jsonl</code> の欠測（07-06以降）を埋める metrics-snapshot の日次自動化（mini launchd）② pivot-cohort の metrics 自動取得 ③ 公開後の <code class="inline">pivot-cohort add</code> 漏れ防止（ep-next接続は実装済み・運用徹底）。</p>
+  </section>
+
+  <section>
+    <h2><span class="num">07</span>承認事項（○×4点）</h2>
+    <p class="sub">承認された項目のみ実装します。番号でご返答ください（例:「1と2は○、3は保留」）</p>
+    <table class="table">
+      <thead><tr><th>#</th><th>承認事項</th><th>変更対象</th></tr></thead>
+      <tbody>
+        <tr class="pick"><td>1</td><td><b>フック工程の再設計</b> — C: ショート実弾テスト（維持率計器・標本設計固定）＋ B: conceptゲートを「痛みの一文×5案+冒頭9秒」中心に前倒し ＋ A: 最小pain-library</td><td>docs/pivot-pain-first.md・essay-episodeスキル・conceptゲート提示物・rejections運用</td></tr>
+        <tr class="pick"><td>2</td><td><b>トークン削減</b> — essay-script 3候補→冒頭確定後1候補+改稿／却下時は1候補改稿run／fork採点を床チェック(≧80)へ降格／機械preflight先行／サムネ候補4→2</td><td>config/creative-harness.json・採点運用runbook・gold再calibrate</td></tr>
+        <tr><td>3</td><td><b>サムネ衛生修理</b> — 題字は主語+述語の文／作品名タグ必須／タイトル併記モック採点／コスト上限付き</td><td>analytics/eval-schemas/thumbnail.json・make-thumbnail系の題字仕様</td></tr>
+        <tr><td>4</td><td><b>H58判定の再宣言</b> — 分母系指標の併記＋「H58+新工程の束」として判定＋計器修理3点</td><td>docs/pivot-pain-first.md判定節・pivot-cohort.mjs・metrics-snapshot自動化</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <div class="conclusion">
+    <h2>結論</h2>
+    <ol>
+      <li>優先順位: <b>C（ショート実弾テスト）＞ B（痛み一文のconcept前倒し）＞ F（トークン削減）＞ A（最小コーパス）＞ E（サムネ衛生修理）＞ D（H58束判定宣言）</b></li>
+      <li>どの案も「ロング数十再生」を直接は動かさない。動くとすれば共鳴の発生率（rank1）からで、その視聴者計器を持つのはCだけ</li>
+      <li>H58コホート（7/28・7/31公開）は止めない。承認された項目のみ、正典・採点表・configへ実装する</li>
+    </ol>
+  </div>
+
+  <footer>題材: analytics/growth-state.json / analytics/rejections.json / analytics/creative-harness/ / analytics/pivot-cohort.json / docs/pivot-pain-first.md ・ 独立red-team: 文脈ゼロfork（2026-07-27）・数値は全て2026-07-27実測</footer>
+
+</div>
+</body>
+</html>
