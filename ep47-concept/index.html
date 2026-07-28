@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>第47話 企画ゲート — 1案を選んで承認</title>
+<style>
+:root{
+  --ink:#1c1a17; --sub:#5b5750; --line:#e2ddd4; --bg:#faf8f4; --card:#fff;
+  --gold:#a4802f; --ai:#2f4d6b; --ok:#2c6e49; --ng:#a33a2a; --warn:#8a6d1f;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans JP",sans-serif;
+  line-height:1.85; font-size:16px; -webkit-text-size-adjust:100%}
+.wrap{max-width:1000px;margin:0 auto;padding:32px 20px 96px}
+header.hero{padding:28px 0 14px;border-bottom:3px solid var(--ink)}
+.kicker{font-size:12px;letter-spacing:.18em;color:var(--gold);font-weight:700;margin:0 0 10px}
+h1{font-size:31px;line-height:1.35;margin:0 0 14px;letter-spacing:.01em}
+.lede{color:var(--sub);margin:0 0 18px;font-size:15px}
+.tldr{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--gold);
+  border-radius:6px;padding:16px 18px;margin:18px 0 6px}
+.tldr ol{margin:0;padding-left:1.25em} .tldr li{margin:6px 0}
+h2{font-size:22px;margin:52px 0 14px;padding-bottom:8px;border-bottom:2px solid var(--ink)}
+h3{font-size:17px;margin:28px 0 10px;color:var(--ai)}
+figure{margin:26px 0;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:var(--card)}
+figure img{display:block;width:100%;height:auto}
+figcaption{font-size:13px;color:var(--sub);padding:10px 14px;border-top:1px solid var(--line)}
+.tablewrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:16px 0}
+table{border-collapse:collapse;width:100%;min-width:640px;background:var(--card);font-size:14.5px}
+th,td{border:1px solid var(--line);padding:10px 12px;text-align:left;vertical-align:top}
+th{background:#f1ede5;font-weight:700;white-space:nowrap}
+td.num{white-space:nowrap;font-variant-numeric:tabular-nums}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:20px 0}
+@media(max-width:760px){.cards{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:18px 18px 20px}
+.card.win{border:2px solid var(--ok)}
+.card.dead{opacity:.72;border-style:dashed}
+.badge{display:inline-block;font-size:11.5px;font-weight:700;letter-spacing:.06em;
+  padding:3px 9px;border-radius:999px;margin:0 6px 8px 0}
+.b-ok{background:#e4f0e8;color:var(--ok);border:1px solid #b9d8c4}
+.b-ng{background:#f6e5e1;color:var(--ng);border:1px solid #e0bcb2}
+.b-neu{background:#eee9df;color:var(--sub);border:1px solid var(--line)}
+.pain{background:#fffdf6;border:1px solid #e8dfc4;border-radius:6px;padding:12px 14px;margin:10px 0}
+.pain ol{margin:0;padding-left:1.3em}
+.pain li{margin:5px 0}
+.pain li.rec{font-weight:700;color:var(--gold)}
+.hook{background:#f4f1ea;border-left:4px solid var(--ai);padding:12px 16px;margin:12px 0;
+  font-size:15px;border-radius:0 6px 6px 0}
+.hook .conn{color:var(--ai);font-weight:700}
+.note{background:#fbf6e8;border:1px solid #e8dfc4;border-radius:6px;padding:12px 15px;margin:14px 0;font-size:14.5px}
+.warnbox{background:#fdf0ec;border:1px solid #e5c3b9;border-radius:6px;padding:12px 15px;margin:14px 0;font-size:14.5px}
+.decide{background:#12181d;color:#f3efe6;border-radius:10px;padding:26px 24px;margin:30px 0}
+.decide h2{color:#fff;border-bottom:2px solid #4a545c;margin-top:0}
+.opt{background:#1d252c;border:1px solid #38424a;border-radius:8px;padding:16px 18px;margin:14px 0}
+.opt .k{font-size:20px;font-weight:800;color:#e6c877;margin-right:10px}
+.opt .t{font-weight:700;font-size:16px}
+.opt p{margin:8px 0 0;color:#c9c2b5;font-size:14.5px}
+small.src{color:var(--sub);font-size:12.5px}
+ul.tight{margin:8px 0;padding-left:1.2em} ul.tight li{margin:4px 0}
+code{background:#efeae1;padding:2px 6px;border-radius:4px;font-size:13px}
+.foot{margin-top:56px;padding-top:16px;border-top:1px solid var(--line);color:var(--sub);font-size:13px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <p class="kicker">HaQei / アニメと易経 ─ 第47話 企画ゲート（3種承認の1つ目）</p>
+  <h1>第47話の企画。<br>どちらの痛みで作りますか。</h1>
+  <p class="lede">
+    痛み先頭転換（H58）コホートの5本目。既出と重ならない痛み分類へ張るため、<b>「執着・別れ」と「決断」</b>に1案ずつ立てました。
+    独立採点（fork・自己採点禁止・合格線90点）を通ったのは<b>2案</b>です。<b>あなたは1案を選んで承認します。</b>
+  </p>
+  <div class="tldr">
+    <ol>
+      <li><b>案A</b>「あきらめた人ほど、その夢のいちばん近くで働いている。」｜怪獣8号 × 小畜 ─ <b>93点 合格</b>／分類=執着・別れ</li>
+      <li><b>案C</b>「言われた通りにやってきた人ほど、何がしたいかを聞かれると黙る。」｜ヴァイオレット・エヴァーガーデン × 随 ─ <b>93点 合格</b>／分類=決断</li>
+      <li><b>案B</b>（あしたのジョー × 節）は<b>88点で不合格</b>。理由は下に正直に書いています。選択肢から外しています。</li>
+    </ol>
+  </div>
+</header>
+
+<figure>
+  <img src="images/overview2-01.png" alt="第47話の企画2案を比較した手描き風の意思決定ボード">
+  <figcaption>合格した2案の全体像。左＝案A（執着・別れ）／右＝案C（決断）。下帯＝選んだ一文が伝わっていく先。不合格の案Bは §5 に文章で記載。</figcaption>
+</figure>
+
+<h2>1. 何を選んでいるのか</h2>
+<p>
+今回の承認は「作品を選ぶ」のではなく、<b>視聴者に最初に差し出す一文（痛みの一文）を選ぶこと</b>です。
+2026-07-27の工程改訂で、企画ゲートの中心は痛みの一文になりました。ここで選んだ一文が、<b>タイトルの前半・冒頭9秒・サムネ題字・ショートS01</b>にそのまま伝播します。
+</p>
+<div class="note">
+<b>なぜ分類が「執着・別れ」と「決断」なのか。</b>
+H58の判定（2026-08-21・7本）は痛み分類ごとに読みます。すでに ep43=限界／ep44・ep46=人間関係／ep45=仕事・評価 が埋まっており、
+<b>残っているのがこの2分類だけ</b>です。どちらを選んでも分散は作れます。
+</div>
+
+<h2>2. 2案の比較</h2>
+<div class="tablewrap">
+<table>
+<thead><tr><th>項目</th><th>案A ─ 怪獣8号 × 小畜（しょうちく）</th><th>案C ─ ヴァイオレット・エヴァーガーデン × 随（ずい）</th></tr></thead>
+<tbody>
+<tr><th>痛みの一文（推奨案）</th><td><b>あきらめた人ほど、その夢のいちばん近くで働いている。</b></td><td><b>言われた通りにやってきた人ほど、何がしたいかを聞かれると黙る。</b></td></tr>
+<tr><th>痛み分類</th><td>執着・別れ</td><td>決断</td></tr>
+<tr><th>独立採点</th><td class="num"><b>93 / 100</b>（合格線90）</td><td class="num"><b>93 / 100</b>（合格線90）</td></tr>
+<tr><th>卦が言っていること</th><td>「密雲不雨」＝<b>厚い雲は出ている、まだ降っていないだけ</b>。状況は不利ではない、ただ大きく動く時ではない。</td><td>五爻＝<b>人は必ず何かを道しるべにして従っている</b>。従わない選択肢は無く、選べるのは従う先だけ。</td></tr>
+<tr><th>常識の反転</th><td>「踏ん切りがつかない自分が弱い」→ <b>とどまったことが失敗ではない。磨かなかったことだけが失敗</b></td><td>「自分で決められないのは主体性が無いから」→ <b>従っていることが問題ではない。従う先を一度も選び直していないことが問題</b></td></tr>
+<tr><th>処方箋の背骨</th><td>押す力を上げるのではなく、<b>降るまでに整える</b></td><td>主体性を持てではなく、<b>従う先を選び直す</b>（＋選べば必ず失う、を引き受ける）</td></tr>
+<tr><th>幕6の棘</th><td>「近くにいること自体は未練ではない。ただ、<b>磨きもせずに近くにいるなら、守っているのは夢ではなく、期待されない安全のほう</b>」</td><td>「<b>自分で決められない人などいません。決めた覚えがないだけで、あなたはもう、何かに従っています。</b>」</td></tr>
+<tr><th>送りたい一文<br>（share_line）</th><td>あきらめた人ほど、その夢のいちばん近くで働いている。</td><td>何がしたいか言えない人も、もう何かに従っている。選べるのは、従う先だけ。</td></tr>
+<tr><th>ショート（隣の卦）</th><td>小畜 → 履。六爻図で<b>一本の陰が四番目から三番目へ一段下りる</b>。「雨を降らせることはできない。踏み方を変えることだけができる」</td><td>随 → 蠱。<b>従い続けた時間が澱みに変わる</b>。「従うことの次に来るのは、直す仕事」</td></tr>
+<tr><th>作品の認知</th><td>2024年アニメ化の大ヒット作。<b>若年層に強い</b></td><td>京都アニメーション・国際配信。<b>知名度は高いが客層はやや静か</b></td></tr>
+<tr><th>主な懸念</th><td>連載中で結末未確定（使うのは序盤の確定設定のみ）／「あきらめるな」系の自己啓発に薄まりやすい</td><td>タイトルが長い（作品名11文字）／作品の情緒に語りが飲まれると感想文になる</td></tr>
+</tbody>
+</table>
+</div>
+
+<h2>3. 案A ─ 怪獣8号 × 小畜〔執着・別れ〕</h2>
+<div class="card win">
+  <span class="badge b-ok">独立採点 93点 合格</span><span class="badge b-neu">分類 執着・別れ</span>
+  <h3>痛みの一文（5案・推奨は1）</h3>
+  <div class="pain"><ol>
+    <li class="rec">あきらめた人ほど、その夢のいちばん近くで働いている。 ← 推奨</li>
+    <li>あきらめた、と言った次の日も、同じ業界にいる。</li>
+    <li>うまくいきそうな気配だけが、もう何年も続いている。</li>
+    <li>あきらめきれないことを、人には趣味だと説明している。</li>
+    <li>関係ない仕事に就く勇気が、いちばん無かった。</li>
+  </ol></div>
+  <p><small class="src">推奨理由：「あきらめた」と「近くにいる」が一文の中で矛盾するので、説明なしで意味が立ち上がる。3は感情の内側が無く、ep45で却下された「観察どまり」の型。5は感情が最も深いが単体では何の話か分からない＝冒頭9秒の2文目に置くのが正しい。</small></p>
+
+  <h3>冒頭9秒</h3>
+  <div class="hook">
+    あきらめた、と人には言いました。でも今やっている仕事は、あきらめたはずのものの、すぐ隣にあります。<br>
+    関係のない仕事に就く勇気が、たぶん、いちばん無かったんです。<br>
+    <span class="conn">（接続）</span>怪獣8号の日比野カフカは、その「すぐ隣」で三十二歳になりました。
+  </div>
+  <ul class="tight">
+    <li><b>感情の内側</b>：「勇気が、たぶん、いちばん無かった」＝自嘲と後ろめたさ。</li>
+    <li><b>実在検証</b>：①自分（本業と言い切らないままこの制作を続けている）②バンドをやめたと言って楽器店で働いている友人 ③先週「もう描いてない」と言った直後に、印刷会社で同人誌の入稿をさばく話を30分続けた専門学校時代の友人。</li>
+  </ul>
+
+  <h3>作品と卦が同じ形である理由</h3>
+  <p>
+  カフカは防衛隊の試験に落ち、受験年齢を過ぎ、<b>怪獣の死体を解体・清掃する会社で十年以上働いている</b>。
+  重要なのは「長く近くにいた」ことではなく、<b>その十年が何を蓄えたか</b>です。一次情報は
+  「モンスタースイーパーでの解体業の経験が、怪獣に関する知識や動きの理解に役立ち、後の戦闘能力の発展につながった」と<b>二段の経緯</b>で述べています。
+  小畜の上爻は「雨は<b>小さな効果の累積</b>によって来る」と書く。＝<b>外から来た変化は「雨」ではなく「時」であり、蓄積が無ければ時が来ても使えるものにならない</b>。
+  </p>
+  <div class="note"><b>圧縮しない約束</b>：「外の変化が来たから成功した」という一段への圧縮はしません（ep46で一度やらかした型）。台本段階で出典の段数と台本の段数を並べて記録します。</div>
+
+  <h3>6幕（v2.3）</h3>
+  <ul class="tight">
+    <li>幕1 違和感30秒：上の冒頭9秒</li>
+    <li>幕2 観察 1.5-2.5分：カフカ ＋ 比較＝市川レノ（18歳・これから受ける側／時間の残り方の対比）</li>
+    <li>幕3 種明かし 2-3分：小畜の六爻図。「厚い雲は出ている、まだ降っていないだけ」</li>
+    <li>幕4 刃 30-60秒：<b>「あきらめた」と言うとき、たいていまだあきらめていない。期待されずに済むから</b></li>
+    <li>幕5 処方箋 1.5-3分：六爻の階段（＝降るまでに整える）</li>
+    <li>幕6 余韻 30秒：上表の棘</li>
+  </ul>
+</div>
+
+<h2>4. 案C ─ ヴァイオレット・エヴァーガーデン × 随〔決断〕</h2>
+<div class="card win">
+  <span class="badge b-ok">独立採点 93点 合格</span><span class="badge b-neu">分類 決断</span>
+  <h3>痛みの一文（5案・推奨は1）</h3>
+  <div class="pain"><ol>
+    <li class="rec">言われた通りにやってきた人ほど、何がしたいかを聞かれると黙る。 ← 推奨</li>
+    <li>指示が無いと不安なのに、指示されると腹が立つ。</li>
+    <li>自分で決めた、と言えることが、この十年で一つも無い。</li>
+    <li>人の期待に応えるのは得意なのに、自分の希望は思い出せない。</li>
+    <li>何かに従っていないと、立っていられない。</li>
+  </ol></div>
+  <p><small class="src">推奨理由：「やってきた人ほど」＝真面目にやってきた人が損をする形を一文で立てられる。4は感情の内側が良く、冒頭9秒の2文目向き。5は本質だが概念的で日常語の条件を満たさない。</small></p>
+
+  <h3>冒頭9秒</h3>
+  <div class="hook">
+    言われた通りにやってきました。だから、何がしたいのかと聞かれると、いまだに黙ってしまいます。<br>
+    やりたいことが無いわけではなくて、聞かれた瞬間に相手が欲しがっている答えのほうを探し始めた自分が、少し情けなかったんです。<br>
+    <span class="conn">（接続）</span>ヴァイオレット・エヴァーガーデンは、命令が無くなった日から、たった一言の意味を探し始めます。
+  </div>
+  <ul class="tight">
+    <li><b>感情の内側</b>：「相手が欲しがる答えを先に探し始めた自分が、情けなかった」＝その瞬間の自己嫌悪。</li>
+    <li><b>実在検証</b>：①自分（先週も一度やった）②面接で「やりたいことは」に詰まった友人 ③先週の飲みで「来年どうしたいの」に「上が決めることなので」と即答し、直後に「今の、自分でもどうかと思った」と言い足した元同僚。</li>
+  </ul>
+
+  <h3>作品と卦が同じ形である理由</h3>
+  <p>
+  ヴァイオレットは戦時、<b>命令に従うことだけで存在が成り立っていた</b>。戦争が終わって命令が無くなり、
+  <b>他人の言葉を預かって手紙にする仕事</b>に就く。＝<b>従う先が「命令」から「他人の本当の言葉」へ移る</b>。
+  随の五爻は「人は必ず何かを道しるべにして従っている」と書き、二爻・三爻は「<b>選べば必ず失う。両方は持てない</b>」と書く。
+  卦は「従うな」とは一言も言っていません（卦辞は「咎なし」から始まる）。
+  </p>
+
+  <h3>6幕（v2.3）</h3>
+  <ul class="tight">
+    <li>幕1 違和感30秒：上の冒頭9秒</li>
+    <li>幕2 観察 1.5-2.5分：ヴァイオレット ＋ 比較＝クラウディア・ホッジンズ（従わせる側の責任）</li>
+    <li>幕3 種明かし 2-3分：随の六爻図。「従うことは劣位ではない」と卦が最初に書いている</li>
+    <li>幕4 刃 30-60秒：<b>「主体性を持て」と言いながら、従ってくれる人がいることに安心している</b>。何がしたいか聞いておいて、望んだ答え以外を黙って却下したことが一度はある</li>
+    <li>幕5 処方箋 1.5-3分：六爻の階段（＝従う先を選び直す）</li>
+    <li>幕6 余韻 30秒：上表の棘</li>
+  </ul>
+  <div class="note"><b>結末には触れません</b>（劇場版の帰結は使わない）。使うのは物語の入口の構造だけです。</div>
+</div>
+
+<h2>5. 不合格になった案B（正直な報告）</h2>
+<div class="card dead">
+  <span class="badge b-ng">88点 不合格</span><span class="badge b-neu">あしたのジョー × 節（せつ）</span>
+  <p>
+  「やめると決めるのが怖いから、決めなくていい理由を探している。」で組みましたが、独立採点を2周かけても90点に届きませんでした。<b>選択肢からは外しています。</b>
+  </p>
+  <ul class="tight">
+    <li><b>1周目（81点・意図の変質）</b>：「決断」案と言いながら、実質<b>ep43で使用済みの「限界」分類の再提出</b>になっていた（倒れるまでやる／限界まで続ける）。私の設計ミスです。</li>
+    <li><b>2周目（84点→88点）</b>：力石徹の過酷な減量を「甘節（五爻＝自分に先に課す）」に置いたのが<b>誤り</b>でした。あれは維持に多大な気力を要する＝<b>苦節（上爻）</b>側です。修正しました。</li>
+    <li><b>最後まで残った欠陥（88点）</b>：「丈は区切りをいつも外側に作らせている」の根拠が<b>階級・計量という制度の列挙</b>で、これは<b>全ボクサーに共通</b>＝丈固有の変化になっていない。<b>作品と卦の同型性が構造的に弱い</b>という指摘で、小手先では直りません。</li>
+  </ul>
+  <div class="warnbox">
+  <b>もし案Bをやりたい場合</b>は、卦か作品のどちらかを替える必要があります（節を残すなら別作品、あしたのジョーを残すなら別の卦）。その場合は企画からやり直しになります。
+  </div>
+</div>
+
+<h2>6. 品質ゲートの経過（自己採点ではありません）</h2>
+<div class="tablewrap">
+<table>
+<thead><tr><th>案</th><th>1周目</th><th>2周目</th><th>3周目</th><th>最終</th><th>独立ゲート</th></tr></thead>
+<tbody>
+<tr><td>案A 怪獣8号×小畜</td><td class="num">採点器出力破損（無効）</td><td class="num">85（爻の出典外の助言）</td><td class="num">85（卦対応が静的）</td><td class="num"><b>93 合格</b></td><td>✅ 通過</td></tr>
+<tr><td>案B あしたのジョー×節</td><td class="num">81（意図の変質）</td><td class="num">84（写像の誤り）</td><td class="num">88（同型性が弱い）</td><td class="num"><b>88 不合格</b></td><td>✅ 通過（点数で不合格）</td></tr>
+<tr><td>案C ヴァイオレット×随</td><td class="num">92</td><td class="num">─</td><td class="num">─</td><td class="num"><b>93 合格</b></td><td>✅ 通過</td></tr>
+</tbody>
+</table>
+</div>
+<p><small class="src">採点は制作会話を見ていない独立の採点器（codex）が実施。合格線90点は変更していません。指摘はすべて成果物側を直して対応しました（基準は緩めていません）。証跡＝<code>analytics/creative-loops/ep47-concept-*</code></small></p>
+
+<div class="decide">
+  <h2>あなたが決めること</h2>
+  <p style="color:#c9c2b5;margin-top:0">1案を選んでください。選んだ<b style="color:#e6c877">痛みの一文</b>がタイトル前半・冒頭9秒・サムネ題字・ショートS01に伝播します。</p>
+
+  <div class="opt">
+    <span class="k">A</span><span class="t">案A で進める ─ 怪獣8号 × 小畜〔執着・別れ〕</span>
+    <p>「あきらめた人ほど、その夢のいちばん近くで働いている。」<br>
+    若年層の認知が強く、蓄積→機会の因果が作品の中心線に乗っている。私の推奨はこちら（認知度と新しさの両方が取れる）。</p>
+  </div>
+
+  <div class="opt">
+    <span class="k">B</span><span class="t">案C で進める ─ ヴァイオレット・エヴァーガーデン × 随〔決断〕</span>
+    <p>「言われた通りにやってきた人ほど、何がしたいかを聞かれると黙る。」<br>
+    痛みの射程がいちばん広い（会社員・学生・親のいずれにも刺さる）。反転（人は必ず何かに従っている）の切れ味も鋭い。タイトルが長い点だけ要調整。</p>
+  </div>
+
+  <div class="opt">
+    <span class="k">C</span><span class="t">痛みの一文を差し替える</span>
+    <p>案A・案Cのどちらかを選んだうえで、<b>推奨の1番ではなく2〜5番の別案を使う</b>／または<b>その場で文を書き直す</b>。却下の言葉は <code>rejections.json</code> に記録して、次回のフック生成に効かせます。</p>
+  </div>
+
+  <div class="opt">
+    <span class="k">D</span><span class="t">どちらも違う ─ 企画からやり直す</span>
+    <p>刺さらない理由を一言だけ聞かせてください（「その痛みは自分の話じゃない」等でも十分です）。それを却下台帳に記録してから、別の卦・別の作品で立て直します。</p>
+  </div>
+</div>
+
+<h2>7. 承認後にすぐ動くこと</h2>
+<ul class="tight">
+  <li>レジストリの卦を確定（現在は仮に小畜で登録済み。案Cなら随へ差し替え）</li>
+  <li>選ばれた案を正典 <code>content/067/concept.md</code> へ昇格し、concept承認を記録</li>
+  <li>台本を<b>1候補＋改稿ループ</b>で執筆（3候補の作り分けは2026-07-27に廃止済み）</li>
+  <li>作中事実は一次情報で裏取りし、<b>因果の段数</b>を <code>fact_check.md</code> に並記</li>
+  <li>公開枠は <b>2026-08-11（月）04:00 JST</b> を確保済み</li>
+</ul>
+
+<p class="foot">
+第47話 / content/067 / H58 痛み先頭転換コホート5本目 ─ 2026-07-28 作成。<br>
+承認ゲートは3つだけ（企画 → 台本 → 通し視聴）。これは1つ目です。
+</p>
+
+</div>
+</body>
+</html>
