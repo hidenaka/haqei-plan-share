@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>公開36本の離脱横断分析 — 台本の作り方</title>
+<style>
+  :root {
+    --ink: #1a1a1a; --ink-2: #4a4a4a; --bg: #f7f5ee; --paper: #fbf9f1; --line: #d8d2bf;
+    --accent: #cc785c; --accent-soft: #f5e0d6; --warn: #c83a2c; --warn-soft: #f6dcd6;
+    --yellow: #f4d35e; --shadow: 0 1px 0 rgba(0,0,0,.04), 0 8px 24px rgba(0,0,0,.06);
+    --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+    --sans: -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Noto Sans JP", "Yu Gothic", "Meiryo", sans-serif;
+  }
+  * { box-sizing: border-box; } html, body { margin: 0; padding: 0; }
+  body { font-family: var(--sans); background: var(--bg); color: var(--ink); line-height: 1.7; -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 56px 28px 96px; }
+  .hero { margin-bottom: 48px; }
+  .hero .kicker { display: inline-block; background: var(--accent); color: #fff; font-size: 12px; font-weight: 700; letter-spacing: .12em; padding: 6px 12px; border-radius: 999px; margin-bottom: 18px; }
+  .hero h1 { font-size: 38px; line-height: 1.3; margin: 0 0 14px; letter-spacing: -.01em; }
+  .hero h1 b { color: var(--accent); }
+  .hero p.lede { font-size: 18px; color: var(--ink-2); margin: 0; max-width: 800px; }
+  .tldr { margin-top: 28px; padding: 22px 24px; background: var(--paper); border: 1px solid var(--line); border-radius: 12px; box-shadow: var(--shadow); }
+  .tldr h2 { font-size: 13px; letter-spacing: .15em; color: var(--accent); margin: 0 0 10px; }
+  .tldr ol { margin: 0; padding-left: 20px; } .tldr li { margin: 4px 0; }
+  section { margin: 60px 0 0; }
+  section > h2 { font-size: 27px; line-height: 1.4; margin: 0 0 6px; border-left: 6px solid var(--accent); padding-left: 12px; }
+  section > h2 .num { color: var(--accent); font-variant-numeric: tabular-nums; margin-right: 10px; }
+  section > p.sub { color: var(--ink-2); margin: 0 0 22px; }
+  .table { width: 100%; border-collapse: collapse; margin: 12px 0 6px; background: var(--paper); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; box-shadow: var(--shadow); }
+  .table th, .table td { text-align: left; padding: 11px 13px; border-bottom: 1px solid var(--line); vertical-align: top; font-size: 14px; }
+  .table th { background: #efeadb; font-weight: 700; }
+  .table tr:last-child td { border-bottom: 0; }
+  .table .pick { background: var(--accent-soft); }
+  .table .bad { background: var(--warn-soft); }
+  .bar { display:inline-block; height: 11px; background: var(--accent); border-radius: 3px; vertical-align: middle; margin-right: 8px; }
+  .bar.red { background: var(--warn); }
+  .callout { margin: 18px 0; padding: 16px 18px; border-left: 4px solid var(--accent); background: var(--accent-soft); border-radius: 0 10px 10px 0; }
+  .callout.warn { border-color: var(--warn); background: var(--warn-soft); }
+  .callout p { margin: 0; }
+  .callout strong { color: var(--accent); } .callout.warn strong { color: var(--warn); }
+  .quote { border-left: 3px solid var(--line); padding: 6px 16px; color: var(--ink-2); font-size: 14.5px; margin: 14px 0; background: var(--paper); border-radius: 0 8px 8px 0; }
+  .quote b.loss { color: var(--warn); font-family: var(--mono); }
+  .quote b.hold { color: #2e7d52; font-family: var(--mono); }
+  code.inline { font-family: var(--mono); font-size: .92em; background: #efeadb; padding: 1px 6px; border-radius: 4px; }
+  .conclusion { margin-top: 56px; padding: 28px 28px 24px; background: var(--ink); color: #f6f3e8; border-radius: 16px; }
+  .conclusion h2 { color: var(--yellow); border: 0; padding: 0; margin: 0 0 12px; }
+  .conclusion ol { margin: 0; padding-left: 20px; } .conclusion li { margin: 6px 0; }
+  footer { margin-top: 36px; color: var(--ink-2); font-size: 13px; }
+  @media (max-width: 720px) { .wrap { padding: 32px 18px 64px; } .hero h1 { font-size: 28px; } section > h2 { font-size: 21px; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <span class="kicker">離脱横断分析 — 台本の作り方</span>
+    <h1>公開36本の実測が語る、<b>離脱させる文・持たせる文</b></h1>
+    <p class="lede">retention-drilldown コーパス36本（うち views≥30 の信頼サブセット20本・シーン508個）を横断集計。「どのシーン種別・どの位置・どんな文で視聴者が去るか」を、動画内正規化した相対損失（%/分）の中央値で読む。</p>
+    <div class="tldr">
+      <h2>TL;DR</h2>
+      <ol>
+        <li><b>勝負は冒頭0〜20%だけ</b>。それ以降の中央値は損失ほぼゼロ。40%地点まで残った人は最後まで観る</li>
+        <li><b>冒頭1文目の型で5倍差</b>: 具体的な理不尽の場面（ep27=37%/分）vs 概念の引用・思考実験（ep3=194%/分）</li>
+        <li><b>最大の出血点はフック2シーン目の「でも実は逆」型の抽象転回</b>（ワースト上位5つ全てが V_01_02・200〜302%/分）</li>
+        <li><b>あらすじ説明文は周囲の4倍離脱</b>（41.0 vs 9.5 %/分）。作品着地は肩書き列挙をしない</li>
+        <li>種明かし・処方箋は実測どおりのゼロ損失帯＝v2.3幕配分と痛み先頭転換(H58)を実測が裏付け</li>
+      </ol>
+    </div>
+  </header>
+
+  <section>
+    <h2><span class="num">01</span>読み方の規律</h2>
+    <p class="sub">数字を信じる前に、何を測っていて何を測っていないかを固定する</p>
+    <table class="table">
+      <tbody>
+        <tr><td><b>指標</b></td><td><b>相対損失 %/分</b> ＝ シーン開始時に残っていた視聴者のうち、1分あたり何%が去ったか（動画内正規化）。動画間の絶対比較はしない</td></tr>
+        <tr><td><b>母集団</b></td><td>信頼サブセット= views≥30 の20本（ep29=404v, ep38=257v, ep16=127v, ep1=124v, ep35=111v, ep30=105v ほか）。views&lt;30 の16本は集計から除外</td></tr>
+        <tr><td><b>統計量</b></td><td>中央値ベース（少数viewsのカーブはノイジー。1点の上下で断定しない）</td></tr>
+        <tr><td><b>限界</b></td><td>題材(IP)の人気・サムネ/タイトル起因の視聴者質は交絡する。「同一動画内のどこで落ちたか」の比較が主・文の型の比較は複数動画で再現しているものだけ教訓化する</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2><span class="num">02</span>どこで失っているか — 幕と位置</h2>
+    <p class="sub">冒頭だけが戦場。40%地点を越えた視聴者はほぼ完走する</p>
+    <table class="table">
+      <thead><tr><th>scene_type</th><th>相対損失 中央値</th><th>n</th><th>読み</th></tr></thead>
+      <tbody>
+        <tr class="bad"><td>act1_hook（違和感の提示）</td><td><span class="bar red" style="width:180px"></span><b>122.0</b> %/分</td><td>50</td><td>唯一の大量離脱帯。ここで作る動画の全てが決まる</td></tr>
+        <tr><td>act2_story（観察・作品）</td><td><span class="bar red" style="width:42px"></span>28.2</td><td>96</td><td>第2の出血帯（v2.3で短縮済みの妥当性を再確認）</td></tr>
+        <tr><td>act2_compare（対比）</td><td><span class="bar" style="width:22px"></span>14.6</td><td>70</td><td>—</td></tr>
+        <tr><td>act4_blade（風刺の刃）</td><td><span class="bar" style="width:20px"></span>13.2</td><td>50</td><td>—</td></tr>
+        <tr class="pick"><td>act3_reveal（種明かし）</td><td><b>0.0</b></td><td>108</td><td>最良ホールド帯（ゼロ損失シーン65個）</td></tr>
+        <tr class="pick"><td>act4_practice（処方箋）</td><td><b>0.0</b></td><td>94</td><td>離脱ゼロ帯＝価値の本体という設計どおり</td></tr>
+        <tr><td>act5_end（余韻）</td><td>0.0（平均19.4）</td><td>40</td><td>中央値はゼロだが一部が終盤で切る（順位は低い）</td></tr>
+      </tbody>
+    </table>
+    <table class="table">
+      <thead><tr><th>動画内位置</th><th>相対損失 中央値</th><th>n</th></tr></thead>
+      <tbody>
+        <tr class="bad"><td>0–20%</td><td><span class="bar red" style="width:150px"></span><b>62.1</b> %/分</td><td>118</td></tr>
+        <tr><td>20–40%</td><td><span class="bar" style="width:29px"></span>11.8</td><td>103</td></tr>
+        <tr class="pick"><td>40–100%</td><td><b>0.0</b></td><td>287</td></tr>
+      </tbody>
+    </table>
+    <div class="callout">
+      <p><strong>60秒残存の実力差</strong>: 60秒地点の残存は最良 ep27=59% / ep24=46% から最低 ep18=18% / ep40=19% まで開く。平均維持率との相関も強い（ep27は平均36.2%でコーパス首位）。<b>冒頭60秒の設計がその動画の維持率をほぼ決めている</b>。</p>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="num">03</span>冒頭1文目 — 5倍差の対決</h2>
+    <p class="sub">信頼サブセット20本の冒頭シーンを損失順に並べると、文の型がきれいに分かれた</p>
+    <p><b>持った冒頭（ベスト3）</b> — 視聴者が被った理不尽・痛みの具体場面を、二人称の実感で断言する:</p>
+    <div class="quote">ep27（37%/分・60s残存59%）<b class="hold">◎</b>「ルールを破っているのは相手なのに、なぜか、<b>あなたのほうが悪者みたいになる</b>。正しいことを言っただけなのに、逆ギレされて、上司には、まあまあ、と流される」</div>
+    <div class="quote">ep24（72%/分）<b class="hold">◎</b>「全部、自分でやらなきゃ。そう思って生きている人がいます。仕事も、家のことも、人付き合いも」</div>
+    <div class="quote">ep29（77%/分・404views）<b class="hold">◎</b>「頼れる人、という言葉があります。たいてい、何でも一人でこなせる人のことだと思われています」</div>
+    <p><b>失った冒頭（ワースト3）</b> — 概念の引用・カタログ列挙・思考実験の命令形:</p>
+    <div class="quote">ep3（194%/分）<b class="loss">✗</b>「<b>『人生をやり直したい』と思うとき</b>、頭に浮かぶ絵があります。年収を倍にして見返す転職。一発逆転の起業。前世の知識で無双する転生」</div>
+    <div class="quote">ep17（182%/分）<b class="loss">✗</b>「<b>『逃げる』という言葉には</b>、だいたい負けの匂いがついています。逃げ癖、逃げ腰、逃げた奴」</div>
+    <div class="quote">ep30（153%/分）<b class="loss">✗</b>「<b>『世界でいちばん強い人』を思い浮かべてみてください</b>。たいてい、その人はどこか威張っています」</div>
+    <div class="callout">
+      <p><strong>型の違い</strong>: 持った冒頭は「視聴者自身が今週体験した場面」がそのまま絵になる（逆ギレされる会議・抱え込む家事）。失った冒頭は<b>鉤括弧つきの概念語を回す・比喩のカタログを並べる・視聴者に作業を命じる</b>。これは痛み先頭転換(H58)の設計と一致し、H58型で書かれた ep42 の冒頭は実測4位（82%/分）に入っている。</p>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="num">04</span>最大の出血点 — フック2シーン目の「でも実は逆」転回</h2>
+    <p class="sub">冒頭を除くワースト15シーンの上位5つは、全動画で同じ場所・同じ型だった</p>
+    <table class="table">
+      <thead><tr><th>#</th><th>ep / シーン</th><th>損失</th><th>文（冒頭）</th></tr></thead>
+      <tbody>
+        <tr class="bad"><td>1</td><td>ep18 V_01_02</td><td><b>302</b> %/分</td><td>「演じている自分は偽物で…そう思っている人は、けっこう多いと思います。でも」</td></tr>
+        <tr class="bad"><td>2</td><td>ep40 V_01_02</td><td><b>236</b></td><td>「不思議なんです。大きなことは怖くてできず、小さなことは馬鹿にして、やらない」</td></tr>
+        <tr class="bad"><td>3</td><td>ep29 V_01_02</td><td><b>226</b></td><td>「でも、本当に大きなものを動かしている人をよく見ると、不思議なくらい逆なんです」</td></tr>
+        <tr class="bad"><td>4</td><td>ep42 V_01_02</td><td><b>203</b></td><td>「来た誘いをどれも断らずに予定を埋めたら…」</td></tr>
+        <tr class="bad"><td>5</td><td>ep16 V_01_02</td><td><b>202</b></td><td>「そういう人ほど、ある日いきなり、ポキッと折れます」</td></tr>
+      </tbody>
+    </table>
+    <div class="callout warn">
+      <p><strong>読み</strong>: 1シーン目の痛みが刺さっても、2シーン目で<b>場面を捨てて「でも実は逆なんです」と抽象論・予告編に切り替えた瞬間</b>に最大の離脱が起きる。対照的に、最良の ep27 は2シーン目も同じ場面の中で転回した（「いちばん危ないのは、相手に負けることじゃない。正しさで勝ちたい自分に飲み込まれること」＝62%/分で済んだ）。<b>転回は場面の内側でやる。予告（今日はその話です）を急がない</b>。これは pivot-pain-first の pain_work_bridge 軸に実測の根拠を与える。</p>
+    </div>
+    <p><b>もう2つの離脱文型（本体部）</b>:</p>
+    <table class="table">
+      <thead><tr><th>文型</th><th>実測</th><th>例</th></tr></thead>
+      <tbody>
+        <tr><td><b>あらすじ説明文</b>（「〜という漫画の主人公で…」肩書き・世界設定の列挙）</td><td>あり <b>41.0</b> vs なし 9.5 %/分（n=13/261）＝<b>約4倍</b></td><td>ep29 V_02_01「ルフィという海賊がいます。ONE PIECEの主人公で…四皇と呼ばれる頂点の一人に」＝173%/分</td></tr>
+        <tr><td><b>冒頭ゾーンでの卦の字義解説</b></td><td>ep40 V_01_03「易経に、小過という卦があります。小さく、少しだけ…」＝<b>145%/分</b>（単発実測）</td><td>卦の提示は種明かし幕（実測ゼロ損失帯）で行えば持つ＝出す場所の問題</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2><span class="num">05</span>持っているもの — 既存正典との整合</h2>
+    <p class="sub">この実測は既存の設計判断を裏付けており、矛盾は見つからなかった</p>
+    <table class="table">
+      <thead><tr><th>既存正典</th><th>今回の実測</th><th>判定</th></tr></thead>
+      <tbody>
+        <tr><td>v2.3幕配分（観察1.5-2.5分・種明かし2-3分下限・処方箋必須）</td><td>act2_story=28.2%/分の第2出血帯 / act3_reveal・act4_practice=ゼロ損失帯（ゼロ損失シーン508個中210個の57%がこの2幕）</td><td class="pick"><b>裏付け</b></td></tr>
+        <tr><td>痛み先頭転換 H58（冒頭9秒=痛みの断言・正典 pivot-pain-first）</td><td>冒頭ベスト型=痛みの具体場面の断言（ep27/24/29）。H58型 ep42 は冒頭4位</td><td class="pick"><b>裏付け</b>（ただしH58の分母系判定は8/21のまま）</td></tr>
+        <tr><td>約束の確認オーバーレイ（最大離脱の中央値=10秒への対策）</td><td>0-20%が唯一の主戦場という構造は不変</td><td class="pick"><b>整合</b></td></tr>
+      </tbody>
+    </table>
+    <div class="callout">
+      <p><strong>注意（過剰反応の抑制）</strong>: シーン長（15秒未満のシーンは損失大）と数字入り文（21.5 vs 9.5）にも差が出たが、どちらも<b>冒頭に短いシーンが集中する位置交絡</b>の疑いが強く、今回は教訓化しない。次の数本で位置を揃えて再確認する。</p>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="num">06</span>教訓ドラフト（台帳への記録は本人確認後）</h2>
+    <p class="sub">複数動画で再現している型のみ。承認されたものだけ retention-lessons.json に記録し、以後の採点・執筆へ自動注入される</p>
+    <table class="table">
+      <thead><tr><th>案</th><th>教訓（指示形）</th><th>実測根拠</th><th>還流先</th></tr></thead>
+      <tbody>
+        <tr class="pick"><td><b>RL-1</b></td><td>冒頭1文目は「視聴者が被った理不尽・痛みの具体場面」を二人称の実感で断言する。鉤括弧つき概念語の引用（「逃げる」という言葉には…）・比喩カタログ列挙・思考実験の命令形（思い浮かべてください）で始めない</td><td>ベスト ep27=37 / ep24=72 / ep29=77 vs ワースト ep3=194 / ep17=182 / ep30=153 %/分（5倍差・6動画）</td><td>essay-script, long-hook</td></tr>
+        <tr class="pick"><td><b>RL-2</b></td><td>フック2シーン目で場面を捨てて「でも実は逆なんです」型の抽象転回・予告に切り替えない。転回は1シーン目と同じ場面・同じ一人称の内側でやる（ep27型）</td><td>ワースト5シーンが全てV_01_02（ep18=302 / ep40=236 / ep29=226 / ep42=203 / ep16=202 %/分）vs ep27 V_01_02=62</td><td>essay-script, long-hook</td></tr>
+        <tr class="pick"><td><b>RL-3</b></td><td>作品への着地シーンで肩書き・世界設定・強さ格付けの列挙をしない（あらすじ説明文は周囲の約4倍離脱）。「誰が・何をしたか」の1文で最小着地し、すぐ痛みの文脈に戻す</td><td>setsumei文型 あり41.0 vs なし9.5 %/分（n=13、ep29 V_02_01=173%/分ほか複数ep）</td><td>essay-script</td></tr>
+        <tr><td><b>RL-4</b></td><td>冒頭0-60秒ゾーンで易経用語・卦の字義解説を出さない（卦の提示は種明かし幕＝実測ゼロ損失帯で行う）</td><td>ep40 V_01_03=145%/分（<b>単発実測</b>＝candidate扱い）</td><td>essay-script, long-hook</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <div class="conclusion">
+    <h2>結論</h2>
+    <ol>
+      <li>台本の勝負は冒頭0-20%（実質60秒）に集中しており、40%地点を越えた視聴者はほぼ完走する。種明かし・処方箋の作り込みは既に機能している</li>
+      <li>離脱させる文型は3つ: ①概念引用・カタログ・命令形の冒頭 ②2シーン目の場面を捨てた抽象転回 ③あらすじ説明の肩書き列挙。いずれも複数動画で再現</li>
+      <li>実測は v2.3幕配分と痛み先頭転換(H58)を裏付けた。教訓4件は承認されたもののみ台帳へ記録→採点・執筆に自動注入</li>
+    </ol>
+  </div>
+
+  <footer>データ: analytics/retention-drilldown/（36本・2026-07-30取得）/ 信頼サブセット views≥30 の20本・508シーン / 生成 2026-07-30</footer>
+
+</div>
+</body>
+</html>
