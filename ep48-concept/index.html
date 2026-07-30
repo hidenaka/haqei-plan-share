@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>第48話 企画ゲート — 判断をお願いします</title>
+<style>
+:root{
+  --ink:#1c1a17; --sub:#5b5750; --line:#e2ddd4; --bg:#faf8f4; --card:#fff;
+  --gold:#a4802f; --ai:#2f4d6b; --ok:#2c6e49; --ng:#a33a2a; --warn:#8a6d1f;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans JP",sans-serif;
+  line-height:1.85; font-size:16px; -webkit-text-size-adjust:100%}
+.wrap{max-width:1000px;margin:0 auto;padding:32px 20px 96px}
+header.hero{padding:28px 0 14px;border-bottom:3px solid var(--ink)}
+.kicker{font-size:12px;letter-spacing:.18em;color:var(--gold);font-weight:700;margin:0 0 10px}
+h1{font-size:31px;line-height:1.35;margin:0 0 14px;letter-spacing:.01em}
+.lede{color:var(--sub);margin:0 0 18px;font-size:15px}
+.tldr{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--gold);
+  border-radius:6px;padding:16px 18px;margin:18px 0 6px}
+.tldr ol{margin:0;padding-left:1.25em} .tldr li{margin:6px 0}
+h2{font-size:22px;margin:52px 0 14px;padding-bottom:8px;border-bottom:2px solid var(--ink)}
+h3{font-size:17px;margin:28px 0 10px;color:var(--ai)}
+figure{margin:26px 0;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:var(--card)}
+figure img{display:block;width:100%;height:auto}
+figcaption{font-size:13px;color:var(--sub);padding:10px 14px;border-top:1px solid var(--line)}
+.tablewrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:16px 0}
+table{border-collapse:collapse;width:100%;min-width:640px;background:var(--card);font-size:14.5px}
+th,td{border:1px solid var(--line);padding:10px 12px;text-align:left;vertical-align:top}
+th{background:#f1ede5;font-weight:700;white-space:nowrap}
+td.num{white-space:nowrap;font-variant-numeric:tabular-nums;text-align:right}
+.card{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:18px 18px 20px;margin:20px 0}
+.card.win{border:2px solid var(--ok)}
+.card.dead{opacity:.78;border-style:dashed}
+.badge{display:inline-block;font-size:11.5px;font-weight:700;letter-spacing:.06em;
+  padding:3px 9px;border-radius:999px;margin:0 6px 8px 0}
+.b-ok{background:#e4f0e8;color:var(--ok);border:1px solid #b9d8c4}
+.b-ng{background:#f6e5e1;color:var(--ng);border:1px solid #e0bcb2}
+.b-warn{background:#fbf1dc;color:var(--warn);border:1px solid #e6d3a5}
+.b-neu{background:#eee9df;color:var(--sub);border:1px solid var(--line)}
+.pain{background:#fffdf6;border:1px solid #e8dfc4;border-radius:6px;padding:12px 14px;margin:10px 0}
+.pain ol{margin:0;padding-left:1.3em}
+.pain li{margin:5px 0}
+.pain li.rec{font-weight:700;color:var(--gold)}
+.hook{background:#f4f1ea;border-left:4px solid var(--ai);padding:12px 16px;margin:12px 0;
+  font-size:15px;border-radius:0 6px 6px 0}
+.hook .conn{color:var(--ai);font-weight:700}
+.scenes{background:#f7f6f1;border:1px solid var(--line);border-radius:6px;padding:12px 14px;margin:10px 0;font-size:14.5px}
+.scenes ol{margin:6px 0 0;padding-left:1.3em}
+.note{background:#fbf6e8;border:1px solid #e8dfc4;border-radius:6px;padding:12px 15px;margin:14px 0;font-size:14.5px}
+.warnbox{background:#fdf0ec;border:1px solid #e5c3b9;border-radius:6px;padding:12px 15px;margin:14px 0;font-size:14.5px}
+.decide{background:#12181d;color:#f3efe6;border-radius:10px;padding:26px 24px;margin:30px 0}
+.decide h2{color:#fff;border-bottom:2px solid #4a545c;margin-top:0}
+.opt{background:#1d252c;border:1px solid #38424a;border-radius:8px;padding:16px 18px;margin:14px 0}
+.opt .k{font-size:20px;font-weight:800;color:#e6c877;margin-right:10px}
+.opt .t{font-weight:700;font-size:16px}
+.opt p{margin:8px 0 0;color:#c9c2b5;font-size:14.5px}
+small.src{color:var(--sub);font-size:12.5px}
+ul.tight{margin:8px 0;padding-left:1.2em} ul.tight li{margin:4px 0}
+code{background:#efeae1;padding:2px 6px;border-radius:4px;font-size:13px}
+.hexbox{display:flex;gap:22px;align-items:flex-start;flex-wrap:wrap;background:#f7f6f1;
+  border:1px solid var(--line);border-radius:6px;padding:14px 16px;margin:12px 0}
+.hex{display:flex;flex-direction:column-reverse;gap:5px;width:96px}
+.hex .l{height:9px;display:flex;gap:8px}
+.hex .l i{display:block;height:9px;background:var(--ink);border-radius:1px}
+.hex .l.yang i{width:100%}
+.hex .l.yin i{width:calc(50% - 4px)}
+.hexcap{font-size:12.5px;color:var(--sub);text-align:center;margin-top:8px;line-height:1.5}
+.hexarrow{align-self:center;font-size:22px;color:var(--gold)}
+.foot{margin-top:56px;padding-top:16px;border-top:1px solid var(--line);color:var(--sub);font-size:13px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <p class="kicker">HaQei / アニメと易経 ─ 第48話 企画ゲート（3種承認の1つ目）</p>
+  <h1>第48話の企画。<br>ここから先は、私では決められません。</h1>
+  <p class="lede">
+    痛み先頭転換（H58）コホートの6本目。5つの痛み分類で<b>まだ使っていないのは〔決断〕だけ</b>なので、3案すべてをそこへ張りました。
+    機械側は<b>4周・のべ8回</b>まわしましたが、<b>合格線90に届いた案がありません</b>。
+    ただし、残っている争点は「品質」ではなく<b>「痛みの一文をどう定義するか」</b>——つまりあなたの領域に収束しました。<b>そこを決めてください。</b>
+  </p>
+  <div class="tldr">
+    <ol>
+      <li><b>案A もののけ姫 × 観</b>「どっちの味方だと聞かれた瞬間に、いちばん嘘をつく。」── ブラインド選抜は<b>4回とも1位（95/96/96/98）</b>、独立採点 <b>88点</b>。落ちている理由は1点だけで、それは<b>痛みの定義の問題</b>です。</li>
+      <li><b>案B ヴィンランド・サガ × 随</b>「嫌いな相手のそばに、いちばん長くいる。」── 独立採点 <b>92点</b>。ただし<b>〔決断〕ではなく〔執着・別れ／人間関係〕として読まれる</b>＝分類ちがいで停止。</li>
+      <li><b>案C キングダム × 屯</b>「どれも捨てられないから、どれも始まらない。」── <b>88点</b>。信は選択肢を捨てた人物ではない＝作品と卦が同型にならず、脱落。</li>
+    </ol>
+  </div>
+</header>
+
+<figure>
+  <img src="images/overview2-01.png" alt="第48話の企画3案と4周の採点結果を並べた手描き風のボード">
+  <figcaption>3案と4周の結果。左＝案A（推奨）／中＝案B（分類ちがい）／右＝案C（作品と噛み合わず）。3つの痛みの一文と点数（88/92/88）は正確です。<br>
+  ⚠️ <b>挿絵はAIが描いた雰囲気図なので、次の3点は事実と違います</b>：①左の「各10点満点・計50点・4周平均」という採点方法はAIの創作で、実際は<b>5軸100点満点・表示は最新周の点</b>（採点表＝<code>analytics/eval-schemas/concept.json</code>） ②案Bの「別の卦のほうが本質に近いかも？」というメモもAIの創作で、実際の停止理由は<b>痛み分類が〔決断〕から外れたこと</b> ③六爻図は描かれていません（正しい図は下の案Aのカードに、db の <code>binary_le</code> から決定論で作図してあります）。</figcaption>
+</figure>
+
+<h2>1. 何を選んでいるのか</h2>
+<p>
+選ぶのは <b>「痛みの一文」ひとつ</b>です。これがそのまま <b>タイトルの前半</b>・<b>冒頭9秒の言葉</b>・<b>share_line（人に送られる一文）</b>・<b>派生ショートの1行目</b>になります。
+作品と卦は、その痛みが実在することの<b>証拠</b>として選んであります。
+</p>
+<div class="note">
+<b>なぜ企画の段階で冒頭まで決めるのか</b>：却下台帳8件のうち7件が「冒頭」で起きています（ep37/41/42/45）。
+いちばん高くつく作り直しを、いちばん安い段階（数十字の文）で止めるための工程です（2026-07-27 承認の工程改訂）。
+</div>
+
+<h2>2. 今回の前提（実測）</h2>
+<div class="tablewrap">
+<table>
+<tr><th>項目</th><th>実測値</th><th>今回への効き方</th></tr>
+<tr><td>登録者</td><td class="num">92人（24.8時間で +0）</td><td>第一律速は「共鳴の発生率」。下流のCTAでは動かない</td></tr>
+<tr><td>H58の判定材料</td><td class="num">n = 0 / 7</td><td>ep43-46はまだ実測入力前。<b>8/21まで単発で読まない</b></td></tr>
+<tr><td>視聴者の実像</td><td class="num">男性25〜64歳が 71.7%</td><td>「若い層とのミスマッチ」は反証済み。<b>疲れた大人に効く痛み</b>だけを候補にした</td></tr>
+<tr><td>痛み分類の既出</td><td>限界 / 人間関係×2 / 仕事・評価 / 執着・別れ</td><td>残るは<b>〔決断〕</b>のみ。3案ともここへ張った</td></tr>
+</table>
+</div>
+<p><small class="src">出典：<code>node scripts/yt-stats.mjs</code>（2026-07-30 実行）／<code>pivot-cohort.mjs report</code>／2026-07-29 Analytics API 直接照会（<code>docs/pdca.md</code> 実測メモ）</small></p>
+
+<h2>3. 案A ─ もののけ姫（アシタカ） × 観〔推奨〕</h2>
+<div class="card win">
+  <span class="badge b-ok">ブラインド選抜 4回とも1位</span><span class="badge b-warn">独立採点 88点（合格線90）</span><span class="badge b-neu">痛み＝決断</span><span class="badge b-neu">第20卦 観・未使用</span><span class="badge b-neu">作品も未使用</span>
+
+  <h3 style="margin-top:6px">痛みの一文（5案・上が私の推し）</h3>
+  <div class="pain"><ol>
+    <li class="rec">どっちの味方だと聞かれた瞬間に、いちばん嘘をつく。</li>
+    <li>両方の言い分が分かる人から先に、嫌われていく。</li>
+    <li>その場で強い方に合わせた自分のことを、帰り道でずっと考えている。</li>
+    <li>決められないんじゃない。決めた顔をするのが早すぎるだけだ。</li>
+    <li>まだ何も見ていないのに、もう選んでいる。</li>
+  </ol></div>
+
+  <h3>冒頭9秒（実尺に収まる長さに固定）</h3>
+  <div class="hook">
+    どっちの味方だ、と聞かれたら、強い方に合わせます。<br>
+    その場では、迷わない顔をします。<br>
+    迷ったのは、帰り道です。<br>
+    <span class="conn">（作品へ）</span>もののけ姫のアシタカは、それをやりませんでした。
+  </div>
+
+  <div class="scenes"><b>幕1で並べる生活場面3つ</b>
+    <ol>
+      <li>上司と先輩が揉め、<b>声の大きい方にうなずく</b></li>
+      <li>居間では父に、台所では母に、<b>そうだね</b></li>
+      <li>どっちも分かる、と打って、<b>送らずに消す</b></li>
+    </ol>
+  </div>
+
+  <h3>六爻図（db の binary_le から作図・下が初爻）</h3>
+  <div class="hexbox">
+    <div>
+      <div class="hex">
+        <div class="l yang"><i></i></div><div class="l yang"><i></i></div>
+        <div class="l yin"><i></i><i></i></div><div class="l yin"><i></i><i></i></div>
+        <div class="l yin"><i></i><i></i></div><div class="l yin"><i></i><i></i></div>
+      </div>
+      <div class="hexcap">19 臨<br>110000</div>
+    </div>
+    <div class="hexarrow">↕</div>
+    <div>
+      <div class="hex">
+        <div class="l yin"><i></i><i></i></div><div class="l yin"><i></i><i></i></div>
+        <div class="l yin"><i></i><i></i></div><div class="l yin"><i></i><i></i></div>
+        <div class="l yang"><i></i></div><div class="l yang"><i></i></div>
+      </div>
+      <div class="hexcap"><b>20 観</b><br>000011</div>
+    </div>
+    <div style="flex:1;min-width:230px;font-size:14px;color:var(--sub)">
+      同じ六本の線を<b>上下ひっくり返しただけ</b>で臨と観に分かれる。上から近づいて見るのが臨、下から見上げて見るのが観。<br>
+      <b>下の四本が陰＝見上げる多数（語り手）／上の二本が陽＝見られる少数（アシタカ）</b>。※この配役は企画側の読みで、db には書かれていません。
+    </div>
+  </div>
+
+  <h3>この回の「へえ」</h3>
+  <ul class="tight">
+    <li>観の卦辞は「<b>手は清めた。まだ供え物は捧げていない</b>」。易経は<b>その"あいだ"を、儀式でいちばん神聖な時間</b>と書く。＝<b>決めていない時間は、空白ではなく工程</b>。</li>
+    <li>「観」という字は<b>見ることと、見られること（手本になること）の両方</b>を意味する。卦の形は<b>見晴らす塔であり、同時に遠くから見える塔</b>。</li>
+    <li>六爻のうち「<b>決める</b>」が出てくるのは<b>三爻ただ一つ</b>。そこには「気持ちを掘るな、<b>自分が生んでいる効果を見よ</b>」と書いてある。</li>
+  </ul>
+
+  <h3>処方箋（六爻の階段・各段に〔やめる／今日から始める〕）</h3>
+  <ul class="tight">
+    <li>初爻＝遠くから浅く見る → 伝聞の転送をやめ、<b>自分がこの目で見た事実を3つ書く</b></li>
+    <li>二爻＝隙間から覗く → 「自分ならこうする」を根拠にせず、<b>相手の言い分を相手の言葉で書く</b></li>
+    <li>三爻＝<b>ここで初めて進退を決める</b> → 気持ちのメモを止め、<b>自分の振る舞いが周りに起こしたことを一つ書く</b></li>
+    <li>四爻＝王の客として独立して関わる → 陣営の代弁をやめ、<b>自分の名前で意見を言える条件を確保してから場に出る</b></li>
+    <li>五爻＝効果を点検する → 反芻をやめ、<b>次にその件が動いた場から24時間以内に「誰の何が変わったか」を1行</b></li>
+    <li>上爻＝自我を外して見る → <b>損得を外した答えを一度だけ紙に書く</b>（採用しなくていい）</li>
+    <li>象辞＝「風、地の上を行く」。王は現地を巡り、民を観てから教えを与えた。<b>見に行かずに出す結論は、教えではなく思いつき。</b></li>
+  </ul>
+
+  <h3>閉じ方（棘）</h3>
+  <p>「<b>見ないまま選ぶことを、決断とは言いません。あれはただ、早く楽になりたいだけです。</b>」</p>
+  <p><small class="src">share_line：どっちつかずの人は、迷っているんじゃない。まだ見終わっていないだけだ。／派生ショート：19臨→20観（上下反転）</small></p>
+
+  <div class="warnbox">
+    <b>88点で止まっている理由＝これはあなたが決めることです。</b><br>
+    採点者はこう言っています。<b>「痛みの一文が『強い側への迎合』を指しているのに、アシタカの一射は"村を守るための緊急避難"であって、動機の構造が違う」</b>。
+    つまり、日常フックと作品の始点が別のものを指している。直し方は2通りで、<b>どちらを選ぶかで動画の顔が変わります</b>。
+    <ul class="tight" style="margin-top:8px">
+      <li><b>(あ) いまの痛みのまま</b>＝「強い側に合わせてしまう」で行く。作品側は「片側にも与しない人」という<b>対照</b>として使う（＝アシタカを手本にしない）。</li>
+      <li><b>(い) 痛みを一段ずらす</b>＝「<b>片側の説明だけで旗色を決めてしまう</b>」へ寄せる。こうすると作品の始点（村という一地点からしか世界を知らなかった）と終点（双方を現地で歩く）が卦の六段とまっすぐ繋がり、機械側も通ります。ただし<b>刺さり方は少し理屈っぽくなります</b>。</li>
+    </ul>
+  </div>
+</div>
+
+<h2>4. 案B ─ ヴィンランド・サガ（トルフィン） × 随</h2>
+<div class="card dead">
+  <span class="badge b-ok">独立採点 92点</span><span class="badge b-ng">分類ちがいで停止</span><span class="badge b-neu">第17卦 随・未使用</span>
+  <p style="margin-top:8px">痛みの一文：<b>「嫌いな相手のそばに、いちばん長くいる。」</b><br>
+  トルフィンは父の仇アシェラッドの兵団に自分から取りつき、<b>敵指揮官の首という戦功と引き換えに決闘を求め続けた</b>——手柄を挙げるほど、憎む相手の部隊が強くなる。それを約11年。「自分で選んで、憎む相手の側にい続けた」証拠として、これ以上の題材はありません。</p>
+  <div class="warnbox">
+    <b>止まった理由</b>：この痛みは<b>〔執着・別れ〕または〔人間関係〕として読まれる</b>——H58で唯一空いている〔決断〕を埋める、という今回の目的から外れる、と判定されました（点数に関係なく停止する契約です）。<br>
+    逆に言うと、<b>分類の縛りを外せばこの案がいちばん点は高い</b>です。
+  </div>
+  <p><small class="src">なお初稿では、私が随の上爻を「忠誠の終点は縛られること」という<b>警告</b>として使っていました。db原文は「王が西山へ引き合わせる＝見出されて永続的に結ばれる」という<b>肯定的な到達点</b>で、引用の後半と注釈を落として意味を反転させていました。匿名の採点者2体が独立に同じ箇所を突いています。修正済みです。</small></p>
+</div>
+
+<h2>5. 案C ─ キングダム（信） × 屯</h2>
+<div class="card dead">
+  <span class="badge b-ng">88点・脱落</span><span class="badge b-neu">第3卦 屯・未使用</span>
+  <p style="margin-top:8px">痛みの一文：<b>「どれも捨てられないから、どれも始まらない。」</b><br>
+  屯は「決めたのに始まらない状態」に卦を丸ごと一つ割き、停滞の理由を<b>「形になろうとするものが多すぎるから」</b>、処方を<b>「大きく動くな。助ける者を立てよ」</b>と書きます。ここまでは強い。</p>
+  <div class="warnbox">
+    <b>脱落した理由</b>：<b>信は「選択肢を捨てた人物」ではなく、最初からほとんど持っていない人物</b>だからです。痛み（捨てられない）に対して、作品側に対応する変化がありません。<br>
+    初稿ではこの痛みを「決めたのに着手できない」＝<b>先延ばし</b>として書いていて、そちらは<b>〔決断〕から外れる</b>と別の採点者に止められました。つまり<b>この作品×卦は、決断で書くと作品と噛み合わず、作品に合わせると分類から外れる</b>。
+  </div>
+</div>
+
+<h2>6. 4周まわして分かったこと</h2>
+<div class="tablewrap">
+<table>
+<tr><th>周</th><th>案A 観</th><th>案B 随</th><th>案C 屯</th><th>その周で見つかった欠陥</th></tr>
+<tr><td>1</td><td class="num">85</td><td class="num">—</td><td class="num">84</td><td>随の上爻を私が反転させていた（出典ゲート違反）</td></tr>
+<tr><td>2</td><td class="num">89</td><td class="num">—</td><td class="num">82</td><td>屯が〔決断〕でなく「先延ばし」になっていた（意図違反）</td></tr>
+<tr><td>3</td><td class="num">89</td><td class="num">81</td><td class="num">—</td><td>観の中心命題の始点が作品事実で裏づけられていなかった</td></tr>
+<tr><td>4</td><td class="num">88</td><td class="num">92<br>(意図違反)</td><td class="num">—</td><td>私が入れた「矢を射た＝浅慮」が過剰解釈だった／随は分類から外れた</td></tr>
+</table>
+</div>
+<p>
+点数は上下していますが、<b>指摘の中身は毎回ちがい、毎回実質的</b>でした。とくに1周目の「随の上爻の反転」は、<b>卦の権威を借りて自分の主張を語らせる</b>という、このチャンネルがいちばんやってはいけない事故そのものです。機械ゲートが機能した回だと思います。
+</p>
+<p>
+そして最後に残ったのは、<b>どの案も「痛みの一文」と「作品の変化」が完全には一致しない</b>という一点でした。これは技術で埋める問題ではなく、<b>どの痛みで行くかを決める問題</b>です。だからここで止めました。
+</p>
+
+<div class="decide">
+<h2>7. 決めてください</h2>
+<div class="opt"><span class="k">A-あ</span><span class="t">案Aを、いまの痛みのまま作る（推奨）</span>
+<p>「どっちの味方だと聞かれた瞬間に、いちばん嘘をつく。」<br>アシタカは手本ではなく<b>対照</b>として使う。刺さりは強いまま、卦との接続はやや緩い。</p></div>
+<div class="opt"><span class="k">A-い</span><span class="t">案Aを、痛みを一段ずらして作る</span>
+<p>「片側の説明だけで、旗色を決めてしまう。」<br>作品の始点・終点と卦の六段がまっすぐ繋がる。機械も通る。ただし少し理屈っぽい。</p></div>
+<div class="opt"><span class="k">B</span><span class="t">案B（ヴィンランド・サガ × 随）で作る＝分類の縛りを外す</span>
+<p>「嫌いな相手のそばに、いちばん長くいる。」<br>点数はいちばん高い。〔決断〕は別の回に回し、これは〔執着・別れ〕の2本目として出す。</p></div>
+<div class="opt"><span class="k">他</span><span class="t">5案の中の別の番号／全部やり直し</span>
+<p>「Aの3番」のように番号でも構いません。全部違う場合は<b>何が違うかを一言</b>ください。その言葉を <code>rejections.json</code> に記録して、次の候補生成に効かせます（去られたかどうかは維持率で測れますが、刺さったかどうかは却下の言葉からしか学べないので）。</p></div>
+</div>
+
+<h2>8. 承認後に何が起きるか</h2>
+<ul class="tight">
+  <li>選ばれた一文で <code>content/068/concept.md</code> を確定 → creative-harness へ正典として昇格 → 本人承認を記録</li>
+  <li>registry の ep48 に作品・卦を書き込み（いまは「未定」で予約済み）／仮説番号を <code>coord.sh claim-h</code> で採番</li>
+  <li>フル台本は<b>1候補＋改稿ループ</b>で執筆 → 機械ゲート（<code>essay-preflight script</code>）→ 独立採点 → <b>2つ目の承認ゲート（台本）</b>でまたお見せします</li>
+  <li>公開枠は <b>2026-08-14 04:00 JST</b> で確保済み</li>
+</ul>
+
+<div class="foot">
+第48話 企画ゲート／痛み先頭転換 H58 コホート6本目。
+候補生成＝claude-opus-5・選抜＝bon（匿名ブラインド・2フェーズ×4周）・採点＝別モデル（codex）の独立採点（自己採点禁止・合格線90・証跡つき）。
+生成物：<code>content/068/concept-candidates/{c1,c2,c3}.md</code> と <code>r2/ r3/ r4/</code>／依頼文：<code>content/068/concept-request.md</code>／run：<code>analytics/creative-harness/episode-048/</code>
+</div>
+
+</div>
+</body>
+</html>
