@@ -1,0 +1,28 @@
+{
+  "slug": "retention-pdca",
+  "accent": "#cc785c",
+  "hero": {
+    "kicker": "設計承認資料",
+    "h1": "離脱ドリルダウン分析 + 台本PDCAループ — 設計案",
+    "lede": "個別動画の「どこで・なぜ離脱したか」を1本ずつ精査し、その教訓を次の台本・ビジュアル制作に自動で効かせる閉ループを作る。既存の yt-retention / scene-retention / creative-loop の資産に乗せ、二重実装なしで4コンポーネントを追加する。",
+    "tldr": [
+      "ep単位ドリルダウン: 維持率カーブ×台本シーン×ビジュアルを突き合わせ「この文・この絵で落ちた」を特定するHTMLレポート",
+      "教訓台帳 retention-lessons.json: rejections.json と同じ経路で採点プロンプト+台本執筆へ自動注入（還流が人力頼みにならない）",
+      "昇格規律: 1本の実測=candidate、2本以上で再現=active、反証=retired（少数viewsの偶然をルール化しない）",
+      "スキル retention-pdca が「分析→教訓化→注入→検証」を司令。教訓の質だけ人間ゲート"
+    ]
+  },
+  "sections": [
+    {"num": "01", "figure": true, "title": "PDCAループの全体像"},
+    {"num": "02", "figure": true, "title": "コンポーネント1: retention-drilldown.mjs"},
+    {"num": "03", "figure": true, "title": "コンポーネント2: 教訓台帳と昇格規律"},
+    {"num": "04", "figure": false, "title": "コンポーネント3-4: 注入経路とスキル"},
+    {"num": "05", "figure": false, "title": "代替案・テスト・作らないもの"}
+  ],
+  "conclusion": [
+    "既存資産（認証・カーブ取得・注入経路）は全て再利用し、新規は drilldown / lessons台帳 / 注入1箇所 / スキル の4点のみ",
+    "教訓は視聴者の実測（離脱）と本人の美意識（却下）の両輪で採点に効く",
+    "承認後: spec を docs/superpowers/specs/ に確定 → 実装プランへ"
+  ],
+  "footer": "題材: scratchpad/retention-pdca-design.md ・ 2026-07-30"
+}
