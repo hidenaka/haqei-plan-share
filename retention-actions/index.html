@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>離脱実測を制作に効かせる5つの打ち手 — 実行承認</title>
+<style>
+  :root { --ink:#1a1a1a; --ink-2:#4a4a4a; --bg:#f7f5ee; --paper:#fbf9f1; --line:#d8d2bf;
+    --accent:#cc785c; --accent-soft:#f5e0d6; --warn:#c83a2c; --warn-soft:#f6dcd6; --yellow:#f4d35e;
+    --shadow:0 1px 0 rgba(0,0,0,.04),0 8px 24px rgba(0,0,0,.06);
+    --mono:ui-monospace,SFMono-Regular,Menlo,monospace;
+    --sans:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP",sans-serif; }
+  *{box-sizing:border-box} html,body{margin:0;padding:0}
+  body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1.7}
+  .wrap{max-width:1020px;margin:0 auto;padding:48px 26px 90px}
+  .kicker{display:inline-block;background:var(--accent);color:#fff;font-size:12px;font-weight:700;letter-spacing:.12em;padding:6px 12px;border-radius:999px;margin-bottom:16px}
+  h1{font-size:32px;line-height:1.35;margin:0 0 10px} h1 b{color:var(--accent)}
+  .lede{font-size:17px;color:var(--ink-2);max-width:780px;margin:0 0 26px}
+  .table{width:100%;border-collapse:collapse;margin:14px 0 8px;background:var(--paper);border:1px solid var(--line);border-radius:12px;overflow:hidden;box-shadow:var(--shadow)}
+  .table th,.table td{text-align:left;padding:12px 14px;border-bottom:1px solid var(--line);vertical-align:top;font-size:14px}
+  .table th{background:#efeadb;font-weight:700}.table tr:last-child td{border-bottom:0}
+  .table .pick{background:var(--accent-soft)} .table .pick td:first-child{font-weight:700;color:var(--accent)}
+  .callout{margin:18px 0;padding:16px 18px;border-left:4px solid var(--accent);background:var(--accent-soft);border-radius:0 10px 10px 0}
+  .callout.warn{border-color:var(--warn);background:var(--warn-soft)}
+  .callout p{margin:0}.callout strong{color:var(--accent)}.callout.warn strong{color:var(--warn)}
+  code.inline{font-family:var(--mono);font-size:.9em;background:#efeadb;padding:1px 6px;border-radius:4px}
+  h2{font-size:22px;border-left:6px solid var(--accent);padding-left:12px;margin:44px 0 8px}
+  .muted{color:var(--ink-2);font-size:13.5px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <span class="kicker">実行承認 — 離脱実測の改善プラン</span>
+  <h1>実測教訓を、<b>より強い構造</b>に焼き込む5つの打ち手</h1>
+  <p class="lede">教訓4件（RL-1〜4）の採点プロンプト注入は<b>既に稼働済み</b>＝次にrunする台本採点から自動で効きます。ここから先は「注入（软らかい）→ 見本・企画ゲート → 機械ゲート（硬い）」の順に構造を強くする打ち手です。強いほど漏れないが、gold回帰の検査が必要になります。</p>
+
+  <h2>前提: いま自動で効いているもの / 公開済み動画は直さない</h2>
+  <table class="table">
+    <tbody>
+      <tr><td><b>稼働済み</b></td><td>RL-1〜3=active・RL-4=candidate が creative-loop 採点（essay-script / long-hook）と essay-episode Step 0/2/4 に自動注入。ep47/48（制作中・他レーン）も次の採点runから対象</td></tr>
+      <tr><td><b>やらない</b></td><td>公開済み動画の遡及修正（YouTubeは公開後の映像差し替え不可・トリム編集は雑で維持率統計も壊れる）。ep43-46 は scheduled=レンダ済みなので対象外。<b>改善は新作の冒頭設計で取る</b></td></tr>
+    </tbody>
+  </table>
+
+  <h2>打ち手A〜E（複数選択可）</h2>
+  <table class="table">
+    <thead><tr><th>案</th><th>何をするか</th><th>効き方 / リスク</th></tr></thead>
+    <tbody>
+      <tr class="pick"><td>A. 採点表への焼き込み<br>（推奨・最強）</td><td><code class="inline">long-hook.json</code> と <code class="inline">essay-script.json</code> の既存 hook 独立ゲートに、実測の pass/fail 例を追記（正例=ep27冒頭・負例=ep3/17/30の概念引用型・ep18/29のV_01_02抽象転回型）。軸は増やさない（文言強化のみ）→ <b>gold回帰 calibrate 再実行で ep01/ep03 が落ちないことを機械確認</b></td><td>採点が「知っている」から「落とせる」へ。rubric変更なので calibrate 必須（失敗したら文言を戻す）</td></tr>
+      <tr class="pick"><td>B. pain-library へ実測例を追加<br>（推奨・最安の段階で効く）</td><td><code class="inline">analytics/pain-library.json</code> に正例（ep27型=理不尽の具体場面の断言）と負例（概念引用・カタログ・命令形）を実測数値つきで追加。企画ゲートの「痛みの一文×5案」生成に注入される</td><td>冒頭の質を企画段階（却下が最も安い場所）で底上げ。リスクほぼ無し</td></tr>
+      <tr class="pick"><td>C. ep27 冒頭を gold 見本化<br>（推奨）</td><td><code class="inline">docs/style_corpus/hook_gold_ep27.md</code> を新設（冒頭3シーン全文＋なぜ持ったかの構造注記＝場面内転回・62%/分の実測）。essay-episode Step 2 の必読リストに追加</td><td>執筆時のfew-shotが「合格済み台本」だけでなく「実測で持った冒頭」を持つ。リスク無し</td></tr>
+      <tr><td>D. 検証仮説の採番<br>（判定の仕掛け）</td><td><code class="inline">coord.sh next-h</code> で仮説採番し pdca.md へ:「実測教訓の還流で新作の60秒残存が改善する」判定基準=<b>次の新作4本の60秒残存 中央値 ≥ 35%</b>（現20本の中央値≈27%・ベストep27=59%）・視聴データ7日以上で判定</td><td>改善したかを数字で閉じる。H58束判定(8/21)と干渉しないようコホートは分けて記録</td></tr>
+      <tr><td>E. 機械ゲート追加<br>（preflightで物理的に止める）</td><td><code class="inline">essay-preflight.py script</code> に2検査を追加: ①作品着地シーンのあらすじ列挙検出（「という漫画の主人公で」+肩書き列挙の文型） ②冒頭60秒相当のシーンでの易経用語検出。FAILでなくWARN始まり（過剰検出の様子見）</td><td>最も硬いが、文型検出は偽陽性が出やすい。WARN運用→精度確認後にFAIL昇格が安全</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout warn">
+    <p><strong>ep47/48（制作中・他セッションのレーン）について</strong>: レーン専有ルールにより私からは触りません。台本がまだ確定前なら、担当セッションが次に採点を回した時点で教訓が自動注入されます。既に台本承認済みの場合に冒頭をRL-1/2で見直すかは、担当レーンへの指示としてご判断ください。</p>
+  </div>
+
+  <div class="callout">
+    <p><strong>推奨</strong>: <b>A+B+C+D の4点セット</b>（今日このセッションで実行可能・全てep非依存の共有インフラ）。E は A〜D の効果を1〜2本見てから追加するのが安全です。</p>
+  </div>
+
+  <p class="muted">データ根拠: output/retention-corpus/index.html（20本508シーン横断）/ 台帳: analytics/retention-lessons.json / 2026-07-30</p>
+</div>
+</body>
+</html>
