@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>ep47 幕2→幕3の橋 — 修正確認</title>
+<style>
+:root{--ink:#11151c;--sumi:#1b2230;--paper:#f7f4ec;--card:#fffdf8;--gold:#b08d3f;--red:#a8342a;--line:#ded6c4;--mute:#6b6558;--ok:#3f6b39}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans JP",sans-serif;line-height:1.85;-webkit-text-size-adjust:100%}
+.wrap{max-width:880px;margin:0 auto;padding:26px 18px 80px}
+header{border-bottom:3px solid var(--sumi);padding-bottom:16px;margin-bottom:22px}
+.kicker{font-size:12px;letter-spacing:.18em;color:var(--gold);font-weight:700}
+h1{font-size:24px;margin:.35em 0 .3em;line-height:1.45;font-weight:800}
+.lede{font-size:15px;color:var(--mute);margin:0}
+h2{font-size:18px;margin:32px 0 12px;padding-left:11px;border-left:5px solid var(--gold)}
+.quote{background:#fff4f2;border:1px solid #e8c9c3;border-left:5px solid var(--red);border-radius:8px;padding:13px 16px;margin:16px 0;font-size:15px}
+.quote b{color:var(--red)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:15px 17px;margin:13px 0}
+.script{font-family:"Hiragino Mincho ProN",serif;font-size:16px;line-height:2.05}
+.add{background:#e3f0e2;border-bottom:2px solid #4d8046;padding:1px 2px;font-weight:600}
+.del{background:#f6e0dd;text-decoration:line-through;text-decoration-color:#a8342a;color:#7d5a55;padding:1px 2px}
+.flow{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:stretch;margin:16px 0}
+.flow .box{background:#fff;border:1px solid var(--line);border-radius:9px;padding:12px 13px;font-size:13.5px}
+.flow .box h4{margin:0 0 6px;font-size:12px;letter-spacing:.08em;color:var(--gold)}
+.flow .arrow{display:flex;align-items:center;font-size:22px;color:var(--mute)}
+.bad{border-color:#e0bdb7;background:#fffaf9}
+.good{border-color:#b9d3b4;background:#fbfefb}
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:14px}
+th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+th{background:#f0ebdd;font-weight:700;white-space:nowrap}
+.ok{color:var(--ok);font-weight:700}
+.title-opt{background:#fff;border:1px solid var(--line);border-left:5px solid var(--gold);border-radius:8px;padding:13px 15px;margin:11px 0}
+.title-opt .t{font-family:"Hiragino Mincho ProN",serif;font-size:17px;font-weight:700;line-height:1.6}
+.title-opt .m{font-size:13px;color:var(--mute);margin-top:6px}
+.q{background:var(--sumi);color:#f4efe2;border-radius:12px;padding:20px 22px;margin:28px 0 8px}
+.q h2{color:#fff;border-left-color:var(--gold);margin-top:0}
+.opt{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.22);border-radius:9px;padding:13px 15px;margin:11px 0}
+.opt b{color:#f0c96a;font-size:15px}
+.opt p{margin:.35em 0 0;font-size:14px;color:#e2dbcb}
+.small{font-size:13px;color:var(--mute)}
+code{background:#efeadc;padding:1px 5px;border-radius:4px;font-size:12.5px}
+@media (max-width:640px){.flow{grid-template-columns:1fr}.flow .arrow{transform:rotate(90deg);justify-content:center}h1{font-size:21px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="kicker">ep47 / content/067 / 怪獣8号 × 小畜 — 台本 再修正（幕2→幕3）</div>
+  <h1>「話が飛んでいる」を直しました。<br>問いを絵の上で立てて、答えを卦のカードで受ける形にしています。</h1>
+  <p class="lede">音声と字幕は作り直し済み。映像も今レンダしています（完成したらこのページの下に貼り足します）。文言をここで確定してください。</p>
+</header>
+
+<div class="quote">
+  <b>ご指摘：</b>「日比野カフカの話から急に易経の話に飛んでいって、話が飛んでいる。」<br>
+  <span class="small">→ <code>analytics/rejections.json</code> に13件目として記録済み。以後この却下はfork採点のプロンプトへ本人の言葉として注入され、次の話から同じ飛躍が機械的に検出されます。</span>
+</div>
+
+<h2>何が起きていたか</h2>
+<div class="flow">
+  <div class="box bad"><h4>修正前 — 幕2の終わり</h4>年齢制限が33歳未満に引き上げられた、という<b>外部のニュースで幕2が閉じる</b>。＝視聴者の中に問いが立たない（むしろ解決した気配で終わる）</div>
+  <div class="arrow">→</div>
+  <div class="box bad"><h4>修正前 — 幕3の始まり</h4>「<b>易経という本があります。</b>」＝<b>本の紹介から始まる</b>。なぜ今この本が出てくるのかが無い＝飛躍</div>
+</div>
+<div class="flow">
+  <div class="box good"><h4>修正後 — 幕2の終わり（絵はカフカの場面のまま）</h4>ニュースの直後に<b>問いを立てる</b>：「では、受からないまま、離れられないまま過ぎた、あの十数年は何だったのか。」</div>
+  <div class="arrow">→</div>
+  <div class="box good"><h4>修正後 — 幕3の始まり（卦のカードへ切り替え）</h4><b>その問いに答える形で本を出す</b>：「三千年前の本に、その時期だけを書いた形があります。」＝幕1の予告の回収でもある</div>
+</div>
+<p class="small">承認済み回の型に合わせています：ep43・ep44は「ここで、三千年前の本の話をさせてください。」という明示的な受け渡しを置き、ep45は「これが、易経でいう豊という形です」と観察を卦へ直結。ep47だけが本の紹介から入っていました。</p>
+
+<h2>変更箇所（2シーンのみ・他は一切触っていません）</h2>
+<div class="card">
+  <div class="small" style="color:var(--gold);font-weight:700">V_02_05（幕2の最後・絵はカフカとレノの場面）</div>
+  <p class="script">そこへ、市川レノという18歳が現れます。これから受ける側の人間です。同じ壁の手前に立っているのに、二人のあいだで違うのは、残っている時間だけでした。そのレノが、カフカに告げます。入隊試験の年齢制限が、33歳未満まで引き上げられた、と。<span class="add">では、受からないまま、離れられないまま過ぎた、あの十数年は何だったのか。</span></p>
+</div>
+<div class="card">
+  <div class="small" style="color:var(--gold);font-weight:700">V_03_01（幕3の頭・卦のカードが出るシーン）</div>
+  <p class="script"><span class="del">易経という本があります。人に起きる変化のパターンが64個、順番に並べて記録されている、古代中国の本です。その中に、小畜、という形があります。</span><span class="add">三千年前の本に、その時期だけを書いた形があります。易経という、古代中国の本です。人に起きる変化のパターンが64個、順番に並べて記録されている。その中の、小畜、という形です。</span>小さく、蓄える、と書きます。名前からして、すでに派手さがありません。</p>
+</div>
+
+<h2>尺への影響（実測・合成し直した音声から）</h2>
+<table>
+  <tr><th>区間</th><th>修正前</th><th>修正後</th><th>基準</th></tr>
+  <tr><td>幕1（違和感）</td><td>35.4s</td><td>35.4s</td><td class="ok">36s以内 ✅</td></tr>
+  <tr><td>幕2（観察・story+compare）</td><td>81.5s（16.2%）</td><td>86.2s（16.4%）</td><td class="ok">全体25%以内 ✅</td></tr>
+  <tr><td>幕3（種明かし）</td><td>167.6s</td><td>170.3s（2分50秒）</td><td class="ok">2〜3分 ✅</td></tr>
+  <tr><td>処方箋</td><td>156.3s</td><td>156.5s</td><td class="ok">1.5〜3分 ✅</td></tr>
+  <tr><td>総尺</td><td>8分41秒</td><td><b>8分46秒</b></td><td class="ok">5〜15分 ✅</td></tr>
+</table>
+<p class="small">機械ゲート：<code>timing</code> ✅ PASS（30シーン・字幕の実音声アライン・全文一致・語境界）／発音WARN 1件は「いう→ユウ」の自然な連声のみ。台本の再採点（fork独立）と本人承認マーカーは、この文言を確定いただいた後に記録します。</p>
+
+<h2>あわせて決めていただきたい：タイトル3案</h2>
+<p class="small">型＝<b>&lt;痛みの一文&gt;。｜&lt;作品名&gt;×&lt;卦&gt;</b>（H58痛み先頭・「第N話」なし）。選んだものがサムネ題字とショート題字にも伝わります。</p>
+<div class="title-opt"><div class="t">A. あきらめた人ほど、その夢のいちばん近くで働いている。｜怪獣8号×小畜</div>
+  <div class="m">企画で承認いただいた痛みの一文そのまま（台本の share_line と一致）。刺さる範囲が広い。35字。</div></div>
+<div class="title-opt"><div class="t">B. 「もう描いてない」と言った人が、入稿の話を30分続ける。｜怪獣8号×小畜</div>
+  <div class="m">幕1の生活場面をそのまま出す。いちばん具体的で送りたくなる。作品との距離が遠く見えるリスク。37字。</div></div>
+<div class="title-opt"><div class="t">C. あきらめた、と言ったのは報告ではなく手続きだった。｜怪獣8号×小畜</div>
+  <div class="m">幕4の刃をタイトルにする。いちばん棘がある。「手続き」が観る前は少し硬い。34字。</div></div>
+
+<div class="q">
+  <h2>決めていただきたいこと（2つ）</h2>
+  <div class="opt"><b>① 橋の文言</b>
+    <p>A. この文言で確定（レンダ完了後、通しで観ていただきます）／B. 「ここで、三千年前の本の話をさせてください。」というep43・44の定型に寄せたい／C. 別の言い方を指定する</p></div>
+  <div class="opt"><b>② タイトル</b>
+    <p>A・B・C のどれか（または文言の指定）</p></div>
+</div>
+
+<p class="small">＊前回お伝えした申し送り（「いちばん」9回などの語彙反復・シーン尺の均質さ・幕4が下限ちょうど・「三千年前」の漢数字表記）は今回も未着手のままで、8/4期日のタスクに登録済みです。BGMはep43流用のままです。</p>
+
+</div>
+</body>
+</html>
