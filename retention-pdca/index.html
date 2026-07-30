@@ -162,6 +162,7 @@
         <li><b>教訓台帳</b> <code class="inline">retention-lessons.json</code>: rejections.json と同じ経路で採点プロンプト+台本執筆へ自動注入（還流が人力頼みにならない）</li>
         <li><b>昇格規律</b>: 1本の実測=candidate、2本以上で再現=active、反証=retired（少数viewsの偶然をルール化しない）</li>
         <li><b>スキル retention-pdca</b> が「分析→教訓化→注入→検証」を司令。教訓の質だけ人間ゲート</li>
+        <li>🆕 <b>全量バックフィル（2026-07-30 本人指示で追加）</b>: 古い動画も任意で一括取得・永続保存し、カバレッジ台帳で「どのepが取得済みか」を機械で担保。制作時は <code class="inline">ensure</code> が蓄積を参照しつつ欠け/古いものを自動取得</li>
       </ol>
     </div>
   </header>
@@ -179,7 +180,7 @@
     <table class="table">
       <thead><tr><th>ステップ</th><th>誰が/何が</th><th>成果物</th></tr></thead>
       <tbody>
-        <tr><td>P: 分析</td><td><code class="inline">retention-drilldown.mjs &lt;ep&gt;</code></td><td>シーン別損失JSON + HTMLレポート</td></tr>
+        <tr><td>P: 分析 <span class="badge">✏️改訂</span></td><td><code class="inline">retention-drilldown.mjs</code> — 入口は3つ: ①新作の公開+7d ②<b>任意の全量バックフィル（古い動画の伸び悩み診断）</b> ③制作時 ensure</td><td>シーン別損失JSON + HTMLレポート</td></tr>
         <tr><td>D: 教訓化</td><td>スキルがドラフト→<b>本人確認</b>→台帳記録</td><td>retention-lessons.json（candidate）</td></tr>
         <tr><td>C: 注入</td><td>creative-loop採点 + essay-episode執筆が自動参照</td><td>教訓が効いた台本/ビジュアル</td></tr>
         <tr><td>A: 検証</td><td><code class="inline">retention-lessons.mjs verify &lt;ep&gt;</code></td><td>candidate→active昇格 / retired棄却</td></tr>
@@ -194,7 +195,18 @@
       <img src="images/concept-02-01.png" alt="カーブ×台本×絵の3層突き合わせ図">
       <figcaption>3層の突き合わせ: 維持率カーブ（実測）× 台本シーン秒範囲 × visual_plan のカット</figcaption>
     </figure>
-    <p><code class="inline">node scripts/retention-drilldown.mjs &lt;ep&gt;</code> 一発で: registry で ep→dir→videoId を解決 → カーブが無い/7日超なら <code class="inline">yt-retention.mjs</code> を内部実行して更新 → カーブ × <code class="inline">essay-{dir}.json</code>（シーン秒・台本文）× <code class="inline">visual_plan.json</code>（カットID・絵の内容）を突き合わせる。</p>
+    <p>registry で ep→dir→videoId を解決 → カーブが無い/古いなら <code class="inline">yt-retention.mjs</code> を内部実行して更新 → カーブ × <code class="inline">essay-{dir}.json</code>（シーン秒・台本文）× <code class="inline">visual_plan.json</code>（カットID・絵の内容）を突き合わせる。</p>
+    <table class="table">
+      <thead><tr><th>モード <span class="badge">🆕改訂</span></th><th>用途</th></tr></thead>
+      <tbody>
+        <tr><td><code class="inline">&lt;ep&gt;</code></td><td>1本の精査。新作の公開+7d分析も、<b>古い動画の単体診断</b>もこれ</td></tr>
+        <tr class="pick"><td><code class="inline">--all</code>（バックフィル）</td><td><b>公開済み全動画（古いepも）を任意のタイミングで一括取得・永続保存</b>。取得済み・鮮度内はスキップ（増分・再開可能）。「昔の動画が伸びていない、どこで離脱しているか」を全量で見るための入口</td></tr>
+        <tr><td><code class="inline">ensure</code></td><td><b>制作時用</b>: 蓄積済みコーパスを検証し、欠けている/古いepだけ自動取得してから要約を返す。動画を作るときは常に「担保済みを参照+無ければ取る」になる</td></tr>
+      </tbody>
+    </table>
+    <div class="callout">
+      <p>🆕 <strong>カバレッジ台帳（担保の実体）</strong>: <code class="inline">analytics/retention-drilldown/index.json</code> — ep→videoId→captured_at→views_at_capture の一覧。<b>「どのepが取得済みで、どれが欠けているか」を常に機械で答えられる</b>。growth-tick と ensure がこれを参照して欠けを検出する。YouTube Analytics のカーブは lifetime 集計なので古い動画でも取得でき、視聴が増えた動画は再取得で上書き更新される。</p>
+    </div>
     <table class="table">
       <thead><tr><th>出力</th><th>形式</th><th>用途</th></tr></thead>
       <tbody>
@@ -234,7 +246,7 @@
       <thead><tr><th>注入先</th><th>変更</th><th>効果</th></tr></thead>
       <tbody>
         <tr class="pick"><td><code class="inline">creative-loop.mjs</code></td><td>rejections と同格で retention-lessons（status≠retired・applies_to一致）を採点プロンプトへ注入</td><td>却下（本人の美意識）と離脱（視聴者の実測）の<b>両輪</b>が採点に効く</td></tr>
-        <tr><td><code class="inline">essay-episode</code> SKILL.md</td><td>Step 0（PDCA）・Step 2（台本）・Step 4（ビジュアル計画）に「<code class="inline">retention-lessons.mjs list --for &lt;工程&gt;</code> を読む」を追記</td><td>執筆時点で教訓が手元にある</td></tr>
+        <tr><td><code class="inline">essay-episode</code> SKILL.md <span class="badge">✏️改訂</span></td><td>Step 0（PDCA）で <code class="inline">retention-drilldown.mjs ensure</code> を実行（<b>蓄積コーパスを参照しつつ、取っていないepがあればここで取る</b>）。Step 2（台本）・Step 4（ビジュアル計画）に「<code class="inline">retention-lessons.mjs list --for &lt;工程&gt;</code> を読む」を追記</td><td>執筆時点で実測と教訓が両方手元にある</td></tr>
         <tr><td><code class="inline">growth-tick.mjs</code></td><td>「公開+7日・drilldown未実施」のepをフラグ</td><td>分析漏れが日次司令に載る</td></tr>
       </tbody>
     </table>
@@ -242,7 +254,7 @@
     <table class="table">
       <thead><tr><th>#</th><th>工程</th><th>ゲート</th></tr></thead>
       <tbody>
-        <tr><td>1</td><td>対象決定（ep指定 or 公開+7日・未分析を走査）</td><td>—</td></tr>
+        <tr><td>1</td><td>対象決定（ep指定 / 公開+7日・未分析の走査 / <b>🆕 本人の任意指示で全量バックフィル</b>）</td><td>—</td></tr>
         <tr><td>2</td><td>drilldown 実行 → HTMLレポートを show-pin + share-to-phone で共有</td><td>—</td></tr>
         <tr><td>3</td><td>ワーストシーンから教訓ドラフト → 台帳へ記録</td><td><b>本人確認（教訓は編集判断）</b></td></tr>
         <tr><td>4</td><td>verify: 既存 candidate を新実測と照合 → 昇格/棄却</td><td>機械判定</td></tr>
@@ -263,7 +275,7 @@
     </table>
     <p><b>テスト方針</b>: drilldown は実データ（ep16=127views等）でシーン境界とカーブ補間の整合を検証。lessons は add→verify の昇格/棄却ロジックをユニットテスト。注入は creative-loop のプロンプト組立に lessons が入ることを既存 test-creative-harness-*.mjs 方式で確認。</p>
     <div class="callout warn">
-      <p><strong>作らないもの（YAGNI）</strong>: リアルタイム監視ダッシュボード（分析は公開+7dの一回で十分）／ショート用の別実装（まず本編で確立。ショートは shorts-qa/H51 系が既にある）／過去全epの一括自動分析（初回はワースト・ベスト数本を選んで教訓の種を作る）。</p>
+      <p><strong>作らないもの（YAGNI）</strong>: リアルタイム監視ダッシュボード（取得は「任意バックフィル+公開7d+制作時ensure」の3経路で十分）／ショート用の別実装（まず本編で確立。ショートは shorts-qa/H51 系が既にある）。<b>✏️ 訂正（2026-07-30 本人指示）</b>: 旧案の「過去全epの一括分析はしない」は撤回し、<code class="inline">--all</code> バックフィルとして正式に作る。ただし<b>教訓化（台帳への記録）は一括自動でなく、レポートを見て本人確認を通したものだけ</b>記録する。</p>
     </div>
   </section>
 
