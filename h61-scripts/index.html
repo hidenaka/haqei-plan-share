@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>H61型破壊ショート4本 — 台本レビュー（本人ゲート）</title>
+<style>
+  :root { --ink:#1a1a1a; --ink-2:#4a4a4a; --bg:#f7f5ee; --paper:#fbf9f1; --line:#d8d2bf;
+    --accent:#7a4f9e; --accent-soft:#e9dff2; --warn:#c83a2c; --warn-soft:#f6dcd6; --yellow:#f4d35e;
+    --shadow:0 1px 0 rgba(0,0,0,.04),0 8px 24px rgba(0,0,0,.06);
+    --mono:ui-monospace,Menlo,monospace;
+    --sans:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP",sans-serif; }
+  *{box-sizing:border-box} html,body{margin:0;padding:0}
+  body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1.75}
+  .wrap{max-width:1000px;margin:0 auto;padding:44px 24px 90px}
+  .kicker{display:inline-block;background:var(--accent);color:#fff;font-size:12px;font-weight:700;letter-spacing:.12em;padding:6px 12px;border-radius:999px;margin-bottom:14px}
+  h1{font-size:30px;line-height:1.35;margin:0 0 8px} h1 b{color:var(--accent)}
+  .lede{font-size:16px;color:var(--ink-2);max-width:820px;margin:0 0 20px}
+  h2{font-size:21px;border-left:6px solid var(--accent);padding-left:12px;margin:44px 0 4px}
+  .meta{color:var(--ink-2);font-size:13.5px;margin:0 0 12px}
+  .score{display:inline-block;background:#2e6e5e;color:#fff;border-radius:999px;font-size:13px;font-weight:700;padding:2px 12px;margin-left:8px}
+  .arm{display:inline-block;background:var(--accent-soft);color:var(--accent);border-radius:999px;font-size:12px;font-weight:700;padding:2px 10px;margin-left:6px}
+  .script{background:var(--paper);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow);padding:6px 0;margin:10px 0}
+  .scene{padding:10px 18px;border-bottom:1px dashed var(--line)}
+  .scene:last-child{border-bottom:0}
+  .scene .sid{font-family:var(--mono);font-size:12px;color:var(--accent);font-weight:700}
+  .scene p{margin:2px 0 0;font-size:15.5px}
+  .fb{margin:10px 0 0;padding:12px 16px;border-left:4px solid var(--line);background:#f1eee3;border-radius:0 10px 10px 0;font-size:13.5px;color:var(--ink-2)}
+  .callout{margin:16px 0;padding:14px 18px;border-left:4px solid var(--accent);background:var(--accent-soft);border-radius:0 10px 10px 0}
+  .callout p{margin:0}
+  .callout.warn{border-color:var(--warn);background:var(--warn-soft)}
+  .table{width:100%;border-collapse:collapse;margin:12px 0;background:var(--paper);border:1px solid var(--line);border-radius:12px;overflow:hidden;box-shadow:var(--shadow)}
+  .table th,.table td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);font-size:14px;vertical-align:top}
+  .table th{background:#ece5f2}.table tr:last-child td{border-bottom:0}
+  code.inline{font-family:var(--mono);font-size:.9em;background:#e9e4d4;padding:1px 6px;border-radius:4px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <span class="kicker">本人ゲート — H61 型破壊ショート4本 台本レビュー</span>
+  <h1>凍結いいね率0.3%を破るための<b>異種4型</b>、台本が揃いました</h1>
+  <p class="lede">H61（本人承認7/29「1-4やって」・M26で今週へ前倒し）の4本。全て卦辞をdbと逐語照合済み・fork独立採点PASS（型非依存の品質軸: 冒頭ゲート/自分への刃/一次情報/AI臭/尺）。<b>承認いただいた本から制作（六爻図→音声→レンダ→QA）へ進みます。</b>判定=公開7日: どれかが5,000再生超なら「型が原因」確定、全て1,000帯なら「市場サイズ」の診断へ。</p>
+
+  <table class="table">
+    <thead><tr><th>本</th><th>型（壊すもの）</th><th>卦</th><th>採点</th></tr></thead>
+    <tbody>
+      <tr><td>sh47</td><td>二択診断（視聴者が自分を分類する関与構造）</td><td>損↔益</td><td>91・全ゲートPASS</td></tr>
+      <tr><td>sh48</td><td>相談引用（一人称の悩みに答える構造）</td><td>需</td><td>90・全ゲートPASS</td></tr>
+      <tr><td>sh49</td><td>ランキング（カウントダウン列挙）</td><td>困/剥/坎</td><td>92・全ゲートPASS</td></tr>
+      <tr><td>sh50</td><td>高速テンポ（カット2秒・間ゼロ・密度2倍）</td><td>既済↔未済</td><td>90・全ゲートPASS</td></tr>
+    </tbody>
+  </table>
+  <div class="callout warn">
+    <p><strong>採点の逸脱申告</strong>: 既存採点表（short-artwork.json）は隣の卦型専用のgold較正で、型破壊実験には構造的に適用できません。今回のみ<b>型非依存軸の独立fork採点</b>（各本ゼロ文脈の別エージェント）で代替しました。冒頭ゲート・自分への刃・一次情報ゲートの3独立ゲートは維持しています。</p>
+  </div>
+
+  <h2>sh47 二択診断型<span class="arm">diagnosis</span><span class="score">91点</span></h2>
+  <p class="meta">損(41)↔益(42)｜タイトル案: うまくいかない時、足す人と削る人。あなたはどっち｜易経・損と益</p>
+  <div class="script">
+    <div class="scene"><span class="sid">S01 hook</span><p>新しい手帳を、また買いました。うまくいかない時期ほど、何かを始めたくなるんです。新しいアプリ。新しい朝の習慣。で、三週間後。全部残ったまま、どれも回っていない。</p></div>
+    <div class="scene"><span class="sid">S02 二択</span><p>ここで、人は二つに分かれます。まだ足す人と、先に削る人。あなたは、どっちですか。</p></div>
+    <div class="scene"><span class="sid">S03 益</span><p>足す人の形は、益という卦です。悪い形ではなく、何かを始めるのに良い、とまで書いてある。ただし、土台が細いまま増やすと、重さは細いところに掛かります。</p></div>
+    <div class="scene"><span class="sid">S04 損</span><p>削る人の形が、損。損の字は嫌われますが、卦辞は逆です。削ることに、まことが伴えば、この上ない吉。三千年前の本が、削るを最上級で褒めている。</p></div>
+    <div class="scene"><span class="sid">S05 証拠</span><p>そして、並び。損が四十一番。益が四十二番。増える、の一つ前に、削る、が置いてある。三千年前の順番は、削るが先です。</p></div>
+    <div class="scene"><span class="sid">S06 刃</span><p>私は、足す方でした。増やすのは、削る勇気がない日の、いちばん優しい逃げ道だから。次にうまくいかなくなったら、順番どおりに。削ってから、足す。</p></div>
+  </div>
+  <p class="fb">採点者所見: 「また」の一語で身に覚えが立つ／損の卦辞の逆転+番号の並びが反論不能。残改善=尺が上限際（実測60秒超ならS03の比喩節から削る）。</p>
+
+  <h2>sh48 相談引用型<span class="arm">comment_quote</span><span class="score">90点</span></h2>
+  <p class="meta">需(5)｜タイトル案: 「辞めたいけど、次が決まってない」への3000年前の答え｜易経・需</p>
+  <div class="script">
+    <div class="scene"><span class="sid">S01 相談文</span><p>「会社を辞めたい。でも、次が決まっていない。動くべきでしょうか。」——こういう相談を、よく見かけます。</p></div>
+    <div class="scene"><span class="sid">S02</span><p>返ってくる答えは、たいてい二つです。今すぐ動け、か、決まるまで我慢しろ、か。易経は、五番目の卦で、三つ目の答えを言います。</p></div>
+    <div class="scene"><span class="sid">S03 需</span><p>需。待つ、という卦です。ただし、卦辞に条件が付いている。まことがあれば、光があって、とおる。そして、大きな川は、渡るのがよい、とある。</p></div>
+    <div class="scene"><span class="sid">S04 へえ</span><p>変でしょう。待つ卦なのに、渡れと書いてある。つまりこうです。渡るな、ではない。渡ることは、決めろ。そのうえで、水が引くのを待て。</p></div>
+    <div class="scene"><span class="sid">S05 処方</span><p>辞める日も条件も決めずに耐えるのは、待機ではなく、漂流です。需の待ち方は、渡ると決めた人の待ち方。貯める額。身につけるもの。辞める条件。先に決めて、それから待つ。</p></div>
+    <div class="scene"><span class="sid">S06 刃</span><p>私は、決めない待ち方を、慎重と呼んでいました。呼び方を直します。あれは漂流です。決めた人の待つ時間だけが、待機と呼べます。</p></div>
+  </div>
+  <p class="fb">採点者所見: 「待つ卦なのに渡れとある」の矛盾→解決と「漂流」の命名→S06回収が締まっている。相談文の出所偽装なし。残改善=相談文に生活の数字を1つ足すと実在感が増す（例: 「貯金は八十万」）。</p>
+
+  <h2>sh49 ランキング型<span class="arm">ranking</span><span class="score">92点</span></h2>
+  <p class="meta">困(47)/剥(23)/坎(29)｜タイトル案: 易経64卦で「詰み」に一番近い形トップ3。最下位にも出口が書いてある</p>
+  <div class="script">
+    <div class="scene"><span class="sid">S01 hook</span><p>もう詰んだ、と思った夜があります。何をやっても裏目で、相談しても、たいへんだね、で終わる。誰も、事の大きさを分かってくれない。</p></div>
+    <div class="scene"><span class="sid">S02</span><p>三千年前の本は、詰みかたをランキングにできるくらい細かい。私の独断で、トップ3。</p></div>
+    <div class="scene"><span class="sid">S03 3位困</span><p>第三位、困。行き詰まりの卦です。卦辞に、言いたいことがあっても、信じてもらえない、とある。なのに、同じ卦辞の、最初の字は、とおる。</p></div>
+    <div class="scene"><span class="sid">S04 2位剥</span><p>第二位、剥。剥がれ落ちる形です。卦辞は一行。どこへ行っても、良いことがない。全方向を止めてくる卦です。あなたの夜は、どれでしたか。</p></div>
+    <div class="scene"><span class="sid">S05 1位坎</span><p>第一位、坎。落とし穴が、二つ重なる形。その卦辞にすら、まことがあれば、心のなかで、とおる、とある。あの剥でさえ、一番上の線は、食べ残された大きな果実。爻辞まで読めば、出口のない卦は、一つもありません。</p></div>
+    <div class="scene"><span class="sid">S06 刃</span><p>詰んだ、と思っているとき、たいてい詰んでいるのは状況ではなく、視野のほうです。名前のつく形には、必ず次の形がある。あの夜の私に、これを見せたかった。</p></div>
+  </div>
+  <p class="fb">採点者所見: 卦辞は全て逐語一致・順位は「私の独断」と明示・「出口なし断言」は剥の上爻（碩果不食）を物証に範囲精密化済み＝反論不能。残改善=S03-05の文末同型3連続を一箇所崩すと呼吸が入る。</p>
+
+  <h2>sh50 高速テンポ型<span class="arm">talking_speed</span><span class="score">90点</span></h2>
+  <p class="meta">既済(63)↔未済(64)｜タイトル案: 「やっと終わった」の直後に崩れ始める理由｜易経・既済と未済｜カット2秒以下・間ゼロで制作</p>
+  <div class="script">
+    <div class="scene"><span class="sid">S01 hook</span><p>やっと終わった。その週のうちに、次の問題が来る。片づけた机が、三日で戻る。届いた目標体重が、月末には戻ってる。</p></div>
+    <div class="scene"><span class="sid">S02 既済</span><p>易経の六十三番、既済。完成の卦です。卦辞が怖い。はじめは吉。終わりは、乱れる。</p></div>
+    <div class="scene"><span class="sid">S03</span><p>完成、の中に、崩れの予約が書いてある。全部の線がきれいに揃った形は、もう整いようがない。あとは、崩れる方向しか残っていないからです。</p></div>
+    <div class="scene"><span class="sid">S04 へえ</span><p>で、次。最後の六十四番が、未済。まだ、終わっていない。三千年前の本は、完成で終わらずに、未完成で終わります。これが答えです。</p></div>
+    <div class="scene"><span class="sid">S05 処方</span><p>終わったのに次が来るのは、あなたの失敗ではなく、順番どおり。完成は状態ではなく、通過点として設計されている。保つ唯一の方法は、少しだけ未完成を残しておくことです。</p></div>
+    <div class="scene"><span class="sid">S06 刃</span><p>完璧に整えた日ほど、崩れが早い。覚えがあるはずです。終わらせきらない、が、いちばん長持ちします。</p></div>
+  </div>
+  <p class="fb">採点者所見: 卦辞「はじめは吉、終わりは乱れる」逐語一致・63→64の並びが二段の「へえ」。残改善=S04末尾「これが答えです」を序卦接地の断言に差し替え可・S05「通過点として設計」が唯一の概念語（「完成は着地じゃなく通過」へ）。</p>
+
+  <div class="callout">
+    <p><strong>承認後の流れ</strong>: 承認された本から <code class="inline">short-artwork.mjs produce</code>（六爻図→DepthFlow→音声→字幕→レンダ）→ <code class="inline">shorts-qa.py</code>（発音・黒落ち・尺の機械QA）→ 公開枠を claim して予約（5:00 JST・同時にTikTokへも同素材投下=H61設計どおり）。採点者の「残改善」は軽微なので、修正指示があればproduceの前に反映します。</p>
+  </div>
+
+  <p class="meta">根拠: analytics/shorts-experiments.json H61 / 台本: content/shorts/sh47〜sh50/full_script.json / 卦辞照合: db/hexagrams.json 逐語一致を機械確認済み / 2026-07-31</p>
+</div>
+</body>
+</html>
