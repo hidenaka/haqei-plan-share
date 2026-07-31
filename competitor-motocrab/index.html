@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>競合分析: Motocrab — 何を参考にし、何を真似しないか</title>
+<style>
+  :root { --ink:#1a1a1a; --ink-2:#4a4a4a; --bg:#f7f5ee; --paper:#fbf9f1; --line:#d8d2bf;
+    --accent:#1f6f8b; --accent-soft:#dcebf0; --warn:#c83a2c; --warn-soft:#f6dcd6; --yellow:#f4d35e;
+    --shadow:0 1px 0 rgba(0,0,0,.04),0 8px 24px rgba(0,0,0,.06);
+    --mono:ui-monospace,Menlo,monospace;
+    --sans:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP",sans-serif; }
+  *{box-sizing:border-box} html,body{margin:0;padding:0}
+  body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1.75}
+  .wrap{max-width:1020px;margin:0 auto;padding:44px 24px 90px}
+  .kicker{display:inline-block;background:var(--accent);color:#fff;font-size:12px;font-weight:700;letter-spacing:.12em;padding:6px 12px;border-radius:999px;margin-bottom:14px}
+  h1{font-size:31px;line-height:1.35;margin:0 0 8px} h1 b{color:var(--accent)}
+  .lede{font-size:16.5px;color:var(--ink-2);max-width:820px;margin:0 0 22px}
+  h2{font-size:22px;border-left:6px solid var(--accent);padding-left:12px;margin:44px 0 8px}
+  .table{width:100%;border-collapse:collapse;margin:12px 0;background:var(--paper);border:1px solid var(--line);border-radius:12px;overflow:hidden;box-shadow:var(--shadow)}
+  .table th,.table td{text-align:left;padding:11px 13px;border-bottom:1px solid var(--line);font-size:14px;vertical-align:top}
+  .table th{background:#e2ecef}.table tr:last-child td{border-bottom:0}
+  .table .pick{background:var(--accent-soft)} .table .bad{background:var(--warn-soft)}
+  .callout{margin:16px 0;padding:14px 18px;border-left:4px solid var(--accent);background:var(--accent-soft);border-radius:0 10px 10px 0}
+  .callout.warn{border-color:var(--warn);background:var(--warn-soft)}
+  .callout p{margin:0}.callout strong{color:var(--accent)}.callout.warn strong{color:var(--warn)}
+  code.inline{font-family:var(--mono);font-size:.9em;background:#e9e4d4;padding:1px 6px;border-radius:4px}
+  .muted{color:var(--ink-2);font-size:13.5px}
+  .conclusion{margin-top:48px;padding:26px 28px 22px;background:var(--ink);color:#f6f3e8;border-radius:16px}
+  .conclusion h2{color:var(--yellow);border:0;padding:0;margin:0 0 12px}
+  .conclusion ol{margin:0;padding-left:20px}.conclusion li{margin:6px 0}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <span class="kicker">競合分析 — 2026-07-31</span>
+  <h1>Motocrabが証明したのは「市場の存在」。<b>参考にすべきは構造、真似すべきでないのは表面</b></h1>
+  <p class="lede">本人提示の動画「努力が止まらなくなる条件」(KprZj0lNbFs) を Data API 実測+全字幕で分析。結論: これは偶然のバズではなく<b>再現性のある構造</b>で、うちの一次データ（診断型H61・処方箋ゼロ損失帯・いいね率律速）と同じ方向を指している。しかも易経はこの構造の<b>上位互換になれる武器</b>を既に持っている。</p>
+
+  <h2>01 実数（Data API・2026-07-31取得）</h2>
+  <table class="table">
+    <thead><tr><th>指標</th><th>Motocrab</th><th>HaQei（当ch）</th><th>差</th></tr></thead>
+    <tbody>
+      <tr><td>チャンネル年齢 / 登録</td><td>8ヶ月 / <b>58,700人</b></td><td>約2ヶ月 / 92人</td><td>—（年齢差考慮でも別次元）</td></tr>
+      <tr class="bad"><td>subs/view 変換</td><td><b>2.17%</b>（58.7k/270万）</td><td>0.11%（92/8.4万）</td><td><b>20倍</b></td></tr>
+      <tr class="bad"><td>いいね率（当該動画）</td><td><b>6.3%</b>（4,308/68,242・公開3日）</td><td>本編最良3.98% / ショート0.31%</td><td>本編比1.6倍 / ショート比20倍</td></tr>
+      <tr><td>形式</td><td>AI制作・IP不使用・16:48・自己理解ハウツー</td><td>AI制作・アニメIP×易経・5-10分</td><td>—</td></tr>
+      <tr><td>本数</td><td>108本（平均2.5万再生/本）</td><td>ロング41+ショート80</td><td>—</td></tr>
+    </tbody>
+  </table>
+  <div class="callout">
+    <p><strong>H61への含意</strong>: H61は「型か市場か」を判別する実験だが、Motocrabの実在は<b>「日本語×AI×自己理解コンテンツの市場は大きい」ことの部分回答</b>。残る問いは「うちの型と題材がそこに刺さるか」に絞られた。特に診断・分類型（H61のdiagnosis arm）への事前確率が上がった。</p>
+  </div>
+
+  <h2>02 勝ちの本体はどこか（全字幕の構造分析）</h2>
+  <table class="table">
+    <thead><tr><th>構造要素</th><th>何をやっているか</th><th>うちのデータとの整合</th></tr></thead>
+    <tbody>
+      <tr class="pick"><td><b>①視聴者が主役</b></td><td>16分の全てが「あなた自身の分析」。作品も他人の話もない。「最も研究する価値があるのは過去の自分」</td><td>離脱実測の結論「これ自分の話だ、で観る」と同一。self_relevanceが動画全体に拡張された形</td></tr>
+      <tr class="pick"><td><b>②分類フレームワーク</b></td><td>「8種類の原動力」= 自作のタイポロジー。視聴者が自分をどれかに当てはめる</td><td>H61 diagnosis型（二択診断）と同じ機構。TikTok占い診断47k再生とも整合。<b>そして易経は3000年の64分類＝自作フレームの上位互換</b></td></tr>
+      <tr class="pick"><td><b>③処方箋が本体</b></td><td>型別の環境設計＋1週間の実験手順＋記録項目まで具体</td><td>うちの実測で処方箋幕(act4_practice)は離脱ゼロ帯＝視聴者が最も残る場所。彼らはそこを全編に広げた</td></tr>
+      <tr><td>④副作用の警告</td><td>「強い燃料には副作用もある」＝両面提示で信頼を作る</td><td>陰陽の反転はうちの得意分野（隣の卦・錯綜卦）。輸入コストゼロ</td></tr>
+      <tr><td>⑤ベネフィット明示タイトル</td><td>「努力が止まらなくなる条件」＝検索/ブラウズで意図が立つ</td><td>うちの「抽象人生訓封印」規則はIPエピソード用。ノーIPレーンでは封印理由が消える</td></tr>
+    </tbody>
+  </table>
+  <div class="callout warn">
+    <p><strong>真似してはいけないもの</strong>: 16分という尺・AI画風・BGMなどの表面。当該動画自身が言っている——「成功者の習慣を表面的に真似するより、何がその人をそこまで動かしたのかを見るべき」。勝ちの本体は<b>自己適用性（視聴者が自分の話として観る設計）</b>であって、長さではない。そして<b>64話シリーズを捨てないこと</b>＝彼らに無い当chの資産は「体系」（毎回自作のフレームではなく、64卦が繋がった一つの地図）と「物語（アニメIP）レーン」の二本立てにできること。</p>
+  </div>
+
+  <h2>03 具体的に取り込む3手</h2>
+  <table class="table">
+    <thead><tr><th>手</th><th>内容</th><th>状態</th></tr></thead>
+    <tbody>
+      <tr class="pick"><td><b>A. H61診断armの重み上げ</b></td><td>sh47（損益診断）が既にこの型。判定時、同点なら診断型を優先スケール。当たれば「64卦診断」ショートシリーズ化</td><td>実験進行中（追加コストゼロ・判定基準は変えない）</td></tr>
+      <tr class="pick"><td><b>B. ノーIP診断ロングのパイロット1本＝M28</b></td><td>易経の分類フレームで「◯◯できない人のN個の形＋型別処方箋＋1週間の実験」型を1本。ベネフィット題・12-17分・IP不使用（法務リスクゼロ・identity監査不要＝制作も軽い）。<b>H58コホートには入れない</b>（別armとして計測）</td><td><b>M28 proposed＝要承認</b></td></tr>
+      <tr><td>C. 既存台本への構造輸入</td><td>①処方箋幕に「型別の分岐」（あなたが◯爻型なら…）②「副作用の警告」1段 ③「今週の実験」で閉じる——を essay-episode の処方箋設計ノートに追記</td><td>承認不要の軽改善・次の新作から</td></tr>
+    </tbody>
+  </table>
+
+  <div class="conclusion">
+    <h2>結論</h2>
+    <ol>
+      <li>参考にすべき、に強く同意。ただし表面（尺・画風）ではなく構造（自己適用性・分類診断・処方箋主体）を取る</li>
+      <li>Motocrabは「市場が大きい」ことの証明であり、うちのH61・処方箋ゼロ損失・いいね率律速の実測と全部同じ方向を指している＝戦略の答え合わせ</li>
+      <li>易経は毎回フレームを自作する彼らの上位互換になれる（3000年の64分類体系）。承認待ち＝<b>M28（ノーIP診断ロング パイロット1本）</b></li>
+    </ol>
+  </div>
+
+  <p class="muted">一次情報: Data API videos/channels.list 2026-07-31実測・全編字幕（本人提供）/ 比較データ: analytics/growth-state.json・retention-corpus横断分析 / 施策台帳: M28 proposed</p>
+</div>
+</body>
+</html>
