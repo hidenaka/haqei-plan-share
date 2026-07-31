@@ -1,0 +1,312 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ドーパミン駆動の視聴体験設計 — 全成果物総点検</title>
+<style>
+  :root {
+    --ink: #1a1a1a;
+    --ink-2: #4a4a4a;
+    --bg: #f7f5ee;
+    --paper: #fbf9f1;
+    --line: #d8d2bf;
+    --accent: #b8860b;
+    --accent-soft: #f3e8c8;
+    --warn: #c83a2c;
+    --warn-soft: #f6dcd6;
+    --yellow: #f4d35e;
+    --shadow: 0 1px 0 rgba(0,0,0,.04), 0 8px 24px rgba(0,0,0,.06);
+    --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+    --sans: -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN",
+            "Hiragino Sans", "Noto Sans JP", "Yu Gothic", "Meiryo", sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 56px 28px 96px; }
+
+  .hero { margin-bottom: 56px; }
+  .hero .kicker {
+    display: inline-block;
+    background: var(--accent); color: #fff;
+    font-size: 12px; font-weight: 700; letter-spacing: .12em;
+    padding: 6px 12px; border-radius: 999px;
+    margin-bottom: 18px;
+  }
+  .hero h1 {
+    font-size: 40px; line-height: 1.3; margin: 0 0 14px;
+    letter-spacing: -.01em;
+  }
+  .hero h1 b { color: var(--accent); }
+  .hero p.lede {
+    font-size: 18px; color: var(--ink-2); margin: 0; max-width: 780px;
+  }
+  .tldr {
+    margin-top: 28px; padding: 22px 24px;
+    background: var(--paper); border: 1px solid var(--line); border-radius: 12px;
+    box-shadow: var(--shadow);
+  }
+  .tldr h2 { font-size: 13px; letter-spacing: .15em; color: var(--accent); margin: 0 0 10px; }
+  .tldr ol { margin: 0; padding-left: 20px; }
+  .tldr li { margin: 4px 0; }
+
+  section { margin: 64px 0 0; }
+  section > h2 {
+    font-size: 28px; line-height: 1.4; margin: 0 0 6px;
+    border-left: 6px solid var(--accent); padding-left: 12px;
+  }
+  section > h2 .num {
+    color: var(--accent); font-variant-numeric: tabular-nums; margin-right: 10px;
+  }
+  section > p.sub { color: var(--ink-2); margin: 0 0 22px; }
+
+  figure {
+    margin: 0 0 24px; padding: 12px;
+    background: var(--paper); border: 1px solid var(--line); border-radius: 14px;
+    box-shadow: var(--shadow);
+  }
+  figure img { display: block; width: 100%; height: auto; border-radius: 8px; }
+  figcaption {
+    font-size: 13px; color: var(--ink-2); margin-top: 10px; text-align: center;
+  }
+
+  .table {
+    width: 100%; border-collapse: collapse; margin: 12px 0 6px;
+    background: var(--paper); border: 1px solid var(--line); border-radius: 12px; overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+  .table th, .table td {
+    text-align: left; padding: 12px 14px; border-bottom: 1px solid var(--line);
+    vertical-align: top; font-size: 14.5px;
+  }
+  .table th { background: #efeadb; font-weight: 700; }
+  .table tr:last-child td { border-bottom: 0; }
+  .table .pick { background: var(--accent-soft); }
+  .table .pick td:first-child { font-weight: 700; color: var(--accent); }
+
+  .lv-h { color: var(--warn); font-weight: 700; }
+  .lv-m { color: #d68c1a; font-weight: 700; }
+  .lv-l { color: var(--accent); font-weight: 700; }
+
+  code.inline {
+    font-family: var(--mono); font-size: .92em;
+    background: #efeadb; padding: 1px 6px; border-radius: 4px;
+  }
+
+  .callout {
+    margin: 18px 0;
+    padding: 16px 18px;
+    border-left: 4px solid var(--accent);
+    background: var(--accent-soft);
+    border-radius: 0 10px 10px 0;
+  }
+  .callout.warn { border-color: var(--warn); background: var(--warn-soft); }
+  .callout p { margin: 0; }
+  .callout strong { color: var(--accent); }
+  .callout.warn strong { color: var(--warn); }
+
+  .quote {
+    border-left: 3px solid var(--line); padding: 6px 16px;
+    color: var(--ink-2); font-size: 14.5px; margin: 18px 0;
+  }
+
+  .conclusion {
+    margin-top: 56px; padding: 28px 28px 24px;
+    background: var(--ink); color: #f6f3e8; border-radius: 16px;
+  }
+  .conclusion h2 { color: var(--yellow); border: 0; padding: 0; margin: 0 0 12px; }
+  .conclusion ol { margin: 0; padding-left: 20px; }
+  .conclusion li { margin: 6px 0; }
+
+  footer { margin-top: 36px; color: var(--ink-2); font-size: 13px; }
+
+  @media (max-width: 720px) {
+    .wrap { padding: 32px 18px 64px; }
+    .hero h1 { font-size: 30px; }
+    section > h2 { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <span class="kicker">DOPAMINE-DRIVEN VIEWING DESIGN — 判断資料</span>
+    <h1>「ドパガキ」に見られる動画へ —<br>刺激を増やさず、<b>ドーパミンを設計する</b></h1>
+    <p class="lede">サムネから台本・演出・音・ビジュアル・ショートまで、全成果物を「報酬予測誤差の配置」で総点検した。先に結論: 刺激量を増やす方向は2025-26のデータでは負け筋で、MrBeast本人がそれを捨てて伸びた。当チャンネルの一次データ（冒頭9秒離脱・完視聴でも登録ゼロ）も同じ答えを指している。</p>
+    <div class="tldr">
+      <h2>TL;DR</h2>
+      <ol>
+        <li>ドーパミンは「刺激」ではなく<strong>「予測とのズレ」</strong>で出る。速いカットや大きい音ではなく、<strong>約束→ズラし→回収</strong>の配置が本体</li>
+        <li>当チャンネルの詰まりは3段階: <strong>クリックされない</strong>(CTR 1.0%)→<strong>冒頭9秒で離脱</strong>→<strong>見ても心が動かない</strong>(完視聴で登録ゼロ)。各段階に別の処方がある</li>
+        <li>本人の美意識（AI臭排除・棘・落ち着いたBGM）は低刺激×高密度の勝ち筋と<strong>むしろ整合</strong>。捨てずに、その内側で予測誤差を最大化する7つの実験を提案</li>
+      </ol>
+    </div>
+  </header>
+
+  <section>
+    <h2><span class="num">01</span>総論 — 「ドパガキ」の脳で起きていること</h2>
+    <p class="sub">ドーパミンは報酬そのものではなく、予測誤差で発火する学習信号</p>
+    <figure>
+      <img src="images/concept-01-01.png" alt="刺激量と予測誤差設計の対比図">
+      <figcaption>同じドーパミンでも出所が違う。スロット型は慣れる（耐性）、予測誤差型は慣れない</figcaption>
+    </figure>
+    <p>「ドパガキ向けに刺激を盛る」という直感には、神経科学的に落とし穴がある。ドーパミンは報酬を受け取った瞬間ではなく、<strong>予測と現実がズレた瞬間</strong>に発火する学習信号だ。だから同じ刺激を繰り返すと予測が追いつき、発火しなくなる（耐性）。点滅と爆音のスロット型編集が2-3年で効かなくなったのはこのためで、その象徴が MrBeast 本人の方針転換になる。</p>
+    <div class="quote">「速度を落とし、叫ぶのをやめ、物語に寄せたら再生が急伸した。過剰刺激の時代を終わらせよう。あれはもう効かない」— MrBeast（X投稿 2024-03、Washington Post報道。取得2026-07-31）</div>
+    <p>2025年のYouTubeではスローな編集・ワイド画角・ドキュメンタリー型がTV視聴と相性が良く伸びた（Lemonlight・取得2026-07-31）。一方で短尺の過剰刺激「sludge型」は視聴時間を稼いでも記憶保持と注意を損ない、いいね率に請求書が来ることが査読研究でも示されている（Scientific American / SAGE 2026）。</p>
+    <div class="callout"><p><strong>この資料の前提:</strong> ドパガキに見られる = 予測誤差の発生「密度」を上げること。刺激の「振幅」を上げることではない。当チャンネルの実測（具体場面の断言は概念語の5倍持つ / 完視聴96-98%の2本でも登録ゼロ）は、この理論と完全に一致している。</p></div>
+  </section>
+
+  <section>
+    <h2><span class="num">02</span>現在地 — データが示す3つの詰まり</h2>
+    <p class="sub">どこでドーパミンが切れているかを一次データで特定する</p>
+    <figure>
+      <img src="images/concept-02-01.png" alt="視聴ファネルの3つの詰まり">
+      <figcaption>詰まりは1箇所ではなく3箇所。それぞれ別の神経メカニズムが担当している</figcaption>
+    </figure>
+    <table class="table">
+      <thead><tr><th>詰まり</th><th>一次データ</th><th>担当する報酬メカニズム</th><th>処方の方向</th></tr></thead>
+      <tbody>
+        <tr><td>① クリックされない</td><td>本編CTR中央値 1.0%（健全4-6%）。ただしA/B H-CTR-1=no_lift（bottleneck.json / funnel.json）</td><td>好奇心ギャップ（情報の欠落が生む緊張）</td><td>§03 サムネ・タイトル</td></tr>
+        <tr class="pick"><td>② 冒頭9秒で離脱</td><td>biggestDrop中央値9秒・21/21本が20秒以内・30秒残存42.9%（bottleneck.json rank3）</td><td>オープンループ（未完了課題の緊張）</td><td>§04 冒頭設計</td></tr>
+        <tr><td>③ 見ても心が動かない</td><td>完視聴96-98%の2本で登録ゼロ・シェア率0.015%・ショートのいいね+シェア0.3-2%台で合格線6%に全面fail（bottleneck.json / shorts-funnel.json）</td><td>自己関連づけ（「これは自分の話だ」の報酬）</td><td>§05 本編・§06 ショート</td></tr>
+      </tbody>
+    </table>
+    <p>重要なのは、律速台帳が①でなく③を rank1 に置いていることだ。心が動いた人が登録する確率は本編15.1%/ショート11.9%でほぼ同じ＝導線は詰まっていない。<strong>心が動く人の絶対数が少ない</strong>のが第一律速で、②がそれに次ぐ。①のCTRはA/Bで持ち上がらなかった実績があり監視降格済み。つまり「ドーパミン設計」の主戦場は②と③になる。</p>
+    <div class="callout warn"><p><strong>捨てるべき直感:</strong> 「もっと派手にすれば見られる」。冒頭の実測では、具体場面の断言=離脱37%/分に対し、概念語の引用や「衝撃」等の報道語=182〜194%/分（retention-lessons RL-1〜3）。派手な言葉ほど視聴者は逃げている。</p></div>
+  </section>
+
+  <section>
+    <h2><span class="num">03</span>入口① サムネ・タイトル — クリックの予測誤差</h2>
+    <p class="sub">顔が使えない制約の中で、好奇心ギャップと視覚的疑問を最大化する</p>
+    <figure>
+      <img src="images/concept-03-01.png" alt="サムネイル心理トリガーの天秤">
+      <figcaption>痛みの一文は入口として正しい。足りないのは「絵の側の未解決」</figcaption>
+    </figure>
+    <p>CTRを動かす三大トリガーは ①好奇心ギャップ ②表情のある顔（+20%級とされる業界値）③驚き。当チャンネルは法務方針で顔が描けないため、②は構造的に使えない。だからこそ残る2つを絵と文に分担させる設計が要る。現行のTier A/洞察型サムネは「意味の立つ文＋作品名タグ＋卦バッジ」で文の側は完成度が高い。<strong>弱いのは絵の側の「未解決」だ</strong>。</p>
+    <table class="table">
+      <thead><tr><th>提案</th><th>内容</th><th>ドーパミン上の狙い</th></tr></thead>
+      <tbody>
+        <tr class="pick"><td>視覚的疑問を1点仕込む</td><td>サムネの絵に「何かおかしい」を1つだけ入れる。例: 六爻図の一本だけが欠けている/赤い、傘の内側だけ雨が降っている、階段が下りなのに登っている後ろ姿</td><td>絵が問いを出し、文が痛みを刺す分業。答えは動画の種明かしまで渡さない＝クリックがループの開始点になる</td></tr>
+        <tr><td>題字は痛み文の「前半」だけ</td><td>「限界の人ほど、ちゃんとして見える。」→ サムネは「限界の人ほど、」で切る等、文の完結をタイトル側に譲る</td><td>好奇心ギャップ。ただしH58タイトルとの重複を避ける分担設計が必要</td></tr>
+        <tr><td>ネガ煽りはやらない</td><td>「〜の末路」「ヤバい」系は初速CTRが出ても信頼を削る（1of10・取得2026-07-31）。釣り禁止の現行方針を維持</td><td>ネガ感情の初速は耐性が早い。痛み＝自分事のネガはOK、他人事の恐怖煽りはNGという線引き</td></tr>
+      </tbody>
+    </table>
+    <p style="font-size: 13px; color: var(--ink-2);">※ 注意: CTRのA/Bは過去にno_lift（H-CTR-1）で、5本コホートの検出力は+76%以上の効果しか拾えない。ここへの投資は「H60改題（判定8/12）と同時に相乗りで試す」に留め、単独の主戦場にはしない。</p>
+  </section>
+
+  <section>
+    <h2><span class="num">04</span>入口② 冒頭9秒〜30秒 — オープンループの多重張り</h2>
+    <p class="sub">最大離脱点（中央値9秒）を、痛みの断言＋物証の予告で通過させる</p>
+    <figure>
+      <img src="images/concept-04-01.png" alt="冒頭30秒の2段ロケット設計">
+      <figcaption>1段目は既にH58で実装済み。提案は2段目＝オープンループの本数を増やすこと</figcaption>
+    </figure>
+    <p>平均的なYouTube動画は冒頭30秒で30-40%を失う（miraflow・取得2026-07-31）。当チャンネルは30秒残存42.9%で、実は平均よりやや良い。だが21/21本の最大離脱が20秒以内に集中しており、ここが維持曲線全体の天井を決めている。H58の「痛みの断言」は1段目（0-9秒＝スクロールを止めるブレーキ）として正しく機能する設計だ。<strong>足りないのは2段目（9-30秒＝最後まで居る理由）</strong>で、これがオープンループの多重張りになる。</p>
+    <table class="table">
+      <thead><tr><th>ループ</th><th>台本上の形（例）</th><th>回収位置</th></tr></thead>
+      <tbody>
+        <tr><td>ループA: 名前の予告</td><td>「この痛みには、3000年前から名前がついています」— まだ卦名は言わない</td><td>幕3 種明かし</td></tr>
+        <tr class="pick"><td>ループB: 物証の予告</td><td>「最後に、反論できない証拠を一枚だけ見せます」— 六爻図の存在だけ予告する</td><td>幕3後半〜幕4（六爻図の全点灯）</td></tr>
+        <tr><td>ループC: 出口の予告</td><td>「そして出口は、頑張る方向にはありません」— 処方箋の逆説だけ先出し</td><td>幕5 処方箋</td></tr>
+      </tbody>
+    </table>
+    <p>3本のループはすべて<strong>断言形</strong>で張れるため、AI臭ルール（問いかけ・定型CTA禁止）と衝突しない。また「結果の一瞬だけ先出しして巻き戻す」コールドオープン型（例: 六爻図の完成形を0.5秒だけ見せてから日常場面へ落とす）は、種明かし＝最良ホールド帯という実測を入口に転用する手として別途A/B候補になる。H52 promise overlay（判定不能で継続中）はループBの視覚版として統合できる。</p>
+    <div class="callout"><p><strong>守るべき既存教訓:</strong> ループを張る文自体が概念語に寄ると本末転倒（RL-1: 概念語は離脱5倍）。3本とも「日常語＋名詞の具体」で書く。あらすじ説明・作品解説をループの代わりに置かない（RL-3: あらすじ列挙は周囲の約4倍離脱）。</p></div>
+  </section>
+
+  <section>
+    <h2><span class="num">05</span>本編 — 台本・演出・音・ビジュアルの報酬配置</h2>
+    <p class="sub">維持曲線の上に、30-60秒ごとのミニ報酬と転換点の無音を置く</p>
+    <figure>
+      <img src="images/concept-05-01.png" alt="6幕構成への報酬配置マップ">
+      <figcaption>種明かし（幕3）が最良ホールド帯という実測は、知的ペイオフが最強報酬である証拠</figcaption>
+    </figure>
+    <p>幕配分v2.3は既にデータ駆動で、離脱帯（観察）を圧縮し報酬帯（種明かし・処方箋）を守っている。次の一手は幕の「中」に報酬を刻むことだ。研究側の知見は一貫して「カット頻度ではなく<strong>情報レイヤリング</strong>＝1シーン1新概念で切る」が20分級の動画で維持50%超を出すと言う（increditors・取得2026-07-31）。具体案を成果物別に挙げる。</p>
+    <table class="table">
+      <thead><tr><th>成果物</th><th>提案</th><th>ドーパミン上の狙い</th></tr></thead>
+      <tbody>
+        <tr class="pick"><td>ビジュアル（進行感）</td><td><strong>六爻図プログレス演出</strong>: 話の進行に合わせて爻が一本ずつ点灯し、幕4で全点灯＝物証完成。画面隅に小さく常駐でも良い</td><td>チャプター報酬＋「今どこまで来たか」の進行感。Johnny Harris型の視覚アンカーを、決定論描画（幻覚ゼロ・AI画像枠消費ゼロ）の既存GUA6資産で実装できる</td></tr>
+        <tr><td>音（パターン割り込み）</td><td><strong>転換点のBGM無音化</strong>: 種明かしの直前1-2秒、BGMを完全に止める。SEは足さない</td><td>無音は「落ち着いたBGM」規約と両立する最強の予測誤差。等間隔・一定音量＝予測誤差ゼロがAI臭の正体。既存bgmVolumeEnvelope（edit_rhythm.mjs）の拡張で実装可能</td></tr>
+        <tr><td>ビジュアル（色の条件づけ）</td><td><strong>金＝報酬色の運用規則化</strong>: 藍と墨で流れる日常場面には金を使わず、種明かし・六爻図・処方箋のキーワードにだけ金の差し色を出す</td><td>「金が出た＝分かる瞬間が来た」の条件づけ。既存の配色規約（藍墨＋金）に運用ルールを1行足すだけで、視聴のたびに強化される</td></tr>
+        <tr><td>台本（ミニ報酬）</td><td><strong>30-60秒ごとに小さな回収</strong>を1つ置く: 卦の一字の意味、爻の一本、観察場面の伏線の名指し回収。「1シーン1新情報」を採点軸に追加</td><td>維持曲線の平坦化。大きな種明かし1回に依存せず、予測誤差をマイクロドーズで配る</td></tr>
+        <tr><td>台本（回収の明示）</td><td>幕1の生活場面3つを、幕4/5で<strong>名指しで回収</strong>する（「さっきの、日報を開いたまま固まっていた人」）</td><td>伏線回収は張った本数×回収の明示度で効く。goldが暗黙にやっている構造をルール化して全話に載せる</td></tr>
+        <tr><td>テロップ</td><td>強調（金罫・サイズ変化）は種明かしと処方箋のキーワードに限定。日常場面では動かさない</td><td>強調のインフレ防止。全部強調＝何も強調していない＝予測誤差ゼロ</td></tr>
+      </tbody>
+    </table>
+    <div class="callout"><p><strong>幕2（観察）の離脱帯対策の追加案:</strong> 唯一の大量離脱帯である観察パートにこそループの「中間利払い」を置く。作品の場面を1つ見せるごとに、冒頭の痛みへ一文で返す（「これ、月曜の朝のあれと同じ形です」）。作品解説が続くと離脱する実測（RL-3）への対処と、ループ維持を同時にやる。</p></div>
+  </section>
+
+  <section>
+    <h2><span class="num">06</span>ショート — ループ密度と「押させる」設計</h2>
+    <p class="sub">見られるのに押されない（SG3全面fail）の正体は、刺激不足ではなく自分事不足</p>
+    <figure>
+      <img src="images/concept-06-01.png" alt="ショートのループ設計円環">
+      <figcaption>アルゴリズムは総視聴時間ではなくリピート密度を評価する（2周&gt;1周）</figcaption>
+    </figure>
+    <p>ショートの一次データは冒頭3秒維持（SG1）ほぼ全本passに対し、いいね+シェア（SG3）が全本0.3-2%台で合格線6%に届かない。「見られるが押されない」。ここに刺激を足しても解決しないことは、切り抜き時代の実測（いいね率0.31% vs 本編3.98%）が既に証明している。方向は2つ。</p>
+    <table class="table">
+      <thead><tr><th>提案</th><th>内容</th><th>ドーパミン上の狙い</th></tr></thead>
+      <tbody>
+        <tr class="pick"><td>ループの「文字通り」接続</td><td>S06の最後の一文を、S01の冒頭の一文の<strong>直前の文</strong>になるよう書く（概念接続→文接続へ強化）。例: S06「…だから、頑張るほど沈む人がいる。」→S01「朝、ちゃんとしなきゃと思った瞬間に疲れてる。」が滑らかに2周目に入る</td><td>シームレスループでAVD100%超・リピート密度を稼ぐ（Digital Blacksmiths / Shortimize・取得2026-07-31）。現行S06ループ設計の強度を1段上げる</td></tr>
+        <tr><td>「知ってる状況×知らない名前×出口」の徹底</td><td>2026-07-31の本人却下がそのまま設計原理: 知らないもの同士のランキングに順位の興味はない。<strong>報酬=「自分が知ってる状況に、知らなかった名前と出口があった」</strong>。4型すべてのS01をこの検算にかける</td><td>いいねは「うまい」では押されず「これ、自分の話だ」で押される（既存rejections教訓）。SG3の詰まりの直接処方</td></tr>
+        <tr><td>高速テンポ型（sh50）は1周で取り切れない密度に</td><td>カット2秒・間ゼロのsh50型は、情報を1周で全部取れない密度にあえて盛る＝「もう1周見る理由」を作る</td><td>リピート密度への貢献。ただし過剰刺激の請求書（いいね率低下）が出たら即撤退＝H51いいね率主指標がそのまま安全弁になる</td></tr>
+        <tr><td>二択診断型（sh47）の分類報酬</td><td>「あなたはどっち」の分類自体が自己関連づけ報酬。診断結果それぞれに出口（卦の一手）を必ず付ける</td><td>コメントbait禁止の内側で関与を作る現行設計の維持・強化。H61判定（8/28）で型別に検証中</td></tr>
+      </tbody>
+    </table>
+    <div class="callout warn"><p><strong>やらないこと:</strong> コメント誘発の問いかけ・終盤CTAカード・再生数での判定。すべて既存規約どおり。ショートの主指標はいいね率（H51）を維持し、「刺激を盛って再生が伸びたがいいね率が下がった」は失敗と判定する。</p></div>
+  </section>
+
+  <section>
+    <h2><span class="num">07</span>裁定 — 守るもの・実験するもの・やらないこと</h2>
+    <p class="sub">本人の美意識と衝突しない7つの実験を、優先順位つきで提案する</p>
+    <p>まず衝突の裁定から。「ドパガキ対応」と聞くと美意識ルールが邪魔に見えるが、実際は逆で、2025-26の実証トレンド（低刺激×高密度ナラティブ）はこのチャンネルの規約とほぼ同型だ。</p>
+    <table class="table">
+      <thead><tr><th>既存ルール</th><th>裁定</th><th>理由</th></tr></thead>
+      <tbody>
+        <tr><td>AI臭排除・定型CTA禁止・問いかけbait禁止</td><td class="lv-l">守る</td><td>予測可能な定型＝予測誤差ゼロ。ルール自体がドーパミン設計</td></tr>
+        <tr><td>棘で閉じる（要約で閉じない）</td><td class="lv-l">守る</td><td>反論可能な断言は視聴後も緊張が残る＝余韻のオープンループ</td></tr>
+        <tr><td>落ち着いたBGM・SEなし</td><td class="lv-l">守る＋拡張</td><td>静かなベースラインがあるから「無音」が武器になる。派手なBGMのチャンネルは無音を使えない</td></tr>
+        <tr><td>顔を描かない浮世絵・キャラ非識別</td><td class="lv-l">守る（法務）</td><td>顔+20%は使えないが、視覚的疑問と金の条件づけで代替する（§03/§05）</td></tr>
+        <tr><td>釣りタイトル・誇張・ネタバレ禁止</td><td class="lv-l">守る</td><td>ネガ煽りの初速は耐性が早く、信頼の損失が回復しない</td></tr>
+      </tbody>
+    </table>
+    <p>その上で、実験候補7本。すべて「本人承認→<code class="inline">measures.mjs</code>登録→<code class="inline">coord.sh next-h</code>で仮説採番→判定日設定」の手続きで走らせる想定。</p>
+    <table class="table">
+      <thead><tr><th>#</th><th>実験</th><th>対象成果物</th><th>実装コスト</th><th>期待効果</th><th>判定指標</th></tr></thead>
+      <tbody>
+        <tr class="pick"><td>1</td><td>冒頭オープンループ3本張り（名前・物証・出口の断言予告）</td><td>台本（幕1）</td><td class="lv-l">低（台本規則のみ）</td><td class="lv-h">高</td><td>30秒残存42.9%→50%・60秒残存（H63と併走）</td></tr>
+        <tr class="pick"><td>2</td><td>六爻図プログレス演出（爻の点灯＝進行感）</td><td>Remotion演出</td><td class="lv-m">中（コンポジション実装）</td><td class="lv-h">高</td><td>幕3-5の分あたり離脱率・巻き戻し発生</td></tr>
+        <tr><td>3</td><td>転換点のBGM無音化（種明かし直前1-2秒）</td><td>音（mix）</td><td class="lv-l">低（エンベロープ拡張）</td><td class="lv-m">中</td><td>種明かし帯のホールド・巻き戻し</td></tr>
+        <tr><td>4</td><td>金＝報酬色の運用規則（日常場面は藍墨のみ）</td><td>ビジュアル規約</td><td class="lv-l">低（visual_plan規則1行）</td><td class="lv-m">中</td><td>単独判定不能＝#2と束で判定</td></tr>
+        <tr><td>5</td><td>ショートS06→S01の文字通りループ接続</td><td>ショート台本</td><td class="lv-l">低（S06規則強化）</td><td class="lv-h">高</td><td>AVD/平均視聴率100%超の本数・いいね率</td></tr>
+        <tr><td>6</td><td>サムネの視覚的疑問1点（六爻図の欠け等）</td><td>サムネ</td><td class="lv-l">低（H60改題に相乗り）</td><td class="lv-l">低〜不明</td><td>H60プールCTR（判定8/12）に混載</td></tr>
+        <tr><td>7</td><td>コールドオープンA/B（六爻図完成形を0.5秒先出し）</td><td>台本＋演出</td><td class="lv-m">中</td><td class="lv-m">中</td><td>冒頭9秒残存のコホート比較</td></tr>
+      </tbody>
+    </table>
+    <div class="callout"><p><strong>推奨する着手順:</strong> #1と#5は台本規則の追記だけで次回作から適用でき、最大離脱点（冒頭）と最大詰まり（押されない）を直撃する。#2は今週の実装枠1本分。#3/#4は#2と同じエピソードに束で載せ、#6/#7は既存A/Bの枠に相乗りさせて単独コストをかけない。</p></div>
+    <p style="font-size: 13px; color: var(--ink-2);">※ 検出力の注意: 5本コホートで検出できるのは+76%以上の粗い効果のみ（exp-power.py）。#3/#4/#6のような小さい効果は単独判定せず、束（H58+新工程方式）で分母系指標に載せる。nullを反証として引用しない。</p>
+  </section>
+
+  <div class="conclusion">
+    <h2>結論</h2>
+    <ol>
+      <li>「ドパガキに見られる」の正解は刺激のインフレではなく、<strong>予測誤差の配置密度</strong>を上げること。MrBeastの揺り戻しと当チャンネルの一次データ（具体場面の断言は概念語の5倍持つ・完視聴でも登録ゼロ）が同じ答えを指している</li>
+      <li>美意識（AI臭排除・棘・落ち着いたBGM・顔なし浮世絵）は制約ではなく差別化資産。その内側で、<strong>オープンループ3本張り・爻の点灯進行・転換点の無音・金＝報酬色・ループの文字通り接続</strong>を実装する</li>
+      <li>全提案は本人承認→measures.mjs登録→仮説採番→判定日設定の手続きで走らせる。まず承認いただきたいのは実験#1（冒頭ループ3本張り）と#5（ショート文字通りループ）の2本</li>
+    </ol>
+  </div>
+
+  <footer>題材: 易経ロジックチェーン repo一次データ（analytics/bottleneck.json・retention-lessons.json・rejections.json・funnel.json・shorts-funnel.json・docs/pivot-pain-first.md・docs/format_v2.md）＋ web研究（MrBeast X投稿/Washington Post・Lemonlight・miraflow・increditors・1of10・SkySnail・Digital Blacksmiths・Shortimize・Scientific American・SAGE 2026、いずれも取得2026-07-31）。業界ブログ由来の数値（顔+20%・オープンループAVD+40-60%等）はピアレビューではない点に留意。</footer>
+
+</div>
+</body>
+</html>
