@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>仕組み全体の最適化 — 「分け・残し・つなぐ」再設計 2026-08-01</title>
+<style>
+  :root { --ink:#1a1a1a; --ink-2:#4a4a4a; --bg:#f7f5ee; --paper:#fbf9f1; --line:#d8d2bf;
+    --accent:#8a6d1f; --accent-soft:#f0e8cf; --warn:#c83a2c; --warn-soft:#f6dcd6; --yellow:#f4d35e;
+    --shadow:0 1px 0 rgba(0,0,0,.04),0 8px 24px rgba(0,0,0,.06);
+    --mono:ui-monospace,Menlo,monospace;
+    --sans:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP",sans-serif; }
+  *{box-sizing:border-box} html,body{margin:0;padding:0}
+  body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1.75}
+  .wrap{max-width:1020px;margin:0 auto;padding:44px 24px 90px}
+  .kicker{display:inline-block;background:var(--accent);color:#fff;font-size:12px;font-weight:700;letter-spacing:.12em;padding:6px 12px;border-radius:999px;margin-bottom:14px}
+  h1{font-size:30px;line-height:1.35;margin:0 0 8px} h1 b{color:var(--accent)}
+  .lede{font-size:16px;color:var(--ink-2);max-width:840px;margin:0 0 20px}
+  h2{font-size:22px;border-left:6px solid var(--accent);padding-left:12px;margin:44px 0 8px}
+  .table{width:100%;border-collapse:collapse;margin:12px 0;background:var(--paper);border:1px solid var(--line);border-radius:12px;overflow:hidden;box-shadow:var(--shadow)}
+  .table th,.table td{text-align:left;padding:11px 13px;border-bottom:1px solid var(--line);font-size:14px;vertical-align:top}
+  .table th{background:#ede5cd}.table tr:last-child td{border-bottom:0}
+  .table .pick{background:var(--accent-soft)} .table .bad{background:var(--warn-soft)}
+  .callout{margin:16px 0;padding:14px 18px;border-left:4px solid var(--accent);background:var(--accent-soft);border-radius:0 10px 10px 0}
+  .callout.warn{border-color:var(--warn);background:var(--warn-soft)}
+  .callout p{margin:0}.callout strong{color:var(--accent)}.callout.warn strong{color:var(--warn)}
+  code.inline{font-family:var(--mono);font-size:.9em;background:#e9e4d4;padding:1px 6px;border-radius:4px}
+  .muted{color:var(--ink-2);font-size:13.5px}
+  .conclusion{margin-top:48px;padding:26px 28px 22px;background:var(--ink);color:#f6f3e8;border-radius:16px}
+  .conclusion h2{color:var(--yellow);border:0;padding:0;margin:0 0 12px}
+  .conclusion ol{margin:0;padding-left:20px}.conclusion li{margin:6px 0}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <span class="kicker">仕組み全体の最適化 — 実行承認</span>
+  <h1>診断: 部品は正しい。<b>「義務の生成」が「消化」を上回って全体が麻痺</b>している</h1>
+  <p class="lede">ご提示のnote記事は有料部分が読めないため、<b>公開部の主張（「強い部品を増やすほど全体が扱いにくくなる」「解法は“何を分け・何を残し・どこをつなぐか”の設計単位で、完成形はシンプル」）だけ</b>を物差しに、うちの仕組みを実データで診断しました。記事の診断は、うちに正確に当てはまっています。</p>
+
+  <h2>01 実測: 仕組みがどれだけ膨らんだか（2026-08-01時点）</h2>
+  <table class="table">
+    <thead><tr><th>層</th><th>実測</th><th>何が起きるか</th></tr></thead>
+    <tbody>
+      <tr class="bad"><td>指令ドキュメント</td><td>CLAUDE.md 24KB + rules 13本43KB + docs 19本</td><td>1セッションで読み切れない→従われない→事故→さらに追記、の悪循環（昨日も今日も追記が発生）</td></tr>
+      <tr class="bad"><td>実験・施策台帳</td><td><b>5つの台帳に約65件がopen</b>（measures 33 / experiments 17 / shorts 13 / tiktok 2 + pdca仮説32見出し）</td><td>判定が追いつかない（判定期日超過4件・週次レビュー3週遅れ）＝学びが還流しない</td></tr>
+      <tr class="bad"><td>期日義務</td><td>coordタスク未消化<b>50件</b>（昨日30件→1日で+20）・growth-tickが毎日<b>13 WARN</b>を宣告</td><td>誰も全部は読まない→全部無視される→「機能しなくなっている」の体感の正体</td></tr>
+      <tr><td>実行部品</td><td>scripts 308本</td><td>部品自体は動く（今週それでショート4本作れた）＝<b>壊れているのは部品でなく交通整理</b></td></tr>
+    </tbody>
+  </table>
+  <div class="callout warn">
+    <p><strong>核心</strong>: 「今日なにをすべきか」を答える入口が7つ以上あり（growth-tick / growth-state / ep-next / measures next / coord tasks / recurring / production-loop…）、それぞれが別の宣告をする。<b>指令が多いことと、指令が効くことは逆相関</b>になっている。</p>
+  </div>
+
+  <h2>02 設計: 何を分け、何を残し、どこをつなぐか</h2>
+  <table class="table">
+    <thead><tr><th>判断</th><th>対象</th><th>内容</th></tr></thead>
+    <tbody>
+      <tr><td><b>分ける</b></td><td>記録と指令</td><td>台帳（記録）は多くてよい。<b>指令は一本にする</b>。台帳が直接WARNを叫ぶのを止め、全部を一つのキューが吸い上げて優先順位をつける</td></tr>
+      <tr class="pick"><td><b>残す</b></td><td>機能している中核</td><td>人間ゲート3種 / 機械ゲート（preflight・shorts-qa）/ 還流経路（rejections・retention-lessons注入）/ 制作ハーネス群 — 今週の実績（分析→教訓→4本制作）はここが生んだ。触らない</td></tr>
+      <tr><td><b>つなぐ</b></td><td>唯一の入口</td><td>🆕 <code class="inline">node scripts/today.mjs</code> — 全台帳・全期日・全フラグを読み、<b>「今日の3件」だけを宣告</b>（4件目以降は件数のみ表示）。セッションはこれだけ見る</td></tr>
+      <tr><td><b>捨てる</b></td><td>ゾンビ義務</td><td>WIP上限＝<b>判定待ち実験は3本まで</b>（今はH58・H61・H63）。他はfrozen宣言。期限30日超のcoordタスクは自動で「失効候補」に落とし、週1回の一括裁定だけで処理</td></tr>
+    </tbody>
+  </table>
+
+  <h2>03 実行プラン（3段階・今日は手0と手1）</h2>
+  <table class="table">
+    <thead><tr><th>手</th><th>内容</th><th>効果</th></tr></thead>
+    <tbody>
+      <tr class="pick"><td><b>手1: 単一司令 today.mjs</b>（今日実装）</td><td>coordタスク・measures・全実験のjudge_due・recurring・growth-tickフラグ・レーン状態を1本のスコアラーで統合し「今日の3件+背景の件数」を出す。growth-tickは計測係へ降格（WARNの直接宣告をやめtoday経由に）</td><td>入口が1つになる。13WARNの無視状態が終わる</td></tr>
+      <tr class="pick"><td><b>手0: 債務の一括処理</b>（今日実行）</td><td>①coordタスク50件を機械分類→30日超・状況消滅分を「失効リスト」にして本人へ一括裁定（1回のYes）②判定期日超過4件（H-CTR-051/H45/TT-EXP-051/TT-H43）をデータで判定して閉じる ③pdca「検証中」をアクティブ3本（H58/H61/H63）+frozenに再宣言</td><td>溜まった債務がゼロベースに戻る。以後はtodayが1日3件ずつ消化</td></tr>
+      <tr><td>手2: 指令ドキュメント圧縮（承認後・別セッション可）</td><td>CLAUDE.mdを「入口=today 1コマンド+人間ゲート3種+絶対禁止事項」の1画面(≦6KB)へ圧縮。詳細は既存rules/docsへのポインタ化。全ルールに発効日を付け、legacyスタブ10本を1本に統合</td><td>読み切れる正典に戻る。追記型成長に見直し規律が付く</td></tr>
+    </tbody>
+  </table>
+  <div class="callout">
+    <p><strong>正直な注記</strong>: 記事の有料部分（具体的実装）は読んでいません。この設計は記事の公開部の診断フレーム＋うちの実測から独自に導いたものです。もしメンバーシップ購読で実装詳細を見る価値があるかは、手1を動かした後に判断するのが安全です（先に自前で最適化→差分だけ学ぶ方が安い）。</p>
+  </div>
+
+  <div class="conclusion">
+    <h2>結論</h2>
+    <ol>
+      <li>機能不全の正体は部品の故障ではなく<b>「指令の多重化と義務の生成過多」</b>。記事の公開部の診断と一致</li>
+      <li>解法: 指令を <code class="inline">today.mjs</code> の「今日の3件」に一本化・実験WIP3本制限・期限切れ義務の自動失効</li>
+      <li>承認いただければ、手0（債務一括処理）と手1（today実装）を今日このセッションで実行します。手2（docs圧縮）は次</li>
+    </ol>
+  </div>
+
+  <p class="muted">実測: CLAUDE.md 24KB / rules 43KB / scripts 308 / open義務≈65+50 / growth-tick 13WARN（2026-08-01機械計測）。参照記事: note.com/masa_wunder/n/nd71c82955be9（公開部のみ）</p>
+</div>
+</body>
+</html>
