@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>sh48-kan-tonari 公開判断 — 社内94点、読者38点</title>
+<style>
+  :root{
+    --ink:#1b1a17; --sub:#5b574e; --line:#e2ddd2; --bg:#faf7f0; --card:#fff;
+    --gold:#b8860b; --red:#b3382c; --green:#2f6b4f; --blue:#2f5c8a;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif;
+    line-height:1.85;font-size:16px;-webkit-text-size-adjust:100%}
+  .wrap{max-width:880px;margin:0 auto;padding:32px 20px 80px}
+  .kicker{font-size:13px;letter-spacing:.12em;color:var(--gold);font-weight:700;margin-bottom:8px}
+  h1{font-size:30px;line-height:1.35;margin:0 0 14px;letter-spacing:.01em}
+  .lede{font-size:17px;color:var(--sub);margin:0 0 24px}
+  .tldr{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--gold);
+    border-radius:6px;padding:16px 20px;margin:0 0 32px}
+  .tldr ol{margin:0;padding-left:20px}
+  .tldr li{margin:6px 0}
+  h2{font-size:21px;margin:44px 0 14px;padding-bottom:8px;border-bottom:2px solid var(--line)}
+  h3{font-size:17px;margin:26px 0 8px}
+  figure{margin:0 0 32px}
+  figure img{width:100%;height:auto;border:1px solid var(--line);border-radius:8px;display:block}
+  figcaption{font-size:13px;color:var(--sub);margin-top:8px;text-align:center}
+  .scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:0 0 20px}
+  table{border-collapse:collapse;width:100%;font-size:14.5px;min-width:520px;background:var(--card)}
+  th,td{border:1px solid var(--line);padding:9px 11px;text-align:left;vertical-align:top}
+  th{background:#f2ede2;font-weight:700;white-space:nowrap}
+  td.num{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+  .bad{color:var(--red);font-weight:700}
+  .ok{color:var(--green);font-weight:700}
+  blockquote{margin:0 0 20px;background:var(--card);border:1px solid var(--line);
+    border-left:5px solid var(--red);border-radius:6px;padding:16px 20px;color:#3a352d}
+  blockquote p{margin:0 0 10px}
+  blockquote p:last-child{margin-bottom:0}
+  .callout{background:#fdf7e6;border:1px solid #e8d9a8;border-radius:6px;padding:14px 18px;margin:0 0 20px}
+  .callout.warn{background:#fdefec;border-color:#eec4bc}
+  .opt{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:18px 20px;margin:0 0 16px}
+  .opt.rec{border:2px solid var(--green);box-shadow:0 2px 10px rgba(47,107,79,.08)}
+  .opt h3{margin-top:0;font-size:18px}
+  .tag{display:inline-block;font-size:12px;font-weight:700;padding:2px 9px;border-radius:99px;
+    background:var(--green);color:#fff;margin-left:8px;vertical-align:middle}
+  .tag.no{background:#8c867a}
+  .opt ul{margin:8px 0 0;padding-left:20px}
+  .opt li{margin:4px 0}
+  .meta{font-size:13px;color:var(--sub);margin-top:10px}
+  code{background:#efeade;padding:1px 5px;border-radius:3px;font-size:13.5px;
+    font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+  .end{margin-top:40px;padding-top:18px;border-top:2px solid var(--line);font-size:15.5px}
+  @media (prefers-color-scheme: dark){
+    :root{--ink:#e9e4d9;--sub:#a8a294;--line:#3a3730;--bg:#171613;--card:#1f1e1a;
+      --gold:#d4a53a;--red:#e0796b;--green:#6db98f;--blue:#7fa9d8}
+    th{background:#26241e}
+    blockquote{color:#d8d2c5}
+    .callout{background:#241f14;border-color:#4a3f22}
+    .callout.warn{background:#2a1c19;border-color:#5a3229}
+    code{background:#2a2822}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="kicker">ep48 派生ショート／公開ゲート再判断</div>
+<h1>社内94点、読者38点。<br>8/15の枠をどうしますか。</h1>
+<p class="lede">「新ルールとかハーネスがあるから確認して」の結果です。確認したら、聞こうとしていた質問（縦ゲートの迂回フラグ）はもう答えが出ていて、代わりに<strong>別の判断が要る状態</strong>になっていました。</p>
+
+<div class="tldr">
+<ol>
+<li><strong>縦ゲートの迂回は確認不要でした</strong>。<code>--allow-legacy-vertical</code> は sh45（7/27）・sh46（7/29）が同じ理由で既に通っている確立ルート。<code>today.mjs</code> の今日の1件目も「完成済みショートを公開せよ」。</li>
+<li><strong>ep48の作業中に新ルールが3件</strong>入っていました。うち<strong>「基準を見ない読者ゲート」（8/2新設）が未通過</strong>だったので、今回1周回しました。</li>
+<li>結果、<strong>読者38点</strong>（合格70）。他の4本は73〜80点なので、これだけ半分以下です。<strong>本当の判断はここ</strong>——この1本を8/15に出すか、枠を譲るか。</li>
+</ol>
+</div>
+
+<figure>
+  <img src="images/overview-01.png" alt="社内94点と読者38点の対比、および3つの選択肢の図解">
+  <figcaption>社内の採点表では合格、基準を見ない読者では不合格。ズレを検出するのが新ゲートの目的でした。<br>
+  <strong style="color:var(--red)">※これは手描き風の概念図です。図中の「94点／38点」と3案の骨格以外（公開日・ターゲット・ジャンル・他4本の点数とその名前・「コメント・アンケートより」の但し書き）は生成AIが勝手に描いた架空の値なので読まないでください。実数は下の表が正です。</strong></figcaption>
+</figure>
+
+<h2>1. 私が留守にしている間に入った新ルール（3件）</h2>
+
+<div class="scroll">
+<table>
+<tr><th>いつ</th><th>何が変わったか</th><th>ep48ショートへの影響</th></tr>
+<tr>
+  <td>7/31</td>
+  <td><strong>ショート週4枠を4型ローテへ</strong>（診断／相談／ランキング／高速）。<strong>「隣の卦型」は control 扱いで新規制作停止</strong></td>
+  <td>sh48-kan-tonari は<strong>まさにその「隣の卦型」</strong>。作り終わっている最後の1本にあたる</td>
+</tr>
+<tr>
+  <td>8/1</td>
+  <td><code>shorts-precheck.sh</code> 新設（台本→音声のみで尺と発音を1分で実測）</td>
+  <td>完成済みなので該当なし（QAは通過済み）</td>
+</tr>
+<tr>
+  <td>8/2</td>
+  <td><strong>「基準を見ない読者ゲート」新設</strong>。採点表も合格ラインも知らないfork1体に、通勤電車の視聴者として反応させる</td>
+  <td><strong>未通過だった → 今回回した → 38点</strong></td>
+</tr>
+</table>
+</div>
+
+<div class="callout">
+このゲートの設計思想は「止めること」ではなく<strong>「内側の点と読者の点のズレを見つけること」</strong>です。実際 ep37 は採点表92点で本人が全却下しており、内側だけでは原理的に見えなかった。だから<strong>機械では止めず、違和感の言葉を本人ゲートに添える</strong>——それが今この資料です。
+</div>
+
+<h2>2. 読者ゲートの実測（他の4本との比較）</h2>
+
+<div class="scroll">
+<table>
+<tr><th>ショート</th><th>型</th><th class="num">社内fork採点</th><th class="num">読者ゲート</th><th>3秒で止まるか</th><th>最後まで観るか</th></tr>
+<tr><td>sh48-jusoudan</td><td>相談引用型</td><td class="num">—</td><td class="num ok">80</td><td>✅</td><td>✅</td></tr>
+<tr><td>sh47-soneki-shindan</td><td>二択診断型</td><td class="num">—</td><td class="num ok">74</td><td>✅</td><td>✅</td></tr>
+<tr><td>sh49-tsumi-top3</td><td>ランキング型</td><td class="num">—</td><td class="num ok">74</td><td>✅</td><td>✅</td></tr>
+<tr><td>sh50-kisei-fast</td><td>高速テンポ型</td><td class="num">—</td><td class="num ok">73</td><td>✅</td><td>✅</td></tr>
+<tr><td><strong>sh48-kan-tonari</strong></td><td>隣の卦型（control）</td><td class="num">94</td><td class="num bad">38</td><td>✅（冒頭は刺さっている）</td><td class="bad">❌ 20秒で離脱</td></tr>
+</table>
+</div>
+
+<h3>読者が実際に書いた言葉（そのまま）</h3>
+<blockquote>
+<p>冒頭は正直ドキッとした。「迷ったのは、帰り道です」ってやつ、まさに俺。ここは指止まった。アシタカの話も、まあ分かる、あの映画のあの感じね、で付いていけた。</p>
+<p>でもそのあと急に易経の授業が始まって、しかも「二十番目」「二十一番目」って番号の話をされて、正直どうでもよくなった。<strong>番号が隣だから何なの</strong>、って。棒が四本弱くて二本強い、って言われても画面の図がすごいのかどうか俺には分からんし、判定できないものを「証拠」みたいな顔で出されると逆に警戒する。<strong>占いの人が「ここに出てます」って言うのと同じ匂い。</strong></p>
+<p>決定的なのは<strong>「ぜいごう」</strong>。音で聞いても何のことか分からん漢字を、しかも一回しか出てこない言葉を、真ん中の一番大事なところに置くの無理がある。</p>
+<p>あと最後まで見た人には悪いけど、たぶんオチが「ちゃんと見てから決めよう」でしょ。<strong>それ易経いらなくない？</strong> 冒頭の一言だけで十分刺さってたのに、途中で他人の権威を借りに行った感じがして白けた。<strong>冒頭を書いた人と、真ん中を書いた人が別人に思える。</strong></p>
+</blockquote>
+
+<div class="callout warn">
+<strong>注意して読む点</strong>：この批判は sh48-kan-tonari 固有の失敗というより、<strong>「隣の卦型」という型そのもの</strong>（＝番号の隣接を"反論不能の証拠"として中盤に置く設計）に当たっています。あなたが7/31に隣の卦型を control へ降ろした判断と、読者の反応は同じ方向を向いています。<br>
+なお、読者1体の主観です。<strong>いいね率の実測（H51）ではありません。</strong>
+</div>
+
+<h2>3. 枠の状況</h2>
+<div class="scroll">
+<table>
+<tr><th>日付</th><th>現在の予約</th><th>型</th></tr>
+<tr><td>8/05</td><td>sh45-hou-tonari</td><td>隣の卦型</td></tr>
+<tr><td>8/08</td><td>sh46-gon-tonari</td><td>隣の卦型</td></tr>
+<tr><td><strong>8/15</strong></td><td><strong>sh48-kan-tonari</strong></td><td><strong>隣の卦型</strong></td></tr>
+<tr><td>—</td><td>sh47 / sh48-jusoudan / sh49 / sh50（完成済み）</td><td class="bad">4型ローテ＝現行方針。まだ1枠も取れていない</td></tr>
+</table>
+</div>
+<p>現行方針の4本が完成しているのに枠がゼロ、退役した型が枠を持っている、という状態です。8/28に型別プールで判定する予定なので、<strong>4型の実データが早く要る</strong>のも事実です。</p>
+
+<h2>4. あなたが決めること</h2>
+
+<div class="opt rec">
+<h3>A. 8/15の枠を sh48-jusoudan（相談型・読者80点）に譲り、sh48-kan-tonari は保留<span class="tag">推奨</span></h3>
+<ul>
+<li>👍 現行方針（4型ローテ）の実データが8/28判定に間に合う</li>
+<li>👍 読者80点の本を出す。38点の本で枠を1つ使わずに済む</li>
+<li>👎 完成品が1本さらに寝る（今日の司令の「完成品を寝かせない」に反する）</li>
+<li>👎 隣の卦型 control のサンプルが1本減る</li>
+</ul>
+<p class="meta">作業：枠の付け替え＋<code>--allow-legacy-vertical</code> で予約投稿（30分）</p>
+</div>
+
+<div class="opt">
+<h3>B. sh48-kan-tonari をこのまま 8/15 に予約公開する<span class="tag no">現状維持</span></h3>
+<ul>
+<li>👍 承認済みの完成品を寝かせない。隣の卦型 control の最後の1本として型別判定の分母になる</li>
+<li>👍 読者ゲートは設計上「機械では止めない」。あなたは既に一度OKを出している</li>
+<li>👎 読者は20秒で離脱すると言っている。<strong>律速は本数でなく共鳴の発生率</strong>という方針と逆を向く</li>
+<li>👎 4型の枠取りがさらに後ろへずれる</li>
+</ul>
+<p class="meta">作業：そのまま予約投稿（15分）</p>
+</div>
+
+<div class="opt">
+<h3>C. 中盤（S03-S04）を書き直して再レンダしてから公開<span class="tag no">要注意</span></h3>
+<ul>
+<li>👍 冒頭は読者も「まさに俺」と認めている。強い入口を捨てずに済む</li>
+<li>👎 読者が壊れていると言っているのは<strong>「番号の隣接＝証拠」という型の心臓部</strong>。ここを外すと隣の卦型ではなくなる（＝実質、別の型で作り直し）</li>
+<li>👎 退役が決まっている型に制作コストを再投下することになる</li>
+</ul>
+<p class="meta">作業：台本改稿→precheck→再produce→QA→再採点（2〜3時間）</p>
+</div>
+
+<div class="end">
+<strong>私の推奨は A です。</strong>理由は3つ。①現行方針の4本が枠ゼロで、8/28の型別判定に実データが要る ②読者点が80と38で倍以上違う ③読者の批判が当たっているのは型の心臓部で、Cで直せる種類の傷ではない。<br>
+ただし、隣の卦型を control として公平に判定したいなら B にも筋が通ります（同じ型を4本出して1本だけ引っ込めると、control 側が良い方に偏る）。<strong>そこはあなたの判断です。</strong>
+</div>
+
+</div>
+</body>
+</html>
