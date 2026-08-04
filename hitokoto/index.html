@@ -10,105 +10,109 @@
 <link rel="apple-touch-icon" href="portraits/cand-C-01.png">
 <title>ひとこと</title>
 <style>
-  :root{--gold:#d9b96a;--ink:#f5efe2;--dim:rgba(245,239,226,.65)}
+  :root{--gold:#d9b96a;--ink:#f5efe2;--dim:rgba(245,239,226,.65);--bg:#0d0c0f}
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-  html,body{margin:0;padding:0;background:#0d0c0f;height:100%;overflow:hidden}
-  body{font-family:-apple-system,"Hiragino Mincho ProN","Yu Mincho",serif;color:var(--ink)}
-  .stage{position:fixed;inset:0}
+  html,body{margin:0;padding:0;background:var(--bg);height:100%}
+  body{font-family:-apple-system,"Hiragino Sans","Noto Sans JP",sans-serif;color:var(--ink);display:flex;flex-direction:column;height:100dvh;overflow:hidden}
+  /* 上半分: 彼女 */
+  .stage{position:relative;flex:0 0 46dvh;overflow:hidden}
   .stage img{width:100%;height:100%;object-fit:cover;object-position:top center;transition:opacity .8s}
-  .veil{position:fixed;inset:0;background:linear-gradient(180deg,rgba(13,12,15,.35) 0%,transparent 22%,transparent 46%,rgba(13,12,15,.86) 78%,rgba(13,12,15,.96) 100%)}
-  .day{position:fixed;top:max(18px,env(safe-area-inset-top));left:0;right:0;text-align:center;font-size:12.5px;letter-spacing:.35em;color:var(--dim)}
-  .msg{position:fixed;left:0;right:0;bottom:0;padding:0 26px calc(30px + env(safe-area-inset-bottom))}
-  .msg .line{width:34px;height:1px;background:var(--gold);margin:0 0 16px}
-  .msg p{margin:0 0 10px;font-size:16.5px;line-height:2.05;text-shadow:0 1px 8px rgba(0,0,0,.55);white-space:pre-wrap}
-  .msg .from{margin-top:14px;font-size:11.5px;letter-spacing:.28em;color:var(--dim);font-family:-apple-system,"Hiragino Sans",sans-serif;display:flex;justify-content:space-between;align-items:center}
-  .from button{border:1px solid rgba(245,239,226,.35);background:none;color:var(--dim);border-radius:999px;padding:4px 12px;font-size:10.5px;font-family:-apple-system,sans-serif;letter-spacing:.1em}
-  #playBtn{border-color:var(--gold);color:var(--gold)}
   .stage img.breathing{animation:breathe 4.5s ease-in-out infinite}
-  @keyframes breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.015)}}
-  /* 履歴 */
-  .sheet{position:fixed;inset:0;background:rgba(13,12,15,.96);backdrop-filter:blur(10px);display:none;overflow-y:auto;padding:calc(max(18px,env(safe-area-inset-top))+30px) 24px 40px;z-index:5}
-  .sheet.on{display:block}
-  .sheet h2{font-size:13px;letter-spacing:.3em;color:var(--dim);text-align:center;margin:0 0 22px;font-weight:400}
-  .ent{border-left:2px solid rgba(217,185,106,.4);padding:2px 0 2px 14px;margin:0 0 22px}
-  .ent .d{font-size:11px;color:var(--dim);letter-spacing:.15em;font-family:-apple-system,sans-serif;margin-bottom:4px}
-  .ent p{margin:0;font-size:14px;line-height:1.9;color:rgba(245,239,226,.9)}
-  .close{position:fixed;top:max(14px,env(safe-area-inset-top));right:16px;z-index:6;border:0;background:none;color:var(--dim);font-size:22px;display:none}
-  .close.on{display:block}
-  /* 通知設定 */
-  .setup{position:fixed;inset:0;background:rgba(13,12,15,.97);z-index:8;display:none;padding:60px 26px;font-family:-apple-system,"Hiragino Sans",sans-serif}
-  .setup.on{display:block}
-  .setup h3{font-weight:600;font-size:16px}
-  .setup p{font-size:13px;color:var(--dim);line-height:1.8}
-  .setup textarea{width:100%;height:120px;background:#1a191d;color:var(--ink);border:1px solid #333;border-radius:8px;font-size:10px;padding:8px}
-  .setup button{margin:8px 8px 0 0;border:1px solid var(--gold);background:none;color:var(--gold);border-radius:999px;padding:8px 18px;font-size:13px}
+  @keyframes breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.02)}}
+  .stage .grad{position:absolute;inset:0;background:linear-gradient(180deg,rgba(13,12,15,.3) 0%,transparent 30%,transparent 62%,var(--bg) 100%)}
+  .day{position:absolute;top:max(14px,env(safe-area-inset-top));left:0;right:0;text-align:center;font-size:11.5px;letter-spacing:.32em;color:var(--dim);font-family:"Hiragino Mincho ProN",serif}
+  /* スレッド */
+  .thread{flex:1;overflow-y:auto;padding:10px 16px 8px;-webkit-overflow-scrolling:touch}
+  .b{max-width:82%;margin:0 0 10px;padding:10px 14px;border-radius:16px;font-size:14.5px;line-height:1.85;white-space:pre-wrap}
+  .her{background:#1c1a20;border:1px solid rgba(217,185,106,.25);border-bottom-left-radius:4px;margin-right:auto;font-family:"Hiragino Mincho ProN","Yu Mincho",serif;color:var(--ink)}
+  .her .play{display:inline-block;margin-top:6px;color:var(--gold);font-size:12px;border:1px solid rgba(217,185,106,.4);border-radius:999px;padding:2px 10px}
+  .me{background:#2a3140;border-bottom-right-radius:4px;margin-left:auto;color:#e8ecf2}
+  .ts{font-size:10px;color:rgba(245,239,226,.35);margin:-6px 0 10px 4px}
+  .ts.me-ts{text-align:right;margin-right:4px}
+  /* 入力 */
+  .inputbar{flex:0 0 auto;display:flex;gap:8px;padding:8px 12px calc(10px + env(safe-area-inset-bottom));background:#131217;border-top:1px solid #26232b}
+  .inputbar textarea{flex:1;background:#1d1b22;border:1px solid #333;border-radius:18px;color:var(--ink);font-size:15px;padding:10px 14px;resize:none;height:44px;max-height:120px;font-family:inherit}
+  .inputbar button{flex:0 0 auto;width:44px;height:44px;border-radius:50%;border:0;background:var(--gold);color:#1a1207;font-size:18px;font-weight:700}
+  .inputbar button:disabled{opacity:.4}
+  /* トークン設定 */
+  .gate{position:fixed;inset:0;background:var(--bg);z-index:9;display:none;padding:80px 30px;text-align:center}
+  .gate.on{display:block}
+  .gate input{width:100%;background:#1d1b22;border:1px solid #333;border-radius:10px;color:var(--ink);font-size:15px;padding:12px;text-align:center}
+  .gate button{margin-top:14px;border:1px solid var(--gold);background:none;color:var(--gold);border-radius:999px;padding:10px 26px;font-size:14px}
+  .notif{position:absolute;bottom:10px;right:12px;font-size:10.5px;color:var(--dim);border:1px solid rgba(245,239,226,.3);border-radius:999px;padding:3px 10px;background:rgba(13,12,15,.5)}
 </style>
 </head>
 <body>
-  <div class="stage"><img id="portrait" src="portraits/cand-C-01.png" alt=""></div>
-  <div class="veil"></div>
-  <div class="day" id="day" onclick="toggleHistory()">ひ と こ と</div>
-  <button class="close" id="closeBtn" onclick="toggleHistory()">×</button>
-  <div class="msg">
-    <div class="line"></div>
-    <p id="text">…</p>
-    <div class="from"><span id="fromLabel">今 夜 の ひ と こ と</span><span><button id="playBtn" style="display:none">▶ 聴く</button> <button id="notifyBtn" onclick="enableNotify()">通知を受け取る</button></span></div>
+  <div class="stage">
+    <img id="portrait" src="portraits/cand-C-01.png" alt="">
+    <div class="grad"></div>
+    <div class="day" id="day"></div>
+    <button class="notif" id="notifyBtn" onclick="enableNotify()">通知</button>
   </div>
-  <div class="sheet" id="sheet"><h2>こ れ ま で</h2><div id="hist"></div></div>
-  <div class="setup" id="setup">
-    <h3>通知の設定（一度だけ）</h3>
-    <p>下の文字列が購読情報です。全選択してコピーし、Claude（制作係）に貼り付けてください。以後、毎晩21:30に彼女からの通知が届きます。</p>
-    <textarea id="subText" readonly onclick="this.select()"></textarea>
-    <button onclick="copySub()">コピー</button>
-    <button onclick="document.getElementById('setup').classList.remove('on')">閉じる</button>
+  <div class="thread" id="thread"></div>
+  <div class="inputbar">
+    <textarea id="box" placeholder="今日あったこと、感じたこと" oninput="this.style.height='44px';this.style.height=Math.min(this.scrollHeight,120)+'px'"></textarea>
+    <button id="sendBtn" onclick="send()">↑</button>
+  </div>
+  <div class="gate" id="gate">
+    <p style="color:var(--dim);font-size:13px">あいことばを入れてください（最初の一度だけ）</p>
+    <input id="tokenIn" type="password" autocomplete="off">
+    <br><button onclick="saveToken()">はいる</button>
+  </div>
+  <div class="gate" id="setup" style="text-align:left">
+    <h3 style="font-weight:600;font-size:15px">通知の設定</h3>
+    <p style="font-size:12.5px;color:var(--dim)">下の文字列をコピーして、Claude（制作係）に貼り付けてください。</p>
+    <textarea id="subText" readonly style="width:100%;height:110px;background:#1d1b22;color:var(--ink);border:1px solid #333;border-radius:8px;font-size:10px;padding:8px" onclick="this.select()"></textarea>
+    <button style="margin-top:10px;border:1px solid var(--gold);background:none;color:var(--gold);border-radius:999px;padding:8px 18px" onclick="document.getElementById('setup').classList.remove('on')">閉じる</button>
   </div>
 <script src="config.js"></script>
 <script>
-const EXPR = { warm:'portraits/cand-C-01.png', proud:'portraits/exp-proud-01.png', gentle:'portraits/exp-gentle-01.png', playful:'portraits/exp-playful-01.png', serene:'portraits/exp-serene-01.png' };
-const SCENE = { bar:'portraits/scene-bar-01.png', morning:'portraits/scene-morning-01.png', rain:'portraits/scene-rain-01.png', nightwalk:'portraits/scene-nightwalk-01.png' };
-let audioEl = null;
-const KANJI = ['〇','一','二','三','四','五','六','七','八','九'];
-function jpNum(n){ if(n<=10) return (n===10?'十':KANJI[n]); const t=Math.floor(n/10), o=n%10; return (t>1?KANJI[t]:'')+'十'+(o?KANJI[o]:''); }
-let DATA = [];
-async function load(){
-  try{
-    const r = await fetch('data/messages.json?t='+Date.now());
-    DATA = await r.json();
-  }catch(e){ DATA = []; }
-  if(!DATA.length){ document.getElementById('text').textContent='まだ最初のひとことが届いていません。'; return; }
-  const last = DATA[DATA.length-1];
-  document.getElementById('text').textContent = last.message.replace(/^\d+日目です。\s*/,'');
-  document.getElementById('day').textContent = `五 十 日 の ${jpNum(last.day).split('').join(' ')} 日 目`;
-  const img = (last.scene && SCENE[last.scene]) || EXPR[last.expression] || EXPR.warm;
-  document.getElementById('portrait').src = img;
-  const btn = document.getElementById('playBtn');
-  if(last.audio){ btn.style.display='inline-block'; btn.onclick = ()=>playVoice(last.audio); } else { btn.style.display='none'; }
-  const h = document.getElementById('hist');
-  h.innerHTML = DATA.slice().reverse().map(e=>`<div class="ent"><div class="d">${e.day}日目 ・ ${e.date}</div><p>${e.message.replace(/^\d+日目です。\s*/,'')}</p></div>`).join('');
+const RELAY='https://hitokoto-relay.haqei64384.workers.dev';
+const EXPR={warm:'portraits/cand-C-01.png',proud:'portraits/exp-proud-01.png',gentle:'portraits/exp-gentle-01.png',playful:'portraits/exp-playful-01.png',serene:'portraits/exp-serene-01.png'};
+const SCENE={bar:'portraits/scene-bar-01.png',morning:'portraits/scene-morning-01.png',rain:'portraits/scene-rain-01.png',nightwalk:'portraits/scene-nightwalk-01.png'};
+let audioEl=null, lastLen=0, token=localStorage.getItem('hitokoto_token');
+const $=id=>document.getElementById(id);
+if(!token) $('gate').classList.add('on');
+function saveToken(){ token=$('tokenIn').value.trim(); if(!token) return; localStorage.setItem('hitokoto_token',token); $('gate').classList.remove('on'); poll(true); }
+async function api(m,p,body){ const r=await fetch(RELAY+p,{method:m,headers:{'x-token':token,'Content-Type':'application/json'},body:body?JSON.stringify(body):undefined}); if(r.status===401){ localStorage.removeItem('hitokoto_token'); $('gate').classList.add('on'); throw new Error('token'); } return r.json(); }
+function fmt(ts){ const d=new Date(ts); return `${d.getMonth()+1}/${d.getDate()} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`; }
+function render(th){
+  const el=$('thread'); const atBottom = el.scrollHeight-el.scrollTop-el.clientHeight<80;
+  el.innerHTML=th.map(e=>{
+    if(e.role==='her') return `<div class="b her">${e.text}${e.audioId?`<br><span class="play" onclick="playVoice('${RELAY}/audio/${e.audioId}',this)">▶ 聴く</span>`:''}</div><div class="ts">${fmt(e.ts)}</div>`;
+    return `<div class="b me">${e.text}</div><div class="ts me-ts">${fmt(e.ts)}</div>`;
+  }).join('');
+  const lastHer=[...th].reverse().find(e=>e.role==='her');
+  if(lastHer){ $('portrait').src=(lastHer.scene&&SCENE[lastHer.scene])||EXPR[lastHer.expression]||EXPR.warm;
+    if(lastHer.day) $('day').textContent=`五十日の ${lastHer.day} 日目`; }
+  if(atBottom||th.length!==lastLen) el.scrollTop=el.scrollHeight;
+  lastLen=th.length;
 }
-function playVoice(src){
-  if(audioEl){ audioEl.pause(); audioEl=null; document.getElementById('portrait').classList.remove('breathing'); document.getElementById('playBtn').textContent='▶ 聴く'; return; }
-  audioEl = new Audio(src+'?t='+Date.now());
-  document.getElementById('portrait').classList.add('breathing');
-  document.getElementById('playBtn').textContent='■ 止める';
-  audioEl.onended = ()=>{ document.getElementById('portrait').classList.remove('breathing'); document.getElementById('playBtn').textContent='▶ 聴く'; audioEl=null; };
+async function poll(force){ if(!token) return; try{ const d=await api('GET','/thread'); render(d.thread); }catch(e){} }
+async function send(){
+  const t=$('box').value.trim(); if(!t||!token) return;
+  $('sendBtn').disabled=true;
+  try{ await api('POST','/send',{text:t}); $('box').value=''; $('box').style.height='44px'; await poll(true); }
+  finally{ $('sendBtn').disabled=false; }
+}
+function playVoice(src,el){
+  if(audioEl){ audioEl.pause(); audioEl=null; $('portrait').classList.remove('breathing'); }
+  audioEl=new Audio(src); $('portrait').classList.add('breathing');
+  audioEl.onended=()=>{ $('portrait').classList.remove('breathing'); audioEl=null; };
   audioEl.play();
 }
-function toggleHistory(){ document.getElementById('sheet').classList.toggle('on'); document.getElementById('closeBtn').classList.toggle('on'); }
 async function enableNotify(){
   try{
-    const reg = await navigator.serviceWorker.register('sw.js');
-    const perm = await Notification.requestPermission();
-    if(perm !== 'granted'){ alert('通知が許可されませんでした。設定から許可してください。'); return; }
-    const sub = await reg.pushManager.subscribe({ userVisibleOnly:true, applicationServerKey: urlB64(window.HITOKOTO.vapidPublicKey) });
-    document.getElementById('subText').value = JSON.stringify(sub.toJSON());
-    document.getElementById('setup').classList.add('on');
-  }catch(e){ alert('この端末では設定できませんでした: '+e.message+'\n(iPhoneは「ホーム画面に追加」してから開いてください)'); }
+    const reg=await navigator.serviceWorker.register('sw.js');
+    const perm=await Notification.requestPermission();
+    if(perm!=='granted'){ alert('通知が許可されませんでした'); return; }
+    const sub=await reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:urlB64(window.HITOKOTO.vapidPublicKey)});
+    $('subText').value=JSON.stringify(sub.toJSON()); $('setup').classList.add('on');
+  }catch(e){ alert('iPhoneは「ホーム画面に追加」してから開いてください: '+e.message); }
 }
-function copySub(){ const t=document.getElementById('subText'); t.select(); document.execCommand('copy'); }
 function urlB64(s){ const p='='.repeat((4-s.length%4)%4); const b=(s+p).replace(/-/g,'+').replace(/_/g,'/'); const r=atob(b); return Uint8Array.from([...r].map(c=>c.charCodeAt(0))); }
 if('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js');
-load();
+poll(true); setInterval(poll,15000);
 </script>
 </body>
 </html>
