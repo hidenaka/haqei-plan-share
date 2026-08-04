@@ -2,353 +2,848 @@
 <html lang="ja">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,maximum-scale=1">
 <meta name="robots" content="noindex">
-<meta name="theme-color" content="#f7f5f1">
+<meta name="theme-color" content="#f4f2ed">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="portraits/cand-C-01.png">
-<title>まどか</title>
+<title>まどかとのトーク</title>
 <style>
-  :root{
-    --paper:#f7f5f1;--panel:#fff;--ink:#242321;--muted:#8b8883;
-    --line:#dedbd5;--her:#fff;--me:#bfe6ca;--accent:#557a66;
-    --shadow:0 1px 2px rgba(42,37,30,.1),0 7px 24px rgba(42,37,30,.06)
+  :root {
+    color-scheme: light;
+    --paper: #f4f2ed;
+    --panel: #fff;
+    --ink: #262522;
+    --muted: #85817a;
+    --line: #dedbd4;
+    --mine: #a9dd8e;
+    --mine-pressed: #94cd77;
+    --accent: #4f7758;
+    --shadow: 0 1px 1px rgba(30, 27, 22, .08), 0 2px 8px rgba(30, 27, 22, .04);
   }
-  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-  html,body{height:100%;margin:0;background:var(--paper)}
-  body{font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic UI",sans-serif;color:var(--ink);overflow:hidden}
-  button,textarea,input{font:inherit}
-  button{touch-action:manipulation}
-  .app{height:100dvh;display:grid;grid-template-rows:auto minmax(0,1fr) auto;background:var(--paper)}
 
-  .profile{position:relative;height:clamp(190px,34dvh,310px);overflow:hidden;background:#cbc5bc;border-bottom:1px solid rgba(0,0,0,.08)}
-  .profile-photo{width:100%;height:100%;display:block;object-fit:cover;object-position:50% 20%;transition:opacity .2s ease}
-  .profile-photo.changing{opacity:.45}
-  .profile-shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.18),transparent 38%,rgba(0,0,0,.55))}
-  .profile-top{position:absolute;top:calc(9px + env(safe-area-inset-top));left:12px;right:12px;display:flex;justify-content:flex-end}
-  .notify{min-height:34px;padding:6px 12px;border:0;border-radius:18px;background:rgba(32,30,27,.54);color:#fff;font-size:12px;backdrop-filter:blur(9px);-webkit-backdrop-filter:blur(9px)}
-  .profile-info{position:absolute;left:17px;right:17px;bottom:13px;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.45)}
-  .name-line{display:flex;align-items:center;gap:8px}
-  .name{font-size:21px;font-weight:650;letter-spacing:.02em}
-  .online{width:8px;height:8px;border-radius:50%;background:#77d38c;border:1.5px solid rgba(255,255,255,.9)}
-  .presence{margin-top:2px;font-size:11px;opacity:.92}
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body { width: 100%; height: 100%; margin: 0; background: var(--paper); }
+  body {
+    overflow: hidden;
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  button, textarea, input { font: inherit; }
+  button { -webkit-touch-callout: none; }
+  [hidden] { display: none !important; }
 
-  .conversation{min-height:0;display:flex;flex-direction:column;background-color:var(--paper);background-image:radial-gradient(rgba(83,77,68,.035) .8px,transparent .8px);background-size:13px 13px}
-  .day-strip{flex:0 0 auto;min-height:28px;padding:7px 10px 2px;text-align:center;color:var(--muted);font-size:11px}
-  .thread{flex:1;min-height:0;overflow-y:auto;padding:7px 12px 15px;scroll-behavior:smooth;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
-  .empty{margin:32px auto 0;max-width:250px;text-align:center;color:var(--muted);font-size:13px;line-height:1.7}
-  .row{display:flex;align-items:flex-end;gap:7px;margin:3px 0}
-  .row.her{justify-content:flex-start;margin-right:34px}
-  .row.me{justify-content:flex-end;margin-left:34px}
-  .avatar{width:28px;height:28px;border-radius:50%;object-fit:cover;object-position:50% 20%;flex:0 0 auto;box-shadow:0 0 0 1px rgba(0,0,0,.08)}
-  .stack{max-width:min(78%,430px)}
-  .bubble{position:relative;padding:9px 12px;border:1px solid rgba(0,0,0,.075);font-size:14.5px;line-height:1.5;letter-spacing:.005em;white-space:pre-wrap;overflow-wrap:anywhere;box-shadow:0 1px 1px rgba(0,0,0,.035)}
-  .her .bubble{background:var(--her);border-radius:17px 17px 17px 5px}
-  .me .bubble{background:var(--me);border-radius:17px 17px 5px 17px}
-  .meta{display:flex;align-items:center;gap:6px;margin:3px 4px 7px;color:var(--muted);font-size:9.5px;line-height:1}
-  .me .meta{justify-content:flex-end}
-  .read{color:#6f8d79}
-  .voice{display:flex;align-items:center;gap:8px;margin-top:8px;padding-top:7px;border-top:1px solid rgba(0,0,0,.08)}
-  .voice-btn{width:29px;height:29px;border:0;border-radius:50%;background:#65776b;color:#fff;font-size:11px;padding:0}
-  .voice-btn.playing{background:#a36b67}
-  .voice-wave{display:flex;align-items:center;gap:2px;height:16px;flex:1}
-  .voice-wave i{display:block;width:2px;border-radius:2px;background:#9caaa1}
-  .voice-wave i:nth-child(1){height:5px}.voice-wave i:nth-child(2){height:11px}.voice-wave i:nth-child(3){height:7px}.voice-wave i:nth-child(4){height:15px}.voice-wave i:nth-child(5){height:9px}.voice-wave i:nth-child(6){height:12px}.voice-wave i:nth-child(7){height:6px}.voice-wave i:nth-child(8){height:10px}.voice-wave i:nth-child(9){height:4px}
-  .voice-label{font-size:10px;color:var(--muted)}
-  .typing{display:none;align-items:center;gap:7px;margin:4px 46px 5px 0;color:var(--muted);font-size:11px}
-  .typing.on{display:flex}
-  .typing .dots{display:flex;gap:3px;padding:9px 12px;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:15px 15px 15px 5px}
-  .typing i{width:5px;height:5px;border-radius:50%;background:#a8a49e;animation:dot 1.25s infinite ease-in-out}
-  .typing i:nth-child(2){animation-delay:.16s}.typing i:nth-child(3){animation-delay:.32s}
-  @keyframes dot{0%,60%,100%{transform:translateY(0);opacity:.45}30%{transform:translateY(-3px);opacity:1}}
+  .app {
+    width: 100%;
+    height: 100vh;
+    height: 100svh;
+    height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: var(--paper);
+  }
 
-  .composer{display:flex;align-items:flex-end;gap:8px;padding:8px 10px calc(8px + env(safe-area-inset-bottom));background:rgba(255,255,255,.96);border-top:1px solid var(--line)}
-  .composer textarea{flex:1;height:40px;max-height:112px;resize:none;overflow-y:auto;border:1px solid #d4d1cc;border-radius:20px;background:#fff;color:var(--ink);outline:none;padding:9px 14px;font-size:15px;line-height:20px}
-  .composer textarea:focus{border-color:#9caf9f}
-  .composer textarea::placeholder{color:#aaa6a0}
-  .send{width:40px;height:40px;flex:0 0 40px;border:0;border-radius:50%;background:var(--accent);color:#fff;display:grid;place-items:center}
-  .send svg{width:19px;height:19px;transform:translateX(1px)}
-  .send:disabled{background:#bbb8b2}
+  .photo-panel {
+    position: relative;
+    flex: 0 0 clamp(190px, 31dvh, 282px);
+    min-height: 0;
+    overflow: hidden;
+    background: #bba993;
+  }
+  .photo-panel::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(180deg, rgba(0,0,0,.27) 0%, rgba(0,0,0,0) 38%, rgba(0,0,0,.05) 64%, rgba(0,0,0,.58) 100%);
+  }
+  .portrait {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    object-position: 50% 34%;
+    transition: opacity .18s ease;
+  }
+  .portrait.changing { opacity: .72; }
 
-  .gate{position:fixed;inset:0;z-index:20;display:none;align-items:center;justify-content:center;padding:calc(24px + env(safe-area-inset-top)) 24px calc(24px + env(safe-area-inset-bottom));background:#eeeae3}
-  .gate.on{display:flex}
-  .gate-card{width:min(100%,350px);padding:25px 21px 21px;border-radius:20px;background:#fff;box-shadow:var(--shadow);text-align:center}
-  .gate-face{width:76px;height:76px;border-radius:50%;object-fit:cover;object-position:50% 20%;margin-bottom:9px}
-  .gate-title{font-size:18px;font-weight:650}
-  .gate-copy{margin:7px 0 17px;color:var(--muted);font-size:12px;line-height:1.6}
-  .gate input{width:100%;height:44px;border:1px solid #d1cec9;border-radius:12px;background:#faf9f7;color:var(--ink);padding:0 12px;text-align:center;font-size:16px;outline:none}
-  .gate .primary{width:100%;height:43px;margin-top:10px;border:0;border-radius:12px;background:var(--accent);color:#fff}
-  .setup-card{text-align:left}
-  .setup-card textarea{width:100%;height:115px;resize:none;border:1px solid #d1cec9;border-radius:10px;background:#f7f6f3;color:#555;padding:9px;font:10px/1.4 ui-monospace,SFMono-Regular,monospace}
-  .close{height:38px;margin-top:10px;padding:0 18px;border:0;border-radius:10px;background:#e9e6e0;color:#555}
-  .toast{position:fixed;z-index:30;left:50%;bottom:calc(74px + env(safe-area-inset-bottom));transform:translate(-50%,12px);opacity:0;pointer-events:none;background:rgba(35,33,30,.9);color:#fff;border-radius:18px;padding:8px 14px;font-size:12px;transition:.18s}
-  .toast.on{opacity:1;transform:translate(-50%,0)}
-  @media (min-width:700px){body{background:#dedad3}.app{max-width:520px;margin:0 auto;box-shadow:0 0 30px rgba(0,0,0,.13)}}
-  @media (max-height:620px){.profile{height:165px}}
-  @media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
+  .photo-top {
+    position: absolute;
+    z-index: 2;
+    top: max(10px, env(safe-area-inset-top));
+    left: 12px;
+    right: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .day-badge,
+  .notify-button {
+    min-height: 34px;
+    border: 0;
+    border-radius: 18px;
+    background: rgba(28, 27, 25, .52);
+    color: #fff;
+    box-shadow: 0 1px 4px rgba(0,0,0,.14);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+  .day-badge {
+    display: flex;
+    align-items: center;
+    padding: 0 12px;
+    font-size: 12px;
+    letter-spacing: .04em;
+  }
+  .notify-button {
+    width: 38px;
+    padding: 0;
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+  }
+  .notify-button svg { width: 18px; height: 18px; fill: currentColor; }
+  .notify-button.is-on { background: rgba(255,255,255,.88); color: #383733; }
+
+  .identity {
+    position: absolute;
+    z-index: 2;
+    left: 16px;
+    right: 16px;
+    bottom: 13px;
+    color: #fff;
+    text-shadow: 0 1px 5px rgba(0,0,0,.4);
+  }
+  .identity-name { font-size: 19px; font-weight: 650; letter-spacing: .02em; }
+  .identity-status { min-height: 17px; margin-top: 2px; font-size: 11px; color: rgba(255,255,255,.84); }
+
+  .thread {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+    padding: 14px 10px 18px;
+    scroll-behavior: smooth;
+    background-color: var(--paper);
+    background-image: radial-gradient(rgba(87, 78, 67, .045) .7px, transparent .7px);
+    background-size: 11px 11px;
+  }
+  .loading,
+  .empty-state {
+    min-height: 100%;
+    display: grid;
+    place-content: center;
+    justify-items: center;
+    text-align: center;
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.7;
+  }
+  .empty-avatar {
+    width: 58px;
+    height: 58px;
+    margin-bottom: 10px;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: 50% 27%;
+    box-shadow: var(--shadow);
+  }
+
+  .date-separator {
+    width: max-content;
+    margin: 7px auto 13px;
+    padding: 3px 9px;
+    border-radius: 10px;
+    color: #89857e;
+    background: rgba(224, 221, 214, .8);
+    font-size: 10.5px;
+  }
+  .message-row {
+    width: 100%;
+    display: flex;
+    align-items: flex-end;
+    gap: 7px;
+    margin-top: 10px;
+  }
+  .message-row.continued { margin-top: 3px; }
+  .message-row.mine { justify-content: flex-end; padding-left: 42px; }
+  .message-row.hers { justify-content: flex-start; padding-right: 42px; }
+  .avatar-slot { flex: 0 0 29px; width: 29px; }
+  .message-avatar {
+    width: 29px;
+    height: 29px;
+    display: block;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: 50% 28%;
+    box-shadow: var(--shadow);
+  }
+  .message-stack { min-width: 0; max-width: min(78vw, 460px); }
+  .mine .message-stack { display: flex; flex-direction: column; align-items: flex-end; }
+  .bubble {
+    position: relative;
+    width: fit-content;
+    max-width: 100%;
+    padding: 8px 11px 9px;
+    border-radius: 17px;
+    font-size: 15px;
+    line-height: 1.52;
+    letter-spacing: .005em;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    box-shadow: var(--shadow);
+  }
+  .hers .bubble { background: var(--panel); border-bottom-left-radius: 5px; }
+  .mine .bubble { background: var(--mine); border-bottom-right-radius: 5px; }
+  .continued.hers .bubble { border-top-left-radius: 7px; }
+  .continued.mine .bubble { border-top-right-radius: 7px; }
+  .message-meta {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    min-height: 15px;
+    margin: 2px 3px 0;
+    color: var(--muted);
+    font-size: 9.5px;
+    line-height: 1;
+  }
+  .mine .message-meta { justify-content: flex-end; }
+  .receipt { color: #6d8872; }
+
+  .voice-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    min-height: 29px;
+    margin-top: 7px;
+    padding: 4px 9px 4px 7px;
+    border: 1px solid #d6d2ca;
+    border-radius: 15px;
+    background: #f7f5f1;
+    color: #55524d;
+    font-size: 11px;
+    cursor: pointer;
+  }
+  .voice-icon {
+    width: 18px;
+    height: 18px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff;
+    font-size: 8px;
+    line-height: 1;
+  }
+  .voice-button.playing .voice-icon { animation: voicePulse 1s ease-in-out infinite; }
+
+  .typing-row { margin-top: 8px; }
+  .typing-bubble {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    width: 48px;
+    height: 34px;
+    padding: 0 13px;
+    border-radius: 17px;
+    border-bottom-left-radius: 5px;
+    background: #fff;
+    box-shadow: var(--shadow);
+  }
+  .typing-bubble i {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #aaa59d;
+    animation: typing 1.15s infinite ease-in-out;
+  }
+  .typing-bubble i:nth-child(2) { animation-delay: .14s; }
+  .typing-bubble i:nth-child(3) { animation-delay: .28s; }
+
+  .composer {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+    padding: 8px 10px calc(8px + env(safe-area-inset-bottom));
+    border-top: 1px solid var(--line);
+    background: rgba(255,255,255,.97);
+  }
+  .message-input {
+    flex: 1 1 auto;
+    width: 100%;
+    height: 40px;
+    max-height: 116px;
+    margin: 0;
+    padding: 9px 13px;
+    resize: none;
+    overflow-y: auto;
+    border: 1px solid #d9d6cf;
+    border-radius: 20px;
+    outline: none;
+    background: #f7f6f3;
+    color: var(--ink);
+    font-size: 16px;
+    line-height: 20px;
+  }
+  .message-input:focus { border-color: #aaa69d; background: #fff; }
+  .message-input::placeholder { color: #aaa69f; }
+  .send-button {
+    flex: 0 0 40px;
+    width: 40px;
+    height: 40px;
+    display: grid;
+    place-items: center;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: var(--mine);
+    color: #315333;
+    cursor: pointer;
+    transition: transform .1s, background .1s, opacity .1s;
+  }
+  .send-button:active:not(:disabled) { transform: scale(.94); background: var(--mine-pressed); }
+  .send-button:disabled { opacity: .36; cursor: default; }
+  .send-button svg { width: 20px; height: 20px; fill: currentColor; transform: translateX(1px); }
+
+  .gate,
+  .modal-backdrop {
+    position: fixed;
+    z-index: 20;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    padding: max(24px, env(safe-area-inset-top)) 22px max(24px, env(safe-area-inset-bottom));
+    background: rgba(38, 36, 32, .56);
+    backdrop-filter: blur(7px);
+    -webkit-backdrop-filter: blur(7px);
+  }
+  .gate { z-index: 30; background: #eeeae2; }
+  .gate-card,
+  .modal-card {
+    width: min(100%, 380px);
+    padding: 23px 20px 20px;
+    border-radius: 18px;
+    background: #fff;
+    box-shadow: 0 15px 55px rgba(39, 34, 28, .2);
+  }
+  .gate-photo {
+    width: 68px;
+    height: 68px;
+    display: block;
+    margin: -55px auto 13px;
+    border: 4px solid #fff;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: 50% 28%;
+    box-shadow: 0 4px 15px rgba(39, 34, 28, .15);
+  }
+  .gate-title,
+  .modal-title { margin: 0; font-size: 17px; font-weight: 650; text-align: center; }
+  .gate-copy,
+  .modal-copy { margin: 7px 0 16px; color: var(--muted); font-size: 12px; line-height: 1.6; text-align: center; }
+  .token-input,
+  .subscription-text {
+    width: 100%;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    outline: none;
+    background: #f7f6f3;
+    color: var(--ink);
+  }
+  .token-input { height: 44px; padding: 0 12px; font-size: 16px; text-align: center; }
+  .subscription-text { height: 115px; padding: 9px; resize: none; font-family: ui-monospace, monospace; font-size: 10px; }
+  .primary-button,
+  .plain-button {
+    width: 100%;
+    min-height: 43px;
+    margin-top: 11px;
+    border-radius: 11px;
+    cursor: pointer;
+  }
+  .primary-button { border: 0; background: #4f7758; color: #fff; font-weight: 600; }
+  .plain-button { border: 1px solid var(--line); background: #fff; color: #56534e; }
+  .gate-error { min-height: 17px; margin: 8px 0 0; color: #a34942; font-size: 11px; text-align: center; }
+
+  .toast {
+    position: fixed;
+    z-index: 40;
+    left: 50%;
+    bottom: calc(73px + env(safe-area-inset-bottom));
+    max-width: calc(100% - 36px);
+    padding: 8px 13px;
+    border-radius: 16px;
+    background: rgba(40, 38, 34, .88);
+    color: #fff;
+    font-size: 11px;
+    text-align: center;
+    transform: translate(-50%, 8px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .18s, transform .18s;
+  }
+  .toast.on { opacity: 1; transform: translate(-50%, 0); }
+
+  @keyframes typing {
+    0%, 60%, 100% { transform: translateY(0); opacity: .45; }
+    30% { transform: translateY(-3px); opacity: 1; }
+  }
+  @keyframes voicePulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(.88); } }
+
+  @media (max-height: 620px) {
+    .photo-panel { flex-basis: 160px; }
+    .identity { bottom: 9px; }
+  }
+  @media (min-width: 700px) {
+    body { display: grid; place-items: center; background: #d8d4cc; }
+    .app { max-width: 540px; box-shadow: 0 0 45px rgba(40,35,28,.15); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: .01ms !important; }
+  }
 </style>
 </head>
 <body>
 <main class="app">
-  <header class="profile">
-    <img class="profile-photo" id="portrait" src="portraits/cand-C-01.png" alt="まどか">
-    <div class="profile-shade"></div>
-    <div class="profile-top">
-      <button class="notify" id="notifyBtn" type="button">通知を受け取る</button>
+  <header class="photo-panel" aria-label="まどか">
+    <img class="portrait" id="portrait" src="portraits/hdr-cand-C.png" alt="まどかの写真">
+    <div class="photo-top">
+      <div class="day-badge" id="dayBadge">— / 50日</div>
+      <button class="notify-button" id="notifyBtn" type="button" aria-label="通知を設定" title="通知を設定">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22a2.5 2.5 0 0 0 2.35-1.67h-4.7A2.5 2.5 0 0 0 12 22Zm7-5.25-1.4-1.55V10a5.65 5.65 0 0 0-4.35-5.5V3.4a1.25 1.25 0 0 0-2.5 0v1.1A5.65 5.65 0 0 0 6.4 10v5.2L5 16.75V18h14v-1.25Z"/></svg>
+      </button>
     </div>
-    <div class="profile-info">
-      <div class="name-line"><span class="name">まどか</span><span class="online" aria-label="オンライン"></span></div>
-      <div class="presence" id="presence">ここにいるよ</div>
+    <div class="identity">
+      <div class="identity-name">まどか</div>
+      <div class="identity-status" id="identityStatus" aria-live="polite"></div>
     </div>
   </header>
 
-  <section class="conversation" aria-label="まどかとの会話">
-    <div class="day-strip" id="day"></div>
-    <div class="thread" id="thread" aria-live="polite"></div>
+  <section class="thread" id="thread" aria-label="まどかとのメッセージ" aria-live="polite">
+    <div class="loading">メッセージを読み込んでいます</div>
   </section>
 
   <form class="composer" id="composer">
-    <textarea id="box" rows="1" maxlength="1000" enterkeyhint="send" placeholder="メッセージ"></textarea>
-    <button class="send" id="sendBtn" type="submit" aria-label="送信">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M3.4 19.7 21 12 3.4 4.3l-.1 6 12.6 1.7-12.6 1.7z"/></svg>
+    <textarea class="message-input" id="box" rows="1" maxlength="4000" enterkeyhint="enter" aria-label="メッセージ" placeholder="メッセージ"></textarea>
+    <button class="send-button" id="sendBtn" type="submit" aria-label="送信" disabled>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3.4 3.15 17.45 8.02a.9.9 0 0 1 0 1.66L3.4 20.85a.84.84 0 0 1-1.15-.97l1.45-6.35 9.18-1.53-9.18-1.53-1.45-6.35A.84.84 0 0 1 3.4 3.15Z"/></svg>
     </button>
   </form>
 </main>
 
-<div class="gate" id="gate">
-  <div class="gate-card">
-    <img class="gate-face" src="portraits/cand-C-01.png" alt="">
-    <div class="gate-title">まどか</div>
-    <p class="gate-copy">最初だけ、あいことばを入れてね。</p>
-    <input id="tokenIn" type="password" autocomplete="current-password" aria-label="あいことば">
-    <button class="primary" id="tokenBtn" type="button">はじめる</button>
-  </div>
+<div class="gate" id="gate" hidden>
+  <form class="gate-card" id="gateForm">
+    <img class="gate-photo" src="portraits/cand-C-01.png" alt="">
+    <h1 class="gate-title">まどかとのトーク</h1>
+    <p class="gate-copy">最初の一度だけ、あいことばを入れてください。</p>
+    <input class="token-input" id="tokenIn" type="password" autocomplete="current-password" aria-label="あいことば">
+    <p class="gate-error" id="gateError" aria-live="polite"></p>
+    <button class="primary-button" type="submit">入る</button>
+  </form>
 </div>
 
-<div class="gate" id="setup">
-  <div class="gate-card setup-card">
-    <div class="gate-title">夜の通知</div>
-    <p class="gate-copy">下の文字列をコピーして、通知の登録に使ってください。</p>
-    <textarea id="subText" readonly aria-label="通知登録用文字列"></textarea>
-    <button class="close" id="closeSetup" type="button">閉じる</button>
-  </div>
+<div class="modal-backdrop" id="setup" hidden>
+  <section class="modal-card" role="dialog" aria-modal="true" aria-labelledby="setupTitle">
+    <h2 class="modal-title" id="setupTitle">通知の設定</h2>
+    <p class="modal-copy">下の設定用文字列をコピーして、制作側へ渡してください。</p>
+    <textarea class="subscription-text" id="subText" readonly aria-label="通知設定用文字列"></textarea>
+    <button class="plain-button" id="copySubBtn" type="button">コピー</button>
+    <button class="plain-button" id="closeSetupBtn" type="button">閉じる</button>
+  </section>
 </div>
-<div class="toast" id="toast" role="status"></div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script src="config.js"></script>
 <script>
-const RELAY='https://hitokoto-relay.haqei64384.workers.dev';
-const EXPR={warm:'portraits/cand-C-01.png',proud:'portraits/exp-proud-01.png',gentle:'portraits/exp-gentle-01.png',playful:'portraits/exp-playful-01.png',serene:'portraits/exp-serene-01.png'};
-const SCENE={bar:'portraits/scene-bar-01.png',morning:'portraits/scene-morning-01.png',rain:'portraits/scene-rain-01.png',nightwalk:'portraits/scene-nightwalk-01.png'};
-const $=id=>document.getElementById(id);
-let token=localStorage.getItem('hitokoto_token');
-let audioEl=null;
-let activeVoiceBtn=null;
-let lastSignature='';
-let newestHerId=null;
+const RELAY = 'https://hitokoto-relay.haqei64384.workers.dev';
+const EXPR = {
+  warm: 'portraits/cand-C-01.png',
+  proud: 'portraits/exp-proud-01.png',
+  gentle: 'portraits/exp-gentle-01.png',
+  playful: 'portraits/exp-playful-01.png',
+  serene: 'portraits/exp-serene-01.png'
+};
+const SCENE = {
+  bar: 'portraits/scene-bar-01.png',
+  morning: 'portraits/scene-morning-01.png',
+  rain: 'portraits/scene-rain-01.png',
+  nightwalk: 'portraits/scene-nightwalk-01.png'
+};
 
-if(!token) $('gate').classList.add('on');
+let token = localStorage.getItem('hitokoto_token');
+let audioEl = null;
+let activeVoiceButton = null;
+let lastThreadLength = 0;
+let currentPortrait = EXPR.warm;
+let polling = false;
+let toastTimer = null;
+let firstLoad = true;
 
-function showToast(message){
-  $('toast').textContent=message;
-  $('toast').classList.add('on');
-  clearTimeout(showToast.timer);
-  showToast.timer=setTimeout(()=>$('toast').classList.remove('on'),1800);
+const $ = id => document.getElementById(id);
+const threadEl = $('thread');
+const box = $('box');
+const sendBtn = $('sendBtn');
+
+function make(tag, className, text) {
+  const el = document.createElement(tag);
+  if (className) el.className = className;
+  if (text !== undefined) el.textContent = text;
+  return el;
 }
 
-function saveToken(){
-  const next=$('tokenIn').value.trim();
-  if(!next) return;
-  token=next;
-  localStorage.setItem('hitokoto_token',token);
-  $('gate').classList.remove('on');
-  poll(true);
+function showGate(message = '') {
+  $('gate').hidden = false;
+  $('gateError').textContent = message;
+  requestAnimationFrame(() => $('tokenIn').focus());
 }
 
-async function api(method,path,body){
-  const response=await fetch(RELAY+path,{
+function hideGate() {
+  $('gate').hidden = true;
+  $('gateError').textContent = '';
+}
+
+function showToast(message) {
+  const el = $('toast');
+  el.textContent = message;
+  el.classList.add('on');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.remove('on'), 2300);
+}
+
+async function api(method, path, body) {
+  const response = await fetch(RELAY + path, {
     method,
-    headers:{'x-token':token,'Content-Type':'application/json'},
-    body:body?JSON.stringify(body):undefined
+    headers: { 'x-token': token, 'Content-Type': 'application/json' },
+    body: body ? JSON.stringify(body) : undefined
   });
-  if(response.status===401){
-    token=null;
+
+  if (response.status === 401) {
     localStorage.removeItem('hitokoto_token');
-    $('gate').classList.add('on');
-    throw new Error('token');
+    token = null;
+    showGate('あいことばが違うようです');
+    throw new Error('unauthorized');
   }
-  if(!response.ok) throw new Error(String(response.status));
+  if (!response.ok) throw new Error(`${path}: ${response.status}`);
   return response.json();
 }
 
-function timeOnly(ts){
-  const date=new Date(ts);
-  if(Number.isNaN(date.getTime())) return '';
-  return new Intl.DateTimeFormat('ja-JP',{hour:'2-digit',minute:'2-digit',hour12:false}).format(date);
+function validDate(ts) {
+  const date = new Date(ts);
+  return Number.isNaN(date.getTime()) ? null : date;
 }
 
-function dateLabel(ts){
-  const date=new Date(ts);
-  const today=new Date();
-  const yesterday=new Date(); yesterday.setDate(today.getDate()-1);
-  if(date.toDateString()===today.toDateString()) return '今日';
-  if(date.toDateString()===yesterday.toDateString()) return '昨日';
-  return `${date.getMonth()+1}月${date.getDate()}日`;
+function timeText(ts) {
+  const date = validDate(ts);
+  if (!date) return '';
+  return `${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`;
 }
 
-function makeVoice(audioId){
-  const wrap=document.createElement('div'); wrap.className='voice';
-  const button=document.createElement('button'); button.type='button'; button.className='voice-btn'; button.textContent='▶'; button.setAttribute('aria-label','声を再生');
-  const wave=document.createElement('span'); wave.className='voice-wave';
-  for(let i=0;i<9;i++) wave.appendChild(document.createElement('i'));
-  const label=document.createElement('span'); label.className='voice-label'; label.textContent='声';
-  button.addEventListener('click',()=>playVoice(`${RELAY}/audio/${encodeURIComponent(audioId)}`,button));
-  wrap.append(button,wave,label);
-  return wrap;
+function dateKey(ts) {
+  const date = validDate(ts);
+  if (!date) return 'unknown';
+  return `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
 }
 
-function hasLaterHer(thread,index){
-  return thread.slice(index+1).some(entry=>entry.role==='her');
+function dateText(ts) {
+  const date = validDate(ts);
+  if (!date) return '';
+  const now = new Date();
+  const today = dateKey(now.toISOString());
+  const yesterdayDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1);
+  const yesterday = dateKey(yesterdayDate.toISOString());
+  if (dateKey(ts) === today) return '今日';
+  if (dateKey(ts) === yesterday) return '昨日';
+  return `${date.getMonth() + 1}月${date.getDate()}日`;
 }
 
-function render(thread,pending){
-  const el=$('thread');
-  const nearBottom=el.scrollHeight-el.scrollTop-el.clientHeight<90;
-  const pendingActive=Array.isArray(pending)?pending.length>0:Boolean(pending);
-  const signature=thread.map(entry=>entry.id).join('|')+`:${pendingActive}`;
-  const changed=signature!==lastSignature;
-  const fragment=document.createDocumentFragment();
+function portraitFor(entry) {
+  if (!entry) return EXPR.warm;
+  return (entry.scene && SCENE[entry.scene]) || EXPR[entry.expression] || EXPR.warm;
+}
 
-  if(!thread.length){
-    const empty=document.createElement('div');
-    empty.className='empty';
-    empty.textContent='今日あったこと、ひとつだけでも。';
-    fragment.appendChild(empty);
+function toHdr(src){ // ヘッダーは顔中心の合成版(hdr-*)を使う=顔が縦に切れない
+  const m = src && src.match(/portraits\/(.+)-01\.png$/);
+  return m ? `portraits/hdr-${m[1]}.png` : src;
+}
+function setPortrait(rawSrc) {
+  const src = toHdr(rawSrc);
+  if (!src || src === currentPortrait) return;
+  const portrait = $('portrait');
+  const preload = new Image();
+  portrait.classList.add('changing');
+  preload.onload = () => {
+    portrait.src = src;
+    currentPortrait = src;
+    portrait.classList.remove('changing');
+  };
+  preload.onerror = () => portrait.classList.remove('changing');
+  preload.src = src;
+}
+
+function pendingUserIds(thread, pendingCount) {
+  const count = Math.max(0, Number(pendingCount) || 0);
+  if (count === 0) return new Set();
+  return new Set(thread.filter(entry => entry.role === 'user').slice(-count).map(entry => entry.id));
+}
+
+function stopVoice() {
+  if (audioEl) {
+    audioEl.pause();
+    audioEl.currentTime = 0;
   }
-
-  thread.forEach((entry,index)=>{
-    const row=document.createElement('div');
-    row.className=`row ${entry.role==='her'?'her':'me'}`;
-    if(entry.role==='her'){
-      const avatar=document.createElement('img');
-      avatar.className='avatar'; avatar.alt=''; avatar.src='portraits/cand-C-01.png';
-      row.appendChild(avatar);
-    }
-    const stack=document.createElement('div'); stack.className='stack';
-    const bubble=document.createElement('div'); bubble.className='bubble'; bubble.textContent=entry.text||'';
-    if(entry.role==='her'&&entry.audioId) bubble.appendChild(makeVoice(entry.audioId));
-    const meta=document.createElement('div'); meta.className='meta';
-    if(entry.role==='user'){
-      const state=document.createElement('span'); state.className='read'; state.textContent=hasLaterHer(thread,index)?'既読':'送信済み';
-      meta.appendChild(state);
-    }
-    const stamp=document.createElement('span'); stamp.textContent=timeOnly(entry.ts); meta.appendChild(stamp);
-    stack.append(bubble,meta); row.appendChild(stack); fragment.appendChild(row);
-  });
-
-  const typing=document.createElement('div'); typing.className=`typing${pendingActive?' on':''}`;
-  const typingAvatar=document.createElement('img'); typingAvatar.className='avatar'; typingAvatar.alt=''; typingAvatar.src='portraits/cand-C-01.png';
-  const dots=document.createElement('span'); dots.className='dots'; dots.innerHTML='<i></i><i></i><i></i>';
-  const typingText=document.createElement('span'); typingText.textContent='入力中';
-  typing.append(typingAvatar,dots,typingText); fragment.appendChild(typing);
-
-  el.replaceChildren(fragment);
-  const lastHer=[...thread].reverse().find(entry=>entry.role==='her');
-  const latest=thread[thread.length-1];
-  if(latest) $('day').textContent=`${dateLabel(latest.ts)}${lastHer&&lastHer.day?` ・ ${lastHer.day}日目`:''}`;
-  else $('day').textContent='';
-  $('presence').textContent=pendingActive?'メッセージを書いています…':'ここにいるよ';
-  if(lastHer){
-    const src=(lastHer.scene&&SCENE[lastHer.scene])||EXPR[lastHer.expression]||EXPR.warm;
-    if(newestHerId!==lastHer.id||$('portrait').getAttribute('src')!==src){
-      newestHerId=lastHer.id;
-      $('portrait').classList.add('changing');
-      const preload=new Image();
-      preload.onload=()=>{ $('portrait').src=src; requestAnimationFrame(()=>$('portrait').classList.remove('changing')); };
-      preload.onerror=()=>$('portrait').classList.remove('changing');
-      preload.src=src;
-    }
+  audioEl = null;
+  if (activeVoiceButton) {
+    activeVoiceButton.classList.remove('playing');
+    activeVoiceButton.querySelector('.voice-icon').textContent = '▶';
+    activeVoiceButton.querySelector('.voice-label').textContent = '声をきく';
+    activeVoiceButton.setAttribute('aria-label', '声をきく');
   }
-  if(nearBottom||changed) requestAnimationFrame(()=>{el.scrollTop=el.scrollHeight;});
-  lastSignature=signature;
+  activeVoiceButton = null;
 }
 
-async function poll(){
-  if(!token) return;
-  try{
-    const data=await api('GET','/thread');
-    render(Array.isArray(data.thread)?data.thread:[],data.pending);
-  }catch(error){
-    if(error.message!=='token') $('presence').textContent='少し離れています';
+function playVoice(src, button) {
+  if (activeVoiceButton === button) {
+    stopVoice();
+    return;
   }
-}
-
-async function send(){
-  const text=$('box').value.trim();
-  if(!text||!token||$('sendBtn').disabled) return;
-  $('sendBtn').disabled=true;
-  try{
-    await api('POST','/send',{text});
-    $('box').value=''; resizeBox();
-    await poll();
-  }catch(error){
-    if(error.message!=='token') showToast('送れませんでした。もう一度ためしてね');
-  }finally{
-    $('sendBtn').disabled=false;
-  }
-}
-
-function resizeBox(){
-  const box=$('box'); box.style.height='40px'; box.style.height=`${Math.min(box.scrollHeight,112)}px`;
-}
-
-function stopVoice(){
-  if(audioEl){audioEl.pause(); audioEl=null;}
-  if(activeVoiceBtn){activeVoiceBtn.classList.remove('playing'); activeVoiceBtn.textContent='▶'; activeVoiceBtn=null;}
-}
-
-function playVoice(src,button){
-  if(activeVoiceBtn===button){stopVoice(); return;}
   stopVoice();
-  audioEl=new Audio(src); activeVoiceBtn=button; button.classList.add('playing'); button.textContent='■';
-  audioEl.onended=stopVoice;
-  audioEl.onerror=()=>{stopVoice(); showToast('声を再生できませんでした');};
-  audioEl.play().catch(()=>{stopVoice(); showToast('声を再生できませんでした');});
+  audioEl = new Audio(src);
+  activeVoiceButton = button;
+  button.classList.add('playing');
+  button.querySelector('.voice-icon').textContent = '■';
+  button.querySelector('.voice-label').textContent = '止める';
+  button.setAttribute('aria-label', '声を止める');
+  audioEl.onended = stopVoice;
+  audioEl.onerror = () => { stopVoice(); showToast('音声を再生できませんでした'); };
+  audioEl.play().catch(() => { stopVoice(); showToast('音声を再生できませんでした'); });
 }
 
-async function enableNotify(){
-  try{
-    const reg=await navigator.serviceWorker.register('sw.js');
-    const perm=await Notification.requestPermission();
-    if(perm!=='granted'){showToast('通知が許可されませんでした');return;}
-    const sub=await reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:urlB64(window.HITOKOTO.vapidPublicKey)});
-    $('subText').value=JSON.stringify(sub.toJSON()); $('setup').classList.add('on');
-  }catch(error){
-    alert('iPhoneは「ホーム画面に追加」してから開いてください: '+error.message);
+function appendMessage(fragment, entry, options) {
+  const mine = entry.role === 'user';
+  const row = make('div', `message-row ${mine ? 'mine' : 'hers'}${options.continued ? ' continued' : ''}`);
+
+  if (!mine) {
+    const avatarSlot = make('div', 'avatar-slot');
+    if (options.showAvatar) {
+      const avatar = make('img', 'message-avatar');
+      avatar.src = EXPR.warm;
+      avatar.alt = 'まどか';
+      avatarSlot.append(avatar);
+    }
+    row.append(avatarSlot);
+  }
+
+  const stack = make('div', 'message-stack');
+  const bubble = make('div', 'bubble');
+  const messageText = make('div', 'message-text', typeof entry.text === 'string' ? entry.text : '');
+  bubble.append(messageText);
+
+  if (!mine && entry.audioId) {
+    const voice = make('button', 'voice-button');
+    voice.type = 'button';
+    voice.setAttribute('aria-label', '声をきく');
+    const icon = make('span', 'voice-icon', '▶');
+    const label = make('span', 'voice-label', '声をきく');
+    voice.append(icon, label);
+    voice.addEventListener('click', () => playVoice(`${RELAY}/audio/${encodeURIComponent(entry.audioId)}`, voice));
+    bubble.append(voice);
+  }
+
+  const meta = make('div', 'message-meta');
+  const time = make('span', '', timeText(entry.ts));
+  if (mine) {
+    const receiptText = options.isPending ? '送信済み' : '既読';
+    const receipt = make('span', `receipt${options.isPending ? '' : ' read'}`, receiptText);
+    meta.append(receipt, time);
+  } else {
+    meta.append(time);
+  }
+
+  stack.append(bubble, meta);
+  row.append(stack);
+  fragment.append(row);
+}
+
+function appendTyping(fragment) {
+  const row = make('div', 'message-row hers typing-row');
+  const avatarSlot = make('div', 'avatar-slot');
+  const avatar = make('img', 'message-avatar');
+  avatar.src = EXPR.warm;
+  avatar.alt = 'まどか';
+  avatarSlot.append(avatar);
+  const bubble = make('div', 'typing-bubble');
+  bubble.setAttribute('aria-label', 'まどかが入力中');
+  bubble.append(make('i'), make('i'), make('i'));
+  row.append(avatarSlot, bubble);
+  fragment.append(row);
+}
+
+function render(thread, pending = 0) {
+  const items = Array.isArray(thread) ? thread : [];
+  const nearBottom = threadEl.scrollHeight - threadEl.scrollTop - threadEl.clientHeight < 100;
+  const fragment = document.createDocumentFragment();
+  const pendingIds = pendingUserIds(items, pending);
+
+  if (!items.length) {
+    const empty = make('div', 'empty-state');
+    const avatar = make('img', 'empty-avatar');
+    avatar.src = EXPR.warm;
+    avatar.alt = '';
+    empty.append(avatar, make('div', '', '今日あったこと、感じたこと。\n短くても、そのままで。'));
+    fragment.append(empty);
+  } else {
+    let previousDate = null;
+    items.forEach((entry, index) => {
+      const currentDate = dateKey(entry.ts);
+      if (currentDate !== previousDate) {
+        fragment.append(make('div', 'date-separator', dateText(entry.ts)));
+        previousDate = currentDate;
+      }
+      const previous = items[index - 1];
+      const next = items[index + 1];
+      const continued = Boolean(previous && previous.role === entry.role && dateKey(previous.ts) === currentDate);
+      const showAvatar = entry.role === 'her' && (!next || next.role !== 'her' || dateKey(next.ts) !== currentDate);
+      appendMessage(fragment, entry, { continued, showAvatar, isPending: pendingIds.has(entry.id) });
+    });
+    if (Number(pending) > 0) appendTyping(fragment);
+  }
+
+  threadEl.replaceChildren(fragment);
+  const lastHer = [...items].reverse().find(entry => entry.role === 'her');
+  if (lastHer) {
+    setPortrait(portraitFor(lastHer));
+    if (lastHer.day) $('dayBadge').textContent = `${lastHer.day} / 50日`;
+  }
+  $('identityStatus').textContent = Number(pending) > 0 ? '入力中…' : '';
+
+  if (nearBottom || items.length !== lastThreadLength || firstLoad) {
+    requestAnimationFrame(() => { threadEl.scrollTop = threadEl.scrollHeight; });
+  }
+  lastThreadLength = items.length;
+  firstLoad = false;
+}
+
+async function poll(force = false) {
+  if (!token || polling) return;
+  polling = true;
+  try {
+    const data = await api('GET', '/thread');
+    render(data.thread, data.pending);
+  } catch (error) {
+    if (error.message !== 'unauthorized' && force) showToast('つながりませんでした。もう一度試してください');
+  } finally {
+    polling = false;
   }
 }
 
-function urlB64(value){
-  const padding='='.repeat((4-value.length%4)%4);
-  const base64=(value+padding).replace(/-/g,'+').replace(/_/g,'/');
-  const raw=atob(base64);
-  return Uint8Array.from([...raw].map(char=>char.charCodeAt(0)));
+function resizeInput() {
+  box.style.height = '40px';
+  box.style.height = `${Math.min(box.scrollHeight, 116)}px`;
+  sendBtn.disabled = !box.value.trim() || !token;
 }
 
-$('tokenBtn').addEventListener('click',saveToken);
-$('tokenIn').addEventListener('keydown',event=>{if(event.key==='Enter') saveToken();});
-$('notifyBtn').addEventListener('click',enableNotify);
-$('closeSetup').addEventListener('click',()=>$('setup').classList.remove('on'));
-$('composer').addEventListener('submit',event=>{event.preventDefault();send();});
-$('box').addEventListener('input',resizeBox);
-$('box').addEventListener('keydown',event=>{
-  if(event.key==='Enter'&&!event.shiftKey&&!event.isComposing){event.preventDefault();send();}
+async function send() {
+  const text = box.value.trim();
+  if (!text || !token || sendBtn.disabled) return;
+  sendBtn.disabled = true;
+  try {
+    await api('POST', '/send', { text });
+    box.value = '';
+    resizeInput();
+    await poll(true);
+  } catch (error) {
+    if (error.message !== 'unauthorized') showToast('送れませんでした。メッセージは残してあります');
+  } finally {
+    sendBtn.disabled = !box.value.trim() || !token;
+  }
+}
+
+async function enableNotify() {
+  try {
+    if (!('serviceWorker' in navigator) || !('Notification' in window)) throw new Error('この端末では通知を使えません');
+    const reg = await navigator.serviceWorker.register('sw.js');
+    const permission = await Notification.requestPermission();
+    if (permission !== 'granted') {
+      showToast('通知は許可されませんでした');
+      updateNotifyState();
+      return;
+    }
+    const existing = await reg.pushManager.getSubscription();
+    const sub = existing || await reg.pushManager.subscribe({
+      userVisibleOnly: true,
+      applicationServerKey: urlB64(window.HITOKOTO.vapidPublicKey)
+    });
+    $('subText').value = JSON.stringify(sub.toJSON());
+    $('setup').hidden = false;
+    updateNotifyState();
+  } catch (error) {
+    showToast(`iPhoneは「ホーム画面に追加」してから開いてください: ${error.message}`);
+  }
+}
+
+function urlB64(value) {
+  const padding = '='.repeat((4 - value.length % 4) % 4);
+  const base64 = (value + padding).replace(/-/g, '+').replace(/_/g, '/');
+  const raw = atob(base64);
+  return Uint8Array.from([...raw].map(char => char.charCodeAt(0)));
+}
+
+function updateNotifyState() {
+  const on = 'Notification' in window && Notification.permission === 'granted';
+  $('notifyBtn').classList.toggle('is-on', on);
+  $('notifyBtn').setAttribute('aria-label', on ? '通知はオンです' : '通知を設定');
+  $('notifyBtn').title = on ? '通知はオンです' : '通知を設定';
+}
+
+$('gateForm').addEventListener('submit', async event => {
+  event.preventDefault();
+  const nextToken = $('tokenIn').value.trim();
+  if (!nextToken) return;
+  token = nextToken;
+  localStorage.setItem('hitokoto_token', token);
+  hideGate();
+  sendBtn.disabled = !box.value.trim();
+  await poll(true);
 });
-if('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js');
-poll();
-setInterval(poll,15000);
+
+$('composer').addEventListener('submit', event => {
+  event.preventDefault();
+  send();
+});
+box.addEventListener('input', resizeInput);
+box.addEventListener('keydown', event => {
+  if (event.key === 'Enter' && (event.metaKey || event.ctrlKey)) {
+    event.preventDefault();
+    send();
+  }
+});
+$('notifyBtn').addEventListener('click', enableNotify);
+$('closeSetupBtn').addEventListener('click', () => { $('setup').hidden = true; });
+$('setup').addEventListener('click', event => { if (event.target === $('setup')) $('setup').hidden = true; });
+$('copySubBtn').addEventListener('click', async () => {
+  const text = $('subText').value;
+  try {
+    await navigator.clipboard.writeText(text);
+    showToast('コピーしました');
+  } catch (error) {
+    $('subText').focus();
+    $('subText').select();
+    showToast('選択しました。コピーしてください');
+  }
+});
+
+if (!token) showGate();
+updateNotifyState();
+resizeInput();
+if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
+poll(true);
+setInterval(() => poll(false), 15000);
 </script>
 </body>
 </html>
