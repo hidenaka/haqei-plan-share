@@ -1,0 +1,9 @@
+{
+  "name": "ひとこと",
+  "short_name": "ひとこと",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#0d0c0f",
+  "theme_color": "#0d0c0f",
+  "icons": [{ "src": "portraits/cand-C-01.png", "sizes": "923x1638", "type": "image/png" }]
+}

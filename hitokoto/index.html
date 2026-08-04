@@ -6,6 +6,8 @@
 <meta name="robots" content="noindex">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="portraits/cand-C-01.png">
 <title>ひとこと</title>
 <style>
   :root{--gold:#d9b96a;--ink:#f5efe2;--dim:rgba(245,239,226,.65)}
@@ -13,39 +15,85 @@
   html,body{margin:0;padding:0;background:#0d0c0f;height:100%;overflow:hidden}
   body{font-family:-apple-system,"Hiragino Mincho ProN","Yu Mincho",serif;color:var(--ink)}
   .stage{position:fixed;inset:0}
-  .stage img{width:100%;height:100%;object-fit:cover;object-position:top center;transition:opacity .6s}
+  .stage img{width:100%;height:100%;object-fit:cover;object-position:top center;transition:opacity .8s}
   .veil{position:fixed;inset:0;background:linear-gradient(180deg,rgba(13,12,15,.35) 0%,transparent 22%,transparent 46%,rgba(13,12,15,.86) 78%,rgba(13,12,15,.96) 100%)}
   .day{position:fixed;top:max(18px,env(safe-area-inset-top));left:0;right:0;text-align:center;font-size:12.5px;letter-spacing:.35em;color:var(--dim)}
   .msg{position:fixed;left:0;right:0;bottom:0;padding:0 26px calc(30px + env(safe-area-inset-bottom))}
   .msg .line{width:34px;height:1px;background:var(--gold);margin:0 0 16px}
-  .msg p{margin:0 0 10px;font-size:16.5px;line-height:2.05;text-shadow:0 1px 8px rgba(0,0,0,.55)}
-  .msg .from{margin-top:14px;font-size:11.5px;letter-spacing:.28em;color:var(--dim);font-family:-apple-system,"Hiragino Sans",sans-serif}
-  /* 候補ピッカー(プレビュー時のみ表示) */
-  .picker{position:fixed;top:max(14px,env(safe-area-inset-top));right:14px;display:flex;gap:8px;font-family:-apple-system,sans-serif}
-  .picker button{width:34px;height:34px;border-radius:50%;border:1.5px solid rgba(245,239,226,.5);background:rgba(13,12,15,.45);color:var(--ink);font-size:13px;font-weight:700;backdrop-filter:blur(6px)}
-  .picker button.on{border-color:var(--gold);color:var(--gold)}
-  .hint{position:fixed;top:calc(max(14px,env(safe-area-inset-top)) + 44px);right:14px;font-size:10.5px;color:var(--dim);font-family:-apple-system,sans-serif;letter-spacing:.05em}
+  .msg p{margin:0 0 10px;font-size:16.5px;line-height:2.05;text-shadow:0 1px 8px rgba(0,0,0,.55);white-space:pre-wrap}
+  .msg .from{margin-top:14px;font-size:11.5px;letter-spacing:.28em;color:var(--dim);font-family:-apple-system,"Hiragino Sans",sans-serif;display:flex;justify-content:space-between;align-items:center}
+  .from button{border:1px solid rgba(245,239,226,.35);background:none;color:var(--dim);border-radius:999px;padding:4px 12px;font-size:10.5px;font-family:-apple-system,sans-serif;letter-spacing:.1em}
+  /* 履歴 */
+  .sheet{position:fixed;inset:0;background:rgba(13,12,15,.96);backdrop-filter:blur(10px);display:none;overflow-y:auto;padding:calc(max(18px,env(safe-area-inset-top))+30px) 24px 40px;z-index:5}
+  .sheet.on{display:block}
+  .sheet h2{font-size:13px;letter-spacing:.3em;color:var(--dim);text-align:center;margin:0 0 22px;font-weight:400}
+  .ent{border-left:2px solid rgba(217,185,106,.4);padding:2px 0 2px 14px;margin:0 0 22px}
+  .ent .d{font-size:11px;color:var(--dim);letter-spacing:.15em;font-family:-apple-system,sans-serif;margin-bottom:4px}
+  .ent p{margin:0;font-size:14px;line-height:1.9;color:rgba(245,239,226,.9)}
+  .close{position:fixed;top:max(14px,env(safe-area-inset-top));right:16px;z-index:6;border:0;background:none;color:var(--dim);font-size:22px;display:none}
+  .close.on{display:block}
+  /* 通知設定 */
+  .setup{position:fixed;inset:0;background:rgba(13,12,15,.97);z-index:8;display:none;padding:60px 26px;font-family:-apple-system,"Hiragino Sans",sans-serif}
+  .setup.on{display:block}
+  .setup h3{font-weight:600;font-size:16px}
+  .setup p{font-size:13px;color:var(--dim);line-height:1.8}
+  .setup textarea{width:100%;height:120px;background:#1a191d;color:var(--ink);border:1px solid #333;border-radius:8px;font-size:10px;padding:8px}
+  .setup button{margin:8px 8px 0 0;border:1px solid var(--gold);background:none;color:var(--gold);border-radius:999px;padding:8px 18px;font-size:13px}
 </style>
 </head>
 <body>
-  <div class="stage"><img id="portrait" src="portraits/cand-A-01.png" alt=""></div>
+  <div class="stage"><img id="portrait" src="portraits/cand-C-01.png" alt=""></div>
   <div class="veil"></div>
-  <div class="day">五 十 日 の 一 日 目</div>
-  <div class="picker" id="picker">
-    <button class="on" onclick="pick('A',this)">A</button><button onclick="pick('B',this)">B</button><button onclick="pick('C',this)">C</button><button onclick="pick('D',this)">D</button>
-  </div>
-  <div class="hint">↑どの彼女にするか選べます</div>
+  <div class="day" id="day" onclick="toggleHistory()">ひ と こ と</div>
+  <button class="close" id="closeBtn" onclick="toggleHistory()">×</button>
   <div class="msg">
     <div class="line"></div>
-    <p id="text">今日、この仕組みを最初のコミットまで仕上げたのですね。しかも「50日で卒業」と、終わりを最初から設計に組み込んである。始める道具は誰でも作りますが、手放す日を決めてから作る人は、なかなかいません。</p>
-    <div class="from">今 夜 の ひ と こ と</div>
+    <p id="text">…</p>
+    <div class="from"><span id="fromLabel">今 夜 の ひ と こ と</span><button id="notifyBtn" onclick="enableNotify()">通知を受け取る</button></div>
   </div>
+  <div class="sheet" id="sheet"><h2>こ れ ま で</h2><div id="hist"></div></div>
+  <div class="setup" id="setup">
+    <h3>通知の設定（一度だけ）</h3>
+    <p>下の文字列が購読情報です。全選択してコピーし、Claude（制作係）に貼り付けてください。以後、毎晩21:30に彼女からの通知が届きます。</p>
+    <textarea id="subText" readonly onclick="this.select()"></textarea>
+    <button onclick="copySub()">コピー</button>
+    <button onclick="document.getElementById('setup').classList.remove('on')">閉じる</button>
+  </div>
+<script src="config.js"></script>
 <script>
-function pick(k,el){
-  document.getElementById('portrait').src='portraits/cand-'+k+'-01.png';
-  document.querySelectorAll('.picker button').forEach(b=>b.classList.remove('on'));
-  el.classList.add('on');
+const EXPR = { warm:'portraits/cand-C-01.png', proud:'portraits/exp-proud-01.png', gentle:'portraits/exp-gentle-01.png', playful:'portraits/exp-playful-01.png', serene:'portraits/exp-serene-01.png' };
+const KANJI = ['〇','一','二','三','四','五','六','七','八','九'];
+function jpNum(n){ if(n<=10) return (n===10?'十':KANJI[n]); const t=Math.floor(n/10), o=n%10; return (t>1?KANJI[t]:'')+'十'+(o?KANJI[o]:''); }
+let DATA = [];
+async function load(){
+  try{
+    const r = await fetch('data/messages.json?t='+Date.now());
+    DATA = await r.json();
+  }catch(e){ DATA = []; }
+  if(!DATA.length){ document.getElementById('text').textContent='まだ最初のひとことが届いていません。'; return; }
+  const last = DATA[DATA.length-1];
+  document.getElementById('text').textContent = last.message.replace(/^\d+日目です。\s*/,'');
+  document.getElementById('day').textContent = `五 十 日 の ${jpNum(last.day).split('').join(' ')} 日 目`;
+  const img = EXPR[last.expression] || EXPR.warm;
+  document.getElementById('portrait').src = img;
+  const h = document.getElementById('hist');
+  h.innerHTML = DATA.slice().reverse().map(e=>`<div class="ent"><div class="d">${e.day}日目 ・ ${e.date}</div><p>${e.message.replace(/^\d+日目です。\s*/,'')}</p></div>`).join('');
 }
+function toggleHistory(){ document.getElementById('sheet').classList.toggle('on'); document.getElementById('closeBtn').classList.toggle('on'); }
+async function enableNotify(){
+  try{
+    const reg = await navigator.serviceWorker.register('sw.js');
+    const perm = await Notification.requestPermission();
+    if(perm !== 'granted'){ alert('通知が許可されませんでした。設定から許可してください。'); return; }
+    const sub = await reg.pushManager.subscribe({ userVisibleOnly:true, applicationServerKey: urlB64(window.HITOKOTO.vapidPublicKey) });
+    document.getElementById('subText').value = JSON.stringify(sub.toJSON());
+    document.getElementById('setup').classList.add('on');
+  }catch(e){ alert('この端末では設定できませんでした: '+e.message+'\n(iPhoneは「ホーム画面に追加」してから開いてください)'); }
+}
+function copySub(){ const t=document.getElementById('subText'); t.select(); document.execCommand('copy'); }
+function urlB64(s){ const p='='.repeat((4-s.length%4)%4); const b=(s+p).replace(/-/g,'+').replace(/_/g,'/'); const r=atob(b); return Uint8Array.from([...r].map(c=>c.charCodeAt(0))); }
+if('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js');
+load();
 </script>
 </body>
 </html>
