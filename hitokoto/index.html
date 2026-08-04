@@ -23,6 +23,9 @@
   .msg p{margin:0 0 10px;font-size:16.5px;line-height:2.05;text-shadow:0 1px 8px rgba(0,0,0,.55);white-space:pre-wrap}
   .msg .from{margin-top:14px;font-size:11.5px;letter-spacing:.28em;color:var(--dim);font-family:-apple-system,"Hiragino Sans",sans-serif;display:flex;justify-content:space-between;align-items:center}
   .from button{border:1px solid rgba(245,239,226,.35);background:none;color:var(--dim);border-radius:999px;padding:4px 12px;font-size:10.5px;font-family:-apple-system,sans-serif;letter-spacing:.1em}
+  #playBtn{border-color:var(--gold);color:var(--gold)}
+  .stage img.breathing{animation:breathe 4.5s ease-in-out infinite}
+  @keyframes breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.015)}}
   /* 履歴 */
   .sheet{position:fixed;inset:0;background:rgba(13,12,15,.96);backdrop-filter:blur(10px);display:none;overflow-y:auto;padding:calc(max(18px,env(safe-area-inset-top))+30px) 24px 40px;z-index:5}
   .sheet.on{display:block}
@@ -49,7 +52,7 @@
   <div class="msg">
     <div class="line"></div>
     <p id="text">…</p>
-    <div class="from"><span id="fromLabel">今 夜 の ひ と こ と</span><button id="notifyBtn" onclick="enableNotify()">通知を受け取る</button></div>
+    <div class="from"><span id="fromLabel">今 夜 の ひ と こ と</span><span><button id="playBtn" style="display:none">▶ 聴く</button> <button id="notifyBtn" onclick="enableNotify()">通知を受け取る</button></span></div>
   </div>
   <div class="sheet" id="sheet"><h2>こ れ ま で</h2><div id="hist"></div></div>
   <div class="setup" id="setup">
@@ -62,6 +65,8 @@
 <script src="config.js"></script>
 <script>
 const EXPR = { warm:'portraits/cand-C-01.png', proud:'portraits/exp-proud-01.png', gentle:'portraits/exp-gentle-01.png', playful:'portraits/exp-playful-01.png', serene:'portraits/exp-serene-01.png' };
+const SCENE = { bar:'portraits/scene-bar-01.png', morning:'portraits/scene-morning-01.png', rain:'portraits/scene-rain-01.png', nightwalk:'portraits/scene-nightwalk-01.png' };
+let audioEl = null;
 const KANJI = ['〇','一','二','三','四','五','六','七','八','九'];
 function jpNum(n){ if(n<=10) return (n===10?'十':KANJI[n]); const t=Math.floor(n/10), o=n%10; return (t>1?KANJI[t]:'')+'十'+(o?KANJI[o]:''); }
 let DATA = [];
@@ -74,10 +79,20 @@ async function load(){
   const last = DATA[DATA.length-1];
   document.getElementById('text').textContent = last.message.replace(/^\d+日目です。\s*/,'');
   document.getElementById('day').textContent = `五 十 日 の ${jpNum(last.day).split('').join(' ')} 日 目`;
-  const img = EXPR[last.expression] || EXPR.warm;
+  const img = (last.scene && SCENE[last.scene]) || EXPR[last.expression] || EXPR.warm;
   document.getElementById('portrait').src = img;
+  const btn = document.getElementById('playBtn');
+  if(last.audio){ btn.style.display='inline-block'; btn.onclick = ()=>playVoice(last.audio); } else { btn.style.display='none'; }
   const h = document.getElementById('hist');
   h.innerHTML = DATA.slice().reverse().map(e=>`<div class="ent"><div class="d">${e.day}日目 ・ ${e.date}</div><p>${e.message.replace(/^\d+日目です。\s*/,'')}</p></div>`).join('');
+}
+function playVoice(src){
+  if(audioEl){ audioEl.pause(); audioEl=null; document.getElementById('portrait').classList.remove('breathing'); document.getElementById('playBtn').textContent='▶ 聴く'; return; }
+  audioEl = new Audio(src+'?t='+Date.now());
+  document.getElementById('portrait').classList.add('breathing');
+  document.getElementById('playBtn').textContent='■ 止める';
+  audioEl.onended = ()=>{ document.getElementById('portrait').classList.remove('breathing'); document.getElementById('playBtn').textContent='▶ 聴く'; audioEl=null; };
+  audioEl.play();
 }
 function toggleHistory(){ document.getElementById('sheet').classList.toggle('on'); document.getElementById('closeBtn').classList.toggle('on'); }
 async function enableNotify(){
