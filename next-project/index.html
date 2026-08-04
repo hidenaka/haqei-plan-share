@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>次の1ヶ月 — 過去の記録から導いた候補（3体ブレスト収束）</title>
+<style>
+  :root { --ink:#1a1a1a; --ink-2:#4a4a4a; --bg:#f7f5ee; --paper:#fbf9f1; --line:#d8d2bf;
+    --accent:#3d5a80; --accent-soft:#dde7f0; --warn:#c83a2c; --warn-soft:#f6dcd6; --yellow:#f4d35e;
+    --shadow:0 1px 0 rgba(0,0,0,.04),0 8px 24px rgba(0,0,0,.06);
+    --mono:ui-monospace,Menlo,monospace;
+    --sans:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP",sans-serif; }
+  *{box-sizing:border-box} html,body{margin:0;padding:0}
+  body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1.75}
+  .wrap{max-width:1020px;margin:0 auto;padding:44px 24px 90px}
+  .kicker{display:inline-block;background:var(--accent);color:#fff;font-size:12px;font-weight:700;letter-spacing:.12em;padding:6px 12px;border-radius:999px;margin-bottom:14px}
+  h1{font-size:29px;line-height:1.4;margin:0 0 8px} h1 b{color:var(--accent)}
+  .lede{font-size:16px;color:var(--ink-2);max-width:840px;margin:0 0 20px}
+  h2{font-size:22px;border-left:6px solid var(--accent);padding-left:12px;margin:44px 0 8px}
+  .table{width:100%;border-collapse:collapse;margin:12px 0;background:var(--paper);border:1px solid var(--line);border-radius:12px;overflow:hidden;box-shadow:var(--shadow)}
+  .table th,.table td{text-align:left;padding:11px 13px;border-bottom:1px solid var(--line);font-size:14px;vertical-align:top}
+  .table th{background:#dfe7ee}.table tr:last-child td{border-bottom:0}
+  .table .pick{background:var(--accent-soft)} .table .pick td:first-child{font-weight:700;color:var(--accent)}
+  .callout{margin:16px 0;padding:14px 18px;border-left:4px solid var(--accent);background:var(--accent-soft);border-radius:0 10px 10px 0}
+  .callout.warn{border-color:var(--warn);background:var(--warn-soft)}
+  .callout p{margin:0}.callout strong{color:var(--accent)}.callout.warn strong{color:var(--warn)}
+  code.inline{font-family:var(--mono);font-size:.9em;background:#e9e4d4;padding:1px 6px;border-radius:4px}
+  .muted{color:var(--ink-2);font-size:13.5px}
+  .quote{border-left:3px solid var(--line);padding:6px 16px;color:var(--ink-2);font-size:14px;margin:12px 0;background:var(--paper);border-radius:0 8px 8px 0}
+  .conclusion{margin-top:48px;padding:26px 28px 22px;background:var(--ink);color:#f6f3e8;border-radius:16px}
+  .conclusion h2{color:var(--yellow);border:0;padding:0;margin:0 0 12px}
+  .conclusion ol{margin:0;padding-left:20px}.conclusion li{margin:6px 0}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <span class="kicker">次の1ヶ月 — 3体独立ブレストの収束</span>
+  <h1>あなたが向かいたい場所は、<b>自分でもう書き始めていた</b></h1>
+  <p class="lede">視点の異なる3体（資産考古学・人物パターン・実用性の番人）に、推測禁止で実ファイル（メモリ97件・個人OSスキル群・corp-analysis・db・output履歴）を読ませて独立提案させた。示し合わせない3体が同じ場所に収束した。</p>
+
+  <h2>01 発掘された事実（これが出発点）</h2>
+  <div class="callout">
+    <p><strong>corp-analysis/premortem/premortem.py が既に存在する。</strong>docstringにこうある——「易経を答えや予言ではなく、<b>反対仮説を強制する刺激</b>として使うCLI。卦は決定のSHA-256から決定論的に選び…<b>見落としを減らすのに役立ったかを事後検証</b>」。決定台帳・期日verify・易経の独自貢献率の集計まで実装済み。<b>「易経を現代の意思決定に使える形にする」は、あなたが企業分析の脇道として既に自分で作り始めていた</b>——動画量産の陰で眠っていただけ。</p>
+  </div>
+  <p class="muted">他の発掘: `db/viewpoint_rules.json`（上卦=外的環境/下卦=自分、の主語判定ルール＝診断の核なのにどのツールにも露出していない）／ 検証エンジン（look-ahead排除・placebo・33テスト緑）／ 変化の地図HTML（閲覧専用のまま）／ run-review の予測テンプレ（最悪/最有力/最良）</p>
+
+  <h2>02 人物パターン（記録からの抽出・5行）</h2>
+  <table class="table"><tbody>
+    <tr><td>1</td><td><b>仕組みを作る人であって、回す人ではない</b>——2ヶ月間、ハーネス設計への関心だけ一度も切れなかった。死んだのは量産物の確認作業</td></tr>
+    <tr><td>2</td><td><b>無バイアス検証への執着が最深</b>——「毎回、文脈ゼロの別の頭に独立判断させる」を自分で標準化。評価器を評価する仕組み（gold回帰・却下還流）まで発明</td></tr>
+    <tr><td>3</td><td><b>作品前提主義</b>——「自分が使いたいものを作る」が最強の動機（feedback_work_as_art_premise）</td></tr>
+    <tr><td>4</td><td><b>自己を診断対象にしている</b>——認知フィルター4種・3レイヤー・Anti-Escape Auditを自分用に仕様化済み</td></tr>
+    <tr><td>5</td><td>優先度判定器=<b>5条件</b>（能力発揮/積み上がる/高収入可能性/時間主導権/人間関係を増やさない）</td></tr>
+  </tbody></table>
+
+  <h2>03 候補（3体の提案を統合・収束度順）</h2>
+  <table class="table">
+    <thead><tr><th>候補</th><th>何か</th><th>収束</th><th>1ヶ月</th></tr></thead>
+    <tbody>
+      <tr class="pick"><td><b>A. 判断台帳</b><br>（易経プレモーテム）</td><td>迷う判断を1行入れる→卦が決定論で<b>反対仮説を突きつける</b>→予測3つ（最悪/最有力/最良）を記録→期日が来たらAIが照合採点→月次で「<b>自分の判断の的中率</b>」と「<b>易経の独自貢献率</b>」が数字で出る。スマホ1枚UI（plan-share配線流用）</td><td><b>3体全員</b>が独立到達（①プレモーテム手帳/②予測日記/④意思決定ジャーナル）。土台=premortem.py実装済み＝実質UI化2週間</td><td>◎</td></tr>
+      <tr class="pick"><td><b>B. 合議CLI</b><br>（verdict）</td><td><code class="inline">verdict "問い"</code> 一発で、文脈ゼロのfork+codexを並列起動→独立判断→収束/相違をスマホへ。<b>今毎回手でやっている行為の自動化＝使わない未来がない</b>（output/に判断HTML30件超=週数回の実測頻度）</td><td>2体（②評価器の監査/③番人の推し1位）。Aの部品にもなる（判断登録時に合議を呼ぶ）</td><td>◎ 部品全部あり</td></tr>
+      <tr><td>C. 状況診断エンジン</td><td>「状況を書く→viewpoint_rulesで主語判定→卦→六変爻シナリオ」対話診断。HaQei思想の本丸だが、単体では「読んで終わり」になりやすい</td><td>1体（①）。Aの入口部品として吸収可能</td><td>○</td></tr>
+      <tr><td>D. 自己状態トラッカー</td><td>3文ジャーナル/ROM/フィルター発動をSQLite化・傾向グラフ。仕様書（run-review）は完成済みで計測配線だけが無い</td><td>2体（②/③）。ただし「分析・診断ツール」より内面系＝今回の趣旨とはややズレ</td><td>◎</td></tr>
+      <tr><td>E. corp-analysis Plan B完遂</td><td>コーパス→較正→バックテストの一巡。5条件の「高収入可能性」を満たす唯一の候補だが、1ヶ月で「毎週使うもの」にはならない</td><td>1体（②）。<b>Aの的中データが貯まった後の第二幕</b>に置くのが自然</td><td>△</td></tr>
+    </tbody>
+  </table>
+
+  <h2>04 私の推奨: A（+Bを部品として内蔵）</h2>
+  <p><b>「HaQei判断台帳」</b>——迷ったら1行書く。易経が反対仮説を1つ突きつけてくる。予測を3つ書いて閉じる。期日が来たら、AIが答え合わせをして、あなたの判断の的中率と「易経は本当に見落としを減らしたか」が毎月数字になる。重い判断のときだけ <code class="inline">verdict</code> ボタンで無バイアス合議を呼ぶ。</p>
+  <table class="table"><tbody>
+    <tr><td>あなたの言葉との一致</td><td>「易経を現代の意思決定に使える形にする」「AIで状況を読み解く」「<b>自分が実際に使いたい小さな分析・診断ツール</b>」「AI課金の価値をYouTubeの数字より正確に判断」——判断台帳の月次レポートがそのままこの判定器になる</td></tr>
+    <tr><td>5条件照合</td><td>能力発揮◎（ハーネス設計）/ 積み上がる◎（判断データが資産化・的中率は複利）/ 高収入可能性○（貯まった判断データと検証エンジンがPlan B=corp-analysisの土台になる）/ 時間主導権◎ / 人間関係増やさない◎</td></tr>
+    <tr><td>占いにならない保証</td><td>あなた自身がpremortem.pyに書いた設計——決定論選卦（恣意なし）・反対仮説としてのみ使う・事後検証で貢献率を測る＝<b>反証可能な易経</b>。Anti-Barnumテスト（quality-checker）も流用可能</td></tr>
+  </tbody></table>
+  <div class="callout warn">
+    <p><strong>正直な注意2点</strong>: ①過去に「自己洞察アプリ」を無バイアス検証で過剰設計として却下した履歴がある——ただし却下されたのは他人向けプロダクト化の文脈で、今回は「自分が使う計器」なので前提が違う。着手前にあなた流の独立検証をもう1周かける価値はある。②「毎週使うか」の最終保証は誰にもできない。だからMVPは2週間で切り、<b>残り2週間は「実際に使ったか」を測ってから拡張を決める</b>（使わなかったらそれが答え＝それもYouTubeより安い実験）。</p>
+  </div>
+
+  <div class="conclusion">
+    <h2>結論</h2>
+    <ol>
+      <li>3体が独立に収束した先は「<b>判断台帳（易経プレモーテム+事後採点）</b>」——しかもあなたが既に書き始めていた premortem.py の延長線上</li>
+      <li>合議CLI（verdict）を部品として内蔵——今、毎回手でやっている無バイアス検証の自動化</li>
+      <li>進め方: 2週間でMVP → 2週間は「自分が使ったか」の実測 → 使っていたら第二幕（corp-analysis Plan B）へ</li>
+    </ol>
+  </div>
+
+  <p class="muted">根拠: エージェント3体の独立調査（メモリ97件・ref-haqei-knowledge/ref-orchestration/run-identity・corp-analysis実コード・output履歴30件）／ 2026-08-04</p>
+</div>
+</body>
+</html>
