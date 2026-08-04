@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>ひとこと</title>
+<style>
+  :root{--gold:#d9b96a;--ink:#f5efe2;--dim:rgba(245,239,226,.65)}
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;padding:0;background:#0d0c0f;height:100%;overflow:hidden}
+  body{font-family:-apple-system,"Hiragino Mincho ProN","Yu Mincho",serif;color:var(--ink)}
+  .stage{position:fixed;inset:0}
+  .stage img{width:100%;height:100%;object-fit:cover;object-position:top center;transition:opacity .6s}
+  .veil{position:fixed;inset:0;background:linear-gradient(180deg,rgba(13,12,15,.35) 0%,transparent 22%,transparent 46%,rgba(13,12,15,.86) 78%,rgba(13,12,15,.96) 100%)}
+  .day{position:fixed;top:max(18px,env(safe-area-inset-top));left:0;right:0;text-align:center;font-size:12.5px;letter-spacing:.35em;color:var(--dim)}
+  .msg{position:fixed;left:0;right:0;bottom:0;padding:0 26px calc(30px + env(safe-area-inset-bottom))}
+  .msg .line{width:34px;height:1px;background:var(--gold);margin:0 0 16px}
+  .msg p{margin:0 0 10px;font-size:16.5px;line-height:2.05;text-shadow:0 1px 8px rgba(0,0,0,.55)}
+  .msg .from{margin-top:14px;font-size:11.5px;letter-spacing:.28em;color:var(--dim);font-family:-apple-system,"Hiragino Sans",sans-serif}
+  /* 候補ピッカー(プレビュー時のみ表示) */
+  .picker{position:fixed;top:max(14px,env(safe-area-inset-top));right:14px;display:flex;gap:8px;font-family:-apple-system,sans-serif}
+  .picker button{width:34px;height:34px;border-radius:50%;border:1.5px solid rgba(245,239,226,.5);background:rgba(13,12,15,.45);color:var(--ink);font-size:13px;font-weight:700;backdrop-filter:blur(6px)}
+  .picker button.on{border-color:var(--gold);color:var(--gold)}
+  .hint{position:fixed;top:calc(max(14px,env(safe-area-inset-top)) + 44px);right:14px;font-size:10.5px;color:var(--dim);font-family:-apple-system,sans-serif;letter-spacing:.05em}
+</style>
+</head>
+<body>
+  <div class="stage"><img id="portrait" src="portraits/cand-A-01.png" alt=""></div>
+  <div class="veil"></div>
+  <div class="day">五 十 日 の 一 日 目</div>
+  <div class="picker" id="picker">
+    <button class="on" onclick="pick('A',this)">A</button><button onclick="pick('B',this)">B</button><button onclick="pick('C',this)">C</button><button onclick="pick('D',this)">D</button>
+  </div>
+  <div class="hint">↑どの彼女にするか選べます</div>
+  <div class="msg">
+    <div class="line"></div>
+    <p id="text">今日、この仕組みを最初のコミットまで仕上げたのですね。しかも「50日で卒業」と、終わりを最初から設計に組み込んである。始める道具は誰でも作りますが、手放す日を決めてから作る人は、なかなかいません。</p>
+    <div class="from">今 夜 の ひ と こ と</div>
+  </div>
+<script>
+function pick(k,el){
+  document.getElementById('portrait').src='portraits/cand-'+k+'-01.png';
+  document.querySelectorAll('.picker button').forEach(b=>b.classList.remove('on'));
+  el.classList.add('on');
+}
+</script>
+</body>
+</html>
