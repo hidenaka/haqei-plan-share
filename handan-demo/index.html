@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>判断台帳 — 触れるデモ</title>
+<style>
+  :root{--ink:#161512;--sub:#5c574c;--bg:#f5f1e6;--paper:#fdfaf1;--line:#ddd5c2;--ai:#20445c;--ai-soft:#e3ecf2;--gold:#a8842c;--gold-soft:#f3ead2;--red:#b03a2e;--red-soft:#f6ded9;--green:#2e6e4e;--green-soft:#dcede4;--sans:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans JP",sans-serif;--serif:"Hiragino Mincho ProN","Yu Mincho",serif}
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent} html,body{margin:0;padding:0}
+  body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1.65;padding-bottom:86px}
+  .app{max-width:520px;margin:0 auto;padding:18px 14px 20px}
+  .apphead{display:flex;align-items:baseline;gap:10px;margin:6px 2px 14px}
+  .apphead h1{font-family:var(--serif);font-size:22px;margin:0}
+  .apphead .demo{font-size:11px;color:#fff;background:var(--red);border-radius:999px;padding:2px 9px;font-weight:700}
+  .apphead p{margin:0;font-size:12px;color:var(--sub)}
+  .card{background:var(--paper);border:1px solid var(--line);border-radius:16px;box-shadow:0 1px 0 rgba(0,0,0,.03),0 10px 24px rgba(0,0,0,.05);padding:16px;margin:0 0 14px}
+  .chip{display:inline-block;font-size:11px;font-weight:700;border-radius:999px;padding:2px 10px;vertical-align:1px}
+  .chip.wait{background:var(--gold-soft);color:var(--gold)}
+  .chip.due{background:var(--red-soft);color:var(--red)}
+  .chip.done{background:var(--green-soft);color:var(--green)}
+  .dec-title{font-size:16px;font-weight:700;margin:6px 0 2px}
+  .dec-meta{font-size:12px;color:var(--sub)}
+  .gua{display:flex;gap:14px;align-items:center;background:linear-gradient(135deg,#1d2a38,#20445c);color:#f2ecdc;border-radius:14px;padding:14px;margin:12px 0}
+  .gua .glyph{font-family:var(--serif);font-size:34px;line-height:1;color:#e9c86a}
+  .gua .bars{display:flex;flex-direction:column-reverse;gap:3px}
+  .gua .bars i{display:block;height:5px;width:44px;background:#e9c86a;border-radius:2px}
+  .gua .bars i.yin{background:linear-gradient(90deg,#e9c86a 42%,transparent 42%,transparent 58%,#e9c86a 58%)}
+  .gua .t{font-size:12px;opacity:.85}
+  .gua .n{font-size:15px;font-weight:700}
+  .q{background:var(--ai-soft);border-left:4px solid var(--ai);border-radius:0 10px 10px 0;padding:10px 12px;margin:8px 0;font-size:13.5px}
+  .q b{color:var(--ai)}
+  .pred{display:flex;gap:8px;margin:6px 0;font-size:13.5px;align-items:flex-start}
+  .pred .tag{flex:0 0 52px;font-size:11px;font-weight:700;color:var(--sub);background:#eee7d4;border-radius:6px;text-align:center;padding:2px 0;margin-top:2px}
+  .pred .hit{color:var(--green);font-weight:700}
+  .pred .miss{color:var(--red);font-weight:700}
+  .btn{display:block;width:100%;border:0;border-radius:12px;padding:14px;font-size:15px;font-weight:700;font-family:var(--sans);background:var(--ai);color:#fff;margin:10px 0 0;cursor:pointer}
+  .btn.ghost{background:#eee7d4;color:var(--ink)}
+  input[type=text],textarea{width:100%;border:1.5px solid var(--line);border-radius:10px;padding:11px;font-size:15px;font-family:var(--sans);background:#fff}
+  textarea{min-height:64px;resize:none}
+  label{font-size:12px;font-weight:700;color:var(--sub);display:block;margin:12px 0 4px}
+  .tabs{position:fixed;bottom:0;left:0;right:0;background:rgba(253,250,241,.96);backdrop-filter:blur(8px);border-top:1px solid var(--line);display:flex;max-width:100%;z-index:9}
+  .tabs button{flex:1;border:0;background:none;padding:10px 0 max(10px,env(safe-area-inset-bottom));font-size:11px;font-weight:700;color:var(--sub);font-family:var(--sans);cursor:pointer}
+  .tabs button .ico{display:block;font-size:20px;margin-bottom:1px}
+  .tabs button.on{color:var(--ai)}
+  .screen{display:none}.screen.on{display:block}
+  .bar{height:14px;border-radius:7px;background:#e8e1cd;overflow:hidden;margin:4px 0 10px}
+  .bar i{display:block;height:100%;background:linear-gradient(90deg,#2e6e4e,#4d9670);border-radius:7px}
+  .bar.gold i{background:linear-gradient(90deg,#a8842c,#d0a94a)}
+  .num{font-family:var(--serif);font-size:30px;font-weight:700}
+  .verdict{background:var(--gold-soft);border:1px dashed var(--gold);border-radius:12px;padding:12px;font-size:13.5px;margin:10px 0}
+  .small{font-size:12px;color:var(--sub)}
+  .flowhint{text-align:center;color:var(--sub);font-size:12px;margin:2px 0 12px}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="apphead"><h1>判断台帳</h1><span class="demo">デモ・例はあなたの今週の実判断</span></div>
+  <p class="flowhint">下のタブで4画面を切り替え → これが1つの判断の一生です</p>
+
+  <!-- ①台帳 -->
+  <section class="screen on" id="s1">
+    <div class="card">
+      <span class="chip due">⏰ 今日が検証日</span>
+      <div class="dec-title">複数のAI高額課金を続けるか、主力1本に絞るか</div>
+      <div class="dec-meta">登録 7/10 ・ 卦=損 ・ 予測3件 ・ タップで採点画面へ →（タブ③）</div>
+    </div>
+    <div class="card">
+      <span class="chip wait">検証待ち 9/4</span>
+      <div class="dec-title">1ヶ月で「判断台帳」を作る（動画は畳む）</div>
+      <div class="dec-meta">登録 8/4 ・ 卦=革 ・ 予測3件 ・ 30日後にAIが答え合わせ</div>
+    </div>
+    <div class="card">
+      <span class="chip done">採点済み ✓ 易経が効いた</span>
+      <div class="dec-title">64話シリーズを総括動画なしで静かに閉じる</div>
+      <div class="dec-meta">登録 8/2 → 検証 8/4 ・ 卦=艮 ・ 的中 2/3 ・ 詳細はタブ③</div>
+    </div>
+    <div class="card" style="text-align:center">
+      <div class="small">月次のあなたの成績 → タブ④「月報」へ</div>
+    </div>
+  </section>
+
+  <!-- ②新規 -->
+  <section class="screen" id="s2">
+    <div class="card">
+      <label>いま迷っている判断を1行で</label>
+      <textarea id="q" placeholder="例: ◯◯の契約を今月で切るか">1ヶ月で「判断台帳」を作る（動画は畳む）</textarea>
+      <button class="btn" onclick="draw()">卦を引く（決定文のSHA-256で決定論＝占いにならない）</button>
+    </div>
+    <div id="drawn" style="display:none">
+      <div class="card">
+        <div class="gua">
+          <div class="bars"><i></i><i class="yin"></i><i></i><i></i><i></i><i class="yin"></i></div>
+          <div><div class="t">この決定文から一意に</div><div class="n">49. 革（かく）— 古いものを改める</div></div>
+          <div class="glyph">革</div>
+        </div>
+        <div class="small" style="margin-bottom:6px">卦は答えではなく<b>反対仮説の強制装置</b>。AIが卦の視点で3つ突きつけてきます:</div>
+        <div class="q"><b>Q1 見落としている変化の兆候は?</b><br>革は「改めるのは機が熟してから」の卦。動画を畳む解放感で「作りたい熱」を判断台帳に投影していないか。熱の出所は台帳そのものか、畳む口実か。</div>
+        <div class="q"><b>Q2 失敗するとしたら原因は?</b><br>2週間でMVPが出ず、また「仕組み作りが楽しい」だけが残り、使う習慣が立たないこと。ハーネス構築が目的化する既往歴あり。</div>
+        <div class="q"><b>Q3 撤退条件（数値/期日）は?</b><br>9/4時点で「過去7日間に自分で3回以上開いていない」なら拡張せず凍結。</div>
+        <label>あなたの予測を3つ（後日AIが照合）</label>
+        <div class="pred"><span class="tag">最悪</span><input type="text" value="MVPは作るが2週間後には開かなくなる"></div>
+        <div class="pred"><span class="tag">最有力</span><input type="text" value="週2-3回、迷った時だけ開く道具として定着する"></div>
+        <div class="pred"><span class="tag">最良</span><input type="text" value="毎日開き、企業分析(Plan B)再開の土台になる"></div>
+        <button class="btn">この内容で台帳に登録（検証日 9/4 に自動で戻ってくる）</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ③採点 -->
+  <section class="screen" id="s3">
+    <div class="card">
+      <span class="chip done">検証完了の例（8/4実施）</span>
+      <div class="dec-title">64話シリーズを総括動画なしで静かに閉じる</div>
+      <div class="gua" style="margin-top:10px">
+        <div class="bars"><i class="yin"></i><i class="yin"></i><i></i><i class="yin"></i><i class="yin"></i><i></i></div>
+        <div><div class="t">登録時に引いた卦</div><div class="n">52. 艮（ごん）— とどまる</div></div>
+        <div class="glyph">艮</div>
+      </div>
+      <label>あなたの予測 と 実際（AIが会話ログ・記録から照合）</label>
+      <div class="pred"><span class="tag">最悪</span><div>やめた罪悪感で何も手につかない → <span class="hit">外れ（良い意味で）</span></div></div>
+      <div class="pred"><span class="tag">最有力</span><div>解放感と気持ち悪さが半々で残る → <span class="hit">的中</span></div></div>
+      <div class="pred"><span class="tag">最良</span><div>すぐ次のテーマに気持ちが向く → <span class="hit">的中</span>（ブレスト依頼まで2日）</div></div>
+      <div class="verdict">
+        <b>易経は効いたか（独自貢献の判定）</b><br>
+        艮のQ3「止まる前に、何を残すかを数値/期日で決めよ」→ これに答える過程で「総括動画は不要・記録だけ残す」に到達。<b>反対仮説が結論を1段シンプルにした＝貢献 ✓</b>
+      </div>
+      <button class="btn ghost">貢献しなかった場合は ✗ を付ける（正直に。月報の貢献率に反映）</button>
+    </div>
+  </section>
+
+  <!-- ④月報 -->
+  <section class="screen" id="s4">
+    <div class="card">
+      <div class="small">2026年8月（例）</div>
+      <div style="display:flex;gap:18px;margin:8px 0 2px">
+        <div><div class="num">67%</div><div class="small">最有力予測の的中率<br>（8判断中）</div></div>
+        <div><div class="num">60%</div><div class="small">易経の独自貢献率<br>（見落としを拾えた率）</div></div>
+      </div>
+      <label>予測の的中（あなたは自分の未来をどれくらい読めているか）</label>
+      <div class="bar"><i style="width:67%"></i></div>
+      <label>易経の貢献（ただの儀式になっていないかの検算）</label>
+      <div class="bar gold"><i style="width:60%"></i></div>
+      <div class="verdict">
+        <b>今月のAI評</b>: あなたの「最悪予測」は8件中6件で外れています（実際は最悪まで行かない）。<b>悲観側に系統的なバイアス</b>。一方「撤退条件」を数値で書いた判断は全て期日どおり検証済み＝決めれば守る人。来月は最悪予測を1段軽くして精度を見ましょう。
+      </div>
+      <div class="small">↑ これが毎月自動で出る。「AI課金に価値があるか」もこの数字で判断できる——月に何回開き、貢献率がいくらか。</div>
+    </div>
+  </section>
+</div>
+
+<nav class="tabs">
+  <button class="on" onclick="go(1,this)"><span class="ico">📒</span>台帳</button>
+  <button onclick="go(2,this)"><span class="ico">✍️</span>新規</button>
+  <button onclick="go(3,this)"><span class="ico">⚖️</span>採点</button>
+  <button onclick="go(4,this)"><span class="ico">📈</span>月報</button>
+</nav>
+<script>
+function go(n,el){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('on'));document.getElementById('s'+n).classList.add('on');document.querySelectorAll('.tabs button').forEach(b=>b.classList.remove('on'));el.classList.add('on');window.scrollTo(0,0)}
+function draw(){document.getElementById('drawn').style.display='block';setTimeout(()=>document.getElementById('drawn').scrollIntoView({behavior:'smooth'}),50)}
+</script>
+</body>
+</html>
