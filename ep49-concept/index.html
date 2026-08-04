@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>第49話 企画ゲート — 痛みの一文を選ぶ</title>
+<style>
+  :root{
+    --bg:#faf8f4; --fg:#1c1a17; --muted:#6b655c; --line:#ded7cb;
+    --card:#fffdfa; --accent:#8c6b2f; --accent2:#2f5d8c; --warn:#a33a2a;
+    --shadow:0 1px 2px rgba(0,0,0,.05),0 8px 24px rgba(0,0,0,.05);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{ --bg:#151311; --fg:#ece7df; --muted:#9d968b; --line:#332f2a;
+      --card:#1e1b18; --accent:#d8ac5c; --accent2:#7fb0e0; --warn:#e08573;
+      --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.35); }
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:var(--bg); color:var(--fg);
+    font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",system-ui,sans-serif;
+    line-height:1.85; font-size:16px; -webkit-text-size-adjust:100%;
+  }
+  .wrap{max-width:860px;margin:0 auto;padding:32px 20px 96px}
+  .kicker{font-size:13px;letter-spacing:.14em;color:var(--accent);font-weight:700;margin:0 0 8px}
+  h1{font-size:30px;line-height:1.35;margin:0 0 14px;letter-spacing:-.01em}
+  h2{font-size:21px;margin:52px 0 14px;padding-bottom:8px;border-bottom:2px solid var(--line)}
+  h3{font-size:17px;margin:26px 0 8px}
+  p{margin:0 0 14px}
+  .lede{font-size:17px;color:var(--muted)}
+  .tldr{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--accent);
+    border-radius:8px;padding:16px 18px;margin:22px 0;box-shadow:var(--shadow)}
+  .tldr ol{margin:0;padding-left:1.3em}
+  .tldr li{margin:6px 0}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:22px;margin:20px 0;box-shadow:var(--shadow)}
+  .card.pick{border-color:var(--accent);border-width:2px}
+  .card.out{opacity:.72}
+  .tag{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.06em;
+    padding:3px 10px;border-radius:999px;border:1px solid var(--line);color:var(--muted);margin-right:6px}
+  .tag.hot{background:var(--accent);color:#fff;border-color:transparent}
+  .tag.cold{background:transparent;color:var(--warn);border-color:var(--warn)}
+  .pain{font-size:20px;font-weight:700;line-height:1.6;margin:10px 0 4px}
+  blockquote{margin:12px 0;padding:12px 16px;border-left:3px solid var(--accent2);
+    background:rgba(127,176,224,.07);border-radius:0 8px 8px 0;font-size:15.5px}
+  blockquote p{margin:0 0 6px}
+  blockquote p:last-child{margin:0}
+  .scenes{margin:8px 0 0;padding-left:1.25em;font-size:15px;color:var(--muted)}
+  .scenes li{margin:4px 0}
+  .tblwrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:16px 0}
+  table{border-collapse:collapse;width:100%;min-width:560px;font-size:14.5px}
+  th,td{border:1px solid var(--line);padding:9px 11px;text-align:left;vertical-align:top}
+  th{background:rgba(140,107,47,.09);font-weight:700;white-space:nowrap}
+  td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+  .hexrow{display:flex;flex-wrap:wrap;gap:24px;justify-content:center;margin:8px 0 4px}
+  .hexbox{text-align:center}
+  .hexbox .cap{font-size:13px;color:var(--muted);margin-top:6px;line-height:1.5}
+  figure{margin:18px 0}
+  figcaption{font-size:13.5px;color:var(--muted);margin-top:10px;line-height:1.7}
+  .note{font-size:14px;color:var(--muted);border-top:1px dashed var(--line);padding-top:10px;margin-top:14px}
+  .decide{background:var(--card);border:2px solid var(--accent);border-radius:12px;
+    padding:22px;margin:28px 0;box-shadow:var(--shadow)}
+  .opt{border-top:1px solid var(--line);padding:14px 0}
+  .opt:first-of-type{border-top:none}
+  .opt b{font-size:17px}
+  .warnbox{border:1px solid var(--warn);border-radius:8px;padding:14px 16px;margin:18px 0;
+    background:rgba(163,58,42,.06);font-size:15px}
+  code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13.5px;
+    background:rgba(128,128,128,.13);padding:1px 5px;border-radius:4px}
+  .src{font-size:13px;color:var(--muted)}
+  @media (max-width:640px){
+    h1{font-size:25px} .wrap{padding:24px 16px 80px} .pain{font-size:18px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<p class="kicker">第49話 ／ content/069 ／ 企画ゲート（concept）</p>
+<h1>痛みの一文を、1つ選んでください。</h1>
+<p class="lede">H58「痛み先頭転換」コホートの<strong>7本目＝8/21の判定に間に合う最後の1本</strong>です。公開枠は 2026-08-18 04:00 JST。企画の承認＝<strong>この一文を選ぶこと</strong>で、選ばれた文がそのままタイトル前半・冒頭9秒・share_line になります。</p>
+
+<div class="tldr">
+  <ol>
+    <li>3案を書き、<strong>3系統の独立採点</strong>（fork／匿名ブラインド選定／品質ゲート）に通しました。<strong>ブラインド選定が2案に絞りました。</strong></li>
+    <li>残ったのは <strong>案C 耳をすませば×大畜</strong>（品質97点）と <strong>案A 3月のライオン×節</strong>（品質92点）。</li>
+    <li><strong>案B ブルーロック×晋は、匿名選定で最下位になり落選しました</strong>（内容は下に載せています。復活させたい場合は言ってください）。</li>
+  </ol>
+</div>
+
+<h2>1. 六爻図で見た、3案の「物証の強さ」</h2>
+<p>この番組の種明かしは、<strong>隣り合う卦の六爻図の差</strong>が反論不能の証拠になるかどうかで切れ味が決まります。下は <code>db/hexagrams.json</code> の <code>binary_le</code> から機械的に描いた実物です（AIの作図ではないので、数値も形も捏造が入りません）。</p>
+
+<figure>
+<div class="hexrow">
+
+<div class="hexbox">
+<svg width="150" height="128" viewBox="0 0 150 128" role="img" aria-label="大畜と頤の六爻図">
+  <g stroke-width="0">
+  <!-- 大畜 111001 : bottom→top -->
+  <text x="34" y="12" font-size="11" fill="#8c6b2f" text-anchor="middle">大畜</text>
+  <!-- 上6 =1 -->
+  <rect x="6" y="22" width="56" height="7" fill="currentColor"/>
+  <!-- 5 =0 --><rect x="6" y="39" width="23" height="7" fill="currentColor"/><rect x="39" y="39" width="23" height="7" fill="currentColor"/>
+  <!-- 4 =0 --><rect x="6" y="56" width="23" height="7" fill="currentColor"/><rect x="39" y="56" width="23" height="7" fill="currentColor"/>
+  <!-- 3 =1 --><rect x="6" y="73" width="56" height="7" fill="#a33a2a"/>
+  <!-- 2 =1 --><rect x="6" y="90" width="56" height="7" fill="#a33a2a"/>
+  <!-- 1 =1 --><rect x="6" y="107" width="56" height="7" fill="currentColor"/>
+
+  <text x="112" y="12" font-size="11" fill="#8c6b2f" text-anchor="middle">頤</text>
+  <rect x="84" y="22" width="56" height="7" fill="currentColor"/>
+  <rect x="84" y="39" width="23" height="7" fill="currentColor"/><rect x="117" y="39" width="23" height="7" fill="currentColor"/>
+  <rect x="84" y="56" width="23" height="7" fill="currentColor"/><rect x="117" y="56" width="23" height="7" fill="currentColor"/>
+  <rect x="84" y="73" width="23" height="7" fill="#a33a2a"/><rect x="117" y="73" width="23" height="7" fill="#a33a2a"/>
+  <rect x="84" y="90" width="23" height="7" fill="#a33a2a"/><rect x="117" y="90" width="23" height="7" fill="#a33a2a"/>
+  <rect x="84" y="107" width="56" height="7" fill="currentColor"/>
+  </g>
+</svg>
+<div class="cap">案C 大畜(26)→頤(27)<br><strong>2本差</strong>（赤の二段）</div>
+</div>
+
+<div class="hexbox">
+<svg width="150" height="128" viewBox="0 0 150 128" role="img" aria-label="節と中孚の六爻図">
+  <g stroke-width="0">
+  <!-- 節 110010 -->
+  <text x="34" y="12" font-size="11" fill="#8c6b2f" text-anchor="middle">節</text>
+  <rect x="6" y="22" width="23" height="7" fill="#a33a2a"/><rect x="39" y="22" width="23" height="7" fill="#a33a2a"/>
+  <rect x="6" y="39" width="56" height="7" fill="currentColor"/>
+  <rect x="6" y="56" width="23" height="7" fill="currentColor"/><rect x="39" y="56" width="23" height="7" fill="currentColor"/>
+  <rect x="6" y="73" width="23" height="7" fill="currentColor"/><rect x="39" y="73" width="23" height="7" fill="currentColor"/>
+  <rect x="6" y="90" width="56" height="7" fill="currentColor"/>
+  <rect x="6" y="107" width="56" height="7" fill="currentColor"/>
+
+  <text x="112" y="12" font-size="11" fill="#8c6b2f" text-anchor="middle">中孚</text>
+  <rect x="84" y="22" width="56" height="7" fill="#a33a2a"/>
+  <rect x="84" y="39" width="56" height="7" fill="currentColor"/>
+  <rect x="84" y="56" width="23" height="7" fill="currentColor"/><rect x="117" y="56" width="23" height="7" fill="currentColor"/>
+  <rect x="84" y="73" width="23" height="7" fill="currentColor"/><rect x="117" y="73" width="23" height="7" fill="currentColor"/>
+  <rect x="84" y="90" width="56" height="7" fill="currentColor"/>
+  <rect x="84" y="107" width="56" height="7" fill="currentColor"/>
+  </g>
+</svg>
+<div class="cap">案A 節(60)→中孚(61)<br><strong>1本差</strong>（赤の最上段だけ）</div>
+</div>
+
+<div class="hexbox">
+<svg width="150" height="128" viewBox="0 0 150 128" role="img" aria-label="晋と明夷の六爻図">
+  <g stroke-width="0">
+  <!-- 晋 000101 -->
+  <text x="34" y="12" font-size="11" fill="#6b655c" text-anchor="middle">晋</text>
+  <rect x="6" y="22" width="56" height="7" fill="currentColor"/>
+  <rect x="6" y="39" width="23" height="7" fill="currentColor"/><rect x="39" y="39" width="23" height="7" fill="currentColor"/>
+  <rect x="6" y="56" width="56" height="7" fill="currentColor"/>
+  <rect x="6" y="73" width="23" height="7" fill="currentColor"/><rect x="39" y="73" width="23" height="7" fill="currentColor"/>
+  <rect x="6" y="90" width="23" height="7" fill="currentColor"/><rect x="39" y="90" width="23" height="7" fill="currentColor"/>
+  <rect x="6" y="107" width="23" height="7" fill="currentColor"/><rect x="39" y="107" width="23" height="7" fill="currentColor"/>
+
+  <text x="112" y="12" font-size="11" fill="#6b655c" text-anchor="middle">明夷</text>
+  <rect x="84" y="22" width="23" height="7" fill="currentColor"/><rect x="117" y="22" width="23" height="7" fill="currentColor"/>
+  <rect x="84" y="39" width="23" height="7" fill="currentColor"/><rect x="117" y="39" width="23" height="7" fill="currentColor"/>
+  <rect x="84" y="56" width="56" height="7" fill="currentColor"/>
+  <rect x="84" y="73" width="23" height="7" fill="currentColor"/><rect x="117" y="73" width="23" height="7" fill="currentColor"/>
+  <rect x="84" y="90" width="56" height="7" fill="currentColor"/>
+  <rect x="84" y="107" width="23" height="7" fill="currentColor"/><rect x="117" y="107" width="23" height="7" fill="currentColor"/>
+  </g>
+</svg>
+<div class="cap">案B 晋(35)→明夷(36)<br>上下まるごと反転（4本差）</div>
+</div>
+
+</div>
+<figcaption><strong>この図は db から機械的に描いたもので、生成AIの作図ではありません</strong>（前回、生成した図解に架空の数値が描き込まれた件を受けて、確認資料の図は決定論で描く方式に変えました）。赤い線が、隣の卦へ移るときに変わる爻です。長い1本＝陽、切れた2本＝陰。下が初爻、上が上爻。</figcaption>
+</figure>
+
+<h2>2. 採点の結果（3系統・独立）</h2>
+<div class="tblwrap">
+<table>
+<thead><tr><th>案</th><th>痛み分類</th><th class="num">fork採点<br><span class="src">(Claude・私が依頼)</span></th><th class="num">ブラインド選定<br><span class="src">(codex・匿名化)</span></th><th class="num">品質ゲート<br><span class="src">(codex fork)</span></th><th>結果</th></tr></thead>
+<tbody>
+<tr><td><strong>案C</strong> 耳をすませば×大畜</td><td>決断</td><td class="num">92</td><td class="num">98（1位）</td><td class="num"><strong>97</strong></td><td>候補に残った</td></tr>
+<tr><td><strong>案A</strong> 3月のライオン×節</td><td>限界</td><td class="num">90</td><td class="num">92（2位）</td><td class="num"><strong>92</strong></td><td>候補に残った</td></tr>
+<tr><td>案B ブルーロック×晋</td><td>仕事・評価</td><td class="num">90<span class="src">（3周目）</span></td><td class="num">91→87（最下位）</td><td class="num">—</td><td><span class="tag cold">落選</span></td></tr>
+</tbody>
+</table>
+</div>
+<p class="src">合格ラインは90点。候補は匿名化（A/B/Cのラベルを剥がし、順番もシャッフル）した状態で codex が2案に絞っています。私は選定に関与していません。fork採点と匿名選定は<strong>独立に同じ順位</strong>を出しました。</p>
+
+<h2>3. 案C — 耳をすませば（月島雫）× 大畜（たいちく）</h2>
+<div class="card pick">
+  <p><span class="tag hot">推奨</span><span class="tag">痛み分類＝決断</span><span class="tag">品質 97点</span></p>
+  <p class="pain">準備が終わったら始めよう、と思っているうちに、もう何年か経っている。</p>
+  <p class="src">タイトル案：準備が終わったら始めよう、と思っているうちに、もう何年か経っている。｜耳をすませば×大畜</p>
+
+  <h3>冒頭9秒</h3>
+  <blockquote>
+    <p>準備が終わったら始めよう、と思っているうちに、もう何年か経ちました。</p>
+    <p>本は増えました。講座も受けました。ただ、人に見せたものは、まだ一つもありません。</p>
+    <p>準備をしている間は、まだ下手だと言われずに済むんです。</p>
+    <p><span class="src">（接続）</span>耳をすませばの月島雫は、準備が終わる前に書き始めて、いちばん怖い人に読ませます。</p>
+  </blockquote>
+
+  <h3>幕1で並べる生活場面3つ</h3>
+  <ul class="scenes">
+    <li>買った参考書の一章目だけに線が引かれた本が、机に三冊積んである。</li>
+    <li>「始め方」の記事のブックマークが、フォルダに四十件たまっている。</li>
+    <li>一月に「今年こそ」と書いたメモを、十二月に見つけて、そのまま閉じる。</li>
+  </ul>
+
+  <h3>常識の反転（種明かしの芯）</h3>
+  <p>大畜は<strong>蓄積を一度も否定していません</strong>。むしろ「天が山の中にある＝隠れた宝」と呼びます。咎めているのは量ではなく出口のほうで、卦辞にこう書いてあります——<strong>「家で食べるな（Not eating at home brings good fortune）」</strong>。蓄えよと書いた同じ場所に、外へ出て食え、と書いてある。この非対称がこの回の物証です。</p>
+
+  <h3>幕6の棘（要約で閉じない）</h3>
+  <blockquote><p>準備をしていた時間は、無駄ではありません。ただ、その蓄えを一度も家の外で食べていないなら、あなたが守っているのは可能性ではなく、まだ採点されていないという状態のほうです。</p></blockquote>
+
+  <div class="note"><strong>この案の弱点（先に申告します）</strong>：① 六爻図の差が2本で、種明かしの「一本だけ違う」という切れ味は案Aに劣ります（その分、卦辞の言葉の反転を物証の主軸に置く設計にしてあります）。② ジブリは検索需要が大きい反面、既存の解説動画が非常に多く、<strong>インプレッションが出ても埋没する側のリスク</strong>があります。③ 痛み分類が「決断」で、ep48（もののけ姫）と同じ分類が2本目になります。</div>
+</div>
+
+<h2>4. 案A — 3月のライオン（桐山零）× 節（せつ）</h2>
+<div class="card">
+  <p><span class="tag">痛み分類＝限界</span><span class="tag">品質 92点</span></p>
+  <p class="pain">休み方がわからない人は、休んでいる間もずっと自分を責めている。</p>
+  <p class="src">タイトル案：休み方がわからない人は、休んでいる間もずっと自分を責めている。｜3月のライオン×節</p>
+
+  <h3>冒頭9秒</h3>
+  <blockquote>
+    <p>「今日は何もしない」と決めた日の午後が、いちばん落ち着きません。</p>
+    <p>横になっていても、頭のどこかで、これは休んでいるうちに入るのか、と点検している。</p>
+    <p>自分に厳しくしているつもりで、ただ回復を先送りしているだけなんです。</p>
+    <p><span class="src">（接続）</span>3月のライオンの桐山零は、将棋以外の時間の使い方を、誰にも教わっていません。</p>
+  </blockquote>
+
+  <h3>幕1で並べる生活場面3つ</h3>
+  <ul class="scenes">
+    <li>日曜の昼、洗濯機を回してからソファに座り、三十分スマホを見て、その三十分を「サボった時間」として数える。</li>
+    <li>有給を取った朝、いつもと同じ時間に目が覚めて、結局その日のうちに一度だけメールを開く。</li>
+    <li>「今週は早く寝る」と決めた月曜は守れて、水曜には元の時間に戻っている。</li>
+  </ul>
+
+  <h3>常識の反転（種明かしの芯）</h3>
+  <p>節は「<strong>苦い制限を続けてはならない</strong>（Galling limitation must not be persevered in）」と、<strong>続かない自分ではなく、続かない制限のほうを咎めます</strong>。注釈はさらに踏み込んで「<strong>制限にも制限を設けることが必要だ</strong>」と書く。そして物証がもう一段あります——初爻「戸と庭を出ないのは咎がない」、二爻「門と庭を出ないのは凶」。<strong>ほとんど同じ言葉が、一段隣で正反対になっている</strong>。六爻図でそれが目で見えます。</p>
+
+  <h3>幕6の棘（要約で閉じない）</h3>
+  <blockquote><p>休めないのは、あなたが弱いからではありません。ただ、続かない決め方を何度もやり直して、続かなかった回数のほうを自分の弱さとして数えているなら、削れているのは意志ではなく、あなたの器のほうです。</p></blockquote>
+
+  <div class="note"><strong>この案の弱点（先に申告します）</strong>：① 3月のライオンはいじめ・心の不調を正面から扱うので、<strong>台本が医療的助言に読まれるリスク</strong>があります（診断語・治療語を使わない、で対処します）。② IP規模は案Cより小さい。③ 痛み分類が「限界」で、ep43（四月は君の嘘）と同じ分類が2本目になります。<br><strong>この案の強み</strong>：六爻図が<strong>シリーズ最小の1本差</strong>で、種明かしの物証としては3案で最も切れます。</div>
+</div>
+
+<h2>5. 落選した案B（参考・透明性のため）</h2>
+<div class="card out">
+  <p><span class="tag cold">匿名選定で落選</span><span class="tag">痛み分類＝仕事・評価</span></p>
+  <p class="pain">一番になりたいと思った日から、誰かの失敗を少しだけ願うようになった。</p>
+  <p class="src">ブルーロック（潔世一）× 晋（しん）。3案の中で<strong>IP規模は最大</strong>でした。</p>
+  <p>落選の理由は匿名判定者の言葉で「作品と卦の同型より<strong>対照に依存している</strong>」——ブルーロックが肯定するエゴと、晋が言う「角を向けてよいのは自分の側だけ」が正面から衝突するので、構造が重なっているのではなく<strong>ぶつかっている</strong>だけだ、という指摘です。3周目の改稿で構造の筋を立て直して90点まで上げましたが、匿名の場では最下位のままでした。</p>
+  <div class="note">この案を復活させたい場合は、そう言ってください。<strong>黙って選定結果を上書きすることはしません</strong>（ブラインド選定を無効化すると、以降の判定が汚染されるため）。復活させるなら企画ラウンドをやり直します。</div>
+</div>
+
+<h2>6. どちらを選んでも変わらないこと</h2>
+<div class="tblwrap">
+<table>
+<tbody>
+<tr><th>公開枠</th><td>2026-08-18 04:00 JST（確保済み・content/069）</td></tr>
+<tr><th>コホート</th><td>H58 痛み先頭転換の<strong>7本目</strong>＝2026-08-21 判定に間に合う最後の1本</td></tr>
+<tr><th>タイトル型</th><td><code>&lt;痛みの一文&gt;。｜&lt;作品名&gt;×&lt;卦&gt;</code>（「第N話」は付けない）</td></tr>
+<tr><th>語り手の立場</th><td>多数側（大多数が選ぶ側の選択をしてきた人間として語る）</td></tr>
+<tr><th>ショート</th><td>隣の卦型は制作停止中のため、この序卦連動は<strong>本編の幕3〜幕6の設計要素</strong>として使います</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="warnbox">
+<strong>判定について、正直に申告しておきます。</strong> 8/21に測るのは「H58単体」ではなく、<strong>H58＋新フック工程＋生活場面3つ＋語り手スタンス＋オープンループ3本の束</strong>です。交絡は分離できません。また7本・1本あたり数十〜数百再生では統計的な差は検出できないので、<strong>8/21に「差なし」が出ても仮説の反証にはなりません</strong>。
+</div>
+
+<h2>7. 決めてください</h2>
+<div class="decide">
+  <div class="opt">
+    <b>A</b> — 案C「準備が終わったら始めよう、と思っているうちに、もう何年か経っている。」｜<strong>耳をすませば×大畜</strong>（推奨・品質97点・匿名選定1位）
+  </div>
+  <div class="opt">
+    <b>B</b> — 案A「休み方がわからない人は、休んでいる間もずっと自分を責めている。」｜<strong>3月のライオン×節</strong>（品質92点・六爻図は1本差で最も切れる）
+  </div>
+  <div class="opt">
+    <b>C</b> — 落選した<strong>案B ブルーロック×晋</strong>を復活させたい（企画ラウンドをやり直します）
+  </div>
+  <div class="opt">
+    <b>D</b> — <strong>痛みの一文だけ書き直してほしい</strong>（作品と卦はそのままで、文だけ作り直す。どこが刺さらなかったかを一言ください）
+  </div>
+</div>
+
+<p class="src">選ばれた案は <code>content/069/concept.md</code> へ昇格し、承認記録（run manifest ＋ concept-approval.json）を残してから台本工程へ進みます。次の停止点は<strong>台本ゲート（essay-script）</strong>です。</p>
+
+</div>
+</body>
+</html>
