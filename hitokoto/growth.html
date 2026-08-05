@@ -6,63 +6,116 @@
 <meta name="robots" content="noindex">
 <title>成長の現在地</title>
 <style>
-:root{--ink:#26262e;--ink2:#8a8a96;--bg:#f4f4f7;--card:#fff;--line:#e7e7ec;--ac:#4a7dbd;--good:#3a8f6b;--warn:#c07f2e;--bad:#b5566a}
+:root{--ink:#3b3630;--ink2:#96908a;--bg:#faf7f2;--card:#fff;--line:#ece6dd;--ac:#7a9e7e;--ac2:#c98a5e;--blue:#7d95b5;--rose:#c4838f;--gold:#c9a35e}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-body{font-family:-apple-system,"Hiragino Sans",sans-serif;background:var(--bg);color:var(--ink);font-size:15px;line-height:1.7;padding-bottom:calc(70px + env(safe-area-inset-bottom))}
-header{background:var(--card);border-bottom:1px solid var(--line);padding:calc(12px + env(safe-area-inset-top)) 16px 10px;position:sticky;top:0;z-index:5;display:flex;justify-content:space-between;align-items:center}
-header b{font-size:16px}
-header a{font-size:13px;color:var(--ac);text-decoration:none}
+body{font-family:-apple-system,"Hiragino Sans",sans-serif;background:var(--bg);color:var(--ink);font-size:15px;line-height:1.7;padding-bottom:calc(74px + env(safe-area-inset-bottom))}
+.hero{position:relative;height:190px;overflow:hidden;background:#ded8ce}
+.hero img{width:100%;height:100%;object-fit:cover;display:block}
+.hero .ov{position:absolute;inset:0;background:linear-gradient(to top,rgba(35,30,25,.62),rgba(35,30,25,0) 55%)}
+.hero .back{position:absolute;top:calc(10px + env(safe-area-inset-top));left:12px;background:rgba(255,255,255,.85);border-radius:20px;padding:5px 14px;font-size:13px;color:var(--ink);text-decoration:none;font-weight:600}
+.hero .zt{position:absolute;left:16px;bottom:14px;right:16px;color:#fff}
+.hero .zt .zn{font-size:23px;font-weight:800;letter-spacing:.02em;text-shadow:0 1px 8px rgba(0,0,0,.3)}
+.hero .zt .zd{font-size:13px;opacity:.92}
 .wrap{max-width:560px;margin:0 auto;padding:14px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:12px}
-h2{font-size:14px;color:var(--ink2);font-weight:600;margin-bottom:10px}
-.zone{font-size:20px;font-weight:700;margin:4px 0 2px}
-.zone-note{font-size:13px;color:var(--ink2)}
-.gauges{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
-.g{background:var(--bg);border-radius:10px;padding:10px 12px}
-.g .lbl{font-size:12px;color:var(--ink2)}
-.g .val{font-size:22px;font-weight:700}
-.g .val small{font-size:12px;font-weight:400;color:var(--ink2)}
-.bar{height:5px;background:var(--line);border-radius:3px;margin-top:6px;overflow:hidden}
-.bar i{display:block;height:100%;background:var(--ac);border-radius:3px}
-.dom{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}
-.dom:last-child{border-bottom:none}
-.dom .lv{background:var(--ac);color:#fff;border-radius:8px;padding:1px 10px;font-size:13px;font-weight:700}
-.ev{font-size:13.5px;padding:8px 0 8px 12px;border-left:3px solid var(--line);margin:6px 0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:12px;box-shadow:0 1px 4px rgba(60,50,40,.04)}
+h2{font-size:13.5px;color:var(--ink2);font-weight:700;margin-bottom:12px;letter-spacing:.04em}
+/* 象限マップ */
+.qmap{position:relative;width:100%;aspect-ratio:1.25}
+.qmap svg{width:100%;height:100%}
+.qlbl{font-size:10.5px;fill:var(--ink2)}
+.qname{font-size:11.5px;font-weight:700}
+/* リングゲージ */
+.rings{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.ring{display:flex;align-items:center;gap:12px;background:var(--bg);border-radius:12px;padding:10px}
+.ring svg{width:54px;height:54px;flex-shrink:0}
+.ring .t{min-width:0}
+.ring .l{font-size:11.5px;color:var(--ink2);line-height:1.3}
+.ring .v{font-size:19px;font-weight:800}
+.ring .v small{font-size:11px;font-weight:400;color:var(--ink2)}
+/* 証拠 */
+.ev{display:flex;gap:10px;padding:9px 0;border-bottom:1px dashed var(--line);font-size:14px}
+.ev:last-child{border-bottom:none}
+.ev .ic{flex-shrink:0;width:34px;height:34px;border-radius:10px;background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:17px}
 .ev .d{font-size:11px;color:var(--ink2)}
-textarea,select,input{width:100%;border:1px solid var(--line);border-radius:10px;padding:10px;font-size:15px;font-family:inherit;background:var(--card);margin-bottom:8px}
-textarea{min-height:70px;resize:vertical}
-button.pri{width:100%;background:var(--ac);color:#fff;border:none;border-radius:12px;padding:13px;font-size:15px;font-weight:600}
-.hint{font-size:12.5px;color:var(--ink2);margin-top:8px}
-nav{position:fixed;bottom:0;left:0;right:0;background:var(--card);border-top:1px solid var(--line);display:flex;padding-bottom:env(safe-area-inset-bottom);z-index:5}
-nav button{flex:1;background:none;border:none;padding:10px 0 8px;font-size:11.5px;color:var(--ink2);font-family:inherit}
+/* ツリー */
+.dom{margin-bottom:14px}
+.dom-h{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.dom-h .em{font-size:26px}
+.dom-h .nm{font-weight:700;font-size:15.5px}
+.dom-h .lv{margin-left:auto;background:linear-gradient(135deg,var(--ac),#5d8562);color:#fff;border-radius:9px;padding:2px 12px;font-size:13px;font-weight:800;box-shadow:0 2px 6px rgba(122,158,126,.35)}
+.dots{display:flex;gap:5px;margin:4px 0 8px 36px}
+.dots i{width:10px;height:10px;border-radius:50%;background:var(--line)}
+.dots i.f{background:var(--ac)}
+.tl{margin-left:12px;border-left:2px solid var(--line);padding-left:14px}
+.tl .n{position:relative;padding:4px 0;font-size:13.5px}
+.tl .n:before{content:"";position:absolute;left:-19.5px;top:13px;width:9px;height:9px;border-radius:50%;background:var(--ac2);border:2px solid var(--card)}
+.tl .d{font-size:11px;color:var(--ink2)}
+/* 記録 */
+textarea,select,input{width:100%;border:1.5px solid var(--line);border-radius:12px;padding:11px;font-size:15px;font-family:inherit;background:var(--card);margin-bottom:9px}
+textarea{min-height:74px;resize:vertical}
+button.pri{width:100%;background:var(--ac);color:#fff;border:none;border-radius:13px;padding:14px;font-size:15px;font-weight:700;box-shadow:0 3px 8px rgba(122,158,126,.3)}
+.condrow{display:flex;gap:9px}
+.condrow button{flex:1;border:none;border-radius:13px;padding:13px 0 10px;font-size:13px;font-weight:700;font-family:inherit;color:#fff}
+.condrow button span{display:block;font-size:22px;margin-bottom:2px}
+.hint{font-size:12.5px;color:var(--ink2);margin-top:9px}
+/* 週間 */
+.wk{display:flex;gap:11px;padding:11px 0;border-bottom:1px dashed var(--line)}
+.wk:last-child{border-bottom:none}
+.wk .ic{flex-shrink:0;width:38px;height:38px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:19px;background:var(--bg)}
+.wk b{display:block;font-size:12px;color:var(--ink2)}
+.wk div{font-size:14px}
+.empty{color:var(--ink2);font-size:13.5px;text-align:center;padding:22px 0}
+nav{position:fixed;bottom:0;left:0;right:0;background:rgba(255,255,255,.94);backdrop-filter:blur(10px);border-top:1px solid var(--line);display:flex;padding-bottom:env(safe-area-inset-bottom);z-index:5}
+nav button{flex:1;background:none;border:none;padding:9px 0 7px;font-size:11px;color:var(--ink2);font-family:inherit}
 nav button.on{color:var(--ac);font-weight:700}
-nav button span{display:block;font-size:19px;margin-bottom:1px}
+nav button span{display:block;font-size:20px;margin-bottom:1px}
 .tab{display:none}.tab.on{display:block}
-.empty{color:var(--ink2);font-size:13.5px;text-align:center;padding:20px 0}
-.wk-sec{margin-bottom:12px}
-.wk-sec b{font-size:13px;color:var(--ink2);display:block;margin-bottom:4px}
-.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;border-radius:20px;padding:8px 20px;font-size:13px;opacity:0;transition:.3s;pointer-events:none}
+.toast{position:fixed;bottom:86px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;border-radius:20px;padding:8px 20px;font-size:13px;opacity:0;transition:.3s;pointer-events:none;z-index:9}
 .toast.show{opacity:1}
 </style>
 </head>
 <body>
-<header><b>成長の現在地</b><a href="index.html">← まどかとのトーク</a></header>
+<div class="hero">
+  <img id="zoneImg" src="img/zone-explore.jpg" alt="">
+  <div class="ov"></div>
+  <a class="back" href="index.html">← まどか</a>
+  <div class="zt"><div class="zn" id="zoneName">—</div><div class="zd" id="zoneNote">読み込み中…</div></div>
+</div>
 <div class="wrap">
 
 <div class="tab on" id="tab-now">
   <div class="card">
-    <h2>今のあなた</h2>
-    <div class="zone" id="zoneName">—</div>
-    <div class="zone-note" id="zoneNote">データが貯まると表示されます</div>
-    <div class="gauges">
-      <div class="g"><div class="lbl">コンディション（毎日上下する）</div><div class="val" id="gCond">—</div><div class="bar"><i id="bCond" style="width:0%"></i></div></div>
-      <div class="g"><div class="lbl">成長実感（直近7日）</div><div class="val" id="gGrow">—</div><div class="bar"><i id="bGrow" style="width:0%"></i></div></div>
-      <div class="g"><div class="lbl">方向一致（週間レビュー）</div><div class="val" id="gDir">—</div><div class="bar"><i id="bDir" style="width:0%"></i></div></div>
-      <div class="g"><div class="lbl">つながり（週間レビュー）</div><div class="val" id="gConn">—</div><div class="bar"><i id="bConn" style="width:0%"></i></div></div>
+    <h2>いまの位置（成長 × コンディション）</h2>
+    <div class="qmap">
+      <svg viewBox="0 0 250 200">
+        <line x1="125" y1="12" x2="125" y2="188" stroke="#ece6dd" stroke-width="1.5"/>
+        <line x1="12" y1="100" x2="238" y2="100" stroke="#ece6dd" stroke-width="1.5"/>
+        <text x="125" y="9" text-anchor="middle" class="qlbl">成長実感 高</text>
+        <text x="125" y="198" text-anchor="middle" class="qlbl">成長実感 低</text>
+        <text x="10" y="103" text-anchor="start" class="qlbl">消耗</text>
+        <text x="240" y="103" text-anchor="end" class="qlbl">元気</text>
+        <text x="66" y="50" text-anchor="middle" class="qname" fill="#c4838f">オーバー</text>
+        <text x="66" y="63" text-anchor="middle" class="qname" fill="#c4838f">ドライブ</text>
+        <text x="184" y="56" text-anchor="middle" class="qname" fill="#7a9e7e">充実</text>
+        <text x="66" y="152" text-anchor="middle" class="qname" fill="#c98a5e">回復</text>
+        <text x="184" y="152" text-anchor="middle" class="qname" fill="#7d95b5">探索</text>
+        <circle id="posDot" cx="125" cy="100" r="7" fill="#3b3630" opacity="0.9">
+          <animate attributeName="r" values="6;8;6" dur="2s" repeatCount="indefinite"/>
+        </circle>
+      </svg>
     </div>
   </div>
   <div class="card">
-    <h2>今週できるようになったこと</h2>
+    <h2>4つの計器（1本の点数にしない）</h2>
+    <div class="rings">
+      <div class="ring"><svg id="rCond"></svg><div class="t"><div class="l">コンディション<br>毎日上下する</div><div class="v" id="vCond">—</div></div></div>
+      <div class="ring"><svg id="rGrow"></svg><div class="t"><div class="l">成長実感<br>直近7日</div><div class="v" id="vGrow">—</div></div></div>
+      <div class="ring"><svg id="rDir"></svg><div class="t"><div class="l">方向一致<br>自分で選べてるか</div><div class="v" id="vDir">—</div></div></div>
+      <div class="ring"><svg id="rConn"></svg><div class="t"><div class="l">つながり<br>安心して話せるか</div><div class="v" id="vConn">—</div></div></div>
+    </div>
+  </div>
+  <div class="card">
+    <h2>🌱 今週できるようになったこと</h2>
     <div id="weekEv"><div class="empty">まだ記録がありません</div></div>
     <p class="hint">まどかに「〜ができるようになった」と話すだけでも自動で記録されます。</p>
   </div>
@@ -70,29 +123,29 @@ nav button span{display:block;font-size:19px;margin-bottom:1px}
 
 <div class="tab" id="tab-rec">
   <div class="card">
-    <h2>30秒記録 — 今日、以前より少しできるようになったことは？</h2>
+    <h2>✏️ 30秒記録 — 今日、以前より少しできるようになったことは？</h2>
     <select id="recDomain">
       <option>個人開発</option><option>バイク</option><option>ゴルフ</option><option>英会話</option><option>筋トレ・健康</option><option>対人関係</option><option>その他</option>
     </select>
     <textarea id="recAfter" placeholder="例: 低速時のふらつきを自分で修正できるようになった"></textarea>
     <input id="recEvidence" placeholder="証拠(任意) 例: 今日の練習で3回連続成功">
-    <button class="pri" onclick="saveRec()">記録する</button>
-    <p class="hint">行動（2時間やった）ではなく、能力の変化（できるようになった）を書くのがコツ。一度獲得したレベルは下がりません。</p>
+    <button class="pri" onclick="saveRec()">🌱 記録する</button>
+    <p class="hint">行動（2時間やった）ではなく能力の変化（できるようになった）を書くのがコツ。一度上がったレベルは下がりません。</p>
   </div>
   <div class="card">
     <h2>今日のコンディション</h2>
-    <div style="display:flex;gap:8px">
-      <button class="pri" style="background:var(--good)" onclick="saveCond(1)">元気</button>
-      <button class="pri" style="background:var(--ink2)" onclick="saveCond(0)">普通</button>
-      <button class="pri" style="background:var(--bad)" onclick="saveCond(-1)">消耗</button>
+    <div class="condrow">
+      <button style="background:#7a9e7e" onclick="saveCond(1)"><span>☀️</span>元気</button>
+      <button style="background:#a8a29a" onclick="saveCond(0)"><span>⛅</span>普通</button>
+      <button style="background:#c4838f" onclick="saveCond(-1)"><span>🌧</span>消耗</button>
     </div>
-    <p class="hint">まどかとの会話からも自動で推定されます。悪い日でもレベルは下がりません。</p>
+    <p class="hint">まどかとの会話からも自動推定。悪い日でもレベルは下がりません。</p>
   </div>
 </div>
 
 <div class="tab" id="tab-tree">
   <div class="card">
-    <h2>成長ツリー（獲得した能力は消えない）</h2>
+    <h2>🌳 成長ツリー — 獲得した能力は消えない</h2>
     <div id="tree"><div class="empty">まだ記録がありません</div></div>
   </div>
 </div>
@@ -105,7 +158,7 @@ nav button span{display:block;font-size:19px;margin-bottom:1px}
 <nav>
   <button class="on" onclick="tab('now',this)"><span>📍</span>現在地</button>
   <button onclick="tab('rec',this)"><span>✏️</span>記録</button>
-  <button onclick="tab('tree',this)"><span>🌱</span>ツリー</button>
+  <button onclick="tab('tree',this)"><span>🌳</span>ツリー</button>
   <button onclick="tab('week',this)"><span>📅</span>週間</button>
 </nav>
 <div class="toast" id="toast"></div>
@@ -115,44 +168,63 @@ const token=localStorage.getItem('hitokoto_token');
 if(!token) location.href='index.html';
 const H={'x-token':token,'Content-Type':'application/json'};
 let G={entries:[],condition:[],weekly:[]};
+const COL={Cond:'#c98a5e',Grow:'#7a9e7e',Dir:'#7d95b5',Conn:'#c4838f'};
+const DOMEMO={'個人開発':'💻','バイク':'🏍','ゴルフ':'⛳','英会話':'🗣','筋トレ・健康':'💪','対人関係':'🤝','その他':'✨'};
 function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1800)}
 function tab(id,btn){document.querySelectorAll('.tab').forEach(e=>e.classList.remove('on'));document.getElementById('tab-'+id).classList.add('on');document.querySelectorAll('nav button').forEach(b=>b.classList.remove('on'));btn.classList.add('on')}
 const days=n=>new Date(Date.now()-n*864e5).toISOString().slice(0,10);
+function ring(id,val,col){
+  const r=21,c=2*Math.PI*r,off=val==null?c:c*(1-Math.min(100,val)/100);
+  document.getElementById(id).innerHTML=`<g transform="rotate(-90 27 27)"><circle cx="27" cy="27" r="${r}" fill="none" stroke="#f0ebe2" stroke-width="6"/><circle cx="27" cy="27" r="${r}" fill="none" stroke="${col}" stroke-width="6" stroke-linecap="round" stroke-dasharray="${c}" stroke-dashoffset="${off}" style="transition:stroke-dashoffset 1s"/></g>`;
+  document.getElementById(id).setAttribute('viewBox','0 0 54 54');
+}
+function plantEmoji(lv){return lv>=6?'🌳':lv>=3?'🌿':'🌱'}
 function render(){
   const e7=G.entries.filter(e=>e.ts>=days(7));
   const c7=(G.condition||[]).filter(c=>c.date>=days(7));
   const cond=c7.length?Math.round((c7.reduce((a,c)=>a+c.score,0)/c7.length+1)*50):null;
-  const grow=Math.min(100,e7.length*25);
+  const grow=e7.length?Math.min(100,e7.length*25):null;
   const wk=(G.weekly||[]).slice(-1)[0];
-  set('Cond',cond);set('Grow',e7.length?grow:null);set('Dir',wk?.direction);set('Conn',wk?.connection);
-  document.getElementById('gGrow').innerHTML=e7.length?`${e7.length}<small> 個/週</small>`:'—';
-  // ゾーン判定
-  let zn='—',zt='データが貯まると表示されます';
+  ring('rCond',cond,COL.Cond);ring('rGrow',grow,COL.Grow);ring('rDir',wk?.direction,COL.Dir);ring('rConn',wk?.connection,COL.Conn);
+  document.getElementById('vCond').textContent=cond??'—';
+  document.getElementById('vGrow').innerHTML=e7.length?`${e7.length}<small> 個/週</small>`:'—';
+  document.getElementById('vDir').textContent=wk?.direction??'—';
+  document.getElementById('vConn').textContent=wk?.connection??'—';
+  // ゾーン+ヒーロー画像+位置ドット
+  let zn='ようこそ',zt='まどかに今日のことを話すと、ここが動き出します',img='explore';
   if(cond!==null||e7.length){
     const hi=e7.length>=1, ok=(cond??50)>=50;
-    if(hi&&ok){zn='充実ゾーン';zt='持続可能な成長。この調子'}
-    else if(hi&&!ok){zn='オーバードライブ';zt='前進してるけど消耗注意。成果の定着を優先'}
-    else if(!hi&&ok){zn='探索ゾーン';zt='安定してるが停滞気味。小さな一歩をひとつ'}
-    else{zn='回復ゾーン';zt='立て直しの時期。休むのも仕事のうち'}
+    if(hi&&ok){zn='充実ゾーン';zt='持続可能な成長。この調子';img='full'}
+    else if(hi&&!ok){zn='オーバードライブ';zt='前進してるけど消耗注意。成果の定着を優先';img='over'}
+    else if(!hi&&ok){zn='探索ゾーン';zt='安定してるが停滞気味。小さな一歩をひとつ';img='explore'}
+    else{zn='回復ゾーン';zt='立て直しの時期。休むのも仕事のうち';img='rest'}
   }
   document.getElementById('zoneName').textContent=zn;
   document.getElementById('zoneNote').textContent=zt;
+  document.getElementById('zoneImg').src=`img/zone-${img}.jpg`;
+  const dot=document.getElementById('posDot');
+  dot.setAttribute('cx',12+((cond??50)/100)*226);
+  dot.setAttribute('cy',188-(Math.min(100,(e7.length)*33)/100)*176);
   // 今週の証拠
   const we=document.getElementById('weekEv');
-  we.innerHTML=e7.length?e7.map(e=>`<div class="ev"><div class="d">${e.ts.slice(5,10)} ・ ${e.domain}${e.src==='madoka'?' ・ まどかが記録':''}</div>${esc(e.after)}</div>`).join(''):'<div class="empty">まだ記録がありません</div>';
+  we.innerHTML=e7.length?e7.map(e=>`<div class="ev"><div class="ic">${DOMEMO[e.domain]??'✨'}</div><div><div class="d">${e.ts.slice(5,10)} ・ ${esc(e.domain)}${e.src==='madoka'?' ・ 💬まどかが記録':''}</div>${esc(e.after)}</div></div>`).join(''):'<div class="empty">まだ記録がありません</div>';
   // ツリー
   const byD={};G.entries.forEach(e=>{(byD[e.domain]=byD[e.domain]||[]).push(e)});
-  const tr=document.getElementById('tree');
   const keys=Object.keys(byD);
-  tr.innerHTML=keys.length?keys.map(d=>`<div class="dom"><div><b>${esc(d)}</b><div style="font-size:12px;color:var(--ink2)">${byD[d].length}個の能力を獲得</div></div><span class="lv">Lv.${byD[d].length}</span></div>${byD[d].slice(-3).reverse().map(e=>`<div class="ev"><div class="d">${e.ts.slice(0,10)}</div>${esc(e.after)}${e.evidence?`<div class="d">証拠: ${esc(e.evidence)}</div>`:''}</div>`).join('')}`).join(''):'<div class="empty">まだ記録がありません</div>';
+  document.getElementById('tree').innerHTML=keys.length?keys.map(d=>{
+    const lv=byD[d].length;
+    return `<div class="dom">
+      <div class="dom-h"><span class="em">${plantEmoji(lv)}</span><span class="nm">${esc(d)}</span><span class="lv">Lv.${lv}</span></div>
+      <div class="dots">${Array.from({length:Math.max(5,Math.ceil(lv/5)*5)},(_,i)=>`<i class="${i<lv?'f':''}"></i>`).join('')}</div>
+      <div class="tl">${byD[d].slice(-4).reverse().map(e=>`<div class="n"><div class="d">${e.ts.slice(0,10)}</div>${esc(e.after)}${e.evidence?`<div class="d">証拠: ${esc(e.evidence)}</div>`:''}</div>`).join('')}</div>
+    </div>`}).join(''):'<div class="empty">まだ記録がありません</div>';
   // 週間
-  if(wk){document.getElementById('weekly').innerHTML=`<h2>週間レビュー（${wk.date}）</h2>
-    <div class="wk-sec"><b>今週の成長証拠</b>${(wk.evidences||[]).map(x=>`<div class="ev">${esc(x)}</div>`).join('')||'<div class="empty">なし</div>'}</div>
-    <div class="wk-sec"><b>4週間前との違い</b><div>${esc(wk.diff4w||'—')}</div></div>
-    <div class="wk-sec"><b>現在の障害</b><div>${esc(wk.obstacle||'—')}</div></div>
-    <div class="wk-sec"><b>次のレベル条件</b><div>${esc(wk.nextGate||'—')}</div></div>`}
+  if(wk){document.getElementById('weekly').innerHTML=`<h2>📅 週間レビュー（${wk.date}）</h2>
+    <div class="wk"><div class="ic">🏆</div><div><b>今週の成長証拠</b>${(wk.evidences||[]).map(x=>`<div>・${esc(x)}</div>`).join('')||'なし'}</div></div>
+    <div class="wk"><div class="ic">🔭</div><div><b>4週間前との違い</b><div>${esc(wk.diff4w||'—')}</div></div></div>
+    <div class="wk"><div class="ic">🚧</div><div><b>現在の障害</b><div>${esc(wk.obstacle||'—')}</div></div></div>
+    <div class="wk"><div class="ic">🎯</div><div><b>次のレベル条件</b><div>${esc(wk.nextGate||'—')}</div></div></div>`}
 }
-function set(k,v){document.getElementById('g'+k).textContent=v??'—';document.getElementById('b'+k).style.width=(v??0)+'%'}
 function esc(s){return String(s??'').replace(/[<>&]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;'}[c]))}
 async function load(){try{G=await (await fetch(API+'/growth',{headers:H})).json();render()}catch(e){toast('読み込み失敗')}}
 async function saveRec(){
@@ -160,7 +232,7 @@ async function saveRec(){
   if(!after)return toast('内容を書いてね');
   await fetch(API+'/growth-entry',{method:'POST',headers:H,body:JSON.stringify({domain:document.getElementById('recDomain').value,after,evidence:document.getElementById('recEvidence').value.trim()})});
   document.getElementById('recAfter').value='';document.getElementById('recEvidence').value='';
-  toast('記録しました');load();
+  toast('🌱 記録しました');load();
 }
 async function saveCond(score){
   G.condition=(G.condition||[]).filter(c=>c.date!==days(0));
