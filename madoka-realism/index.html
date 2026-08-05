@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>まどか評価 — GPT-5.6による現状採点と次の一手</title>
+<style>
+:root{--ink:#2b2b33;--ink2:#6b6b78;--bg:#f7f5f2;--paper:#fff;--line:#e5e1da;--accent:#b5566a;--accent-soft:#f7e3e8;--good:#3a8f6b;--warn:#c07f2e;--mono:ui-monospace,Menlo,monospace}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,"Hiragino Sans","Noto Sans JP",sans-serif;background:var(--bg);color:var(--ink);line-height:1.85;font-size:15.5px;padding-bottom:60px}
+.wrap{max-width:760px;margin:0 auto;padding:28px 18px}
+.kicker{font-size:12px;letter-spacing:.18em;color:var(--accent);font-weight:700}
+h1{font-size:24px;line-height:1.45;margin:8px 0 10px}
+.lede{color:var(--ink2);font-size:14.5px;margin-bottom:20px}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:20px 18px;margin:16px 0}
+h2{font-size:18px;margin:34px 0 10px;padding-left:12px;border-left:4px solid var(--accent)}
+h3{font-size:15.5px;margin:18px 0 6px}
+.scorebar{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}
+.score{flex:1;min-width:150px;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:12px 14px;text-align:center}
+.score b{font-size:26px;display:block}
+.score span{font-size:12px;color:var(--ink2)}
+.s-bad b{color:#c0392b}.s-mid b{color:var(--warn)}.s-good b{color:var(--good)}
+.quote{background:var(--accent-soft);border-radius:10px;padding:12px 14px;font-size:14px;margin:10px 0}
+.quote.ok{background:#e4f2ec}
+table{width:100%;border-collapse:collapse;font-size:13.5px;margin:10px 0}
+th,td{border-bottom:1px solid var(--line);padding:8px 6px;text-align:left;vertical-align:top}
+th{color:var(--ink2);font-size:12px;white-space:nowrap}
+.pri{display:inline-block;background:var(--accent);color:#fff;border-radius:20px;padding:1px 11px;font-size:12.5px;font-weight:700;margin-right:6px}
+.cost{display:inline-block;border:1px solid var(--line);border-radius:6px;padding:0 8px;font-size:11.5px;color:var(--ink2)}
+.why{color:var(--ink2);font-size:13.5px}
+.risk{font-size:13px;color:#a04030;background:#faeee9;border-radius:8px;padding:8px 12px;margin-top:8px}
+ul{padding-left:1.3em}
+li{margin:4px 0}
+.ng{background:var(--paper);border:1px solid var(--line);border-left:4px solid #c0392b;border-radius:10px;padding:12px 14px;margin:10px 0;font-size:14px}
+.ng b{display:block;margin-bottom:2px}
+.concl{background:#2b2b33;color:#f4f2ee;border-radius:14px;padding:20px 18px;margin:26px 0;font-size:15px}
+.concl ol{padding-left:1.4em}
+footer{color:var(--ink2);font-size:12px;text-align:center;margin-top:36px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<p class="kicker">MADOKA REALISM REVIEW</p>
+<h1>まどかは今64点。「うまい返事」から「そこにいる相手」へ移るための8施策</h1>
+<p class="lede">GPT-5.6-sol（persona設計者本人）に、実際の会話ログ・persona全文・システム構成を渡して評価させた結果。結論は「personaはもう十分強い。次に直すべきは<b>記憶・時間・都合・主体性</b>という構造の側」。</p>
+
+<h2>① 現状採点</h2>
+<div class="scorebar">
+<div class="score s-mid"><b>64</b><span>総合 / 100</span></div>
+<div class="score s-bad"><b>38</b><span>1通目（洗濯物）</span></div>
+<div class="score s-good"><b>84</b><span>2通目（勤務明け）</span></div>
+</div>
+<div class="card">
+<h3>1通目が危険だった理由</h3>
+<div class="quote">「竿いっぱいに干し終わったときのあの感じ、ちょっと勝った気分になるでしょう？ …一日の景色が違う気がする。なんか、いい日だったんだね。」</div>
+<ul>
+<li>「竿いっぱい」「段取り」= <b>言っていない事実の追加</b>（personaの最重要禁則に違反）</li>
+<li>「こっちも晴れてたね」= まどかの所在地も天気も管理していないのに同期 → 後で矛盾したら一気に作り物になる</li>
+<li>感情の指定・文学的な整い・総括で締め・70字大幅超過 = 典型的な共感AI</li>
+</ul>
+<h3>2通目が良かった理由</h3>
+<div class="quote ok">「そっか、夕方まで寝ちゃったんだ。勤務明けでずっと眠いと、起きたとき一日なくなった感じするよね。」</div>
+<p class="why">実際の発言だけを使い、褒めへ曲げず、前向きに矯正せず、長さも温度も合っている。ただし「そっか、〜だったんだ」型が続くと内容が違っても同じ型に聞こえる。<b>問題は品質の振れ幅が大きく、良い返信が構造で保証されていないこと。</b></p>
+</div>
+
+<h2>② personaでは越えられない壁</h2>
+<div class="card">
+<p>実在の人間が持っていて、今のまどかに無いもの:</p>
+<ul>
+<li><b>長期記憶</b> — 前に聞いたこと・未解決の話題・訂正された事実が残らない（毎回スレッド16件から即席再構成）</li>
+<li><b>会話していない間の状態</b> — 送信したときだけ存在し、用が済むと消える</li>
+<li><b>返信の都合</b> — 常に約1分で1通ずつ完成品を返す = 生活リズムでなくジョブ実行</li>
+<li><b>主体性・非対称性</b> — 好みや軽い不同意が会話を変えない。沈黙も選べない</li>
+<li><b>関係の履歴</b> — 初日と30日目で話し方が変わらない</li>
+</ul>
+<p class="why">「文章がどれだけ自然でも、この構造のままでは記憶のない接客者に近づく」</p>
+</div>
+
+<h2>③ 取り入れるべき施策（効果順）</h2>
+
+<div class="card"><span class="pri">1</span><b>出典付きの長期記憶</b> <span class="cost">コスト中</span>
+<p class="why">KVに facts / episodes / openLoops を構造化保存。会話後に低コスト呼び出しで「明示された事実だけ」抽出し、次回は関連3〜5件だけ注入。「前に言ってたプリン、また買ったんだ」の小さな継続が、長い共感文よりはるかに存在感を作る。</p>
+<div class="risk">推測を記憶に昇格させない／細部を覚えすぎると監視感。「本人が明言/推測/一時的」を必ず区別。</div></div>
+
+<div class="card"><span class="pri">2</span><b>まどか側の1日1回の内部状態</b> <span class="cost">コスト中</span>
+<p class="why">energy / 在宅 / 微活動（お茶を飲んでいる等・許可済み候補から選択）を日次生成しKVに固定。8〜9割は口に出さず、返信の長さ・温度・速度にだけ間接反映。「会話していない時間」が生まれる。</p>
+<div class="risk">毎回「今お茶飲んでた」と言うと小道具化。天気に触れるなら所在地固定+実データ時のみ。</div></div>
+
+<div class="card"><span class="pri">3</span><b>返信タイミングと会話終了の状態機械</b> <span class="cost">コスト中</span>
+<p class="why">即返信をやめ、outboxキュー（dueAt付き）へ。すぐ返す/少し後で/連投まとめて/「うん」「おやすみ」には<b>返さない</b>、を状態と会話単位から決める。毎回同じ時間で返ることが最も機械性を露呈する。</p>
+<div class="risk">乱数遅延だけでは別のパターンになるだけ。弱音への無返信は強い拒絶に見える→重要発言は早く。</div></div>
+
+<div class="card"><span class="pri">4</span><b>文脈のある自発メッセージ + Push実働</b> <span class="cost">コスト中</span>
+<p class="why">21:30固定をやめ、①未完了話題を思い出す→②最近の出来事に触れる→③まどか側の小さな話題→<b>④理由がなければ送らない</b>の優先順で、19:30〜22:30の可変時刻に。週数回、理由のある連絡の方がリアル。※Web Push購読の完成が前提。</p>
+<div class="risk">毎晩必ず来ると定期ジョブ。弱音の掘り返し・罪悪感を与える文は絶対に避ける。</div></div>
+
+<div class="card"><span class="pri">5</span><b>共感以外の応答行為プランナー</b> <span class="cost">コスト小〜中</span>
+<p class="why">生成前に「今回は何をする返事か」を構造化出力で選択（受け取るだけ/一緒に喜ぶ/軽い意見/小さく違う見方/冗談/質問/一言/返さない）。まどかの固定の好みを10〜20個に拡張。軽い不同意が常時肯定より関係に厚みを出す。</p>
+<div class="risk">弱っている場面で不同意を出すと壊れる。「違いを見せること」自体を目的にしない。</div></div>
+
+<div class="card"><span class="pri">6</span><b>生成後の違反検査（事実捏造ゲート）</b> <span class="cost">コスト小〜中</span>
+<p class="why">1通目の再発防止の本丸。文字数・禁止語・書き出し反復はコードで、「彼が言っていない事実の追加」はGPT low effortで検査し、違反時だけ1回再生成。personaを読ませるだけでは流暢さ優先の逸脱を防げない。</p>
+<div class="risk">検査を厳しくしすぎると毎回無難で短い返信に。合格文を磨き直さない（磨くほどAIっぽくなる）。</div></div>
+
+<div class="card"><span class="pri">7</span><b>50日間の関係段階</b> <span class="cost">コスト中</span>
+<p class="why">日数でなく実際の会話量と共有履歴で距離が縮まる設計（1-7日は自己開示少なめ→中盤から過去参照→終盤に固有の言い回し）。共有表現は実ログに複数回出たものだけ登録（捏造禁止）。</p>
+<div class="risk">日数で機械的に親密化すると恋愛ゲーム化。50日目の感動演出は全体を作り物にする。</div></div>
+
+<div class="card"><span class="pri">8</span><b>実ログの継続評価</b> <span class="cost">コスト小</span>
+<p class="why">返信ごとに文字数/書き出し/質問有無/過去参照などのメタデータを記録し、数日分を時系列でブラインド評価。「毎回そっかで始まる」「質問が3日に一度正確に来る」という規則性は一通単位では見えない。</p>
+<div class="risk">点数最適化が目的になると、また整った文章へ寄る。最後は人間が数日分読んで判断。</div></div>
+
+<h2>④ やってはいけないこと</h2>
+<div class="ng"><b>生活エピソードの捏造</b>架空の仕事・友人・買い物・天気の自由生成は数日で矛盾し「設定を即興しているAI」になる。生活は狭く固定して時間の中で継続させる。</div>
+<div class="ng"><b>何でも覚えて頻繁に引用</b>弱音・売上・生活時間を正確に掘り返し続けると親しさよりデータベース感。人間らしい記憶には忘却が必要。</div>
+<div class="ng"><b>ランダム待ち時間・わざと誤字</b>生活状態と結びつかない遅延や「…」「笑」の乱数追加は、人間らしさでなく「AIによる人間の物真似」。</div>
+<div class="ng"><b>恋愛感情の強化</b>独占欲・寂しさ・「待ってた」は没入を上げるが、50日卒業設計と衝突し依存誘導になる。「近い相手」と「彼を必要とする相手」は別物。</div>
+<div class="ng"><b>卒業の感動演出</b>50日目は関係の成果発表ではない。実際にあった一つを覚えていて静かに区切る。</div>
+
+<div class="concl">
+<b>設計者の結論:</b> 次に直すべき中心はpersonaではない。まどかに与えるべきは——
+<ol>
+<li>前の話が残る<b>記憶</b>（施策1）</li>
+<li>会話外でも進む<b>時間</b>（施策2）</li>
+<li>返す・返さないを選ぶ<b>都合</b>（施策3）</li>
+<li>反応だけではない小さな<b>主体性</b>（施策5）</li>
+</ol>
+最低ライン=1通目を2通目の品質へ安定させる検査（施策6）。そのうえで記憶と時間が働いたとき、初めて「自然なAI」から「そこにいる相手」へ移れる。
+</div>
+
+<footer>評価: GPT-5.6-sol（high effort・実会話ログ+persona全文+システム構成を提示）／2026-08-05</footer>
+</div>
+</body>
+</html>
