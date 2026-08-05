@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Irodori-TTS 置き換え調査 — 結論：本編の置き換えは推奨しない</title>
+<style>
+:root{--ink:#11151c;--sumi:#1b2230;--paper:#f7f4ec;--card:#fffdf8;--gold:#b08d3f;--red:#a8342a;--line:#ded6c4;--mute:#6b6558;--ok:#3f6b39}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans JP",sans-serif;line-height:1.85}
+.wrap{max-width:900px;margin:0 auto;padding:26px 18px 80px}
+header{border-bottom:3px solid var(--sumi);padding-bottom:16px;margin-bottom:22px}
+.kicker{font-size:12px;letter-spacing:.18em;color:var(--gold);font-weight:700}
+h1{font-size:23px;margin:.35em 0 .3em;line-height:1.45;font-weight:800}
+.lede{font-size:15px;color:var(--mute);margin:0}
+h2{font-size:18px;margin:32px 0 12px;padding-left:11px;border-left:5px solid var(--gold)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:15px 17px;margin:13px 0}
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:13.5px}
+th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+th{background:#f0ebdd;font-weight:700}
+.ok{color:var(--ok);font-weight:700}.bad{color:var(--red);font-weight:700}.warn{color:#8a6a1f;font-weight:700}
+.quote{background:#fff;border:1px solid var(--line);border-left:5px solid var(--sumi);border-radius:8px;padding:12px 15px;margin:10px 0;font-size:14px}
+.q{background:var(--sumi);color:#f4efe2;border-radius:12px;padding:20px 22px;margin:28px 0 8px}
+.q h2{color:#fff;border-left-color:var(--gold);margin-top:0}
+.opt{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.22);border-radius:9px;padding:13px 15px;margin:11px 0}
+.opt b{color:#f0c96a;font-size:15px}.opt p{margin:.35em 0 0;font-size:14px;color:#e2dbcb}
+.small{font-size:13px;color:var(--mute)}
+code{background:#efeadc;padding:1px 5px;border-radius:4px;font-size:12.5px}
+a{color:#1f4b73}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="kicker">技術調査 — 音声エンジンの置き換え検討（2026-08-05）</div>
+  <h1>Irodori-TTS：表現力は本物。ただし<b>本編の置き換えは推奨しません</b>。<br>理由は音質ではなく「発音ゲートが作れない」ことです。</h1>
+  <p class="lede">MITライセンスの日本語特化ローカルTTS（Aratako氏・2026年5月公開）。「声優レベル」と評される表現力で注目されていますが、このチャンネルの品質保証の要と正面衝突します。</p>
+</header>
+
+<h2>Irodori-TTSとは（一次情報の要点）</h2>
+<table>
+  <tr><th>項目</th><th>内容</th></tr>
+  <tr><td>正体</td><td>Flow Matchingベースの日本語特化TTS（500M/600Mパラメータ・v3系、v4-Smallも進行中）。開発者=Aratako氏</td></tr>
+  <tr><td>ライセンス</td><td class="ok">MIT（商用可・無料・ローカル動作）。ただし<b>「他者の声の無断クローン・なりすまし禁止」</b>の倫理条項つき</td></tr>
+  <tr><td>強み</td><td>絵文字で感情・話し方を制御（40種以上）／VoiceDesign版は「明るい女性の声」等の自然言語で声を設計／参照音声からのゼロショット声クローン</td></tr>
+  <tr><td>速度</td><td>GPUで5秒音声を約3秒。<b>CPUだと5秒音声に約90秒</b>。Apple Silicon（MPS）対応の記載はあるが実測情報なし</td></tr>
+  <tr><td>弱点（公式明記）</td><td class="bad">「<b>漢字を正確に読む能力は、同規模の他TTSと比べて相対的に弱い</b>。複雑な漢字は事前にひらがな・カタカナへ変換することを推奨」（モデルカード原文）</td></tr>
+</table>
+
+<h2>このチャンネルの現行パイプラインと突き合わせると</h2>
+<table>
+  <tr><th>いま持っているもの（AivisSpeech morioki）</th><th>Irodori-TTSに移すと</th></tr>
+  <tr><td><b>発音ゲート</b>：合成前に <code>audio_query</code> で<b>実際に読まれるmora（音節）を機械取得</b>し、意図読みと照合。誤読1件でもブロック。本編・ショート・TikTok縦ロングの3経路すべてに配線済み（今回のep47でも「口→グチ」等の誤読を4件、公開前に機械が捕まえた）</td>
+      <td class="bad"><b>作れない</b>。Flow Matching系はテキスト→音声を直接生成する方式で、mora単位の中間表現を返すAPIが無い。検証はwhisperで聞き直す間接方式になり、検出力が落ちる＝「誤読が耳で見つかるまで出荷される」時代（sh46事故）への逆行</td></tr>
+  <tr><td><b>読みの上書き</b>：<code>tts_overrides.json</code> に語単位で読みを固定（ep47だけで60語超）。卦名・固有名詞・多義語を確実に読ませる</td>
+      <td class="bad">読み仮名・アクセント指定のAPIが無い。公式の推奨は「事前にかな変換」だが、<b>全かな入力は過去に廃止済み</b>（助詞「は」を「ワ」と誤読する事故＝2026-06のcodex合議で漢字かな交じり入力へ移行）。同じクラスの事故が再発する</td></tr>
+  <tr><td><b>意図的な平坦さ</b>：<code>intonationScale 0.30</code>（本人指示・2026-06-19）＝淡々とした語りがチャンネルの声</td>
+      <td class="warn">Irodoriの売りは感情表現の豊かさ＝<b>このチャンネルが意図的に捨てている方向</b>。強みが価値にならない</td></tr>
+  <tr><td><b>声の同一性</b>：moriokiは47話＋ショート全部の声。連載の顔</td>
+      <td class="bad">声を変える＝チャンネルの同一性の変更（それ自体が本人判断の方針変更）。なお「moriokiの声をIrodoriでクローンして続投」は<b>ライセンスの禁止事項（他者の声の無断クローン）に抵触</b>するため不可</td></tr>
+  <tr><td><b>速度</b>：M4 MacBookローカルで30シーン（8分強）を数分で合成。1日に5〜6回作り直した日もある（今回の実績）</td>
+      <td class="warn">CPUなら8分のナレーションに約2.4時間。MPSの実効速度は未検証。GPUクラウド（RunPod等）を挟むと¥コストと工程が増える</td></tr>
+</table>
+
+<h2>結論と、価値が出る場所</h2>
+<div class="card">
+  <p style="margin-top:0"><b>本編ナレーションの置き換え：推奨しない。</b>置き換えで得るもの（感情表現）はチャンネルが使わない方向で、失うもの（mora検証・読み上書き・声の継続性・速度）は品質保証の背骨そのものです。</p>
+  <p><b>ウォッチはする価値あり：</b>開発が活発（v3→v4-Small進行中・OpenAI互換APIサーバも別リポジトリで公開）。将来「読み指定API」か「g2p改善」が入ったら再評価に値します。</p>
+  <p style="margin-bottom:0"><b>部分利用なら筋がある場所：</b></p>
+  <ul class="small" style="margin:4px 0 0">
+    <li><b>ショート4型の「相談引用型」</b>＝相談者の声を1〜2文だけ別人格で入れる用途（VoiceDesignで架空の声を設計＝クローンではないので倫理条項もクリア。誤読リスクは1〜2文なら耳で全数チェック可能）</li>
+    <li><b>新レーン・新チャンネルの声の設計</b>（manga-lab等。既存の声との継続性の制約が無い場所）</li>
+    <li>※英語版レーンには不可（日本語のみ対応）</li>
+  </ul>
+</div>
+
+<h2>「声を変えたい」が動機の場合の低リスク代替</h2>
+<p class="small">もし動機が「moriokiの音質・声柄を変えたい」であれば、<b>AivisSpeech内の別話者／AivisHubの追加モデル</b>への切り替えが先です。エンジンが同じなので発音ゲート・読み上書き・イントネーション制御・速度が全部そのまま生き、失うのは声の継続性だけ（これはどの選択でも失う）。候補出しから試聴HTMLまでは1セッションで作れます。</p>
+
+<div class="q">
+  <h2>確認</h2>
+  <div class="opt"><b>A. 現状維持（morioki続投）＋Irodoriはウォッチ</b><p>何もしない。v4系で読み制御が入ったら再調査。</p></div>
+  <div class="opt"><b>B. ショート「相談引用型」で試験導入</b><p>相談者の声1〜2文だけVoiceDesignの架空声で。次の相談引用型ショート1本で実弾テスト。</p></div>
+  <div class="opt"><b>C. 声そのものを変えたい</b><p>AivisSpeech内の別話者候補を集めて試聴比較HTMLを作る（発音ゲートを失わない範囲での声変更）。</p></div>
+</div>
+
+<p class="small">出典：<a href="https://github.com/Aratako/Irodori-TTS">GitHub（本体）</a>／<a href="https://huggingface.co/Aratako/Irodori-TTS-500M-v3">モデルカード 500M-v3（漢字弱点の明記・ライセンス）</a>／<a href="https://github.com/Aratako/Irodori-TTS-Server">OpenAI互換APIサーバ</a>／<a href="https://zenn.dev/acntechjp/articles/530307d5e9c459">Zenn紹介記事</a>／<a href="https://hatohato.jp/blog/core/single.php?id=1032">はとはとブログ（速度実測の引用）</a>／<a href="https://www.sukoreru.com/irodori-tts-voicedesign">VoiceDesign解説</a>。現行パイプラインの根拠＝<code>scripts/tts_pron_verify.py</code>（audio_query mora照合）・<code>content/067/tts_overrides.json</code>・<code>db/tts_intonation_rules.json</code>・メモリ feedback_tts_engine_text（全かな廃止の経緯）。</p>
+</div>
+</body>
+</html>
