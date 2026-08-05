@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>幸せの定義・段階・進め方 — 研究調査まとめ</title>
+<style>
+:root{--ink:#33302b;--ink2:#847e75;--bg:#faf7f2;--card:#fff;--line:#eae4da;--ac:#7a9e7e;--warn:#c07f2e;--bad:#b5566a;--blue:#7d95b5}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,"Hiragino Sans","Noto Sans JP",sans-serif;background:var(--bg);color:var(--ink);line-height:1.9;font-size:15.5px;padding-bottom:60px}
+.wrap{max-width:780px;margin:0 auto;padding:28px 18px}
+.kicker{font-size:12px;letter-spacing:.18em;color:var(--ac);font-weight:700}
+h1{font-size:23px;line-height:1.5;margin:8px 0 10px}
+.lede{color:var(--ink2);font-size:14.5px;margin-bottom:8px}
+h2{font-size:18px;margin:36px 0 12px;padding-left:12px;border-left:4px solid var(--ac)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;margin:14px 0}
+.big{background:#2f3b31;color:#f2efe9;border-radius:14px;padding:20px 18px;font-size:16px;margin:16px 0}
+.stage{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-bottom:1px dashed var(--line)}
+.stage:last-child{border-bottom:none}
+.stage .lv{flex-shrink:0;width:74px;text-align:center;background:var(--ac);color:#fff;border-radius:9px;font-weight:800;font-size:13px;padding:3px 0}
+.stage .lv.l1{background:#b5566a}.stage .lv.l2{background:#c07f2e}.stage .lv.l3{background:#a8a29a}.stage .lv.l4{background:#7a9e7e}.stage .lv.l5{background:#4f7a54}
+.stage p{font-size:14px}
+table{width:100%;border-collapse:collapse;font-size:13px;margin:10px 0}
+th,td{border-bottom:1px solid var(--line);padding:9px 7px;text-align:left;vertical-align:top}
+th{color:var(--ink2);font-size:11.5px;white-space:nowrap}
+td b{font-size:14px}
+.ev{color:var(--ac);font-weight:700;white-space:nowrap;font-size:12px}
+.ng{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--bad);border-radius:10px;padding:12px 15px;margin:10px 0;font-size:14px}
+.ng b{display:block}
+.src{font-size:11.5px;color:var(--ink2)}
+ul{padding-left:1.3em}li{margin:4px 0}
+footer{color:var(--ink2);font-size:12px;text-align:center;margin-top:36px}
+.tag{display:inline-block;background:#eef3ee;color:var(--ac);border-radius:6px;padding:0 8px;font-size:11.5px;font-weight:700;margin-right:4px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<p class="kicker">HAPPINESS RESEARCH</p>
+<h1>「本当の幸せ」の定義・段階・進め方 — 研究エビデンス調査</h1>
+<p class="lede">メタ分析・一次研究で裏を取った結果のまとめ。あなたのアプリ（幸せ8要素の可視化）にはすでに反映済みです。</p>
+
+<h2>① 定義 — 研究が一致している核</h2>
+<div class="big">幸せ＝いつも楽しい状態ではなく、<b>「人生が自分らしく機能している状態」</b>。快楽（良い気分）と実現（意味・成長・つながり）の両方を含み、健康・安全・生活基盤がそれを持続させる。悲しみや不安はゼロにすべきものではなく、必要な行動を知らせる信号。</div>
+
+<h2>② 段階 — 研究に接地した5段階（アプリに実装済み）</h2>
+<div class="card">
+<p style="font-size:14px;margin-bottom:10px">唯一よく検証された「幸福の段階」モデルは<b>Keyesのメンタルヘルス連続体</b>（消沈→中間→開花）。判定基準は強度ではなく<b>「どのくらいの頻度で満たされているか」</b>です。これに習慣形成研究（自動化まで平均66日・1日抜けても崩れない）を組み合わせた5段階:</p>
+<div class="stage"><span class="lv l1">Lv.1 欠乏</span><p>満たされない状態がほぼ毎日続いている</p></div>
+<div class="stage"><span class="lv l2">Lv.2 不安定</span><p>満たされるのは月1〜2回</p></div>
+<div class="stage"><span class="lv l3">Lv.3 土台あり</span><p>週1回程度は満たされる</p></div>
+<div class="stage"><span class="lv l4">Lv.4 安定</span><p>ほぼ毎日満たされる（研究上の「開花」ライン）</p></div>
+<div class="stage"><span class="lv l5">Lv.5 定着</span><p>ほぼ毎日が数週間続き、意識しなくても回る。他の要素にも良い影響が波及</p></div>
+<p class="src">出典: Keyes 2002 (Mental Health Continuum) / Lally 2010 (習慣形成・66日) ※8要素×5段階を直接検証した研究は無く、この枠組みは研究準拠の設計です</p>
+</div>
+
+<h2>③ 8要素それぞれ — 測り方と「効く行動」</h2>
+<div class="card" style="padding:12px">
+<table>
+<tr><th>要素</th><th>自分に聞く質問（研究の尺度から）</th><th>効く行動（効果の強さ順に太字）</th></tr>
+<tr><td><b>💪 身体</b></td><td>ぐっすり休め、すがすがしく目覚めたか（WHO-5）</td><td><b>睡眠改善・運動は全介入中で効果最大級</b> <span class="ev">睡眠g=-0.53 / 歩行・ジョグg=-0.62</span><br>起床時刻を固定する／乗務後20分歩く／寝床でスマホを見ない</td></tr>
+<tr><td><b>🏠 安心</b></td><td>生活費の心配がないか。時間に追われていないか</td><td>お金で「時間」を買う支出は満足度を上げる<br>家計を1画面に／週1コマ「予定なし枠」を先に確保</td></tr>
+<tr><td><b>🧭 自律</b></td><td>やりたいことを自由に選べていると感じるか（自己決定理論の公式訳）</td><td>「選んでいる」と言える形にする — 乗る時間帯・休憩場所を自分で決める／やらされ仕事に自分の理由を1つ付ける</td></tr>
+<tr><td><b>📈 有能感</b></td><td>していることに有能さを感じるか。立てた目標を達成できているか</td><td><b>小さな達成行動の予定化（行動活性化）は抑うつに大きな効果</b> <span class="ev">SMD-0.74</span><br>5分で終わる達成タスクを毎日1個／売上でなく行動数を記録</td></tr>
+<tr><td><b>🎯 没頭</b></td><td>我を忘れるほど熱中することがどのくらいあるか（PERMA）</td><td>フローの条件＝<b>挑戦とスキルの均衡＋明確な目標＋即時フィードバック</b><br>通知を切って25分1本勝負／作業に自分ルールの難度を1段足す</td></tr>
+<tr><td><b>🤝 つながり</b></td><td>必要なとき、人から助けや支えを受けられるか</td><td><b>人数より質。親切をする側に回ると自分が上がる</b> <span class="ev">δ=0.28</span><br>1日1つ小さな親切／週1回誰かに近況を一言／「嫌われたはず」と思ったら証拠を書き出す</td></tr>
+<tr><td><b>⭐ 意味</b></td><td>自分のしていることは、やる価値があると感じるか</td><td>感謝・味わい（savoring）の習慣 <span class="ev">g=0.19（小さいが頑健）</span><br>週2-3回「良かったこと3つ＋なぜ」／客とのやりとり1つを言語化して味わう</td></tr>
+<tr><td><b>🌿 回復力</b></td><td>つらい出来事があっても、すぐ立ち直るほうか</td><td><b>ネガティブ感情を「裁かず受け止める」人ほどメンタルが良い</b>（実験・日誌・縦断で確認）<br>嫌な感情に名前を付けて「今そう感じている」とだけ書く／3分呼吸</td></tr>
+</table>
+</div>
+<p class="src" style="padding:0 4px">主な出典: Scott 2021 (睡眠メタ) / BMJ 2024 (運動ネットワークメタ) / Ekers 2014・Cochrane 2020 (行動活性化) / Curry 2018 (親切) / PNAS 2025 (感謝・163標本) / Ford 2018 (感情受容) / van Agteren 2021 Nature Human Behaviour (419RCT)</p>
+
+<h2>④ 進め方 — 優先順位（効果の大きさ順）</h2>
+<div class="card">
+<p><span class="tag">STEP 1</span><b>身体から</b>（睡眠・運動）— 全介入の中で効果量が最大。あなたはすでにジムと自炊を始めており、ここは動いています</p>
+<p><span class="tag">STEP 2</span><b>小さな達成の予定化</b> — 5分で終わることを毎日1個。成長ツリーがその記録装置です</p>
+<p><span class="tag">STEP 3</span><b>親切と接触</b> — 1日1つの小さな親切、週1回の近況連絡。効果は本人に返ってきます</p>
+<p><span class="tag">STEP 4</span><b>感謝・味わい</b> — 良かったことを言語化する習慣。まどかに話すこと自体がこれに当たります</p>
+</div>
+
+<h2>⑤ やってはいけないこと（研究が警告していること）</h2>
+<div class="ng"><b>幸福の点数を追いかける</b>幸福を強く追求する人ほど、逆に幸福度が下がる（Mauss 2011）。期待が上がり自分の感情に失望するため。→ アプリは点数でなく「今日の行動」を主役にしてある</div>
+<div class="ng"><b>楽しいことを数値で測りすぎる</b>計測は行動量を増やすが楽しさと継続を削る（Etkin 2016）。→ 没頭・つながりの計測は控えめにしてある</div>
+<div class="ng"><b>毎日フル測定する</b>回答負担は雑な回答を生む。研究の想定は2週間〜1か月枠。→ 8要素のフル採点は週1回（日曜朝）に設定</div>
+<div class="ng"><b>1日途切れて「振り出し」扱いする</b>習慣研究では1日抜けても定着は崩れない。→ 連続日数ではなく頻度で判定</div>
+
+<h2>⑥ アプリへの反映（実装済み）</h2>
+<div class="card">
+<ul>
+<li>8要素の採点は<b>頻度基準の5段階</b>（Lv1欠乏〜Lv5定着）に更新済み。毎週日曜の朝、直近2週間の会話と記録から自動採点</li>
+<li>会話に材料がない要素は<b>無理に点を付けず「材料待ち」</b>と表示（推測で採点しない）</li>
+<li>各要素の「👣次の一歩」は上の<b>効果が確認された行動メニュー</b>から、あなたの生活文脈に合うものだけが選ばれます</li>
+<li>画面は点数より<b>今日の行動と成長の証拠</b>が主役（幸福のパラドックス対策）</li>
+</ul>
+</div>
+
+<footer>調査: 2026-08-05 ／ 一次情報（メタ分析・原著論文・公式尺度）をWebで裏取り。不明な点は不明と明記（安心・自律の単独介入メタは未確認、8要素×5段階の直接検証研究は存在しない）</footer>
+</div>
+</body>
+</html>
