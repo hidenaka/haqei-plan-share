@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>H68 音声世代仮説 — 声の試聴比較（morioki vs Irodori-TTS 4声）</title>
+<style>
+:root{--ink:#11151c;--sumi:#1b2230;--paper:#f7f4ec;--card:#fffdf8;--gold:#b08d3f;--red:#a8342a;--line:#ded6c4;--mute:#6b6558;--ok:#3f6b39}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans JP",sans-serif;line-height:1.85}
+.wrap{max-width:860px;margin:0 auto;padding:26px 18px 80px}
+header{border-bottom:3px solid var(--sumi);padding-bottom:16px;margin-bottom:22px}
+.kicker{font-size:12px;letter-spacing:.18em;color:var(--gold);font-weight:700}
+h1{font-size:23px;margin:.35em 0 .3em;line-height:1.45;font-weight:800}
+.lede{font-size:15px;color:var(--mute);margin:0}
+h2{font-size:18px;margin:30px 0 12px;padding-left:11px;border-left:5px solid var(--gold)}
+.v{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin:12px 0}
+.v.base{border-left:5px solid #4a6fa5}
+.v h3{margin:0 0 4px;font-size:15.5px}
+.v .cap{font-size:12.5px;color:var(--mute);margin:0 0 8px}
+audio{width:100%;height:40px}
+.script{font-family:"Hiragino Mincho ProN",serif;font-size:14.5px;background:#fff;border:1px solid var(--line);border-radius:8px;padding:11px 14px;margin:10px 0;color:#333}
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:13.5px}
+th,td{border:1px solid var(--line);padding:8px 10px;text-align:left}
+th{background:#f0ebdd;font-weight:700}
+.ok{color:var(--ok);font-weight:700}.warn{color:#8a6a1f;font-weight:700}
+.q{background:var(--sumi);color:#f4efe2;border-radius:12px;padding:20px 22px;margin:26px 0 8px}
+.q h2{color:#fff;border-left-color:var(--gold);margin-top:0}
+.opt{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.22);border-radius:9px;padding:12px 15px;margin:10px 0}
+.opt b{color:#f0c96a;font-size:15px}.opt p{margin:.3em 0 0;font-size:14px;color:#e2dbcb}
+.small{font-size:13px;color:var(--mute)}
+code{background:#efeadc;padding:1px 5px;border-radius:4px;font-size:12.5px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="kicker">H68 音声エンジン世代仮説 — ステップ②：声の選択（2026-08-05）</div>
+  <h1>同じ文を5つの声で。<br>次のショートA/Bに出すIrodoriの声を選んでください。</h1>
+  <p class="lede">全部 <b>ep47の実フック（冒頭17秒）</b> を読ませています。まず現行のmoriokiを聴いてから、下の4声と比べてください。</p>
+</header>
+
+<div class="script">あきらめた、と口では言ったのに、その近くから離れられない。やめたはずの楽器を、いまも楽器店で触っている。もう描いてないと言いながら、同人誌の入稿の話を30分続ける。プロは目指さないと決めた友人が、後輩の練習には毎週来ている。</div>
+
+<h2>現行（基準）</h2>
+<div class="v base">
+  <h3>morioki（AivisSpeech・2024世代）— 47話すべての声</h3>
+  <p class="cap">ep47本編で実際に使われている音声そのもの（1.1倍速・イントネーション平坦化済み）</p>
+  <audio controls preload="none" src="audio/morioki_hook.m4a"></audio>
+</div>
+
+<h2>Irodori-TTS v4-Small（2026世代・VoiceDesignで設計した4声）</h2>
+<div class="v">
+  <h3>V1｜低め・ドキュメンタリー調の男性</h3>
+  <p class="cap">設計文=「低めの落ち着いた男性の声。ドキュメンタリーのナレーションのように、淡々と静かに読み上げる。」</p>
+  <audio controls preload="none" src="audio/v1_docu_male.m4a"></audio>
+</div>
+<div class="v">
+  <h3>V2｜30代男性・エッセイ朗読調</h3>
+  <p class="cap">設計文=「30代の男性の声。エッセイの朗読のように、穏やかで少し乾いたトーンで、ゆっくり語る。」</p>
+  <audio controls preload="none" src="audio/v2_essay_male.m4a"></audio>
+</div>
+<div class="v">
+  <h3>V3｜落ち着いた女性・夜のラジオ調</h3>
+  <p class="cap">設計文=「落ち着いた大人の女性の声。夜のラジオのように、静かに語りかける。」</p>
+  <audio controls preload="none" src="audio/v3_radio_female.m4a"></audio>
+</div>
+<div class="v">
+  <h3>V4｜若い男性・自然体</h3>
+  <p class="cap">設計文=「若い男性の声。友人に話すように自然で、飾らない、素朴なトーン。」</p>
+  <audio controls preload="none" src="audio/v4_natural_male.m4a"></audio>
+</div>
+
+<h2>実測（M4 MacBook・MPS）</h2>
+<table>
+  <tr><th>項目</th><th>結果</th></tr>
+  <tr><td>生成速度</td><td class="ok">22秒音声を実質32秒で生成（リアルタイム比1.45倍）。8分ナレーション換算≒12分＝バッチ運用で許容圏。プロセス常駐化でさらに短縮余地</td></tr>
+  <tr><td>誤読（この実文）</td><td class="ok">4声すべて<b>誤読ゼロ</b>（whisper転写で照合：口=クチ・同人誌・入稿・30分すべて正読）。※卦名などの難読語は未検証＝A/B実弾の台本で確認</td></tr>
+  <tr><td>電子透かし</td><td class="warn">出力に silentcipher の透かしが自動付与される（配信利用に支障なし・記録事項）</td></tr>
+  <tr><td>再現性</td><td class="warn">同じ設計文でも生成ごとに声が揺れる方式（ゼロショット）。<b>本採用時は「良い1本を参照音声に固定」して声を固める運用</b>になる</td></tr>
+</table>
+
+<div class="q">
+  <h2>選んでください</h2>
+  <div class="opt"><b>① A/Bに出す声：V1〜V4のどれか</b><p>「V2で」など。設計文の調整指示（もっと低く・もっと速く等）も可＝すぐ作り直せます。</p></div>
+  <div class="opt"><b>② 実弾の形式（次ステップの確認）</b><p>次に作るショート1本を「morioki版とIrodori版の2本」で用意し、別日の同時刻に投稿して3秒/15秒残存率を比較（H68・判定基準は投稿前に台帳へ記載）。</p></div>
+</div>
+
+<p class="small">証跡：仮説=H68（claim済み）／生成環境=<code>~/ローカル動画環境/irodori/Irodori-TTS</code>（v4-Small・MIT）／速度・誤読の実測ログはこのセッションに記録。方式の背景＝<a href="http://localhost:4521/irodori-tts/">前回の調査ページ</a>。</p>
+</div>
+</body>
+</html>
