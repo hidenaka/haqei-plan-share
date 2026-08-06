@@ -34,6 +34,7 @@ ul.chk{padding-left:1.2em}ul.chk li{margin:6px 0}
 <p class="lede">耳をすませば（月島雫）× 大畜。<strong>8分17秒・29シーン</strong>。公開枠は 2026-08-18 04:00 JST。ここが最後の停止点で、この先は公開作業だけです（<strong>公開ボタンは私は押しません</strong>）。</p>
 
 <div class="tldr"><ol>
+<li>🆕 <strong>ご指摘の「どの線の話か分かるように」を入れて再レンダしました</strong>（左上に六爻図・解説中の爻を金で強調）。</li>
 <li>機械ゲートは全部PASS。<strong>シーン境界28箇所すべてで黒落ちなし</strong>（ep1-38で全話起きていた事故）。</li>
 <li>独立採点：企画93 → 台本96 → 画像93。識別監査も全28カット「不明」でPASS。</li>
 <li><strong>台本承認のあとに、読み方の修正を2箇所入れました</strong>（下に明記）。話す内容・字幕は1文字も変えていません。</li>
@@ -43,18 +44,32 @@ ul.chk{padding-left:1.2em}ul.chk li{margin:6px 0}
 <video controls preload="metadata" playsinline src="preview_ep49.mp4"></video>
 <p class="src">これは軽量プレビューです。原盤は <code>releases/069/essay-069.mp4</code>（1080p・602MB）。</p>
 
-<h2>2. 観るときに見てほしいところ</h2>
+<h2>2. 🆕 今回の追加：爻フォーカス・バッジ</h2>
+<figure><img src="badge.png" alt="左上の爻フォーカス・バッジ" style="max-width:420px"><figcaption>左上。六爻の形はそのまま出し、<strong>いま解説している爻だけ金</strong>にして、下に呼び名を出します（この例は「四番目と五番目は、抑える線です」の場面）。</figcaption></figure>
+<div class="tblwrap"><table>
+<thead><tr><th>場面</th><th>光る爻</th></tr></thead>
+<tbody>
+<tr><td>「一番下の線には」「二番目の線は」</td><td>初爻・二爻</td></tr>
+<tr><td>「変わるのは三番目です」＋行き先の話</td><td>三爻</td></tr>
+<tr><td>「四番目と五番目は、抑える線です」</td><td>四爻・五爻</td></tr>
+<tr><td>「一番上の線は、天の道に至る」</td><td>上爻</td></tr>
+<tr><td>処方箋 一段目〜六段目</td><td>各段に対応（6シーン）</td></tr>
+</tbody></table></div>
+<p class="src">回ごとの手作業ではなく <code>EssayVideoGeneric</code> の汎用機能（<code>yao_focus</code>）として実装したので、次回以降どの話でも使えます。六爻の並びは <code>db/hexagrams.json</code> の <code>binary_le</code> から描くので、線の本数や陰陽を打ち間違える余地はありません。配置は左上固定＝右上（六爻プログレス）・上中央（作品名）・下中央（字幕）と当たりません。</p>
+
+<h2>3. 観るときに見てほしいところ</h2>
 <ul class="chk">
 <li><strong>冒頭30秒</strong>：机の三冊・ブックマーク四十件・一月のメモ。「これ自分のことだ」になっているか。</li>
 <li><strong>0〜8秒の上部オーバーレイ</strong>：「耳をすませば　月島雫／易経・大畜（たいちく）」が出ているか。</li>
 <li><strong>幕3の物証</strong>：「蓄えよ」と言った同じ場所に「家で食べないのが吉である」と書いてある、が伝わるか。</li>
 <li><strong>金の出どころ</strong>：幕1〜2は藍と墨だけで、<strong>金は幕3の山の断面で初めて出ます</strong>。蓄えが見えていない状態を色でもやっています。</li>
+<li>🆕 <strong>爻バッジが、話している線と合っているか</strong>（下の表のとおりに光るはずです）。</li>
 <li><strong>幕6の棘</strong>：「守っているのは可能性ではなく、まだ採点されていないという状態のほう」。</li>
 </ul>
 
 <figure><img src="contact.png" alt="全編のコンタクトシート"><figcaption>30秒おきに抜いた画面。字幕・絵・六爻図の出方が一目で分かります。</figcaption></figure>
 
-<h2>3. 機械ゲートの結果</h2>
+<h2>4. 機械ゲートの結果</h2>
 <div class="tblwrap"><table><tbody>
 <tr><th>尺</th><td class="ok">496.7秒（8分17秒）</td></tr>
 <tr><th>音のピーク</th><td class="ok">-3.9dB（クリップなし）</td></tr>
@@ -71,7 +86,7 @@ ul.chk{padding-left:1.2em}ul.chk li{margin:6px 0}
 ハーネスは承認時のハッシュと一致しなくなると台本承認を無効化するので、現在のファイルで独立採点を取り直し（96点）、承認を再束縛しました。<strong>あなたの判断の対象（内容）は変わっていません</strong>が、黙って付け替えたくないので書いています。
 </div>
 
-<h2>4. 制作中に見つけて直したもの</h2>
+<h2>5. 制作中に見つけて直したもの</h2>
 <div class="tblwrap"><table>
 <thead><tr><th>見つかったもの</th><th>どうしたか</th></tr></thead>
 <tbody>
@@ -83,7 +98,7 @@ ul.chk{padding-left:1.2em}ul.chk li{margin:6px 0}
 <tr><td>西司朗の「原石」の台詞を使いたかったが、一次情報で裏が取れなかった</td><td><strong>使っていません</strong>（記憶を出典にしない規則）。処方箋は大畜の爻辞だけで立っています</td></tr>
 </tbody></table></div>
 
-<h2>5. 決めてください</h2>
+<h2>6. 決めてください</h2>
 <div class="decide">
 <div class="opt"><b>A</b> — 出す。タイトル確定・サムネ・公開キットへ進む</div>
 <div class="opt"><b>B</b> — <strong>直すところがある</strong>（何分何秒の何が気になったか言ってください。その箇所だけ直して再レンダします）</div>
