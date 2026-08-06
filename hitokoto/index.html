@@ -575,7 +575,20 @@ function toHdr(src){ // ヘッダーは顔中心の合成版(hdr-*)を使う=顔
   const m = src && src.match(/portraits\/(.+)-01\.png$/);
   return m ? `portraits/hdr-${m[1]}.png` : src;
 }
-function setPortrait(rawSrc) {
+// ヘッダーの写真をタップでシーン切替(一周して「おまかせ」に戻る)。おまかせ=会話に合わせて自動
+const SCENE_CYCLE = [
+  ['auto', 'おまかせ（会話に合わせる）'], ['cand-C', 'いつもの'], ['scene-cafe', 'カフェ'], ['scene-kitchen', 'キッチン'],
+  ['scene-sofa', '部屋でお茶'], ['scene-park', '公園'], ['scene-books', '本屋'], ['scene-beach', '海辺の夕方'],
+  ['scene-yukata', '夏祭り'], ['scene-snow', '雪の日'], ['scene-bar', 'バー'], ['scene-morning', '朝'],
+  ['scene-rain', '雨の日'], ['scene-nightwalk', '夜の散歩']
+];
+let manualScene = localStorage.getItem('madoka_scene') || 'auto';
+let lastAutoRaw = null;
+function setPortrait(rawSrc, force = false) {
+  if (!force) {
+    lastAutoRaw = rawSrc;
+    if (manualScene !== 'auto') return; // 手動シーン固定中は自動切替しない
+  }
   const src = toHdr(rawSrc);
   if (!src || src === currentPortrait) return;
   const portrait = $('portrait');
@@ -589,6 +602,15 @@ function setPortrait(rawSrc) {
   preload.onerror = () => portrait.classList.remove('changing');
   preload.src = src;
 }
+$('portrait').addEventListener('click', () => {
+  const i = SCENE_CYCLE.findIndex(s => s[0] === manualScene);
+  const [key, label] = SCENE_CYCLE[(i + 1) % SCENE_CYCLE.length];
+  manualScene = key;
+  localStorage.setItem('madoka_scene', key);
+  if (key === 'auto') setPortrait(lastAutoRaw || EXPR.warm, true);
+  else setPortrait(`portraits/${key}-01.png`, true);
+  showToast(label);
+});
 
 function pendingUserIds(thread, pendingCount) {
   const count = Math.max(0, Number(pendingCount) || 0);
