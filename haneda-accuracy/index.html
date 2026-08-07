@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>羽田 到着予想・プールデータの精度向上 — 承認と次の一手</title>
+<style>
+  :root {
+    --ink: #1f2933; --sub: #52606d; --line: #e4e7eb;
+    --accent: #d97706; --accent-bg: #fef3c7;
+    --ok: #059669; --ok-bg: #ecfdf5;
+    --warn: #dc2626; --warn-bg: #fef2f2;
+    --info: #2563eb; --info-bg: #eff6ff;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Noto Sans JP", sans-serif;
+    color: var(--ink); background: #faf9f7; line-height: 1.75; font-size: 15.5px;
+  }
+  .wrap { max-width: 880px; margin: 0 auto; padding: 32px 20px 80px; }
+  .kicker { color: var(--accent); font-weight: 700; letter-spacing: .12em; font-size: 12.5px; }
+  h1 { font-size: 26px; line-height: 1.4; margin: 6px 0 10px; }
+  .lede { color: var(--sub); font-size: 15px; margin-bottom: 14px; }
+  .tldr {
+    background: var(--accent-bg); border-left: 4px solid var(--accent);
+    padding: 14px 18px; border-radius: 8px; margin: 18px 0 26px; font-size: 15px;
+  }
+  .tldr b { display: block; margin-bottom: 4px; }
+  figure { margin: 26px 0; }
+  figure img { width: 100%; border-radius: 12px; border: 1px solid var(--line); }
+  figcaption { color: var(--sub); font-size: 12.5px; margin-top: 6px; text-align: center; }
+  h2 { font-size: 20px; margin: 40px 0 12px; padding-bottom: 6px; border-bottom: 2px solid var(--line); }
+  h3 { font-size: 16.5px; margin: 22px 0 8px; }
+  p { margin: 10px 0; }
+  table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 14px; background: #fff; }
+  th, td { border: 1px solid var(--line); padding: 9px 12px; text-align: left; vertical-align: top; }
+  th { background: #f5f7fa; font-size: 13px; }
+  .num { font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .callout { border-radius: 10px; padding: 14px 18px; margin: 16px 0; font-size: 14.5px; }
+  .callout.ok { background: var(--ok-bg); border-left: 4px solid var(--ok); }
+  .callout.info { background: var(--info-bg); border-left: 4px solid var(--info); }
+  .callout.warn { background: var(--warn-bg); border-left: 4px solid var(--warn); }
+  .cards { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 16px 0; }
+  @media (max-width: 640px) { .cards { grid-template-columns: 1fr; } }
+  .card { background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 16px 18px; }
+  .card h4 { font-size: 15px; margin-bottom: 6px; }
+  .card p { font-size: 13.5px; color: var(--sub); margin: 4px 0; }
+  .badge { display: inline-block; font-size: 11.5px; font-weight: 700; padding: 2px 10px; border-radius: 99px; margin-right: 6px; }
+  .badge.done { background: var(--ok-bg); color: var(--ok); }
+  .badge.wait { background: var(--accent-bg); color: var(--accent); }
+  .decision { background: #fff; border: 2px solid var(--accent); border-radius: 14px; padding: 22px 24px; margin: 30px 0; }
+  .decision h2 { border: none; margin-top: 0; padding: 0; }
+  .opt { display: flex; gap: 12px; margin: 14px 0; padding: 12px 14px; border: 1px solid var(--line); border-radius: 10px; background: #fafbfc; }
+  .opt.rec { border-color: var(--ok); background: var(--ok-bg); }
+  .opt .tag { font-weight: 800; font-size: 18px; color: var(--accent); min-width: 28px; }
+  .opt.rec .tag { color: var(--ok); }
+  .opt p { margin: 2px 0; font-size: 14px; }
+  .opt .head { font-weight: 700; font-size: 15px; }
+  .conclusion { background: #f5f7fa; border-radius: 10px; padding: 16px 20px; margin-top: 36px; font-size: 14.5px; }
+  .src { color: var(--sub); font-size: 12px; }
+  code { background: #eef1f4; border-radius: 4px; padding: 1px 6px; font-size: 13px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="kicker">タクシー日報アプリ / 羽田プール計測</div>
+  <h1>到着予想・プールデータの精度向上<br>— できたこと2つの本番反映と、次の一手</h1>
+  <p class="lede">「画像が貯まってきたので精度を上げたい」の調査と実装の結果です。2ヶ月分のデータを検証して、効く改善2つを実装済み（テスト全緑）。反映の承認と、次に進める方向の選択をお願いします。</p>
+
+  <div class="tldr">
+    <b>TL;DR（3行）</b>
+    ① 深夜の「遅延便お知らせ」を自動で読み、どの乗り場に何人来るかをデータ化できた（84種の実掲示で検証）。<br>
+    ② 予測を「平日/土日祝の別 × 直近重視」にして誤差4%減（28日分の実測検証）。<br>
+    ③ この2つを本番反映してよいか（A案・推奨）＋次の一手（B/C）の選択。
+  </div>
+
+  <figure>
+    <img src="images/overview-01.png" alt="全体俯瞰: できたこと2つ、わかったこと、次の一手3案">
+    <figcaption>今回の成果と判断ポイントの全体図</figcaption>
+  </figure>
+
+  <h2>できたこと（実装済み・全720テスト緑）</h2>
+
+  <div class="cards">
+    <div class="card">
+      <h4>📋 深夜の遅延便お知らせを自動で読む</h4>
+      <p><span class="badge done">実装済</span><span class="badge wait">反映待ち</span></p>
+      <p>プール現地の掲示（「ANA84 札幌便 0:48到着予定 71人 第4乗り場」など）を自動で構造化。<b>どの乗り場に・何時に・何人来るか</b>と、乗り場の客列人数（「第2乗り場 約1,400名」）が取れるように。</p>
+      <p class="src">検証: 7週間で実際に掲示された84種類の文面すべてでテスト（20本）。読めない文面は誤読せず捨てる設計。</p>
+    </div>
+    <div class="card">
+      <h4>📈 予測を「曜日 × 直近」に合わせる</h4>
+      <p><span class="badge done">実装済</span><span class="badge wait">反映待ち</span></p>
+      <p>列移動の予測（時間帯目安）を、平日と土日祝で分けて、最近2週間を重く見るように変更。土日に平日のカーブが出る問題が直り、季節変化にも追従。</p>
+      <p class="src">検証: 直近28日のウォークフォワードで誤差(MAE) 0.419→0.401（昼帯 0.517→0.506）。出荷コードそのもので測定。</p>
+    </div>
+  </div>
+
+  <h2>わかったこと（調査の副産物）</h2>
+
+  <div class="callout info">
+    💡 <b>「到着便の人数」と「列の動き」は直結しない。</b>15分単位でも日単位でも相関はほぼゼロ（r≦0.25）。プールに車が溜まっているため、到着の波は列の動きに直接は出ない。到着連動の学習（段階B）が2ヶ月間ずっと「未適用」だったのはバグではなく、<b>信号が無いのが実態</b>。ここを頑張っても効果は出ない、が確定。
+  </div>
+
+  <div class="callout ok">
+    ✅ <b>T3新カメラ（6/10設置・59日分）は列の流れを正しく測れている。</b>ゲート密度の変動イベントは1日あたり約48回で安定し、実画像の目視でもイベント時刻に本物の列移動を確認。<b>アプリに「T3の流れ」を出す準備が整った</b>（表示はまだ・B案）。
+  </div>
+
+  <div class="callout warn">
+    ⚠️ <b>画像バックアップが5/20から故障していた（修理済み・恒久対策は要選択）。</b>外部ドライブへの毎日の同期がmacOSの権限制限で失敗し続け、45万枚/30GBがMac miniに滞留していた。今日、手動で全量同期（62GB）＋古い分の整理（ローカル30GB→3.2GB）を完了。ただし<b>深夜の自動ジョブは今も失敗する</b>ため、恒久修理が必要（C案）。
+  </div>
+
+  <h2>反映した場合にアプリに起きること</h2>
+  <table>
+    <tr><th>項目</th><th>いつから</th><th>変化</th></tr>
+    <tr><td>予測（時間帯目安）</td><td class="num">反映直後の更新から</td><td>土日祝は土日祝のカーブに。直近の傾向を反映（見た目の形式は不変）</td></tr>
+    <tr><td>遅延便データ</td><td class="num">次に掲示が出た深夜から</td><td>配信データに「号別の未着便・人数」が載る（<b>アプリ画面はまだ変わらない</b>。表示は次の実装）</td></tr>
+    <tr><td>リスク</td><td class="num">—</td><td>低。既定動作は後方互換、読めない掲示は無視する設計。全720テスト緑</td></tr>
+  </table>
+
+  <div class="decision">
+    <h2>🙋 あなたはどれを選ぶ？</h2>
+    <div class="opt rec">
+      <div class="tag">A</div>
+      <div>
+        <p class="head">実装2つを本番反映する（推奨・私が実行）</p>
+        <p>ic-helper リポジトリへ push → Mac mini が自動で取り込み。今夜の掲示から遅延便データが貯まり始め、予測は次回更新から曜日対応に。</p>
+      </div>
+    </div>
+    <div class="opt">
+      <div class="tag">B</div>
+      <div>
+        <p class="head">続けて「深夜遅延便の表示」or「T3の流れ表示」をアプリに実装</p>
+        <p>Aの土台の上に、乗務員に見える画面を作る（dev→承認→本番の通常フロー）。どちらを先にやるかも指定可。</p>
+      </div>
+    </div>
+    <div class="opt">
+      <div class="tag">C</div>
+      <div>
+        <p class="head">画像バックアップの恒久修理の方式を決める</p>
+        <p>(C-1) システム設定で bash にフルディスクアクセスを付与（あなたのGUI操作1分・シンプル）／(C-2) 深夜ジョブをSSH経由に書き換え（私が実行・鍵設定の承認が必要）。</p>
+      </div>
+    </div>
+    <p class="src">A と C は独立。「A と C-1」「A だけ」のような組み合わせ回答でOK。</p>
+  </div>
+
+  <div class="conclusion">
+    <b>まとめ（3行）</b><br>
+    効く改善2つ（遅延便の構造化・曜日×直近モデル）を実装、検証済み・反映待ち。<br>
+    到着連動の強化は「信号なし」が確定したので追わない。次の伸びしろはT3の流れ表示と遅延便表示。<br>
+    バックアップは応急復旧済み、恒久修理の方式だけ決めてください。
+  </div>
+
+</div>
+</body>
+</html>
