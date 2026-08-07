@@ -70,6 +70,12 @@
     transition: opacity .18s ease;
   }
   .portrait.changing { opacity: .72; }
+  .portrait-video {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    object-fit: cover; object-position: 50% 34%;
+    opacity: 0; transition: opacity .8s ease; pointer-events: none;
+  }
+  .portrait-video.on { opacity: 1; }
 
   .photo-top {
     position: absolute;
@@ -412,6 +418,7 @@
 <main class="app">
   <header class="photo-panel" aria-label="まどか">
     <img class="portrait" id="portrait" src="portraits/hdr-cand-C.png" alt="まどかの写真">
+    <video class="portrait-video" id="portraitVid" muted playsinline loop autoplay></video>
     <div class="photo-top">
       <div class="day-badge" id="dayBadge">— / 50日</div>
       <div style="display:flex;gap:8px;align-items:center">
@@ -624,10 +631,24 @@ function setPortrait(rawSrc, force = false) {
     portrait.src = src;
     currentPortrait = src;
     portrait.classList.remove('changing');
+    setMotion(src);
   };
   preload.onerror = () => portrait.classList.remove('changing');
   preload.src = src;
 }
+// 静止画に対応する動きループ(DepthFlow)があれば重ねて再生。無ければ静止画のまま
+function setMotion(hdrSrc) {
+  const vid = $('portraitVid');
+  const m = hdrSrc && hdrSrc.match(/portraits\/(hdr-[\w-]+)\.png$/);
+  if (!m) { vid.classList.remove('on'); vid.removeAttribute('src'); return; }
+  const msrc = `motion/${m[1]}.mp4`;
+  if (vid.getAttribute('src') === msrc) return;
+  vid.classList.remove('on');
+  vid.src = msrc;
+  vid.oncanplay = () => { vid.play().catch(() => {}); vid.classList.add('on'); };
+  vid.onerror = () => { vid.classList.remove('on'); vid.removeAttribute('src'); };
+}
+setMotion($('portrait').getAttribute('src')); // 初期表示から動きを付ける
 $('portrait').addEventListener('click', () => {
   const i = SCENE_CYCLE.findIndex(s => s[0] === manualScene);
   const [key, label] = SCENE_CYCLE[(i + 1) % SCENE_CYCLE.length];
