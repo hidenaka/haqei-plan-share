@@ -61,7 +61,24 @@ async function sendAnswer(qid){
     const fw=p.frameworks;
     const answered=new Set((window._answers||[]).map(a=>a.qid));
     const gaps=(p.gapQuestions||[]).filter(q=>!answered.has(q.id));
+    const dg=p.digest;
     document.getElementById('body').innerHTML=
+      (dg?`<div class="summary" style="background:#37423a">
+        <div style="font-size:12px;letter-spacing:.12em;color:#a8c3ab;font-weight:700;margin-bottom:6px">総合まとめ — 一言でいうと</div>${esc(dg.oneliner)}</div>
+      <div class="sec" style="border-color:#c9d8ca">
+        <h2><span>💪</span>強みと、その使い方</h2>${
+        (dg.strengths||[]).map(s=>`<div class="item"><div style="font-size:14.5px;font-weight:700">${esc(s.what)}</div><div style="font-size:13px;margin-top:3px;background:#f2f7f2;border-radius:9px;padding:7px 11px">▶ ${esc(s.use)}</div></div>`).join('')}</div>
+      <div class="sec" style="border-color:#e3cdd1">
+        <h2><span>🕳</span>苦手なこと（隠さず明確に）と、仕組みでの設計</h2>${
+        (dg.weaknesses||[]).map(w=>`<div class="item"><div style="font-size:14.5px;font-weight:700;color:#a05a68">${esc(w.what)}</div><div style="font-size:12px;color:var(--ink2);margin-top:2px">⚠ 出やすい場面: ${esc(w.trigger)}</div><div style="font-size:13px;margin-top:4px;background:#faf2f3;border-radius:9px;padding:7px 11px">🔧 ${esc(w.design)}</div></div>`).join('')}</div>
+      <div class="sec" style="border-color:#e0d6c2">
+        <h2><span>🪤</span>認知の罠 — 「またやってるな」に気づく合言葉</h2>${
+        (dg.traps||[]).map(t=>`<div class="item" style="font-size:14px">・${esc(t)}</div>`).join('')}</div>
+      <div class="sec">
+        <h2><span>🎯</span>力が出る条件 / 死ぬ条件</h2>
+        <div class="item"><b style="color:var(--ac);font-size:13px">✓ 力が出る</b><div style="font-size:13.5px">${esc(dg.fit?.works||'')}</div></div>
+        <div class="item"><b style="color:#a05a68;font-size:13px">✗ 避ける</b><div style="font-size:13.5px">${esc(dg.fit?.avoid||'')}</div></div>
+      </div>`:'')+
       `<div class="summary">${esc(p.summary)}</div>
        <div class="meta">${p.updated} 更新 ・ これまで${(p.history||[]).length}回の洗練</div>`+
       p.sections.map(s=>`<div class="sec"><h2><span>${ICONS[s.title]??'📄'}</span>${esc(s.title)}</h2>${
