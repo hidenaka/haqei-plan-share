@@ -47,12 +47,20 @@ const esc=s=>String(s??'').replace(/[<>&]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp
   try{
     const p=await (await fetch(API+'/profile',{headers:{'x-token':token}})).json();
     if(!p.sections){document.getElementById('body').innerHTML='<div class="empty">まだ生成されていません。まどかと話すと、日曜の朝にここができあがります。</div>';return}
+    const fw=p.frameworks;
     document.getElementById('body').innerHTML=
       `<div class="summary">${esc(p.summary)}</div>
        <div class="meta">${p.updated} 更新 ・ これまで${(p.history||[]).length}回の洗練</div>`+
       p.sections.map(s=>`<div class="sec"><h2><span>${ICONS[s.title]??'📄'}</span>${esc(s.title)}</h2>${
         s.items.map(it=>`<div class="item"><div class="pt"><span class="cf ${it.confidence}">${CFL[it.confidence]??''}</span><span>${esc(it.point)}</span></div><div class="evd">${esc(it.evidence)}</div></div>`).join('')
-      }</div>`).join('');
+      }</div>`).join('')+
+      (fw?`<div class="sec" style="border-color:#d8cbb8;background:#fdfaf4"><h2><span>🗺</span>世の中の分類でいうと</h2>
+        <p style="font-size:12px;color:var(--ink2);margin-bottom:6px">${esc(fw.note||'会話からの推定であり、検査結果ではありません')}</p>${
+        (fw.items||[]).map(it=>`<div class="item">
+          <div class="pt"><span class="cf ${it.confidence==='high'?'strong':it.confidence==='low'?'new':'medium'}">${it.confidence==='high'?'確度高':it.confidence==='low'?'参考':'中'}</span><span><b>${esc(it.name)}</b> — ${esc(it.estimate)}</span></div>
+          <div class="evd">${esc(it.detail)}</div>
+          ${it.missing?`<div class="evd" style="border-left-color:#e4d3bd">🔍 確かめるのに足りない材料: ${esc(it.missing)}</div>`:''}
+        </div>`).join('')}</div>`:'');
   }catch(e){document.getElementById('body').innerHTML='<div class="empty">読み込みに失敗しました</div>'}
 })();
 </script>
