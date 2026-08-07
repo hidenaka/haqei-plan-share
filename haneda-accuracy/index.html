@@ -4,7 +4,7 @@
 <meta name="robots" content="noindex,nofollow,noarchive">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>羽田 到着予想・プールデータの精度向上 — 承認と次の一手</title>
+<title>国内線プールの精度向上 — 6つの改善の本番反映と次の一手</title>
 <style>
   :root {
     --ink: #1f2933; --sub: #52606d; --line: #e4e7eb;
@@ -31,24 +31,16 @@
   figure img { width: 100%; border-radius: 12px; border: 1px solid var(--line); }
   figcaption { color: var(--sub); font-size: 12.5px; margin-top: 6px; text-align: center; }
   h2 { font-size: 20px; margin: 40px 0 12px; padding-bottom: 6px; border-bottom: 2px solid var(--line); }
-  h3 { font-size: 16.5px; margin: 22px 0 8px; }
   p { margin: 10px 0; }
   table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 14px; background: #fff; }
   th, td { border: 1px solid var(--line); padding: 9px 12px; text-align: left; vertical-align: top; }
   th { background: #f5f7fa; font-size: 13px; }
   .num { font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .good { color: var(--ok); font-weight: 700; }
   .callout { border-radius: 10px; padding: 14px 18px; margin: 16px 0; font-size: 14.5px; }
   .callout.ok { background: var(--ok-bg); border-left: 4px solid var(--ok); }
   .callout.info { background: var(--info-bg); border-left: 4px solid var(--info); }
   .callout.warn { background: var(--warn-bg); border-left: 4px solid var(--warn); }
-  .cards { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 16px 0; }
-  @media (max-width: 640px) { .cards { grid-template-columns: 1fr; } }
-  .card { background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 16px 18px; }
-  .card h4 { font-size: 15px; margin-bottom: 6px; }
-  .card p { font-size: 13.5px; color: var(--sub); margin: 4px 0; }
-  .badge { display: inline-block; font-size: 11.5px; font-weight: 700; padding: 2px 10px; border-radius: 99px; margin-right: 6px; }
-  .badge.done { background: var(--ok-bg); color: var(--ok); }
-  .badge.wait { background: var(--accent-bg); color: var(--accent); }
   .decision { background: #fff; border: 2px solid var(--accent); border-radius: 14px; padding: 22px 24px; margin: 30px 0; }
   .decision h2 { border: none; margin-top: 0; padding: 0; }
   .opt { display: flex; gap: 12px; margin: 14px 0; padding: 12px 14px; border: 1px solid var(--line); border-radius: 10px; background: #fafbfc; }
@@ -59,65 +51,61 @@
   .opt .head { font-weight: 700; font-size: 15px; }
   .conclusion { background: #f5f7fa; border-radius: 10px; padding: 16px 20px; margin-top: 36px; font-size: 14.5px; }
   .src { color: var(--sub); font-size: 12px; }
-  code { background: #eef1f4; border-radius: 4px; padding: 1px 6px; font-size: 13px; }
 </style>
 </head>
 <body>
 <div class="wrap">
 
-  <div class="kicker">タクシー日報アプリ / 羽田プール計測</div>
-  <h1>到着予想・プールデータの精度向上<br>— できたこと2つの本番反映と、次の一手</h1>
-  <p class="lede">「画像が貯まってきたので精度を上げたい」の調査と実装の結果です。2ヶ月分のデータを検証して、効く改善2つを実装済み（テスト全緑）。反映の承認と、次に進める方向の選択をお願いします。</p>
+  <div class="kicker">タクシー日報アプリ / 羽田 国内線プール計測</div>
+  <h1>国内線プールの精度向上<br>— 6つの改善ができました。反映の承認をください</h1>
+  <p class="lede">「画像が貯まったので精度を上げたい」→ 国内線（1〜4号）のプール計測を7週間×45万枚の蓄積画像で検証し、見つかった問題を全部直しました。数字はすべて実測（YOLO自動採点＋実フレーム目視）です。</p>
 
   <div class="tldr">
     <b>TL;DR（3行）</b>
-    ① 深夜の「遅延便お知らせ」を自動で読み、どの乗り場に何人来るかをデータ化できた（84種の実掲示で検証）。<br>
-    ② 予測を「平日/土日祝の別 × 直近重視」にして誤差4%減（28日分の実測検証）。<br>
-    ③ この2つを本番反映してよいか（A案・推奨）＋次の一手（B/C）の選択。
+    ① 待機車両（埋まり率）の誤りを実測で特定：1号は昼に「混みすぎ」表示、4号は常に少なめ、明け方はほぼ毎日「全号満車」の誤爆。<br>
+    ② 7週間分の画像で判定モデルを作り直し、<b>誤差を全号で2〜4倍改善</b>（下表）。深夜遅延便のお知らせ自動読み取り・曜日別予測も完成。<br>
+    ③ まとめて本番反映してよいか（A案・推奨）。組み合わせ回答OK。
   </div>
 
   <figure>
-    <img src="images/overview-01.png" alt="全体俯瞰: できたこと2つ、わかったこと、次の一手3案">
-    <figcaption>今回の成果と判断ポイントの全体図</figcaption>
+    <img src="images/overview-01.png" alt="全体俯瞰: できたこと、わかったこと、次の一手">
+    <figcaption>今回の成果と判断ポイントの全体図（作成時点の内容・詳細は本文が正）</figcaption>
   </figure>
 
-  <h2>できたこと（実装済み・全720テスト緑）</h2>
+  <h2>いちばん大きい成果: 待機車両（埋まり率）の作り直し</h2>
+  <p>アーカイブ80日×毎日12時刻＝852場面を、タイル分割YOLO（車の自動検出・目視で妥当性確認済み）で採点し、現行の判定と突き合わせました。直近2週間をテストに使った誤差（MAE=平均のズレ幅、0〜1）:</p>
 
-  <div class="cards">
-    <div class="card">
-      <h4>📋 深夜の遅延便お知らせを自動で読む</h4>
-      <p><span class="badge done">実装済</span><span class="badge wait">反映待ち</span></p>
-      <p>プール現地の掲示（「ANA84 札幌便 0:48到着予定 71人 第4乗り場」など）を自動で構造化。<b>どの乗り場に・何時に・何人来るか</b>と、乗り場の客列人数（「第2乗り場 約1,400名」）が取れるように。</p>
-      <p class="src">検証: 7週間で実際に掲示された84種類の文面すべてでテスト（20本）。読めない文面は誤読せず捨てる設計。</p>
-    </div>
-    <div class="card">
-      <h4>📈 予測を「曜日 × 直近」に合わせる</h4>
-      <p><span class="badge done">実装済</span><span class="badge wait">反映待ち</span></p>
-      <p>列移動の予測（時間帯目安）を、平日と土日祝で分けて、最近2週間を重く見るように変更。土日に平日のカーブが出る問題が直り、季節変化にも追従。</p>
-      <p class="src">検証: 直近28日のウォークフォワードで誤差(MAE) 0.419→0.401（昼帯 0.517→0.506）。出荷コードそのもので測定。</p>
-    </div>
-  </div>
-
-  <h2>わかったこと（調査の副産物）</h2>
-
-  <div class="callout info">
-    💡 <b>「到着便の人数」と「列の動き」は直結しない。</b>15分単位でも日単位でも相関はほぼゼロ（r≦0.25）。プールに車が溜まっているため、到着の波は列の動きに直接は出ない。到着連動の学習（段階B）が2ヶ月間ずっと「未適用」だったのはバグではなく、<b>信号が無いのが実態</b>。ここを頑張っても効果は出ない、が確定。
-  </div>
-
-  <div class="callout ok">
-    ✅ <b>T3新カメラ（6/10設置・59日分）は列の流れを正しく測れている。</b>ゲート密度の変動イベントは1日あたり約48回で安定し、実画像の目視でもイベント時刻に本物の列移動を確認。<b>アプリに「T3の流れ」を出す準備が整った</b>（表示はまだ・B案）。
-  </div>
+  <table>
+    <tr><th>号</th><th>現行の誤差</th><th>新モデルの誤差</th><th>直った症状</th></tr>
+    <tr><td>1号</td><td class="num">0.176（+16%の過大癖）</td><td class="num good">0.092</td><td>昼の「混みすぎ」表示が解消</td></tr>
+    <tr><td>2号</td><td class="num">0.108</td><td class="num good">0.017</td><td>—（元々良好→さらに精密に）</td></tr>
+    <tr><td>3号</td><td class="num">0.134</td><td class="num good">0.032</td><td>薄明かりの誤検出が解消</td></tr>
+    <tr><td>4号</td><td class="num">0.147（−12%の過小癖）</td><td class="num good">0.060</td><td>常に少なめに出る癖が解消</td></tr>
+  </table>
+  <p class="src">出典: ホールドアウト検証（2026-07-24以降の149場面、YOLO採点比）。実フレームの新旧判定比較も目視確認済み。</p>
 
   <div class="callout warn">
-    ⚠️ <b>画像バックアップが5/20から故障していた（修理済み・恒久対策は要選択）。</b>外部ドライブへの毎日の同期がmacOSの権限制限で失敗し続け、45万枚/30GBがMac miniに滞留していた。今日、手動で全量同期（62GB）＋古い分の整理（ローカル30GB→3.2GB）を完了。ただし<b>深夜の自動ジョブは今も失敗する</b>ため、恒久修理が必要（C案）。
+    ⚠️ <b>明け方の「全号満車」誤爆も退治。</b>夜明けの薄明かりで判定が数フレーム全号95〜100%に張り付く誤爆が<b>ほぼ毎日</b>起きていました（実際はほぼ空）。「プールは5分で満車にならない」という物理チェックを追加し、7週間の実データで誤爆47件だけを正しく落とすことを確認（正常な増減は保持）。朝4〜6時の羽田入り判断がまともになります。
   </div>
 
-  <h2>反映した場合にアプリに起きること</h2>
+  <h2>そのほかの改善（同梱・全724テスト緑）</h2>
   <table>
-    <tr><th>項目</th><th>いつから</th><th>変化</th></tr>
-    <tr><td>予測（時間帯目安）</td><td class="num">反映直後の更新から</td><td>土日祝は土日祝のカーブに。直近の傾向を反映（見た目の形式は不変）</td></tr>
-    <tr><td>遅延便データ</td><td class="num">次に掲示が出た深夜から</td><td>配信データに「号別の未着便・人数」が載る（<b>アプリ画面はまだ変わらない</b>。表示は次の実装）</td></tr>
-    <tr><td>リスク</td><td class="num">—</td><td>低。既定動作は後方互換、読めない掲示は無視する設計。全720テスト緑</td></tr>
+    <tr><th>改善</th><th>効果</th></tr>
+    <tr><td>深夜遅延便のお知らせ自動読み取り</td><td>現地掲示（84種の実文面で検証）から「どの乗り場に・何時に・何人」を構造化してデータ配信に追加。アプリ画面への表示は次の実装（B案）</td></tr>
+    <tr><td>列移動予測を曜日別＋直近重視に</td><td>土日祝に平日カーブが出る問題を解消。誤差4%減（28日分の実測検証）</td></tr>
+    <tr><td>夜計測の基準画像をリポジトリ内へ移設</td><td>今日発生した計測停止事故（7時間・復旧済み）の再発防止</td></tr>
+  </table>
+
+  <div class="callout info">
+    💡 <b>調査で確定した知見:</b> 到着便の人数と列の動きの相関はほぼゼロ（プール滞留が緩衝）。到着連動の学習強化は効果が出ないため追いません。
+  </div>
+
+  <h2>反映するとどうなる</h2>
+  <table>
+    <tr><th>画面</th><th>いつから</th><th>変化</th></tr>
+    <tr><td>号別カードの待機車両</td><td class="num">反映直後の計測から</td><td>1号昼の過大・4号の過小・明け方の誤爆が直る（見た目の形式は不変）</td></tr>
+    <tr><td>列移動の時間帯目安</td><td class="num">次回更新から</td><td>土日祝は土日祝のカーブに</td></tr>
+    <tr><td>リスク</td><td class="num">—</td><td>低。全部フォールバック付き・全724テスト緑・読めない掲示は無視する設計</td></tr>
   </table>
 
   <div class="decision">
@@ -125,32 +113,32 @@
     <div class="opt rec">
       <div class="tag">A</div>
       <div>
-        <p class="head">実装2つを本番反映する（推奨・私が実行）</p>
-        <p>ic-helper リポジトリへ push → Mac mini が自動で取り込み。今夜の掲示から遅延便データが貯まり始め、予測は次回更新から曜日対応に。</p>
+        <p class="head">6つの改善を本番反映する（推奨・私が実行）</p>
+        <p>計測リポジトリへ push → Mac mini が自動で取り込み。今夜〜明朝の計測から新モデルが効きます。</p>
       </div>
     </div>
     <div class="opt">
       <div class="tag">B</div>
       <div>
-        <p class="head">続けて「深夜遅延便の表示」or「T3の流れ表示」をアプリに実装</p>
-        <p>Aの土台の上に、乗務員に見える画面を作る（dev→承認→本番の通常フロー）。どちらを先にやるかも指定可。</p>
+        <p class="head">続けて「深夜遅延便の号別表示」をアプリ画面に実装</p>
+        <p>Aで配信に載る遅延便データ（号・時刻・人数）を、深夜帯の号別カード等に表示する（dev→承認→本番の通常フロー）。</p>
       </div>
     </div>
     <div class="opt">
       <div class="tag">C</div>
       <div>
         <p class="head">画像バックアップの恒久修理の方式を決める</p>
-        <p>(C-1) システム設定で bash にフルディスクアクセスを付与（あなたのGUI操作1分・シンプル）／(C-2) 深夜ジョブをSSH経由に書き換え（私が実行・鍵設定の承認が必要）。</p>
+        <p>(C-1) システム設定で bash にフルディスクアクセス付与（あなたのGUI操作1分・シンプル）／(C-2) 深夜ジョブをSSH経由化（私が実行・鍵設定の承認が必要）。今は毎晩の自動同期が失敗し続けています（データ喪失リスクは7日分の余裕あり）。</p>
       </div>
     </div>
-    <p class="src">A と C は独立。「A と C-1」「A だけ」のような組み合わせ回答でOK。</p>
+    <p class="src">A/B/C は独立。「AとC-1」「Aだけ」のような組み合わせ回答でOK。</p>
   </div>
 
   <div class="conclusion">
     <b>まとめ（3行）</b><br>
-    効く改善2つ（遅延便の構造化・曜日×直近モデル）を実装、検証済み・反映待ち。<br>
-    到着連動の強化は「信号なし」が確定したので追わない。次の伸びしろはT3の流れ表示と遅延便表示。<br>
-    バックアップは応急復旧済み、恒久修理の方式だけ決めてください。
+    国内線プールの計測不良3つ（1号過大・4号過小・明け方誤爆）を実測で特定し、7週間の画像で作り直して全号2〜4倍の精度に。<br>
+    深夜遅延便の自動読み取り・曜日別予測・事故の再発防止も同梱。全部テスト済みで反映待ち。<br>
+    あとは A（反映）の承認と、B/C を続けるかだけ決めてください。
   </div>
 
 </div>
