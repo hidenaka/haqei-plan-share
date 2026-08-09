@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>乗り場の状況カード — 表示の基準を直す</title>
+<style>
+  :root {
+    --ink: #1f2933; --sub: #52606d; --line: #e4e7eb;
+    --accent: #d97706; --accent-bg: #fef3c7;
+    --ok: #059669; --ok-bg: #ecfdf5;
+    --warn: #dc2626; --warn-bg: #fef2f2;
+    --info: #2563eb; --info-bg: #eff6ff;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Noto Sans JP", sans-serif;
+    color: var(--ink); background: #faf9f7; line-height: 1.75; font-size: 15.5px;
+  }
+  .wrap { max-width: 880px; margin: 0 auto; padding: 32px 20px 80px; }
+  .kicker { color: var(--accent); font-weight: 700; letter-spacing: .12em; font-size: 12.5px; }
+  h1 { font-size: 26px; line-height: 1.4; margin: 6px 0 10px; }
+  .lede { color: var(--sub); font-size: 15px; margin-bottom: 14px; }
+  .tldr { background: var(--accent-bg); border-left: 4px solid var(--accent); padding: 14px 18px; border-radius: 8px; margin: 18px 0 26px; font-size: 15px; }
+  .tldr b { display: block; margin-bottom: 4px; }
+  figure { margin: 26px 0; }
+  figure img { width: 100%; border-radius: 12px; border: 1px solid var(--line); }
+  figcaption { color: var(--sub); font-size: 12.5px; margin-top: 6px; text-align: center; }
+  h2 { font-size: 20px; margin: 40px 0 12px; padding-bottom: 6px; border-bottom: 2px solid var(--line); }
+  p { margin: 10px 0; }
+  table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 14px; background: #fff; }
+  th, td { border: 1px solid var(--line); padding: 9px 12px; text-align: left; vertical-align: top; }
+  th { background: #f5f7fa; font-size: 13px; }
+  .num { font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .bad { color: var(--warn); font-weight: 700; }
+  .good { color: var(--ok); font-weight: 700; }
+  .callout { border-radius: 10px; padding: 14px 18px; margin: 16px 0; font-size: 14.5px; }
+  .callout.ok { background: var(--ok-bg); border-left: 4px solid var(--ok); }
+  .callout.info { background: var(--info-bg); border-left: 4px solid var(--info); }
+  .callout.warn { background: var(--warn-bg); border-left: 4px solid var(--warn); }
+  .decision { background: #fff; border: 2px solid var(--accent); border-radius: 14px; padding: 22px 24px; margin: 30px 0; }
+  .decision h2 { border: none; margin-top: 0; padding: 0; }
+  .opt { display: flex; gap: 12px; margin: 14px 0; padding: 12px 14px; border: 1px solid var(--line); border-radius: 10px; background: #fafbfc; }
+  .opt.rec { border-color: var(--ok); background: var(--ok-bg); }
+  .opt .tag { font-weight: 800; font-size: 18px; color: var(--accent); min-width: 28px; }
+  .opt.rec .tag { color: var(--ok); }
+  .opt p { margin: 2px 0; font-size: 14px; }
+  .opt .head { font-weight: 700; font-size: 15px; }
+  .conclusion { background: #f5f7fa; border-radius: 10px; padding: 16px 20px; margin-top: 36px; font-size: 14.5px; }
+  .src { color: var(--sub); font-size: 12px; }
+  .bars { font-family: ui-monospace, Menlo, monospace; font-size: 13px; letter-spacing: 1px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="kicker">タクシー日報アプリ / 乗り場の状況カード</div>
+  <h1>「差がわかりにくい」の正体<br>— 流れバーは実データ上ほぼ機能していません</h1>
+  <p class="lede">ご指摘の件、実データで測りました。結論から言うと <b>2つの指標で事情が違い</b>、片方（流れ）は基準の問題ではなく<b>元データが粗すぎて表示に耐えない</b>状態、もう片方（待機車両）は<b>号ごとに基準が違う</b>のが原因でした。</p>
+
+  <div class="tldr">
+    <b>TL;DR（3行）</b>
+    ① 流れバー: 1日の85〜93%が「遅い」表示。列移動が15分あたり0回の枠が85%を占めるため、何と比べても差が出ない。<br>
+    ② 待機車両バー: 分布は散らばっていて使える。ただし2号は5段中5段が49%、4号は2段が最頻と<b>号ごとに意味が違う</b>。<br>
+    ③ 流れをどうするか（畳む/広げる/台数化）と、待機車両に「その号の普段」を出すかの判断をください。
+  </div>
+
+  <figure>
+    <img src="images/overview-01.png" alt="流れバーが役に立たない理由と3つの選択肢">
+    <figcaption>問題の全体像と選択肢（詳細は本文が正）</figcaption>
+  </figure>
+
+  <h2>① 流れバー: 常時「遅い」になっている</h2>
+  <p>現在の判定は「今の値 ÷ その号の1日の最大値」。ピークは1日に一度しか来ないので、それ以外は全部下位に落ちます。実データの出方：</p>
+  <table>
+    <tr><th>号</th><th>遅い</th><th>普通</th><th>速い</th></tr>
+    <tr><td>1号</td><td class="num bad">91%</td><td class="num">5%</td><td class="num">3%</td></tr>
+    <tr><td>2号</td><td class="num bad">90%</td><td class="num">7%</td><td class="num">2%</td></tr>
+    <tr><td>3号</td><td class="num bad">88%</td><td class="num">8%</td><td class="num">3%</td></tr>
+    <tr><td>4号</td><td class="num bad">71%</td><td class="num">26%</td><td class="num">2%</td></tr>
+  </table>
+  <p class="src">出典: 本番配信中の advance-forecast.json（96枠×4号）で現行ロジックを再現。</p>
+
+  <div class="callout warn">
+    ⚠️ <b>基準を変えても直りません。</b>「1日の最大値」ではなく「その時間帯の普段」と比べる案も試しましたが、<b>85%が「判定なし」</b>になりました。理由は下の②です。
+  </div>
+
+  <h2>② 真の原因: 元データが粗すぎる</h2>
+  <p>列移動の実測は <b>15分あたり0回が85%</b>（1回が13%、2回が2%）。通常値の中央値は<b>0.1回</b>＝2時間半に1回の世界です。</p>
+  <div class="bars">
+    1号　0回 ████████████████████████ 87%　1回 ███ 13%　2回 ▎2%<br>
+    3号　0回 ████████████████████ 71%　　1回 ██████ 27%　2回 ▎2%
+  </div>
+  <p>この粒度では「今日は普段の何倍」を計算しても、0回と1回の間を行き来するだけでノイズになります。窓を広げると多少ましになりますが、それでも足りません：</p>
+  <table>
+    <tr><th>集計する時間幅</th><th>1号</th><th>2号</th><th>3号</th><th>4号</th></tr>
+    <tr><td>15分（現行）</td><td class="num bad">0%</td><td class="num bad">0%</td><td class="num bad">6%</td><td class="num bad">0%</td></tr>
+    <tr><td>30分</td><td class="num">4%</td><td class="num">0%</td><td class="num">14%</td><td class="num">1%</td></tr>
+    <tr><td>60分</td><td class="num">15%</td><td class="num">11%</td><td class="num good">43%</td><td class="num">13%</td></tr>
+    <tr><td>90分</td><td class="num">27%</td><td class="num">24%</td><td class="num good">46%</td><td class="num">31%</td></tr>
+  </table>
+  <p class="src">「意味のある比較ができた枠の割合」（通常値の合計が1回以上ある枠）。90分に広げても、1〜2号は4回に3回が判定不能。</p>
+
+  <h2>③ 待機車両バー: こちらは使えるが号ごとに基準が違う</h2>
+  <p>埋まり率は0〜100%の連続値なので分布は散らばっています。ただし号ごとの出方がまるで違います（昼）：</p>
+  <table>
+    <tr><th>号</th><th>0段</th><th>1段</th><th>2段</th><th>3段</th><th>4段</th><th>5段</th><th>いつもの姿</th></tr>
+    <tr><td>1号</td><td class="num">20%</td><td class="num">7%</td><td class="num">11%</td><td class="num">12%</td><td class="num">26%</td><td class="num">20%</td><td>やや多め寄り</td></tr>
+    <tr><td>2号</td><td class="num">18%</td><td class="num">5%</td><td class="num">4%</td><td class="num">5%</td><td class="num">15%</td><td class="num bad">49%</td><td><b>半分の時間が満</b></td></tr>
+    <tr><td>3号</td><td class="num">18%</td><td class="num">6%</td><td class="num">12%</td><td class="num">23%</td><td class="num">27%</td><td class="num">11%</td><td>中央寄り</td></tr>
+    <tr><td>4号</td><td class="num">8%</td><td class="num">14%</td><td class="num">24%</td><td class="num">24%</td><td class="num">19%</td><td class="num">8%</td><td><b>2〜3段が定位置</b></td></tr>
+  </table>
+  <p>つまり <b>「4号が4段」＝かなり混んでいる（普段より上）</b>、<b>「2号が4段」＝むしろ空いている方（普段は5段）</b>。同じ見た目なのに意味が逆です。ここが「差がわかりにくい」のもう一つの正体です。</p>
+
+  <div class="decision">
+    <h2>🙋 あなたはどれを選ぶ？</h2>
+    <p class="src">流れ（1〜3から1つ）と待機車両（4か5）をそれぞれお選びください。「1と4」のような回答でOK。</p>
+
+    <div class="opt rec">
+      <div class="tag">1</div>
+      <div>
+        <p class="head">流れバーは畳む（推奨）</p>
+        <p>常時「遅い」で情報がないので、カードから外して詳細（タップ後）に格下げ。空いたスペースは待機車両と到着便に。計測は続けるので、データが濃くなれば戻せます。</p>
+      </div>
+    </div>
+    <div class="opt">
+      <div class="tag">2</div>
+      <div>
+        <p class="head">集計幅を60〜90分に広げて残す</p>
+        <p>3号は使えるようになる（判定可能43〜46%）が、1〜2号は依然4回に3回が「判定なし」。「今この瞬間」ではなく「この1時間半の傾向」の意味に変わります。</p>
+      </div>
+    </div>
+    <div class="opt">
+      <div class="tag">3</div>
+      <div>
+        <p class="head">台数に換算して見せる</p>
+        <p>列移動1回＝横に並ぶ台数（7〜8台）なので「直近1時間でおよそ◯台はけた」に変換。数字は大きくなり体感に近づきますが、元の粗さは変わりません（0台か8台か、の飛び方になる）。</p>
+      </div>
+    </div>
+
+    <div class="opt rec">
+      <div class="tag">4</div>
+      <div>
+        <p class="head">待機車両に「その号の普段」の目盛りを出す（推奨）</p>
+        <p>流れバーにある「通常」マーカーと同じものを待機車両バーにも付ける。2号の4段は「普段より少ない」、4号の4段は「普段より多い」と一目で分かるようになります。</p>
+      </div>
+    </div>
+    <div class="opt">
+      <div class="tag">5</div>
+      <div>
+        <p class="head">待機車両は今のまま（絶対量だけ）</p>
+        <p>「満車かどうか」の物理的な意味は今の方が素直。号ごとの癖はご自身の経験で補正する前提。</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="conclusion">
+    <b>まとめ（3行）</b><br>
+    流れバーは基準の調整では直らず、元データが15分に0回ばかりで表示に耐えません（1日の9割が「遅い」）。<br>
+    待機車両バーは使えますが、2号と4号で「同じ4段」の意味が真逆になっているのが分かりにくさの正体。<br>
+    おすすめは <b>1（流れは畳む）＋4（普段の目盛りを出す）</b>。ご判断ください。
+  </div>
+
+</div>
+</body>
+</html>
