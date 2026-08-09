@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex, nofollow">
+<title>HaQei 制作システム設計 — CTRと維持率を作る完全手順</title>
+<style>
+:root{--bg:#faf8f4;--fg:#1c1a17;--muted:#6b655c;--line:#ded7cb;--card:#fffdfa;--accent:#8c6b2f;--warn:#a33a2a;--ok:#2f6b3a;--shadow:0 1px 2px rgba(0,0,0,.05),0 8px 24px rgba(0,0,0,.05);}
+@media (prefers-color-scheme: dark){:root{--bg:#151311;--fg:#ece7df;--muted:#9d968b;--line:#332f2a;--card:#1e1b18;--accent:#d8ac5c;--warn:#e08573;--ok:#7fbf8a;--shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.35);}}
+*{box-sizing:border-box}html,body{margin:0;padding:0}
+body{background:var(--bg);color:var(--fg);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",system-ui,sans-serif;line-height:1.85;font-size:16px;-webkit-text-size-adjust:100%}
+.wrap{max-width:900px;margin:0 auto;padding:32px 20px 110px}
+.kicker{font-size:13px;letter-spacing:.14em;color:var(--accent);font-weight:700;margin:0 0 8px}
+h1{font-size:29px;line-height:1.35;margin:0 0 14px}
+h2{font-size:22px;margin:56px 0 14px;padding-bottom:9px;border-bottom:2px solid var(--line)}
+h3{font-size:17.5px;margin:30px 0 8px}
+h4{font-size:15.5px;margin:22px 0 6px;color:var(--accent)}
+p{margin:0 0 12px}.lede{font-size:16.5px;color:var(--muted)}
+.tldr{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:8px;padding:16px 18px;margin:22px 0;box-shadow:var(--shadow)}
+.tldr ol{margin:0;padding-left:1.3em}.tldr li{margin:7px 0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:18px;margin:16px 0;box-shadow:var(--shadow)}
+.card.hot{border-color:var(--accent);border-width:2px}
+.tblwrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:16px 0}
+table{border-collapse:collapse;width:100%;min-width:520px;font-size:14.5px}
+th,td{border:1px solid var(--line);padding:9px 11px;text-align:left;vertical-align:top}
+th{background:rgba(140,107,47,.09);font-weight:700;white-space:nowrap}
+td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.ok{color:var(--ok);font-weight:700}.ng{color:var(--warn);font-weight:700}
+.warnbox{border:1px solid var(--warn);border-radius:8px;padding:14px 16px;margin:18px 0;background:rgba(163,58,42,.06);font-size:15px}
+.okbox{border:1px solid var(--line);border-radius:8px;padding:14px 16px;margin:18px 0;background:rgba(47,107,58,.06);font-size:15px}
+.script{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:4px 18px 14px;margin:14px 0}
+.ln{border-top:1px solid var(--line);padding:12px 0}
+.ln:first-child{border-top:none}
+.t{font-family:ui-monospace,Menlo,monospace;font-size:11.5px;color:var(--muted);letter-spacing:.04em}
+.sp{font-size:16.5px;margin:3px 0 4px;line-height:1.95}
+.why{font-size:13.5px;color:var(--muted);border-left:3px solid var(--accent);padding-left:10px;margin:6px 0 0}
+code{font-family:ui-monospace,Menlo,monospace;font-size:13.5px;background:rgba(128,128,128,.13);padding:1px 5px;border-radius:4px}
+.src{font-size:13px;color:var(--muted)}
+ul,ol{padding-left:1.35em}li{margin:6px 0}
+.big{font-size:30px;font-weight:700;line-height:1.2;color:var(--accent);font-variant-numeric:tabular-nums}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;margin:16px 0}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px;box-shadow:var(--shadow)}
+.stat .lab{font-size:13px;color:var(--muted);margin-bottom:2px}
+.mock{background:#fff;border:1px solid var(--line);border-radius:8px;padding:12px;max-width:380px;margin:10px 0}
+@media (prefers-color-scheme: dark){.mock{background:#0f0f10}}
+.mock .mt{font-size:14px;line-height:1.45;font-weight:600;word-break:break-all}
+.mock .thumb{height:170px;border-radius:5px;display:flex;align-items:center;justify-content:center;text-align:center;padding:12px;font-weight:800;line-height:1.35;color:#f4efe4;background:linear-gradient(180deg,#1d2a3a,#0e1620)}
+@media(max-width:640px){h1{font-size:23px}h2{font-size:19px}.wrap{padding:24px 16px 90px}.sp{font-size:16px}}
+</style></head><body><div class="wrap">
+
+<p class="kicker">HaQei / アニメと易経 ／ 制作システム設計</p>
+<h1>あなたのチャンネルの数字に対する、完全な制作システム</h1>
+<p class="lede">一般論は書きません。<strong>あなたのリポジトリの実測</strong>（登録97人・総再生88,401・直近30日の流入内訳・ショートとロングの変換率）を先に読み、その数字が要求する設計だけを組みました。定説であっても、あなたのA/Bが既に否定したものは採用しません。</p>
+
+<div class="tldr"><ol>
+<li><strong>あなたのチャンネルは、既に月2万回以上見られています。</strong>問題は「見られていない」ことではありません。</li>
+<li><strong>その2万回が、ほぼ登録に変換していません。</strong>ショートは0.034%、ロングは0.549%。同じ人が作った同じ題材で<strong>16倍の差</strong>があります。</li>
+<li>だから最優先は「もっと良い動画」ではなく、<strong>ショートをロング並みに変換させること</strong>。ここだけで登録は月7人→月120人の計算になります。</li>
+</ol></div>
+
+<h2>0. 診断 — あなたの数字が言っていること</h2>
+
+<div class="grid">
+<div class="stat"><div class="lab">直近30日の総再生</div><div class="big">24,168</div></div>
+<div class="stat"><div class="lab">うちショートフィード</div><div class="big">91.7%</div></div>
+<div class="stat"><div class="lab">検索からの流入</div><div class="big">1.3%</div></div>
+<div class="stat"><div class="lab">30日のシェア</div><div class="big">5件</div></div>
+</div>
+
+<div class="tblwrap"><table>
+<tr><th>指標</th><th class="num">実測</th><th>読み方</th></tr>
+<tr><td>ショートの登録変換</td><td class="num ng">0.034%</td><td>84,433再生 → 29登録</td></tr>
+<tr><td>ロングの登録変換</td><td class="num ok">0.549%</td><td>2,366再生 → 13登録（<strong>16倍</strong>）</td></tr>
+<tr><td>本編CTR（中央値）</td><td class="num">1.0%</td><td>健全域4〜6%。ただし後述のとおり<strong>これは今の律速ではない</strong></td></tr>
+<tr><td>30秒残存</td><td class="num">42.9%</td><td>最大離脱は中央値<strong>9秒</strong>・21本中21本が20秒以内</td></tr>
+<tr><td>ショート→本編の遷移</td><td class="num ng">33再生/30日</td><td>配線を全部通した後の数字。<strong>H8＝反証済み</strong></td></tr>
+</table></div>
+
+<div class="warnbox">
+<strong>いちばん大事な一行。</strong> あなたは「見られていないチャンネル」ではありません。<strong>月2万人以上に届いていて、その人たちが登録しないチャンネル</strong>です。この2つは処方箋が正反対です。前者なら露出を増やす。後者なら<strong>露出はもう足りているので、変換だけを直す</strong>。
+</div>
+
+<h3>この差がすべての元</h3>
+<p>同じ人が、同じ易経の題材で作っています。それでも <strong>ショート 0.034% / ロング 0.549%</strong>。差の原因は品質ではなく<strong>構造</strong>です。ロングは8分かけて「この人の話は自分に効く」を証明してから終わる。ショートは50秒で「うまいこと言った」で終わる。<strong>登録は「うまい」では押されません。「次も自分に必要だ」で押されます。</strong></p>
+
+<h3>算数</h3>
+<div class="tblwrap"><table>
+<tr><th>シナリオ</th><th class="num">ショート変換率</th><th class="num">登録/月</th><th class="num">1,000人まで</th></tr>
+<tr><td>現状</td><td class="num">0.034%</td><td class="num">約24人（全経路合計）</td><td class="num">約38か月</td></tr>
+<tr><td>ショートを0.3%へ</td><td class="num">0.30%</td><td class="num">約73人</td><td class="num">約12か月</td></tr>
+<tr><td>ショートをロング並みへ</td><td class="num">0.549%</td><td class="num">約128人</td><td class="num">約7か月</td></tr>
+</table></div>
+<p class="src">計算 = ショートフィード22,155再生/30日 × 変換率。ロング側の増加は含めていない（保守側）。</p>
+
+<h2>1. アイデア選定システム — 何を作るか決める4つのフィルタ</h2>
+<p>「思いついた順」をやめて、次の4つを<strong>全部</strong>通ったものだけ作ります。1つでも欠けたら捨てる。</p>
+
+<div class="card hot">
+<h4>フィルタ1：痛みが「先週その行動をした実在の人」を3人挙げられるか</h4>
+<p>挙げられないなら、それは<strong>思いついた痛みであって実在する痛みではない</strong>。あなたのrejections台帳にある「連絡先を心の中で並べ替える」が典型で、機知に富んでいるが誰もやっていません。<br><span class="src">→ この基準は既にあなたの企画工程に入っています。維持してください。</span></p>
+</div>
+
+<div class="card hot">
+<h4>フィルタ2：卦の側に「検証できて、意外な、構造的な事実」が1つあるか</h4>
+<p>これが<strong>あなたの唯一の参入障壁</strong>です。感想は誰でも言える。「3000年前の本の同じページに、正反対の判定が並んで書いてある」は誰にも真似できない。<br>
+条件：①db本文で逐語確認できる ②視聴者の常識と逆 ③1行で言える。<br>
+<span class="src">例：節＝「戸を出ない＝咎なし／門を出ない＝凶」（一字違いで正反対）。大畜＝「蓄えよ」と書いた同じ場所に「家で食べるな」。</span></p>
+</div>
+
+<div class="card hot">
+<h4>フィルタ3：作品の中に、その構造が「絵で見える一場面」があるか</h4>
+<p>あらすじではなく<strong>一場面</strong>。視聴者が既に見て覚えている絵。ここが弱いと「無理やりくっつけた」になります（あなたが第50話で指摘したのが、まさにこれです）。</p>
+</div>
+
+<div class="card hot">
+<h4>フィルタ4：作品名で年間検索がある大型IPか</h4>
+<p>あなたの検索流入は1.3%。<strong>検索は当面あきらめる</strong>のが正解ですが、大型IPはショートフィードの初速そのものが違います。実測：ワンパンマン1,511／四月は君の嘘1,248／五等分1,051 に対し、卦の解説寄りのショートは0〜数百。</p>
+</div>
+
+<h2>2. フック — 最初の3秒と、9秒の崖</h2>
+<p>あなたの本編は<strong>21本中21本が20秒以内に最大離脱</strong>、中央値9秒。これは「つまらない」のサインではなく、<strong>9秒地点で"約束"が確認できない</strong>サインです。</p>
+
+<h3>3層フック（ショート／ロング共通）</h3>
+<div class="tblwrap"><table>
+<tr><th>層</th><th>秒</th><th>やること</th><th>禁止</th></tr>
+<tr><td><strong>①止める</strong></td><td>0-3秒</td><td>視聴者の生活の一場面を<strong>断定</strong>で。主語は「あなた」ではなく現象</td><td>挨拶・チャンネル名・「今日は〜の話」・概念語（衝撃・構造・本質）</td></tr>
+<tr><td><strong>②値札</strong></td><td>3-9秒</td><td><strong>この動画を最後まで見ると何が手に入るか</strong>を具体物で言う</td><td>「解説します」（値札になっていない）</td></tr>
+<tr><td><strong>③物証の予告</strong></td><td>9-20秒</td><td>「反論できない一枚がある」と言い、<strong>まだ見せない</strong></td><td>先に見せる／予告しっぱなしで回収しない</td></tr>
+</table></div>
+
+<div class="okbox">
+<strong>②が今いちばん抜けています。</strong> あなたの冒頭は「痛みの断言→作品→ループ3本」で、痛みは強いのに<strong>値札がない</strong>。視聴者は「わかる、でも自分に何が残る?」で降ります。値札の例：<em>「今日持って帰ってもらうのは、"我慢の種類を見分ける4つ目の段"です」</em>——具体物を1つ、名前をつけて先に渡す。</p>
+</div>
+
+<h2>3. タイトル — あなたのA/Bが既に殺した定説</h2>
+<div class="warnbox">
+<strong>次の2つは、あなたの実測で否定済みです。私も採用しません。</strong>
+<ul>
+<li><strong>「作品名を先頭に置くとCTRが上がる」→ 反証</strong>（H1: 0.95% vs 0.94%）</li>
+<li><strong>「サムネA/Bで大きく変わる」→ no_lift</strong>（H-CTR-1: 4本ともCTR±0.1pt）</li>
+</ul>
+つまり<strong>あなたの規模では、タイトルとサムネの小改善はCTRを動かしません</strong>。動かすのは「誰に配られるか」であって、配られた後の勝率ではない。ここに時間を使うのは今は損です。
+</div>
+
+<h3>それでも守る3条件</h3>
+<ol>
+<li><strong>痛みの一文＝冒頭1行目＝share_line を完全に一致させる</strong>（3つが同じ一つの約束）。これは現行H58の型で正しい。</li>
+<li><strong>作品名は入れる（CTRのためでなく、検索と関連動画の分母のため）</strong>。効き方が違うので混同しない。</li>
+<li><strong>結末を書かない。</strong>「始まりの矛盾」だけ置く。</li>
+</ol>
+
+<h2>4. サムネ — 3秒で「これは自分の話だ」</h2>
+<p>CTRが動かない以上、サムネの仕事は<strong>クリック率ではなく"誤クリックを減らすこと"</strong>に置き換えます。間違って来た人は9秒で降り、それがアルゴリズムへの悪い信号になります。</p>
+<div class="tblwrap"><table>
+<tr><th>要素</th><th>ルール</th><th>理由</th></tr>
+<tr><td>題字</td><td><strong>主語＋述語で意味が立つ一文</strong>（単語の羅列にしない）</td><td>単語は「ジャンル」を伝えるが、文は「自分の状態」を伝える</td></tr>
+<tr><td>文字数</td><td>10〜14字を2行まで。360px幅で読めること</td><td>実寸モックで確認（既存工程どおり）</td></tr>
+<tr><td>絵</td><td><strong>未解決を1点だけ</strong>仕込む（「なぜ山の中に金が?」）</td><td>説明済みの絵はクリックの理由にならない</td></tr>
+<tr><td>明るさ</td><td>平均輝度70以上</td><td>暗いサムネはフィードで沈む</td></tr>
+<tr><td>禁止</td><td>顔・作品の意匠・易経ワード</td><td>法務方針＋視聴者語で書く原則</td></tr>
+</table></div>
+
+<h2>5〜7. オープニング／構造／維持</h2>
+
+<h3>ロングの構造（現行6幕を維持しつつ、2点だけ変える）</h3>
+<div class="tblwrap"><table>
+<tr><th>幕</th><th>尺</th><th>役割</th><th>変更点</th></tr>
+<tr><td>1 違和感</td><td>36秒</td><td>痛みの断言＋生活場面3つ＋一人称</td><td><strong class="ok">値札を1つ足す</strong>（上記②）</td></tr>
+<tr><td>2 観察</td><td>1.5-2.5分</td><td>作品を「痛みの証拠」として提示</td><td>あらすじ禁止は維持</td></tr>
+<tr><td>3 種明かし</td><td>2-3分</td><td>卦の構造＋反論できない一枚</td><td>最良ホールド帯。削らない</td></tr>
+<tr><td>4 刃</td><td>30秒-1分</td><td>冒頭の場面の中で自分に返す</td><td>維持</td></tr>
+<tr><td>5 処方箋</td><td>1.5-3分</td><td>六爻を階段として降ろす</td><td><strong class="ok">段に名前をつける</strong>（後述）</td></tr>
+<tr><td>6 余韻</td><td>30秒</td><td>棘で閉じてループ</td><td>維持</td></tr>
+</table></div>
+
+<h3>維持テクニック（この番組で実際に効くもの）</h3>
+<ul>
+<li><strong>物証の遅延</strong>：六爻図は「見せる」と予告してから2分以上おいて出す。予告→回収の距離が長いほど残る。</li>
+<li><strong>段に名前をつける</strong>：処方箋の6段を「一段目」ではなく<strong>「借りとして数えるのをやめる段」</strong>のように名詞化する。名前がついた瞬間、視聴者は<strong>持ち帰れる物として数え始める</strong>（＝離脱しにくくなる）。</li>
+<li><strong>同じ場面へ戻る</strong>：刃も余韻も、冒頭で描いた一場面の中で返す。別の場面へ飛ぶと「別の話」に見えて降りられる。</li>
+<li><strong>予告の張り逃げをしない</strong>：張った予告は必ず名指しで回収（「さっき見せると言った一枚がこれです」）。</li>
+</ul>
+
+<h2>8. CTA — ここが最大の穴</h2>
+<div class="warnbox">
+<strong>あなたのショートは、登録する理由を一度も言っていません。</strong> 「全64話 連載中」のバッジは<strong>ジャンルの説明</strong>であって、登録の理由ではありません。0.034%はその結果です。
+</div>
+
+<h3>新しいCTA設計（ショート専用・3つだけ）</h3>
+<div class="tblwrap"><table>
+<tr><th></th><th>入れるもの</th><th>なぜ効くか</th></tr>
+<tr><td><strong>①未完の宣言</strong></td><td>最後の5秒で「<strong>この卦の続き（次に何が起きるか）は、この動画では言いません</strong>」と明言する</td><td>「見終わった」を「まだ途中」に変える。人は完結した話には登録しない</td></tr>
+<tr><td><strong>②固有名の約束</strong></td><td>「次は<strong>◯◯（作品名）で、同じことをやります</strong>」と1本だけ名指しする</td><td>「シリーズです」は抽象。「次は進撃でやる」は予定。予定にだけ人は付いてくる</td></tr>
+<tr><td><strong>③在庫の提示</strong></td><td>「これで<strong>50個目です</strong>」と数を言う</td><td>今日の1本ではなく<strong>棚</strong>を見せる。登録は棚に対して押される</td></tr>
+</table></div>
+<p><strong>ロングのCTAは今のまま（ループ設計・終盤カードなし）でよい</strong>。ロングは既に0.549%で機能しています。</p>
+
+<h2>9. 完全なスクリプト</h2>
+<p>上のシステムを全部通した1本。<strong>時をかける少女（紺野真琴）× 臨（りん・第19卦）</strong>。作中事実はja.wikipediaで確認済み、卦は <code>db/hexagrams.json</code> の逐語です。</p>
+
+<div class="card">
+<h4>なぜこの組み合わせが選ばれたか（4フィルタの通過）</h4>
+<ol>
+<li><strong>実在検証</strong>：「残り回数が見えているのに、つまらないことに使ってしまう」——スマホのバッテリー残量を見ながら無意味にスクロールする／有給の残日数を知りながら消化しない／賞味期限を確認してから冷蔵庫に戻す。3つとも先週誰かがやっている。</li>
+<li><strong>卦の意外な事実</strong>：臨は<strong>最上級の吉卦</strong>（元亨利貞）なのに、その卦辞の中に <strong>「八月に至りて凶あり」</strong>——<em>良い時期の説明文の中に、終わりの日付が書き込まれている</em>。しかも凶と判定される唯一の爻（三爻）は「うまくいっていて気が緩み、雑に扱う」段。</li>
+<li><strong>絵で見える一場面</strong>：真琴の左腕に<strong>残り回数が2桁の数字で浮かぶ</strong>。「残りが見えている」が literally 画になっている稀有な作品。</li>
+<li><strong>大型IP</strong>：細田守／2006年／国民的知名度。</li>
+</ol>
+</div>
+
+<h3>ショート版（50秒・変換設計を全部入れたもの）</h3>
+<div class="script">
+<div class="ln"><div class="t">0:00-0:04 ／ 止める</div><div class="sp">スマホの充電が18%なのを見て、そのまま10分スクロールした人。</div><div class="why">断定。二人称で名指ししない。「見た」と「そのまま」の間に矛盾を置く＝止まる。</div></div>
+<div class="ln"><div class="t">0:04-0:09 ／ 値札</div><div class="sp">残りが見えているのに雑に使う、あれに3000年前から名前がついています。今日はその名前と、凶になる一段だけ持って帰ってください。</div><div class="why"><strong>値札</strong>＝「名前」と「一段」という具体物。「解説します」ではなく手に入る物を言う。</div></div>
+<div class="ln"><div class="t">0:09-0:20 ／ 作品＝証拠</div><div class="sp">時をかける少女の紺野真琴は、タイムリープの残り回数が左腕に数字で浮かびます。見えているんです。それでも彼女は、味を占めて、どうでもいいことに使っていく。</div><div class="why">あらすじではなく<strong>「見えているのに雑に使う」一点だけ</strong>。痛みと完全に同型。</div></div>
+<div class="ln"><div class="t">0:20-0:36 ／ 物証</div><div class="sp">易経の十九番目、臨。最上級の吉と書かれた卦です。ところがその同じ一文の中に、こうあります。八月に至りて凶あり。<strong>いい時期の説明文の中に、終わりの日付が書き込まれている。</strong></div><div class="why">反論できない一枚。ここが参入障壁。感想ではなく引用。</div></div>
+<div class="ln"><div class="t">0:36-0:45 ／ 刃</div><div class="sp">六つの段のうち、凶と書かれているのは一段だけです。三段目。うまくいっていて、気がゆるみ、雑になる段。<strong>減っていくのが見えている人が、いちばん雑に使う。</strong></div><div class="why">冒頭の場面（充電18%）の中で返す。別の罪へ飛ばさない。</div></div>
+<div class="ln"><div class="t">0:45-0:50 ／ CTA</div><div class="sp">この三段目から、どうやって戻るのか。それはここでは言いません。次は<strong>あの花</strong>で、同じことをやります。これで五十個目です。</div><div class="why"><strong>①未完の宣言 ②固有名の約束 ③在庫の提示</strong>——3つを5秒に。「登録して」とは言わない（言わずに押させる）。</div></div>
+</div>
+
+<h3>ロング版・冒頭90秒（幕1と幕2の入口）</h3>
+<div class="script">
+<div class="ln"><div class="t">V_01_01 ／ 痛みの断言＋生活場面3つ</div><div class="sp">残りが見えているものほど、雑に使ってしまいます。充電が18%なのを確認して、そのまま10分スクロールする。有給が二十日残っているのを毎年見て、毎年繰り越す。賞味期限を見て、冷蔵庫に戻して、また同じことをする。</div><div class="why">場面3つはそれぞれ<strong>固有の物＋観測可能な行動＋数字</strong>。gold（ep01のゲーム/時計/転職）と同じ型。</div></div>
+<div class="ln"><div class="t">V_01_02 ／ 一人称＋値札＋作品＋予告3本</div><div class="sp">見えていれば大事にするはずなのに、逆なんです。私も、残りを数えるのは得意で、使うのは下手なほうです。今日持って帰ってもらうのは、<strong>凶と書かれた一段の名前</strong>です。時をかける少女の紺野真琴は、残り回数が腕に浮かんで見えていました。この状態には3000年前から名前があり、証拠も一枚あります。出口は、もっと大事に使う方向にはありません。</div><div class="why">語り手は<strong>多数側</strong>（数えるのは得意/使うのは下手）。値札＝「凶と書かれた一段の名前」。予告3本（名前／物証／出口）を9〜30秒帯に。</div></div>
+<div class="ln"><div class="t">V_02_01 ／ 作品＝証拠（本人の事情から入る）</div><div class="sp">真琴の残り回数は、左腕に二桁の数字で浮かびます。見えないまま減るのではなく、見えているんです。それでも彼女は、味を占めて、日常のどうでもいいことに使っていきます。</div><div class="why"><strong>主人公から入る</strong>（第50話で指摘された「別人から入って何の話か分からない」を構造的に回避）。</div></div>
+<div class="ln"><div class="t">V_02_02 ／ 代償</div><div class="sp">そして最後に、こう嘆きます。つまらないことに、最後の一回を使ってしまった。<strong>足りなかったのは回数ではありません。回数が見えていたのに、順番を決めなかったことです。</strong></div><div class="why">出典（「つまらないことに最後の1回を使ってしまった」）＋語り手の観察を<strong>話者で分離</strong>。卦にはまだ何も言わせない。</div></div>
+</div>
+
+<h3>処方箋の骨（幕5・臨の六爻を"名前のついた段"にする）</h3>
+<div class="tblwrap"><table>
+<tr><th>段</th><th>db本文</th><th>名前（持ち帰る物）</th><th>今日やること</th></tr>
+<tr><td>初爻</td><td>Joint approach. Perseverance brings good fortune.</td><td><strong>波に乗る段</strong></td><td>今うまくいっている理由を一行で書く（運か実力かを分ける）</td></tr>
+<tr><td>二爻</td><td>Joint approach. Good fortune. Everything furthers.</td><td><strong>心配をやめる段</strong></td><td>先の不安を一つ選び「今月は考えない」と書いて閉じる</td></tr>
+<tr><td class="ng">三爻</td><td class="ng">Comfortable approach. Nothing that would further. If one is induced to grieve over it, one becomes free of blame.</td><td class="ng"><strong>雑になる段（唯一の凶）</strong></td><td><strong>直近1週間で「雑に使った」ものを3つ書く。悔やめば咎なし、と書いてある</strong></td></tr>
+<tr><td>四爻</td><td>Complete approach. No blame.</td><td><strong>ちゃんと向き合う段</strong></td><td>先送りしている相手・案件を1つ、今週中に一度だけ正面から扱う</td></tr>
+<tr><td>五爻</td><td>Wise approach. This is right for a great prince.</td><td><strong>人を選ぶ段</strong></td><td>自分でやることを1つ手放し、任せる相手の名前を書く</td></tr>
+<tr><td>上爻</td><td>Great hearted approach. Good fortune. No blame.</td><td><strong>戻る段</strong></td><td>一度離れた場所・人へ、今月ひとつだけ戻る</td></tr>
+</table></div>
+<p class="src">※ 象辞「地、沢の上にあり。君子は教えて思うこと窮まりなく、民を容れ保んずること疆り無し」＝<strong>尽きないのは回数ではなく、受け入れる側の深さ</strong>。締めに使う。</p>
+
+<h3>幕6の棘（要約せず閉じる）</h3>
+<p class="sp">「残りが見えることは、大事に使わせてくれません。<strong>順番を決めた人にだけ、見えていることが役に立ちます。</strong>八月は、来ると書いてあります。」</p>
+
+<h2>10. なぜ効くのか（設計意図の分析）</h2>
+<div class="tblwrap"><table>
+<tr><th>仕掛け</th><th>効く相手</th><th>なぜ</th></tr>
+<tr><td>0-3秒の「充電18%」</td><td>スクロール中の親指</td><td>ショートフィードは<strong>絵と1文</strong>しか判断材料がない。誰もが今日やった行動を名指しすると、指が止まる</td></tr>
+<tr><td>3-9秒の値札</td><td>9秒の崖</td><td>あなたの最大離脱点はここ。「共感」だけでは残らない。<strong>持ち帰れる物の名前</strong>を先に渡すと、取りに行くために残る</td></tr>
+<tr><td>「吉の卦の中に凶の日付」</td><td>賢い視聴者</td><td>感想は代替可能、<strong>引用は代替不能</strong>。この1点があなたの参入障壁</td></tr>
+<tr><td>段に名前をつける</td><td>処方箋の離脱</td><td>「一段目」は手順、「雑になる段」は<strong>持ち物</strong>。人は持ち物を数え終わるまで離れない</td></tr>
+<tr><td>未完の宣言</td><td>登録ボタン</td><td>完結した話には登録しない。<strong>「言いません」は最も強い登録理由</strong></td></tr>
+<tr><td>次回作品の名指し</td><td>登録ボタン</td><td>「全64話」は棚の説明。「次は あの花」は<strong>予定</strong>。人は予定に付いてくる</td></tr>
+</table></div>
+
+<h2>11. 計測 — 何をもって「効いた」とするか</h2>
+<div class="warnbox">
+<strong>再生数で判定しない。</strong> あなたの規模では1本の再生数は運で±3倍動きます。判定は必ず<strong>率</strong>と<strong>本数</strong>で。
+</div>
+<div class="tblwrap"><table>
+<tr><th>施策</th><th>主指標</th><th>合格ライン</th><th>判定</th></tr>
+<tr><td><strong>ショート新CTA（3点）</strong></td><td>d7の subs/1,000views</td><td>0.34 → <strong>1.5以上</strong></td><td>6本たまった時点。5本以上で再現していること</td></tr>
+<tr><td>冒頭の値札</td><td>ロング30秒残存</td><td>42.9% → <strong>55%以上</strong></td><td>4本の中央値</td></tr>
+<tr><td>段の名前化</td><td>幕5帯の離脱率</td><td>現行比0.7倍以下</td><td>scene-retention</td></tr>
+</table></div>
+<p class="src"><strong>反証条件を先に書いておきます</strong>：ショート6本で subs/1,000views が 0.7 未満なら、CTAは効かなかったと結論し、次は「ショートの尺を2〜3分に伸ばす（変換はロング寄りになる仮説）」へ移る。差が出なかったことを「効果なし」と書かない——n=6の検出力では ±100% 未満の効果は見えません。</p>
+
+<h2>12. 明日からの順番</h2>
+<ol>
+<li><strong>次のショート1本で、CTAの3点だけ差し替える</strong>（台本の他は変えない。切り分けのため）</li>
+<li>同じ形で<strong>6本</strong>。ここまでは判定しない</li>
+<li>並行して、ロングの冒頭に<strong>値札の1文</strong>を足す（4本）</li>
+<li>6本たまったら <code>shorts-conversion</code> で判定 → 合格なら全ショートへ展開、不合格なら反証条件どおり尺の実験へ</li>
+</ol>
+<p class="src">サムネとタイトルの微調整には<strong>時間を使わないでください</strong>。あなたのA/Bが2回とも no_lift / refuted を返しています。今の律速はそこではありません。</p>
+
+</div></body></html>
