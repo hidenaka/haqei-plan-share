@@ -77,6 +77,17 @@ textarea{min-height:60px;resize:vertical}
 .item .n{font-size:14px;font-weight:700}
 .item .d{font-size:11.5px;color:var(--ink2);margin-top:2px;line-height:1.4}
 .sc{font-size:10px;color:var(--acc);margin-left:6px}
+.rep{margin-top:10px}
+.rep .hl{font-size:14.5px;font-weight:700;line-height:1.5;margin-bottom:8px}
+.rep ul{list-style:none;margin:0}
+.rep li{font-size:13.5px;line-height:1.6;padding-left:18px;position:relative;margin-bottom:3px;color:#cdd3da}
+.rep li:before{content:"✓";position:absolute;left:0;color:var(--ok);font-size:12px}
+.ask{background:#241f16;border:1px solid #4a3d22;border-radius:11px;padding:11px 12px;margin-top:10px}
+.ask .t{font-size:11px;color:var(--wait);font-weight:800;letter-spacing:.06em;margin-bottom:4px}
+.ask .b{font-size:14px;line-height:1.6;color:#f6e6c6}
+.stuck{background:#2a1c1e;border:1px solid #4d2f33;border-radius:11px;padding:10px 12px;margin-top:8px;font-size:13px;color:#f0c8c8}
+.nextb{font-size:12.5px;color:var(--ink2);margin-top:8px;padding-left:16px;position:relative}
+.nextb:before{content:"→";position:absolute;left:0;color:var(--run)}
 .stbar{display:flex;gap:5px;flex-wrap:wrap;margin-top:10px;padding-top:10px;border-top:1px dashed var(--line)}
 .stbtn{flex:1;min-width:78px;background:#0f1217;border:1px solid var(--line);border-radius:10px;padding:9px 4px;font-size:11.5px;font-weight:700;color:var(--ink2);text-align:center;min-height:38px;display:flex;align-items:center;justify-content:center;gap:4px}
 .stbtn.cur{border-color:currentColor}
@@ -218,7 +229,8 @@ function card(j,n){
     <span class="pin ${j.pinned?'on':''}" onclick="event.stopPropagation();togglePin('${j.id}',${!j.pinned})">📌</span>
     <div class="top"><span class="idx">${n}</span><span class="ttl">${esc(j.title)}${j.manualStatus?'<span class="mflag">手動</span>':''}</span>
       <span class="tm" style="margin-right:22px">${j.status==='running'?dur(j.elapsed||(Date.now()-new Date(j.startedAt)))+'経過':ago(j.endedAt||j.createdAt)+'前'}</span></div>
-    <div class="doing ${t}"><span class="ic">${ICO[j.status]||''}</span><span>${esc(doing)}</span></div>
+    <div class="doing ${t}"><span class="ic">${ICO[j.status]||''}</span><span>${esc(j.report?.headline&&j.status!=='running'?j.report.headline:doing)}</span></div>
+    ${j.report?.ask?`<div class="ask"><div class="t">🙋 確認したいこと</div><div class="b">${esc(j.report.ask)}</div></div>`:''}
     <div class="chips"><span class="chip">${esc(proj)}</span><span class="chip">${esc(j.agent)}</span>
       ${j.skill?`<span class="chip sk">🧩 ${esc(j.skill)}</span>`:''}${j.diff?`<span class="chip df">📝 ${esc(j.diff)}</span>`:''}</div>
     ${j.status==='running'?'<div class="bar"><i></i></div>':''}
@@ -227,10 +239,17 @@ function card(j,n){
 function detail(j){
   return `<div class="det" onclick="event.stopPropagation()">
     <div class="lbl">出した指示</div><div class="box">${esc(j.prompt)}</div>
-    ${j.result?`<div class="lbl" style="margin-top:10px">結果</div><div class="box">${esc(j.result)}</div>`:''}
+    ${j.report?`<div class="lbl" style="margin-top:12px">やったこと</div>
+      <div class="rep">
+        ${j.report.headline?`<div class="hl">${esc(j.report.headline)}</div>`:''}
+        ${(j.report.did||[]).length?`<ul>${j.report.did.map(d=>`<li>${esc(d)}</li>`).join('')}</ul>`:''}
+        ${j.report.stuck?`<div class="stuck">⚠ ${esc(j.report.stuck)}</div>`:''}
+        ${j.report.next?`<div class="nextb">${esc(j.report.next)}</div>`:''}
+      </div>`:(j.result?`<div class="lbl" style="margin-top:10px">結果</div><div class="box">${esc(j.result)}</div>`:'')}
     <div class="row">
       ${(j.status==='running'||j.status==='queued')?`<button class="r" onclick="cancelJob('${j.id}')">中止</button>`:''}
-      <button class="g" onclick="showLog('${j.id}')">ログ</button>
+      <button class="g" onclick="showLog('${j.id}')">生ログ</button>
+      ${j.report&&j.result?`<button class="g" onclick="showRaw('${j.id}')">AIの原文</button>`:''}
       <button class="g" onclick="again('${j.id}')">再実行</button>
       <button class="g" onclick="reuse('${j.id}')">この続きを書く</button>
     </div>
@@ -242,6 +261,8 @@ function detail(j){
     <button class="g" style="margin-top:6px" onclick="sendFollowup('${j.id}')">送る</button></div></div>`;
 }
 function toggle(e,id){if(e.target.closest('.det'))return;open.has(id)?open.delete(id):open.add(id);render()}
+function showRaw(id){const j=jobs.find(x=>x.id===id);
+  document.getElementById('lg-'+id).innerHTML=`<pre>${esc(j.result||'')}</pre>`}
 async function showLog(id){
   const j=await (await fetch(API+'/dev/jobs?id='+id,{headers:H})).json();
   const el=document.getElementById('lg-'+id);
