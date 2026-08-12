@@ -77,6 +77,15 @@ textarea{min-height:60px;resize:vertical}
 .item .n{font-size:14px;font-weight:700}
 .item .d{font-size:11.5px;color:var(--ink2);margin-top:2px;line-height:1.4}
 .sc{font-size:10px;color:var(--acc);margin-left:6px}
+.stbar{display:flex;gap:5px;flex-wrap:wrap;margin-top:10px;padding-top:10px;border-top:1px dashed var(--line)}
+.stbtn{flex:1;min-width:78px;background:#0f1217;border:1px solid var(--line);border-radius:10px;padding:9px 4px;font-size:11.5px;font-weight:700;color:var(--ink2);text-align:center;min-height:38px;display:flex;align-items:center;justify-content:center;gap:4px}
+.stbtn.cur{border-color:currentColor}
+.stbtn.b-done{color:var(--ok)}.stbtn.b-blocked{color:var(--wait)}.stbtn.b-queued{color:var(--run)}
+.stbtn.b-canceled{color:var(--idle)}.stbtn.b-archived{color:var(--idle)}
+.pin{position:absolute;right:10px;top:10px;font-size:15px;opacity:.35;padding:3px 6px}
+.pin.on{opacity:1}
+.mflag{font-size:10px;color:var(--acc);margin-left:6px}
+.showarc{text-align:center;color:var(--ink2);font-size:12px;padding:12px;text-decoration:underline}
 .toast{position:fixed;left:50%;bottom:150px;transform:translateX(-50%);background:#0a0c0f;border:1px solid var(--line);border-radius:20px;padding:9px 18px;font-size:12.5px;opacity:0;transition:.25s;pointer-events:none;z-index:50}
 .toast.on{opacity:1}
 </style>
@@ -124,7 +133,9 @@ function toast(m){const t=document.getElementById('toast');t.textContent=m;t.cla
 function dur(ms){if(!ms||ms<0)return'';const s=Math.floor(ms/1000);if(s<60)return s+'秒';const m=Math.floor(s/60);if(m<60)return m+'分';return Math.floor(m/60)+'時間'+(m%60)+'分'}
 function ago(iso){return iso?dur(Date.now()-new Date(iso)):''}
 function grow(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,130)+'px'}
-const GROUPS=[['blocked','あなたの返事待ち'],['running','いま動いている'],['queued','順番待ち'],['done','終わったもの'],['failed','止まったもの']];
+const GROUPS=[['blocked','あなたの返事待ち'],['running','いま動いている'],['queued','順番待ち'],['done','終わったもの'],['failed','止まったもの'],['canceled','やめたもの']];
+const STATUS_BTNS=[['done','完了','✅'],['blocked','返事待ち','🙋'],['queued','もう一度実行','🔄'],['canceled','やめる','⏹'],['archived','片付ける','📦']];
+let showArchived=false;
 
 async function loadMeta(){
   try{
@@ -178,12 +189,20 @@ function render(){
     c.done?`<span class="s-ok"><i>${c.done}</i>完了</span>`:'',
     c.failed?`<span class="s-bad"><i>${c.failed}</i>停止</span>`:'',
   ].filter(Boolean).join('')||'<span>まだ指示はありません</span>';
-  const by={};jobs.forEach(j=>{(by[j.status]=by[j.status]||[]).push(j)});
+  const vis=jobs.filter(j=>j.status!=='archived');
+  const pinned=vis.filter(j=>j.pinned);
+  const by={};vis.filter(j=>!j.pinned).forEach(j=>{(by[j.status]=by[j.status]||[]).push(j)});
   let html='',n=0;
+  if(pinned.length)html+=`<div class="grp">📌 ピン留め <span style="color:#4b515c">${pinned.length}</span></div>`+pinned.map(j=>card(j,++n)).join('');
   for(const [st,label] of GROUPS){
     const ls=(by[st]||[]).sort((a,b)=>new Date(b.createdAt)-new Date(a.createdAt));
     if(!ls.length)continue;
     html+=`<div class="grp">${label} <span style="color:#4b515c">${ls.length}</span></div>`+ls.map(j=>card(j,++n)).join('');
+  }
+  const arc=jobs.filter(j=>j.status==='archived');
+  if(arc.length){
+    html+=`<div class="showarc" onclick="showArchived=!showArchived;render()">${showArchived?'片付けたものを隠す':`片付けたもの ${arc.length}件を見る`}</div>`;
+    if(showArchived)html+=arc.map(j=>card(j,++n)).join('');
   }
   document.getElementById('board').innerHTML=html||`<div class="empty">下の欄に指示を書いて ↑ を押すと、Mac上のAIが動き出します。<br>🧩からスキルを選べば、いつものハーネスがそのまま走ります。</div>`;
 }
@@ -196,8 +215,9 @@ function card(j,n){
               j.status==='queued'?'Macが拾うのを待っています':(j.progress||'');
   const proj=(meta.projects||[]).find(p=>p.cwd===j.cwd)?.label||(j.cwd||'').split('/').filter(Boolean).pop()||'既定';
   return `<div class="card st-${j.status} ${opened?'sel':''}" onclick="toggle(event,'${j.id}')">
-    <div class="top"><span class="idx">${n}</span><span class="ttl">${esc(j.title)}</span>
-      <span class="tm">${j.status==='running'?dur(j.elapsed||(Date.now()-new Date(j.startedAt)))+'経過':ago(j.endedAt||j.createdAt)+'前'}</span></div>
+    <span class="pin ${j.pinned?'on':''}" onclick="event.stopPropagation();togglePin('${j.id}',${!j.pinned})">📌</span>
+    <div class="top"><span class="idx">${n}</span><span class="ttl">${esc(j.title)}${j.manualStatus?'<span class="mflag">手動</span>':''}</span>
+      <span class="tm" style="margin-right:22px">${j.status==='running'?dur(j.elapsed||(Date.now()-new Date(j.startedAt)))+'経過':ago(j.endedAt||j.createdAt)+'前'}</span></div>
     <div class="doing ${t}"><span class="ic">${ICO[j.status]||''}</span><span>${esc(doing)}</span></div>
     <div class="chips"><span class="chip">${esc(proj)}</span><span class="chip">${esc(j.agent)}</span>
       ${j.skill?`<span class="chip sk">🧩 ${esc(j.skill)}</span>`:''}${j.diff?`<span class="chip df">📝 ${esc(j.diff)}</span>`:''}</div>
@@ -214,6 +234,9 @@ function detail(j){
       <button class="g" onclick="again('${j.id}')">再実行</button>
       <button class="g" onclick="reuse('${j.id}')">この続きを書く</button>
     </div>
+    <div class="lbl" style="margin-top:12px">自分で状態を変える</div>
+    <div class="stbar">${STATUS_BTNS.map(([st,lb,ic])=>
+      `<div class="stbtn b-${st} ${j.status===st?'cur':''}" onclick="setStatus('${j.id}','${st}')">${ic}<span>${lb}</span></div>`).join('')}</div>
     <div id="lg-${j.id}"></div>
     <div style="margin-top:10px"><textarea id="fu-${j.id}" placeholder="${j.status==='blocked'?'質問への返事を書く':'追加の指示'}"></textarea>
     <button class="g" style="margin-top:6px" onclick="sendFollowup('${j.id}')">送る</button></div></div>`;
@@ -238,6 +261,12 @@ async function submitJob(){
 async function again(id){const j=jobs.find(x=>x.id===id);
   await fetch(API+'/dev/jobs',{method:'POST',headers:H,body:JSON.stringify({prompt:j.prompt,agent:j.agent,cwd:j.cwd,skill:j.skill,title:j.title})});
   toast('再実行');load()}
+async function setStatus(id,status){
+  await fetch(API+'/dev/status',{method:'POST',headers:H,body:JSON.stringify({id,status})});
+  const L={done:'完了にしました',blocked:'返事待ちにしました',queued:'もう一度実行します',canceled:'やめました',archived:'片付けました'};
+  toast(L[status]||'変更しました');load();
+}
+async function togglePin(id,v){await fetch(API+'/dev/status',{method:'POST',headers:H,body:JSON.stringify({id,pinned:v})});load()}
 async function cancelJob(id){await fetch(API+'/dev/cancel',{method:'POST',headers:H,body:JSON.stringify({id})});toast('中止を要求');load()}
 async function sendFollowup(id){const el=document.getElementById('fu-'+id),t=el.value.trim();if(!t)return;
   await fetch(API+'/dev/followup',{method:'POST',headers:H,body:JSON.stringify({id,text:t})});el.value='';toast('送りました')}
