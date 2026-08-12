@@ -8,25 +8,24 @@
 <style>
 :root{
   --bg:#0f1115;--panel:#171a20;--panel2:#1d2129;--line:#272c35;--ink:#e9e7e3;--ink2:#8b8f98;
-  --run:#5aa9f0;--wait:#f0b95a;--ok:#5ecb95;--bad:#f07d7d;--idle:#5b6270;
+  --run:#5aa9f0;--wait:#f0b95a;--ok:#5ecb95;--bad:#f07d7d;--idle:#5b6270;--acc:#7c6ce0;
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-body{font-family:-apple-system,"Hiragino Sans",sans-serif;background:var(--bg);color:var(--ink);font-size:15px;line-height:1.55;padding-bottom:calc(150px + env(safe-area-inset-bottom))}
-/* ===== ヘッダー: 稼働状況の要約バー ===== */
-header{position:sticky;top:0;z-index:20;background:rgba(15,17,21,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);padding:calc(9px + env(safe-area-inset-top)) 14px 9px}
+html,body{overscroll-behavior-y:contain}
+body{font-family:-apple-system,"Hiragino Sans",sans-serif;background:var(--bg);color:var(--ink);font-size:15px;line-height:1.55;padding-bottom:calc(120px + env(safe-area-inset-bottom))}
+header{position:sticky;top:0;z-index:20;background:rgba(15,17,21,.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);padding:calc(9px + env(safe-area-inset-top)) 14px 9px}
 .hrow{display:flex;align-items:center;gap:9px}
-.hrow b{font-size:15px;letter-spacing:.02em}
+.hrow b{font-size:15px}
 .hrow .sp{flex:1}
-.hrow a{color:var(--ink2);text-decoration:none;font-size:19px}
+.hrow a{color:var(--ink2);text-decoration:none;font-size:20px}
 .pulse{width:9px;height:9px;border-radius:50%;background:var(--idle);flex-shrink:0}
 .pulse.live{background:var(--run);box-shadow:0 0 0 0 rgba(90,169,240,.6);animation:pl 1.8s infinite}
 @keyframes pl{70%{box-shadow:0 0 0 9px rgba(90,169,240,0)}100%{box-shadow:0 0 0 0 rgba(90,169,240,0)}}
-.stats{display:flex;gap:14px;margin-top:7px;font-size:11.5px;color:var(--ink2)}
+.stats{display:flex;gap:13px;margin-top:7px;font-size:11.5px;color:var(--ink2);overflow-x:auto}
 .stats i{font-style:normal;font-weight:800;font-size:14px;margin-right:3px}
 .s-run i{color:var(--run)}.s-wait i{color:var(--wait)}.s-ok i{color:var(--ok)}.s-bad i{color:var(--bad)}
 .wrap{max-width:720px;margin:0 auto;padding:12px 12px 0}
-/* ===== セッションカード ===== */
-.grp{font-size:11px;color:var(--ink2);letter-spacing:.12em;font-weight:800;margin:14px 2px 7px}
+.grp{font-size:11px;color:var(--ink2);letter-spacing:.12em;font-weight:800;margin:15px 2px 7px}
 .card{background:var(--panel);border:1px solid var(--line);border-radius:15px;padding:13px 14px;margin-bottom:9px;position:relative;overflow:hidden}
 .card.sel{border-color:#3c4a5c;background:var(--panel2)}
 .card:before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--idle)}
@@ -36,7 +35,6 @@ header{position:sticky;top:0;z-index:20;background:rgba(15,17,21,.95);backdrop-f
 .idx{font-size:11px;font-weight:800;color:var(--ink2);background:#0c0e12;border-radius:6px;padding:1px 7px;flex-shrink:0}
 .ttl{font-size:14.5px;font-weight:700;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .tm{font-size:11px;color:var(--ink2);flex-shrink:0;font-variant-numeric:tabular-nums}
-/* 今なにをしているか(主役) */
 .doing{display:flex;gap:7px;align-items:flex-start;margin-top:9px;font-size:13.5px;line-height:1.5}
 .doing .ic{flex-shrink:0;font-size:13px}
 .doing.run{color:#cfe3f6}.doing.wait{color:#f3dcae}.doing.ok{color:#c3e8d4}.doing.bad{color:#f2c4c4}
@@ -47,26 +45,39 @@ header{position:sticky;top:0;z-index:20;background:rgba(15,17,21,.95);backdrop-f
 .bar{height:3px;background:#0c0e12;border-radius:2px;margin-top:10px;overflow:hidden}
 .bar i{display:block;height:100%;width:36%;background:linear-gradient(90deg,transparent,var(--run),transparent);animation:sl 1.6s linear infinite}
 @keyframes sl{0%{transform:translateX(-100%)}100%{transform:translateX(320%)}}
-/* 展開部 */
 .det{margin-top:11px;border-top:1px solid var(--line);padding-top:11px}
 .lbl{font-size:10.5px;color:var(--ink2);letter-spacing:.08em;font-weight:800;margin-bottom:4px}
-.box{background:#0c0e12;border-radius:10px;padding:9px 11px;font-size:12.5px;color:#c3c8d0;white-space:pre-wrap;word-break:break-word;max-height:200px;overflow-y:auto}
+.box{background:#0c0e12;border-radius:10px;padding:9px 11px;font-size:12.5px;color:#c3c8d0;white-space:pre-wrap;word-break:break-word;max-height:220px;overflow-y:auto}
 pre{background:#0a0c0f;border-radius:10px;padding:10px;font-size:10.5px;line-height:1.5;overflow:auto;white-space:pre-wrap;word-break:break-all;max-height:300px;color:#9aa6b3;margin-top:6px}
 .row{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
-button{font-family:inherit;border:none;border-radius:9px;padding:8px 13px;font-size:12.5px;font-weight:700;color:#0f1115;background:var(--run)}
+button{font-family:inherit;border:none;border-radius:10px;padding:10px 14px;font-size:13px;font-weight:700;color:#0f1115;background:var(--run);min-height:40px}
 button.g{background:#252a33;color:var(--ink)}
 button.r{background:#4a2b30;color:#f5c9c9}
-textarea,select,input{width:100%;background:#0c0e12;color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:10px;font-size:15px;font-family:inherit}
+textarea,select,input{width:100%;background:#0c0e12;color:var(--ink);border:1px solid var(--line);border-radius:11px;padding:11px;font-size:16px;font-family:inherit}
 textarea{min-height:60px;resize:vertical}
 .empty{color:var(--ink2);text-align:center;padding:34px 12px;font-size:13.5px;line-height:1.9}
-/* ===== 指示バー ===== */
-.cmp{position:fixed;left:0;right:0;bottom:0;z-index:20;background:rgba(23,26,32,.97);backdrop-filter:blur(12px);border-top:1px solid var(--line);padding:10px 12px calc(10px + env(safe-area-inset-bottom))}
-.cmp .sel3{display:flex;gap:6px;margin-bottom:7px}
-.cmp select{padding:8px;font-size:12px;flex:1;min-width:0}
-.cmp .r2{display:flex;gap:7px;align-items:flex-end}
-.cmp textarea{min-height:44px;max-height:110px;font-size:15px}
-.cmp button{padding:12px 16px;font-size:14px;flex-shrink:0}
-.toast{position:fixed;left:50%;bottom:170px;transform:translateX(-50%);background:#0a0c0f;border:1px solid var(--line);border-radius:20px;padding:8px 18px;font-size:12.5px;opacity:0;transition:.25s;pointer-events:none;z-index:40}
+/* ===== 指示バー(スマホ最適化) ===== */
+.cmp{position:fixed;left:0;right:0;bottom:0;z-index:20;background:rgba(23,26,32,.98);backdrop-filter:blur(14px);border-top:1px solid var(--line);padding:9px 11px calc(9px + env(safe-area-inset-bottom));transition:transform .2s}
+.cmp .r2{display:flex;gap:8px;align-items:flex-end}
+.cmp textarea{min-height:46px;max-height:130px}
+.cmp .send{padding:0;width:48px;height:46px;font-size:19px;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+/* 選択トグル: 折りたたみ式 */
+.opt{display:flex;gap:6px;align-items:center;margin-bottom:8px;overflow-x:auto;padding-bottom:2px}
+.pill{flex:0 0 auto;background:#0f1217;border:1px solid var(--line);border-radius:20px;padding:6px 12px;font-size:12px;color:var(--ink2);white-space:nowrap;display:flex;gap:5px;align-items:center}
+.pill b{color:var(--ink);font-weight:700}
+.pill.on{border-color:var(--acc);color:#cbbdf5}
+.sheet{position:fixed;inset:0;background:rgba(6,7,10,.72);z-index:40;display:none;align-items:flex-end}
+.sheet.on{display:flex}
+.sheetin{background:var(--panel);border-radius:18px 18px 0 0;width:100%;max-height:76vh;display:flex;flex-direction:column;padding:14px 14px calc(14px + env(safe-area-inset-bottom))}
+.sheetin h3{font-size:14px;margin-bottom:10px}
+.sheetin .search{margin-bottom:9px}
+.list{overflow-y:auto;-webkit-overflow-scrolling:touch}
+.item{padding:11px 12px;border-radius:11px;background:#0f1217;border:1px solid transparent;margin-bottom:6px}
+.item.on{border-color:var(--acc);background:#191630}
+.item .n{font-size:14px;font-weight:700}
+.item .d{font-size:11.5px;color:var(--ink2);margin-top:2px;line-height:1.4}
+.sc{font-size:10px;color:var(--acc);margin-left:6px}
+.toast{position:fixed;left:50%;bottom:150px;transform:translateX(-50%);background:#0a0c0f;border:1px solid var(--line);border-radius:20px;padding:9px 18px;font-size:12.5px;opacity:0;transition:.25s;pointer-events:none;z-index:50}
 .toast.on{opacity:1}
 </style>
 </head>
@@ -77,15 +88,23 @@ textarea{min-height:60px;resize:vertical}
 </header>
 <div class="wrap" id="board"><div class="empty">読み込み中…</div></div>
 
-<div class="cmp">
-  <div class="sel3">
-    <select id="cwd"></select>
-    <select id="skill"><option value="">スキルなし</option></select>
-    <select id="agent"><option value="codex">Codex</option><option value="claude">Claude</option><option value="both">両方</option></select>
+<div class="cmp" id="cmp">
+  <div class="opt">
+    <div class="pill" id="pProj" onclick="openSheet('proj')">📁 <b id="lProj">…</b></div>
+    <div class="pill" id="pSkill" onclick="openSheet('skill')">🧩 <b id="lSkill">スキルなし</b></div>
+    <div class="pill" id="pAgent" onclick="cycleAgent()">🤖 <b id="lAgent">Codex</b></div>
   </div>
   <div class="r2">
-    <textarea id="np" placeholder="指示を書く（例: 字幕のズレを直してテストも通して）"></textarea>
-    <button onclick="submitJob()">実行</button>
+    <textarea id="np" placeholder="指示を書く（例: 字幕のズレを直してテストも通して）" oninput="grow(this)"></textarea>
+    <button class="send" onclick="submitJob()">↑</button>
+  </div>
+</div>
+
+<div class="sheet" id="sheet" onclick="if(event.target===this)closeSheet()">
+  <div class="sheetin">
+    <h3 id="sheetTitle"></h3>
+    <input class="search" id="sq" placeholder="絞り込む" oninput="renderSheet()">
+    <div class="list" id="sheetList"></div>
   </div>
 </div>
 <div class="toast" id="toast"></div>
@@ -97,29 +116,56 @@ const H={'x-token':token,'Content-Type':'application/json'};
 const LBL={running:'作業中',blocked:'返答待ち',queued:'待機中',done:'完了',failed:'停止',canceled:'中止'};
 const ICO={running:'⚙️',blocked:'🙋',queued:'⏳',done:'✅',failed:'⛔',canceled:'⏹'};
 const TONE={running:'run',blocked:'wait',done:'ok',failed:'bad',queued:'',canceled:''};
-let jobs=[],open=new Set(),meta={skills:[],projects:[]};
+const AGENTS=[['codex','Codex'],['claude','Claude'],['both','両方']];
+let jobs=[],open=new Set(),meta={skills:[],projects:[]},sheetMode='',
+    sel={cwd:localStorage.getItem('dev_cwd')||'',skill:localStorage.getItem('dev_skill')||'',agent:localStorage.getItem('dev_agent')||'codex'};
 const esc=s=>String(s??'').replace(/[<>&]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;'}[c]));
 function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('on');setTimeout(()=>t.classList.remove('on'),1700)}
-function dur(ms){if(!ms)return'';const s=Math.floor(ms/1000);if(s<60)return s+'秒';const m=Math.floor(s/60);if(m<60)return m+'分';return Math.floor(m/60)+'時間'+(m%60)+'分'}
+function dur(ms){if(!ms||ms<0)return'';const s=Math.floor(ms/1000);if(s<60)return s+'秒';const m=Math.floor(s/60);if(m<60)return m+'分';return Math.floor(m/60)+'時間'+(m%60)+'分'}
 function ago(iso){return iso?dur(Date.now()-new Date(iso)):''}
+function grow(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,130)+'px'}
 const GROUPS=[['blocked','あなたの返事待ち'],['running','いま動いている'],['queued','順番待ち'],['done','終わったもの'],['failed','止まったもの']];
 
 async function loadMeta(){
   try{
     meta=await (await fetch(API+'/dev/meta',{headers:H})).json();
-    const cw=document.getElementById('cwd');
-    cw.innerHTML=(meta.projects||[]).map(p=>`<option value="${esc(p.cwd)}">${esc(p.label)}</option>`).join('');
-    const sk=document.getElementById('skill');
-    const byScope={};(meta.skills||[]).forEach(s=>{(byScope[s.scope]=byScope[s.scope]||[]).push(s)});
-    sk.innerHTML='<option value="">スキルなし</option>'+Object.entries(byScope).map(([sc,ls])=>
-      `<optgroup label="${esc(sc)}">${ls.map(s=>`<option value="${esc(s.name)}" title="${esc(s.desc)}">${esc(s.name)}</option>`).join('')}</optgroup>`).join('');
+    if(!sel.cwd&&meta.projects?.length)sel.cwd=meta.projects[0].cwd;
+    paintPills();
   }catch(e){}
 }
+function paintPills(){
+  const p=(meta.projects||[]).find(x=>x.cwd===sel.cwd);
+  document.getElementById('lProj').textContent=p?p.label:'プロジェクト';
+  document.getElementById('lSkill').textContent=sel.skill||'スキルなし';
+  document.getElementById('pSkill').className='pill'+(sel.skill?' on':'');
+  document.getElementById('lAgent').textContent=(AGENTS.find(a=>a[0]===sel.agent)||AGENTS[0])[1];
+}
+function cycleAgent(){
+  const i=AGENTS.findIndex(a=>a[0]===sel.agent);
+  sel.agent=AGENTS[(i+1)%AGENTS.length][0];localStorage.setItem('dev_agent',sel.agent);paintPills();
+}
+function openSheet(m){sheetMode=m;document.getElementById('sq').value='';
+  document.getElementById('sheetTitle').textContent=m==='proj'?'どこで作業する？':'スキル / ハーネスを選ぶ';
+  document.getElementById('sheet').classList.add('on');renderSheet()}
+function closeSheet(){document.getElementById('sheet').classList.remove('on')}
+function renderSheet(){
+  const q=document.getElementById('sq').value.trim().toLowerCase();
+  const el=document.getElementById('sheetList');
+  if(sheetMode==='proj'){
+    el.innerHTML=(meta.projects||[]).map(p=>
+      `<div class="item ${p.cwd===sel.cwd?'on':''}" onclick="pickProj('${esc(p.cwd)}')"><div class="n">${esc(p.label)}</div><div class="d">${esc(p.cwd)}</div></div>`).join('');
+  }else{
+    const ls=(meta.skills||[]).filter(s=>!q||s.name.toLowerCase().includes(q)||(s.desc||'').toLowerCase().includes(q));
+    el.innerHTML=`<div class="item ${!sel.skill?'on':''}" onclick="pickSkill('')"><div class="n">スキルなし</div><div class="d">ふつうに指示するだけ</div></div>`+
+      ls.map(s=>`<div class="item ${s.name===sel.skill?'on':''}" onclick="pickSkill('${esc(s.name)}')"><div class="n">${esc(s.name)}<span class="sc">${esc(s.scope)}</span></div>${s.desc?`<div class="d">${esc(s.desc)}</div>`:''}</div>`).join('');
+  }
+}
+function pickProj(c){sel.cwd=c;localStorage.setItem('dev_cwd',c);paintPills();closeSheet()}
+function pickSkill(n){sel.skill=n;localStorage.setItem('dev_skill',n);paintPills();closeSheet()}
+
 async function load(){
-  try{
-    jobs=await (await fetch(API+'/dev/jobs',{headers:H})).json();
-    render();
-  }catch(e){document.getElementById('pulse').style.background='var(--bad)'}
+  try{jobs=await (await fetch(API+'/dev/jobs',{headers:H})).json();render()}
+  catch(e){document.getElementById('pulse').style.background='var(--bad)'}
 }
 function render(){
   const c={};jobs.forEach(j=>c[j.status]=(c[j.status]||0)+1);
@@ -132,41 +178,31 @@ function render(){
     c.done?`<span class="s-ok"><i>${c.done}</i>完了</span>`:'',
     c.failed?`<span class="s-bad"><i>${c.failed}</i>停止</span>`:'',
   ].filter(Boolean).join('')||'<span>まだ指示はありません</span>';
-
-  const byStatus={};jobs.forEach(j=>{(byStatus[j.status]=byStatus[j.status]||[]).push(j)});
-  let html='';let n=0;
+  const by={};jobs.forEach(j=>{(by[j.status]=by[j.status]||[]).push(j)});
+  let html='',n=0;
   for(const [st,label] of GROUPS){
-    const ls=(byStatus[st]||[]).sort((a,b)=>new Date(b.createdAt)-new Date(a.createdAt));
+    const ls=(by[st]||[]).sort((a,b)=>new Date(b.createdAt)-new Date(a.createdAt));
     if(!ls.length)continue;
-    html+=`<div class="grp">${label} <span style="color:#4b515c">${ls.length}</span></div>`;
-    html+=ls.map(j=>card(j,++n)).join('');
+    html+=`<div class="grp">${label} <span style="color:#4b515c">${ls.length}</span></div>`+ls.map(j=>card(j,++n)).join('');
   }
-  document.getElementById('board').innerHTML=html||`<div class="empty">下の欄に指示を書いて「実行」を押すと、Mac上のAIが動き出します。<br>スキルを選べば、いつも使っているハーネスがそのまま走ります。</div>`;
+  document.getElementById('board').innerHTML=html||`<div class="empty">下の欄に指示を書いて ↑ を押すと、Mac上のAIが動き出します。<br>🧩からスキルを選べば、いつものハーネスがそのまま走ります。</div>`;
 }
 function card(j,n){
-  const t=TONE[j.status]||'';
-  const opened=open.has(j.id);
+  const t=TONE[j.status]||'',opened=open.has(j.id);
   const doing=j.status==='running'?(j.progress||'起動しています'):
+              j.status==='blocked'?'あなたに質問して止まっています':
               j.status==='done'?(j.progress||'完了'):
               j.status==='failed'?'途中で止まりました':
               j.status==='queued'?'Macが拾うのを待っています':(j.progress||'');
-  const proj=(j.cwd||'').split('/').filter(Boolean).pop()||'既定';
+  const proj=(meta.projects||[]).find(p=>p.cwd===j.cwd)?.label||(j.cwd||'').split('/').filter(Boolean).pop()||'既定';
   return `<div class="card st-${j.status} ${opened?'sel':''}" onclick="toggle(event,'${j.id}')">
-    <div class="top">
-      <span class="idx">${n}</span>
-      <span class="ttl">${esc(j.title)}</span>
-      <span class="tm">${j.status==='running'?dur(j.elapsed||(Date.now()-new Date(j.startedAt)))+'経過':ago(j.endedAt||j.createdAt)+'前'}</span>
-    </div>
+    <div class="top"><span class="idx">${n}</span><span class="ttl">${esc(j.title)}</span>
+      <span class="tm">${j.status==='running'?dur(j.elapsed||(Date.now()-new Date(j.startedAt)))+'経過':ago(j.endedAt||j.createdAt)+'前'}</span></div>
     <div class="doing ${t}"><span class="ic">${ICO[j.status]||''}</span><span>${esc(doing)}</span></div>
-    <div class="chips">
-      <span class="chip">${esc(proj)}</span>
-      <span class="chip">${esc(j.agent)}</span>
-      ${j.skill?`<span class="chip sk">🧩 ${esc(j.skill)}</span>`:''}
-      ${j.diff?`<span class="chip df">📝 ${esc(j.diff)}</span>`:''}
-    </div>
+    <div class="chips"><span class="chip">${esc(proj)}</span><span class="chip">${esc(j.agent)}</span>
+      ${j.skill?`<span class="chip sk">🧩 ${esc(j.skill)}</span>`:''}${j.diff?`<span class="chip df">📝 ${esc(j.diff)}</span>`:''}</div>
     ${j.status==='running'?'<div class="bar"><i></i></div>':''}
-    ${opened?detail(j):''}
-  </div>`;
+    ${opened?detail(j):''}</div>`;
 }
 function detail(j){
   return `<div class="det" onclick="event.stopPropagation()">
@@ -176,11 +212,11 @@ function detail(j){
       ${(j.status==='running'||j.status==='queued')?`<button class="r" onclick="cancelJob('${j.id}')">中止</button>`:''}
       <button class="g" onclick="showLog('${j.id}')">ログ</button>
       <button class="g" onclick="again('${j.id}')">再実行</button>
+      <button class="g" onclick="reuse('${j.id}')">この続きを書く</button>
     </div>
     <div id="lg-${j.id}"></div>
-    <div style="margin-top:10px"><textarea id="fu-${j.id}" placeholder="追加の指示"></textarea>
-    <button class="g" style="margin-top:6px" onclick="sendFollowup('${j.id}')">追加指示を送る</button></div>
-  </div>`;
+    <div style="margin-top:10px"><textarea id="fu-${j.id}" placeholder="${j.status==='blocked'?'質問への返事を書く':'追加の指示'}"></textarea>
+    <button class="g" style="margin-top:6px" onclick="sendFollowup('${j.id}')">送る</button></div></div>`;
 }
 function toggle(e,id){if(e.target.closest('.det'))return;open.has(id)?open.delete(id):open.add(id);render()}
 async function showLog(id){
@@ -189,19 +225,21 @@ async function showLog(id){
   el.innerHTML=`<pre>${esc((j.log||'(ログなし)').slice(-6000))}</pre>`;
   const p=el.querySelector('pre');if(p)p.scrollTop=p.scrollHeight;
 }
+function reuse(id){const j=jobs.find(x=>x.id===id);
+  sel.cwd=j.cwd||sel.cwd;sel.skill=j.skill||'';sel.agent=j.agent;paintPills();
+  const np=document.getElementById('np');np.value=j.prompt+'\n\n続き: ';np.focus();grow(np);
+  window.scrollTo({top:document.body.scrollHeight});toast('この条件で書けます')}
 async function submitJob(){
-  const prompt=document.getElementById('np').value.trim();
+  const el=document.getElementById('np'),prompt=el.value.trim();
   if(!prompt)return toast('指示を書いてね');
-  await fetch(API+'/dev/jobs',{method:'POST',headers:H,body:JSON.stringify({
-    prompt,agent:document.getElementById('agent').value,
-    cwd:document.getElementById('cwd').value,skill:document.getElementById('skill').value})});
-  document.getElementById('np').value='';toast('Macへ送りました');load();
+  await fetch(API+'/dev/jobs',{method:'POST',headers:H,body:JSON.stringify({prompt,agent:sel.agent,cwd:sel.cwd,skill:sel.skill})});
+  el.value='';grow(el);el.blur();toast('Macへ送りました');load();
 }
 async function again(id){const j=jobs.find(x=>x.id===id);
   await fetch(API+'/dev/jobs',{method:'POST',headers:H,body:JSON.stringify({prompt:j.prompt,agent:j.agent,cwd:j.cwd,skill:j.skill,title:j.title})});
   toast('再実行');load()}
 async function cancelJob(id){await fetch(API+'/dev/cancel',{method:'POST',headers:H,body:JSON.stringify({id})});toast('中止を要求');load()}
-async function sendFollowup(id){const el=document.getElementById('fu-'+id);const t=el.value.trim();if(!t)return;
+async function sendFollowup(id){const el=document.getElementById('fu-'+id),t=el.value.trim();if(!t)return;
   await fetch(API+'/dev/followup',{method:'POST',headers:H,body:JSON.stringify({id,text:t})});el.value='';toast('送りました')}
 loadMeta();load();setInterval(load,10000);
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)load()});
