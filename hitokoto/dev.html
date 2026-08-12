@@ -6,65 +6,87 @@
 <meta name="robots" content="noindex">
 <title>開発コックピット</title>
 <style>
-:root{--ink:#e8e6e3;--ink2:#8d8a85;--bg:#16181c;--card:#1e2126;--line:#2c3037;--ac:#6aa9e0;--ok:#6cc48f;--warn:#e0b25a;--bad:#e08585;--run:#6aa9e0}
+:root{
+  --bg:#0f1115;--panel:#171a20;--panel2:#1d2129;--line:#272c35;--ink:#e9e7e3;--ink2:#8b8f98;
+  --run:#5aa9f0;--wait:#f0b95a;--ok:#5ecb95;--bad:#f07d7d;--idle:#5b6270;
+}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-body{font-family:-apple-system,"Hiragino Sans",sans-serif;background:var(--bg);color:var(--ink);font-size:15px;line-height:1.6;padding-bottom:calc(96px + env(safe-area-inset-bottom))}
-header{background:var(--card);border-bottom:1px solid var(--line);padding:calc(10px + env(safe-area-inset-top)) 14px 8px;position:sticky;top:0;z-index:9;display:flex;align-items:center;gap:10px}
-header b{font-size:15px;flex:1}
-header .dot{width:8px;height:8px;border-radius:50%;background:var(--ok)}
-header a{color:var(--ac);text-decoration:none;font-size:13px}
-.wrap{max-width:680px;margin:0 auto;padding:12px}
-/* セッションタブ(野田式) */
-.tabs{display:flex;gap:7px;overflow-x:auto;padding:4px 0 10px;-webkit-overflow-scrolling:touch}
-.tab{flex:0 0 auto;background:var(--card);border:1px solid var(--line);border-radius:11px;padding:7px 12px;font-size:12.5px;white-space:nowrap}
-.tab.sel{border-color:var(--ac);background:#22303c}
-.tab .n{font-weight:800;margin-right:5px}
-.tab .st{font-size:11px}
-.st-running{color:var(--run)}.st-blocked{color:var(--warn)}.st-done{color:var(--ok)}.st-failed{color:var(--bad)}.st-queued{color:var(--ink2)}
-.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:11px}
-.card h2{font-size:12px;color:var(--ink2);font-weight:700;letter-spacing:.05em;margin-bottom:8px}
-.jt{font-size:15.5px;font-weight:700;margin-bottom:2px}
-.meta{font-size:11.5px;color:var(--ink2)}
-.sum{font-size:13.5px;background:#171a1e;border-radius:9px;padding:9px 11px;margin-top:8px;border-left:3px solid var(--ac)}
-.instr{font-size:13px;color:var(--warn);background:#241f16;border-radius:9px;padding:8px 11px;margin-top:8px}
-pre{background:#101215;border-radius:9px;padding:10px;font-size:11px;line-height:1.5;overflow-x:auto;white-space:pre-wrap;word-break:break-all;max-height:320px;overflow-y:auto;color:#b8c4cf;margin-top:8px}
-.row{display:flex;gap:7px;margin-top:9px}
-button{font-family:inherit;border:none;border-radius:10px;padding:9px 14px;font-size:13px;font-weight:700;color:#fff;background:var(--ac)}
-button.sub{background:#2c3037;color:var(--ink)}
-button.dgr{background:#5a3236;color:#ffd9d9}
-textarea,select,input{width:100%;background:#101215;color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:10px;font-size:15px;font-family:inherit;margin-bottom:8px}
-textarea{min-height:74px;resize:vertical}
-.empty{color:var(--ink2);text-align:center;padding:28px 0;font-size:13.5px}
-/* 新規指示バー(常時下部) */
-.compose{position:fixed;left:0;right:0;bottom:0;background:var(--card);border-top:1px solid var(--line);padding:10px 12px calc(10px + env(safe-area-inset-bottom));z-index:9}
-.compose .r{display:flex;gap:7px;align-items:flex-end}
-.compose textarea{margin:0;min-height:42px;max-height:120px}
-.compose select{width:auto;margin:0;padding:9px;font-size:12px}
-.fab{position:fixed;right:14px;bottom:calc(96px + env(safe-area-inset-bottom));background:var(--ac);width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;box-shadow:0 4px 14px rgba(0,0,0,.4);z-index:8}
-.toast{position:fixed;bottom:120px;left:50%;transform:translateX(-50%);background:#0d0f12;border:1px solid var(--line);color:var(--ink);border-radius:20px;padding:8px 18px;font-size:13px;opacity:0;transition:.3s;pointer-events:none;z-index:20}
+body{font-family:-apple-system,"Hiragino Sans",sans-serif;background:var(--bg);color:var(--ink);font-size:15px;line-height:1.55;padding-bottom:calc(150px + env(safe-area-inset-bottom))}
+/* ===== ヘッダー: 稼働状況の要約バー ===== */
+header{position:sticky;top:0;z-index:20;background:rgba(15,17,21,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);padding:calc(9px + env(safe-area-inset-top)) 14px 9px}
+.hrow{display:flex;align-items:center;gap:9px}
+.hrow b{font-size:15px;letter-spacing:.02em}
+.hrow .sp{flex:1}
+.hrow a{color:var(--ink2);text-decoration:none;font-size:19px}
+.pulse{width:9px;height:9px;border-radius:50%;background:var(--idle);flex-shrink:0}
+.pulse.live{background:var(--run);box-shadow:0 0 0 0 rgba(90,169,240,.6);animation:pl 1.8s infinite}
+@keyframes pl{70%{box-shadow:0 0 0 9px rgba(90,169,240,0)}100%{box-shadow:0 0 0 0 rgba(90,169,240,0)}}
+.stats{display:flex;gap:14px;margin-top:7px;font-size:11.5px;color:var(--ink2)}
+.stats i{font-style:normal;font-weight:800;font-size:14px;margin-right:3px}
+.s-run i{color:var(--run)}.s-wait i{color:var(--wait)}.s-ok i{color:var(--ok)}.s-bad i{color:var(--bad)}
+.wrap{max-width:720px;margin:0 auto;padding:12px 12px 0}
+/* ===== セッションカード ===== */
+.grp{font-size:11px;color:var(--ink2);letter-spacing:.12em;font-weight:800;margin:14px 2px 7px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:15px;padding:13px 14px;margin-bottom:9px;position:relative;overflow:hidden}
+.card.sel{border-color:#3c4a5c;background:var(--panel2)}
+.card:before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--idle)}
+.card.st-running:before{background:var(--run)}.card.st-blocked:before{background:var(--wait)}
+.card.st-done:before{background:var(--ok)}.card.st-failed:before{background:var(--bad)}
+.top{display:flex;align-items:baseline;gap:8px}
+.idx{font-size:11px;font-weight:800;color:var(--ink2);background:#0c0e12;border-radius:6px;padding:1px 7px;flex-shrink:0}
+.ttl{font-size:14.5px;font-weight:700;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tm{font-size:11px;color:var(--ink2);flex-shrink:0;font-variant-numeric:tabular-nums}
+/* 今なにをしているか(主役) */
+.doing{display:flex;gap:7px;align-items:flex-start;margin-top:9px;font-size:13.5px;line-height:1.5}
+.doing .ic{flex-shrink:0;font-size:13px}
+.doing.run{color:#cfe3f6}.doing.wait{color:#f3dcae}.doing.ok{color:#c3e8d4}.doing.bad{color:#f2c4c4}
+.chips{display:flex;gap:5px;flex-wrap:wrap;margin-top:9px}
+.chip{font-size:10.5px;color:var(--ink2);background:#0f1217;border:1px solid var(--line);border-radius:20px;padding:2px 9px}
+.chip.sk{color:#c9b6ea;border-color:#3a3350}
+.chip.df{color:#8fd0a8;border-color:#2c4436}
+.bar{height:3px;background:#0c0e12;border-radius:2px;margin-top:10px;overflow:hidden}
+.bar i{display:block;height:100%;width:36%;background:linear-gradient(90deg,transparent,var(--run),transparent);animation:sl 1.6s linear infinite}
+@keyframes sl{0%{transform:translateX(-100%)}100%{transform:translateX(320%)}}
+/* 展開部 */
+.det{margin-top:11px;border-top:1px solid var(--line);padding-top:11px}
+.lbl{font-size:10.5px;color:var(--ink2);letter-spacing:.08em;font-weight:800;margin-bottom:4px}
+.box{background:#0c0e12;border-radius:10px;padding:9px 11px;font-size:12.5px;color:#c3c8d0;white-space:pre-wrap;word-break:break-word;max-height:200px;overflow-y:auto}
+pre{background:#0a0c0f;border-radius:10px;padding:10px;font-size:10.5px;line-height:1.5;overflow:auto;white-space:pre-wrap;word-break:break-all;max-height:300px;color:#9aa6b3;margin-top:6px}
+.row{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
+button{font-family:inherit;border:none;border-radius:9px;padding:8px 13px;font-size:12.5px;font-weight:700;color:#0f1115;background:var(--run)}
+button.g{background:#252a33;color:var(--ink)}
+button.r{background:#4a2b30;color:#f5c9c9}
+textarea,select,input{width:100%;background:#0c0e12;color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:10px;font-size:15px;font-family:inherit}
+textarea{min-height:60px;resize:vertical}
+.empty{color:var(--ink2);text-align:center;padding:34px 12px;font-size:13.5px;line-height:1.9}
+/* ===== 指示バー ===== */
+.cmp{position:fixed;left:0;right:0;bottom:0;z-index:20;background:rgba(23,26,32,.97);backdrop-filter:blur(12px);border-top:1px solid var(--line);padding:10px 12px calc(10px + env(safe-area-inset-bottom))}
+.cmp .sel3{display:flex;gap:6px;margin-bottom:7px}
+.cmp select{padding:8px;font-size:12px;flex:1;min-width:0}
+.cmp .r2{display:flex;gap:7px;align-items:flex-end}
+.cmp textarea{min-height:44px;max-height:110px;font-size:15px}
+.cmp button{padding:12px 16px;font-size:14px;flex-shrink:0}
+.toast{position:fixed;left:50%;bottom:170px;transform:translateX(-50%);background:#0a0c0f;border:1px solid var(--line);border-radius:20px;padding:8px 18px;font-size:12.5px;opacity:0;transition:.25s;pointer-events:none;z-index:40}
 .toast.on{opacity:1}
 </style>
 </head>
 <body>
-<header><span class="dot" id="dot"></span><b>開発コックピット</b><span class="meta" id="hdr"></span><a href="index.html">まどか →</a></header>
-<div class="wrap">
-  <div class="tabs" id="tabs"></div>
-  <div id="detail"></div>
-</div>
+<header>
+  <div class="hrow"><span class="pulse" id="pulse"></span><b>開発コックピット</b><span class="sp"></span><a href="index.html">💬</a></div>
+  <div class="stats" id="stats"></div>
+</header>
+<div class="wrap" id="board"><div class="empty">読み込み中…</div></div>
 
-<div class="compose">
-  <div class="r">
-    <textarea id="np" placeholder="新しい指示（例: ○○を直して。テストも通して）"></textarea>
-    <div style="display:flex;flex-direction:column;gap:6px">
-      <select id="agent"><option value="codex">Codex</option><option value="claude">Claude</option><option value="both">両方</option></select>
-      <button onclick="submitJob()">投げる</button>
-    </div>
+<div class="cmp">
+  <div class="sel3">
+    <select id="cwd"></select>
+    <select id="skill"><option value="">スキルなし</option></select>
+    <select id="agent"><option value="codex">Codex</option><option value="claude">Claude</option><option value="both">両方</option></select>
   </div>
-  <select id="cwd" style="margin-top:7px;font-size:12px;width:100%">
-    <option value="/Users/hideakimacbookair/homare">homare（まどかアプリ）</option>
-    <option value="/Users/hideakimacbookair/易経ロジックチェーン">易経ロジックチェーン</option>
-    <option value="">その他（既定）</option>
-  </select>
+  <div class="r2">
+    <textarea id="np" placeholder="指示を書く（例: 字幕のズレを直してテストも通して）"></textarea>
+    <button onclick="submitJob()">実行</button>
+  </div>
 </div>
 <div class="toast" id="toast"></div>
 <script>
@@ -73,71 +95,115 @@ const token=localStorage.getItem('hitokoto_token');
 if(!token) location.href='index.html';
 const H={'x-token':token,'Content-Type':'application/json'};
 const LBL={running:'作業中',blocked:'返答待ち',queued:'待機中',done:'完了',failed:'停止',canceled:'中止'};
-let jobs=[],sel=null,timer=null;
+const ICO={running:'⚙️',blocked:'🙋',queued:'⏳',done:'✅',failed:'⛔',canceled:'⏹'};
+const TONE={running:'run',blocked:'wait',done:'ok',failed:'bad',queued:'',canceled:''};
+let jobs=[],open=new Set(),meta={skills:[],projects:[]};
 const esc=s=>String(s??'').replace(/[<>&]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;'}[c]));
-function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('on');setTimeout(()=>t.classList.remove('on'),1800)}
-function ago(iso){if(!iso)return'';const s=Math.floor((Date.now()-new Date(iso))/1000);if(s<60)return s+'秒';if(s<3600)return Math.floor(s/60)+'分';return Math.floor(s/3600)+'時間'}
-// 並び順: 返答待ち→作業中→待機中→完了/停止（調査の設計原則: 私が答えないと止まるものを最上位に）
-const ORD={blocked:0,running:1,queued:2,done:3,failed:4,canceled:5};
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('on');setTimeout(()=>t.classList.remove('on'),1700)}
+function dur(ms){if(!ms)return'';const s=Math.floor(ms/1000);if(s<60)return s+'秒';const m=Math.floor(s/60);if(m<60)return m+'分';return Math.floor(m/60)+'時間'+(m%60)+'分'}
+function ago(iso){return iso?dur(Date.now()-new Date(iso)):''}
+const GROUPS=[['blocked','あなたの返事待ち'],['running','いま動いている'],['queued','順番待ち'],['done','終わったもの'],['failed','止まったもの']];
+
+async function loadMeta(){
+  try{
+    meta=await (await fetch(API+'/dev/meta',{headers:H})).json();
+    const cw=document.getElementById('cwd');
+    cw.innerHTML=(meta.projects||[]).map(p=>`<option value="${esc(p.cwd)}">${esc(p.label)}</option>`).join('');
+    const sk=document.getElementById('skill');
+    const byScope={};(meta.skills||[]).forEach(s=>{(byScope[s.scope]=byScope[s.scope]||[]).push(s)});
+    sk.innerHTML='<option value="">スキルなし</option>'+Object.entries(byScope).map(([sc,ls])=>
+      `<optgroup label="${esc(sc)}">${ls.map(s=>`<option value="${esc(s.name)}" title="${esc(s.desc)}">${esc(s.name)}</option>`).join('')}</optgroup>`).join('');
+  }catch(e){}
+}
 async function load(){
   try{
     jobs=await (await fetch(API+'/dev/jobs',{headers:H})).json();
-    jobs.sort((a,b)=>(ORD[a.status]??9)-(ORD[b.status]??9)||new Date(b.createdAt)-new Date(a.createdAt));
-    if(!sel||!jobs.find(j=>j.id===sel))sel=jobs[0]?.id;
     render();
-  }catch(e){document.getElementById('dot').style.background='#e08585'}
+  }catch(e){document.getElementById('pulse').style.background='var(--bad)'}
 }
 function render(){
-  const act=jobs.filter(j=>j.status==='running'||j.status==='blocked').length;
-  document.getElementById('hdr').textContent=act?`${act}件 稼働中`:'待機';
-  document.getElementById('dot').style.background=act?'var(--run)':'var(--ok)';
-  document.getElementById('tabs').innerHTML=jobs.length?jobs.map((j,i)=>
-    `<div class="tab ${j.id===sel?'sel':''}" onclick="pick('${j.id}')"><span class="n">${i+1}</span><span class="st st-${j.status}">${LBL[j.status]||j.status}</span></div>`
-  ).join(''):'<div class="meta">まだ指示はありません</div>';
-  const j=jobs.find(x=>x.id===sel);
-  document.getElementById('detail').innerHTML=j?`
-    <div class="card">
-      <div class="jt">${esc(j.title)}</div>
-      <div class="meta">${j.agent} ・ ${esc((j.cwd||'既定').split('/').pop())} ・ ${j.startedAt?ago(j.startedAt)+'経過':ago(j.createdAt)+'前に受付'} ${j.status==='running'?'・実行中':''}</div>
-      ${j.progress?`<div class="sum">📍 ${esc(j.progress)}</div>`:''}
-      <div class="instr">🗣 指示: ${esc(j.prompt).slice(0,300)}</div>
-      ${j.result?`<div class="sum" style="border-left-color:var(--ok)">✅ ${esc(j.result).slice(0,700)}</div>`:''}
-      <div class="row">
-        ${j.status==='running'||j.status==='queued'?`<button class="dgr" onclick="cancelJob('${j.id}')">中止</button>`:''}
-        <button class="sub" onclick="showLog('${j.id}')">ログを見る</button>
-        <button class="sub" onclick="again('${j.id}')">同じ指示で再実行</button>
-      </div>
-      <div id="logbox"></div>
-      <div style="margin-top:10px">
-        <textarea id="fu" placeholder="このセッションへ追加指示（次の実行時に反映）"></textarea>
-        <button onclick="sendFollowup('${j.id}')">追加指示を送る</button>
-      </div>
-    </div>`:'<div class="empty">下の入力欄から、Mac上のAIへ指示を出せます</div>';
+  const c={};jobs.forEach(j=>c[j.status]=(c[j.status]||0)+1);
+  const live=(c.running||0)+(c.blocked||0);
+  document.getElementById('pulse').className='pulse'+(live?' live':'');
+  document.getElementById('stats').innerHTML=[
+    c.running?`<span class="s-run"><i>${c.running}</i>作業中</span>`:'',
+    c.blocked?`<span class="s-wait"><i>${c.blocked}</i>返事待ち</span>`:'',
+    c.queued?`<span><i>${c.queued}</i>順番待ち</span>`:'',
+    c.done?`<span class="s-ok"><i>${c.done}</i>完了</span>`:'',
+    c.failed?`<span class="s-bad"><i>${c.failed}</i>停止</span>`:'',
+  ].filter(Boolean).join('')||'<span>まだ指示はありません</span>';
+
+  const byStatus={};jobs.forEach(j=>{(byStatus[j.status]=byStatus[j.status]||[]).push(j)});
+  let html='';let n=0;
+  for(const [st,label] of GROUPS){
+    const ls=(byStatus[st]||[]).sort((a,b)=>new Date(b.createdAt)-new Date(a.createdAt));
+    if(!ls.length)continue;
+    html+=`<div class="grp">${label} <span style="color:#4b515c">${ls.length}</span></div>`;
+    html+=ls.map(j=>card(j,++n)).join('');
+  }
+  document.getElementById('board').innerHTML=html||`<div class="empty">下の欄に指示を書いて「実行」を押すと、Mac上のAIが動き出します。<br>スキルを選べば、いつも使っているハーネスがそのまま走ります。</div>`;
 }
-function pick(id){sel=id;render()}
+function card(j,n){
+  const t=TONE[j.status]||'';
+  const opened=open.has(j.id);
+  const doing=j.status==='running'?(j.progress||'起動しています'):
+              j.status==='done'?(j.progress||'完了'):
+              j.status==='failed'?'途中で止まりました':
+              j.status==='queued'?'Macが拾うのを待っています':(j.progress||'');
+  const proj=(j.cwd||'').split('/').filter(Boolean).pop()||'既定';
+  return `<div class="card st-${j.status} ${opened?'sel':''}" onclick="toggle(event,'${j.id}')">
+    <div class="top">
+      <span class="idx">${n}</span>
+      <span class="ttl">${esc(j.title)}</span>
+      <span class="tm">${j.status==='running'?dur(j.elapsed||(Date.now()-new Date(j.startedAt)))+'経過':ago(j.endedAt||j.createdAt)+'前'}</span>
+    </div>
+    <div class="doing ${t}"><span class="ic">${ICO[j.status]||''}</span><span>${esc(doing)}</span></div>
+    <div class="chips">
+      <span class="chip">${esc(proj)}</span>
+      <span class="chip">${esc(j.agent)}</span>
+      ${j.skill?`<span class="chip sk">🧩 ${esc(j.skill)}</span>`:''}
+      ${j.diff?`<span class="chip df">📝 ${esc(j.diff)}</span>`:''}
+    </div>
+    ${j.status==='running'?'<div class="bar"><i></i></div>':''}
+    ${opened?detail(j):''}
+  </div>`;
+}
+function detail(j){
+  return `<div class="det" onclick="event.stopPropagation()">
+    <div class="lbl">出した指示</div><div class="box">${esc(j.prompt)}</div>
+    ${j.result?`<div class="lbl" style="margin-top:10px">結果</div><div class="box">${esc(j.result)}</div>`:''}
+    <div class="row">
+      ${(j.status==='running'||j.status==='queued')?`<button class="r" onclick="cancelJob('${j.id}')">中止</button>`:''}
+      <button class="g" onclick="showLog('${j.id}')">ログ</button>
+      <button class="g" onclick="again('${j.id}')">再実行</button>
+    </div>
+    <div id="lg-${j.id}"></div>
+    <div style="margin-top:10px"><textarea id="fu-${j.id}" placeholder="追加の指示"></textarea>
+    <button class="g" style="margin-top:6px" onclick="sendFollowup('${j.id}')">追加指示を送る</button></div>
+  </div>`;
+}
+function toggle(e,id){if(e.target.closest('.det'))return;open.has(id)?open.delete(id):open.add(id);render()}
 async function showLog(id){
   const j=await (await fetch(API+'/dev/jobs?id='+id,{headers:H})).json();
-  document.getElementById('logbox').innerHTML=`<pre>${esc(j.log||'(ログなし)')}</pre>`;
-  const p=document.querySelector('pre'); if(p)p.scrollTop=p.scrollHeight;
+  const el=document.getElementById('lg-'+id);
+  el.innerHTML=`<pre>${esc((j.log||'(ログなし)').slice(-6000))}</pre>`;
+  const p=el.querySelector('pre');if(p)p.scrollTop=p.scrollHeight;
 }
 async function submitJob(){
   const prompt=document.getElementById('np').value.trim();
   if(!prompt)return toast('指示を書いてね');
-  await fetch(API+'/dev/jobs',{method:'POST',headers:H,body:JSON.stringify({prompt,agent:document.getElementById('agent').value,cwd:document.getElementById('cwd').value})});
+  await fetch(API+'/dev/jobs',{method:'POST',headers:H,body:JSON.stringify({
+    prompt,agent:document.getElementById('agent').value,
+    cwd:document.getElementById('cwd').value,skill:document.getElementById('skill').value})});
   document.getElementById('np').value='';toast('Macへ送りました');load();
 }
-async function again(id){
-  const j=jobs.find(x=>x.id===id);
-  await fetch(API+'/dev/jobs',{method:'POST',headers:H,body:JSON.stringify({prompt:j.prompt,agent:j.agent,cwd:j.cwd,title:j.title})});
-  toast('再実行を投げました');load();
-}
+async function again(id){const j=jobs.find(x=>x.id===id);
+  await fetch(API+'/dev/jobs',{method:'POST',headers:H,body:JSON.stringify({prompt:j.prompt,agent:j.agent,cwd:j.cwd,skill:j.skill,title:j.title})});
+  toast('再実行');load()}
 async function cancelJob(id){await fetch(API+'/dev/cancel',{method:'POST',headers:H,body:JSON.stringify({id})});toast('中止を要求');load()}
-async function sendFollowup(id){
-  const t=document.getElementById('fu').value.trim();if(!t)return;
-  await fetch(API+'/dev/followup',{method:'POST',headers:H,body:JSON.stringify({id,text:t})});
-  document.getElementById('fu').value='';toast('追加指示を送りました');
-}
-load();timer=setInterval(load,10000);
+async function sendFollowup(id){const el=document.getElementById('fu-'+id);const t=el.value.trim();if(!t)return;
+  await fetch(API+'/dev/followup',{method:'POST',headers:H,body:JSON.stringify({id,text:t})});el.value='';toast('送りました')}
+loadMeta();load();setInterval(load,10000);
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)load()});
 </script>
 </body>
