@@ -115,7 +115,7 @@ textarea{min-height:60px;resize:vertical}
     <div class="pill" id="pAgent" onclick="cycleAgent()">🤖 <b id="lAgent">Codex</b></div>
   </div>
   <div class="r2">
-    <textarea id="np" placeholder="指示を書く（例: 字幕のズレを直してテストも通して）" oninput="grow(this)"></textarea>
+    <textarea id="np" placeholder="指示を書く（例: 字幕のズレを直してテストも通して）" oninput="grow(this);saveDraft('np',this.value)"></textarea>
     <button class="send" onclick="submitJob()">↑</button>
   </div>
 </div>
@@ -139,6 +139,13 @@ const TONE={running:'run',blocked:'wait',done:'ok',failed:'bad',queued:'',cancel
 const AGENTS=[['codex','Codex'],['claude','Claude'],['both','両方']];
 let jobs=[],open=new Set(),meta={skills:[],projects:[]},sheetMode='',
     sel={cwd:localStorage.getItem('dev_cwd')||'',skill:localStorage.getItem('dev_skill')||'',agent:localStorage.getItem('dev_agent')||'codex'};
+// 入力中の文字を絶対に消さないための仕組み(2026-08-13 実害)
+const drafts=JSON.parse(localStorage.getItem('dev_drafts')||'{}');
+function saveDraft(id,v){if(v)drafts[id]=v;else delete drafts[id];localStorage.setItem('dev_drafts',JSON.stringify(drafts))}
+function isTyping(){const a=document.activeElement;return a&&(a.tagName==='TEXTAREA'||a.tagName==='INPUT')}
+function restoreDrafts(){
+  document.querySelectorAll('textarea[id]').forEach(t=>{if(drafts[t.id]&&!t.value)t.value=drafts[t.id]});
+}
 const esc=s=>String(s??'').replace(/[<>&]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;'}[c]));
 function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('on');setTimeout(()=>t.classList.remove('on'),1700)}
 function dur(ms){if(!ms||ms<0)return'';const s=Math.floor(ms/1000);if(s<60)return s+'秒';const m=Math.floor(s/60);if(m<60)return m+'分';return Math.floor(m/60)+'時間'+(m%60)+'分'}
@@ -189,7 +196,10 @@ async function load(){
   try{jobs=await (await fetch(API+'/dev/jobs',{headers:H})).json();render()}
   catch(e){document.getElementById('pulse').style.background='var(--bad)'}
 }
+let pendingRender=false;
 function render(){
+  // 入力中は描き直さない(消える事故の元)。入力が終わったら描く
+  if(isTyping()){pendingRender=true;return}
   const c={};jobs.forEach(j=>c[j.status]=(c[j.status]||0)+1);
   const live=(c.running||0)+(c.blocked||0);
   document.getElementById('pulse').className='pulse'+(live?' live':'');
@@ -216,7 +226,10 @@ function render(){
     if(showArchived)html+=arc.map(j=>card(j,++n)).join('');
   }
   document.getElementById('board').innerHTML=html||`<div class="empty">下の欄に指示を書いて ↑ を押すと、Mac上のAIが動き出します。<br>🧩からスキルを選べば、いつものハーネスがそのまま走ります。</div>`;
+  restoreDrafts();
 }
+// 入力が終わったら溜まっていた更新を反映
+document.addEventListener('focusout',()=>{setTimeout(()=>{if(pendingRender&&!isTyping()){pendingRender=false;render()}},300)});
 function card(j,n){
   const t=TONE[j.status]||'',opened=open.has(j.id);
   const doing=j.status==='running'?(j.progress||'起動しています'):
@@ -257,7 +270,7 @@ function detail(j){
     <div class="stbar">${STATUS_BTNS.map(([st,lb,ic])=>
       `<div class="stbtn b-${st} ${j.status===st?'cur':''}" onclick="setStatus('${j.id}','${st}')">${ic}<span>${lb}</span></div>`).join('')}</div>
     <div id="lg-${j.id}"></div>
-    <div style="margin-top:10px"><textarea id="fu-${j.id}" placeholder="${j.status==='blocked'?'質問への返事を書く':'追加の指示'}"></textarea>
+    <div style="margin-top:10px"><textarea id="fu-${j.id}" placeholder="${j.status==='blocked'?'質問への返事を書く':'追加の指示'}" oninput="saveDraft('fu-${j.id}',this.value)"></textarea>
     <button class="g" style="margin-top:6px" onclick="sendFollowup('${j.id}')">送る</button></div></div>`;
 }
 function toggle(e,id){if(e.target.closest('.det'))return;open.has(id)?open.delete(id):open.add(id);render()}
@@ -277,7 +290,7 @@ async function submitJob(){
   const el=document.getElementById('np'),prompt=el.value.trim();
   if(!prompt)return toast('指示を書いてね');
   await fetch(API+'/dev/jobs',{method:'POST',headers:H,body:JSON.stringify({prompt,agent:sel.agent,cwd:sel.cwd,skill:sel.skill})});
-  el.value='';grow(el);el.blur();toast('Macへ送りました');load();
+  el.value='';saveDraft('np','');grow(el);el.blur();toast('Macへ送りました');load();
 }
 async function again(id){const j=jobs.find(x=>x.id===id);
   await fetch(API+'/dev/jobs',{method:'POST',headers:H,body:JSON.stringify({prompt:j.prompt,agent:j.agent,cwd:j.cwd,skill:j.skill,title:j.title})});
@@ -290,7 +303,9 @@ async function setStatus(id,status){
 async function togglePin(id,v){await fetch(API+'/dev/status',{method:'POST',headers:H,body:JSON.stringify({id,pinned:v})});load()}
 async function cancelJob(id){await fetch(API+'/dev/cancel',{method:'POST',headers:H,body:JSON.stringify({id})});toast('中止を要求');load()}
 async function sendFollowup(id){const el=document.getElementById('fu-'+id),t=el.value.trim();if(!t)return;
-  await fetch(API+'/dev/followup',{method:'POST',headers:H,body:JSON.stringify({id,text:t})});el.value='';toast('送りました')}
+  await fetch(API+'/dev/followup',{method:'POST',headers:H,body:JSON.stringify({id,text:t})});el.value='';saveDraft('fu-'+id,'');toast('送りました')}
+// 再読込されても書きかけが残る
+(function(){const np=document.getElementById('np');if(drafts.np){np.value=drafts.np;grow(np)}})();
 loadMeta();load();setInterval(load,10000);
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)load()});
 </script>
