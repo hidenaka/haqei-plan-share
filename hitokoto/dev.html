@@ -240,7 +240,7 @@ function card(j,n){
   const proj=(meta.projects||[]).find(p=>p.cwd===j.cwd)?.label||(j.cwd||'').split('/').filter(Boolean).pop()||'既定';
   return `<div class="card st-${j.status} ${opened?'sel':''}" onclick="toggle(event,'${j.id}')">
     <span class="pin ${j.pinned?'on':''}" onclick="event.stopPropagation();togglePin('${j.id}',${!j.pinned})">📌</span>
-    <div class="top"><span class="idx">${n}</span><span class="ttl">${esc(j.title)}${j.manualStatus?'<span class="mflag">手動</span>':''}</span>
+    <div class="top"><span class="idx">${n}</span><span class="ttl" onclick="event.stopPropagation();rename('${j.id}')">${esc(j.title)}${j.manualStatus?'<span class="mflag">手動</span>':''}<span style="opacity:.3;font-size:11px;margin-left:5px">✏️</span></span>
       <span class="tm" style="margin-right:22px">${j.status==='running'?dur(j.elapsed||(Date.now()-new Date(j.startedAt)))+'経過':ago(j.endedAt||j.createdAt)+'前'}</span></div>
     <div class="doing ${t}"><span class="ic">${ICO[j.status]||''}</span><span>${esc(j.report?.headline&&j.status!=='running'?j.report.headline:doing)}</span></div>
     ${j.report?.ask?`<div class="ask"><div class="t">🙋 確認したいこと</div><div class="b">${esc(j.report.ask)}</div></div>`:''}
@@ -295,6 +295,14 @@ async function submitJob(){
 async function again(id){const j=jobs.find(x=>x.id===id);
   await fetch(API+'/dev/jobs',{method:'POST',headers:H,body:JSON.stringify({prompt:j.prompt,agent:j.agent,cwd:j.cwd,skill:j.skill,title:j.title})});
   toast('再実行');load()}
+async function rename(id){
+  const j=jobs.find(x=>x.id===id);
+  const v=prompt('この作業の名前',j.title);
+  if(v===null)return;
+  const name=v.trim();if(!name)return;
+  await fetch(API+'/dev/status',{method:'POST',headers:H,body:JSON.stringify({id,title:name})});
+  toast('名前を変えました');load();
+}
 async function setStatus(id,status){
   await fetch(API+'/dev/status',{method:'POST',headers:H,body:JSON.stringify({id,status})});
   const L={done:'完了にしました',blocked:'返事待ちにしました',queued:'もう一度実行します',canceled:'やめました',archived:'片付けました'};
