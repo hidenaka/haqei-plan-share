@@ -88,6 +88,15 @@ textarea{min-height:60px;resize:vertical}
 .stuck{background:#2a1c1e;border:1px solid #4d2f33;border-radius:11px;padding:10px 12px;margin-top:8px;font-size:13px;color:#f0c8c8}
 .nextb{font-size:12.5px;color:var(--ink2);margin-top:8px;padding-left:16px;position:relative}
 .nextb:before{content:"→";position:absolute;left:0;color:var(--run)}
+.arts{margin-top:11px}
+.art{background:#0f1217;border:1px solid var(--line);border-radius:11px;padding:9px 11px;margin-bottom:5px}
+.art .h{display:flex;gap:7px;align-items:center;font-size:13px}
+.art .k{font-size:9.5px;font-weight:800;border-radius:5px;padding:1px 6px;flex-shrink:0}
+.art .k.new{background:#1c3527;color:#7fd7a5}
+.art .k.mod{background:#1b2c3d;color:#8fc2ee}
+.art .p{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-family:ui-monospace,Menlo,monospace;font-size:11.5px;color:#c8cfd8}
+.art .sz{font-size:10px;color:var(--ink2);flex-shrink:0}
+.art pre{max-height:220px;margin-top:7px;font-size:10.5px}
 .stbar{display:flex;gap:5px;flex-wrap:wrap;margin-top:10px;padding-top:10px;border-top:1px dashed var(--line)}
 .stbtn{flex:1;min-width:78px;background:#0f1217;border:1px solid var(--line);border-radius:10px;padding:9px 4px;font-size:11.5px;font-weight:700;color:var(--ink2);text-align:center;min-height:38px;display:flex;align-items:center;justify-content:center;gap:4px}
 .stbtn.cur{border-color:currentColor}
@@ -245,7 +254,7 @@ function card(j,n){
     <div class="doing ${t}"><span class="ic">${ICO[j.status]||''}</span><span>${esc(j.report?.headline&&j.status!=='running'?j.report.headline:doing)}</span></div>
     ${j.report?.ask?`<div class="ask"><div class="t">🙋 確認したいこと</div><div class="b">${esc(j.report.ask)}</div></div>`:''}
     <div class="chips"><span class="chip">${esc(proj)}</span><span class="chip">${esc(j.agent)}</span>
-      ${j.skill?`<span class="chip sk">🧩 ${esc(j.skill)}</span>`:''}${j.diff?`<span class="chip df">📝 ${esc(j.diff)}</span>`:''}</div>
+      ${j.skill?`<span class="chip sk">🧩 ${esc(j.skill)}</span>`:''}${j.diff?`<span class="chip df">📝 ${esc(j.diff)}</span>`:''}${j.artifacts?.length?`<span class="chip df">📄 成果物${j.artifacts.length}件</span>`:''}</div>
     ${j.status==='running'?'<div class="bar"><i></i></div>':''}
     ${opened?detail(j):''}</div>`;
 }
@@ -266,6 +275,16 @@ function detail(j){
       <button class="g" onclick="again('${j.id}')">再実行</button>
       <button class="g" onclick="reuse('${j.id}')">この続きを書く</button>
     </div>
+    ${j.artifacts?.length?`<div class="lbl" style="margin-top:12px">できたもの</div>
+    <div class="arts">${j.artifacts.map((a,i)=>`
+      <div class="art">
+        <div class="h" onclick="togglePreview('${j.id}',${i})">
+          <span class="k ${a.kind}">${a.kind==='new'?'新規':'変更'}</span>
+          <span class="p">${esc(a.path)}</span>
+          <span class="sz">${a.size>1024?Math.round(a.size/1024)+'KB':a.size+'B'}${a.preview?' ▾':''}</span>
+        </div>
+        <div id="pv-${j.id}-${i}"></div>
+      </div>`).join('')}</div>`:''}
     <div class="lbl" style="margin-top:12px">自分で状態を変える</div>
     <div class="stbar">${STATUS_BTNS.map(([st,lb,ic])=>
       `<div class="stbtn b-${st} ${j.status===st?'cur':''}" onclick="setStatus('${j.id}','${st}')">${ic}<span>${lb}</span></div>`).join('')}</div>
@@ -295,6 +314,11 @@ async function submitJob(){
 async function again(id){const j=jobs.find(x=>x.id===id);
   await fetch(API+'/dev/jobs',{method:'POST',headers:H,body:JSON.stringify({prompt:j.prompt,agent:j.agent,cwd:j.cwd,skill:j.skill,title:j.title})});
   toast('再実行');load()}
+function togglePreview(jid,i){
+  const j=jobs.find(x=>x.id===jid),a=j.artifacts[i],el=document.getElementById(`pv-${jid}-${i}`);
+  if(!a.preview)return;
+  el.innerHTML=el.innerHTML?'':`<pre>${esc(a.preview)}</pre>`;
+}
 async function rename(id){
   const j=jobs.find(x=>x.id===id);
   const v=prompt('この作業の名前',j.title);
