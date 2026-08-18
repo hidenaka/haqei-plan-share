@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="robots" content="noindex">
+<title>ep59 通し視聴ゲート｜四畳半神話大系×萃</title>
+<style>
+body{font-family:-apple-system,"Hiragino Sans","Noto Sans JP",sans-serif;background:#f7f5f0;color:#1a1a1c;line-height:1.8;font-size:15px;margin:0;padding:0 0 80px}
+.wrap{max-width:800px;margin:0 auto;padding:24px 16px}
+.kicker{font-size:12px;letter-spacing:.18em;color:#b8860b;font-weight:700}
+h1{font-size:20px;line-height:1.5;margin:6px 0 10px}
+h2{font-size:16px;margin:30px 0 10px;padding-left:10px;border-left:4px solid #b8860b}
+.box{background:#fff;border:1px solid #ddd8cf;border-radius:10px;padding:13px 16px;margin:12px 0;font-size:14px}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{border:1px solid #ddd8cf;padding:5px 8px;text-align:left;vertical-align:top}
+th{background:#efece4}
+video{width:100%;border-radius:10px;background:#000}
+img{width:100%;border-radius:8px;border:1px solid #ddd8cf}
+.check{background:#fdf6e6;border:1px solid #b8860b;border-radius:10px;padding:13px 16px;margin:12px 0;font-size:14px}
+.warn{background:#fff5f5;border:1px solid #c98a8a;border-radius:10px;padding:13px 16px;margin:12px 0;font-size:14px}
+.howto{background:#123;color:#fff;border-radius:12px;padding:16px;margin:26px 0;font-size:14px}
+.howto b{color:#ffd97a}
+.small{font-size:12px;color:#55555c}
+.hl{background:linear-gradient(transparent 62%,#ffe9a8 62%)}
+</style></head><body><div class="wrap">
+<div class="kicker">EP59 FINAL-VIDEO GATE ・ 2026-08-19</div>
+<h1>第59話 通し視聴ゲート — 集まりには、ちゃんと顔を出している。なのに、帰り道はいつも一人だ。｜四畳半神話大系×萃</h1>
+<p class="small">9分9秒・30シーン。原本: <code>releases/079/ep59_yojouhan_sui.mp4</code>（1080p・682MB）。下は480pプレビュー（14MB・音声同一）。公開枠 2026-09-21（月）04:00 JST。</p>
+
+<video controls preload="metadata" src="preview.mp4"></video>
+
+<h2>👁 通し視聴で確認してほしい点</h2>
+<div class="check">
+<b>1. 冒頭0.5秒のコールドオープン（H67・今回が初適用＝いちばんの確認点）</b><br>
+再生した瞬間、<b>六爻図が0.5秒だけ全画面で光って消えます</b>。そこから痛みの断言へ落ちる設計です。<span class="hl">これが「引き」になっているか、それとも面食らうだけか</span>——ここが今回いちばん見ていただきたいところです。合わなければ <code>cold_open</code> を消すだけで元に戻せます（1コマンド・再レンダ4分）。<br><br>
+<b>2. 幕5（6:40頃〜）の作り直しが効いているか</b><br>
+読者ゲートが3回続けて離脱した箇所を全面的に作り直しました。<b>六爻を順に降ろす構造をやめて</b>、視聴者の段＝三爻の1本に絞り、残りは語り手の失敗の告白（「呼ぶのが、負けだと思っていたからです」）と、送る前の不安への答えに溶かしてあります。着地も指示形をやめて<b>「返事は、まだ来ていません」</b>で閉じました。<br><br>
+<b>3. いつもの点</b>: 冒頭9秒が刺さるか／刃（5:40頃・検索窓に「社会人 サークル」と打っていた話）が自分に返るか／幕6の萃→升の一つ開け。
+</div>
+
+<h2>⚠️ 今回みつけた不具合と、その先の判断のお願い</h2>
+<div class="warn">
+レンダ直前のコンタクトシート目視で、<b>六爻図が動画に映っていない</b>ことを発見しました（白画面にカットIDの文字が出るだけ）。ep59は修正して再レンダ済みで、上の動画では 3:12 頃に正しく六爻図が出ます。<br><br>
+<b>問題は、同じ不具合が他の回にもあることです。</b>機械照合の結果、該当は4話：<br>
+・<b>content/075（ep55 黒子のバスケ×臨・9月8日公開予約済み）</b> ← 実mp4で確認済み。「下から三番目の金色の線が、」というナレーションの裏に <code>V_03_08</code> の文字が出ています<br>
+・content/056（ep36 ナウシカ×坤・公開済み）<br>
+・content/081（ep61・別セッションで制作中）<br>
+・content/079（ep59・本件で修正済み）<br><br>
+<b>ep55をどうするか、ご判断ください</b>（私はep59レーンの外なので触っていません）:<br>
+①<b>差し替える</b>（台本・音声・画像はそのまま、カット定義1行を直して再レンダ→動画のみ差し替え。所要15分程度）／②<b>このまま公開</b>／③<b>公開を延期</b>
+</div>
+
+<h2>🔧 再発防止（ご指示により実装済み）</h2>
+<div class="box">
+<code>essay-preflight.py timing</code> に<b>カット資産の実在ゲート</b>を新設しました。Remotionのカット解決規則（card→essay-metaのcards／clip→cuts/*.mp4／still→stills/*.png）をそのまま写して、<b>3種すべての実体を存在検査</b>します。1つでも欠けるとFAILしてレンダへ進めません。<br>
+・ep59で正常通過（card 0 / clip 29 / still 1）、<b>ep55・ep61で正しくFAIL</b>することを実測で確認済み。<br>
+・既知障害34として <code>docs/production-loop.md</code> に、経緯と一般化した教訓を <code>docs/pdca.md</code> に記録しました。<br>
+<span class="small">なぜ今まで止まらなかったか: preflightは数値の妥当性を、fork採点と読者ゲートは台本の質を測っていて、<b>「画面に出るはずのものが出ているか」を誰も見ていなかった</b>。ep1-38の黒落ちバグ（2026-07-13にmixへ検査を追加）と同じ穴の別の形です。</span>
+</div>
+
+<h2>機械ゲート（全通過）</h2>
+<div class="box"><table>
+<tr><th>ゲート</th><th>結果</th></tr>
+<tr><td>mix preflight（尺549.1s／ピーク-4.5dB／幕間BGM-34.2dB／黒落ち29境界）</td><td>✅ PASS</td></tr>
+<tr><td><b>カット資産の実在（新設）</b></td><td>✅ card 0 / clip 29 / still 1 すべて実体あり</td></tr>
+<tr><td>発音（whisper ASR照合）</td><td>✅ FAIL 0・WARN 8（ASRが漢字で書き起こした表記ゆれ）</td></tr>
+<tr><td>字幕同期・約束オーバーレイ・語境界</td><td>✅ PASS（30シーン）</td></tr>
+<tr><td>識別監査（法務）</td><td>✅ 全29カット「不明」・安全弁は再生成後に文字混入ゼロ</td></tr>
+<tr><td>コンタクトシート24枚 目視</td><td>✅ 六爻図の表示を含め正常（下に掲載）</td></tr>
+<tr><td>台本のfork独立採点／読者ゲート</td><td>✅ 90点／78点（最良回・完走）</td></tr>
+</table></div>
+
+<h2>コンタクトシート（23秒ごと・24枚）</h2>
+<img src="contact-sheet.jpg" alt="contact sheet">
+<p class="small">2段目3列目が六爻図（修正後）。字幕「これが、冒頭で言った図です。」と図が一致しています。</p>
+
+<h2>この回の映像実験</h2>
+<div class="box">
+<b>H67 コールドオープン（今回=ON・初適用）</b>: 冒頭0.5秒の六爻図フラッシュ。ep55がOFFだったので交互適用。実装が無かったので今回作りました（既存41話に影響しないオプトイン形）。<br>
+<b>H66 爻プログレス＋転換点の無音（継続）</b>: 2:10頃から右上の六爻が一本ずつ金に点灯し、種明かし直前の2:10に1.5秒だけBGMが消えます。
+</div>
+
+<div class="howto"><b>返信のしかた</b><br>
+「OK」で通し視聴承認＝タイトル確定（Step8.5）→サムネ→概要欄→予約アップの素材フェーズへ進み、アップ前に一括でお見せします。<br>
+気になる点は「0:00のフラッシュが強い」「6:50の告白が長い」のように時刻つきで。<b>ep55の扱い（①差し替え／②このまま／③延期）も併せてお願いします。</b>
+</div>
+<p class="small">証跡: 本編=releases/079/ep59_yojouhan_sui.mp4 ／ 台本=content/079/full_script.json ／ 監査=content/079/identity_audit.json ／ 新ゲート=scripts/essay-preflight.py（カット資産の実在） ／ 既知障害34=docs/production-loop.md ／ H75=claim済(079)</p>
+</div></body></html>
