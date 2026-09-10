@@ -300,7 +300,7 @@ async function flush() {
     let sent = 0;
     for (const item of queue) {
       try {
-        await api('POST', '/diary', { text: item.text });
+        await api('POST', '/diary', { text: item.text, ts: item.ts });
         sent++;
       } catch (error) {
         rest.push(item);
