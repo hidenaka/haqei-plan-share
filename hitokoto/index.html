@@ -8,7 +8,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link rel="manifest" href="manifest.json">
-<link rel="apple-touch-icon" href="portraits/cand-C-01.png">
+<link rel="apple-touch-icon" href="img/diary-icon.png">
 <title>日記</title>
 <style>
   :root {
@@ -96,7 +96,7 @@
     border-radius: 20px; padding: 22px; text-align: center; box-shadow: var(--shadow);
   }
   .sheet-card { max-width: 420px; margin-bottom: calc(12px + env(safe-area-inset-bottom)); }
-  .gate-photo { width: 84px; height: 84px; border-radius: 50%; object-fit: cover; object-position: 50% 18%; }
+  .gate-photo { width: 84px; height: 84px; border-radius: 22px; }
   .gate-title { font-size: 19px; margin: 12px 0 6px; }
   .gate-copy, .sheet-copy { font-size: 14px; color: var(--muted); margin: 0 0 14px; }
   .token-input {
@@ -145,7 +145,7 @@
 
 <div class="gate" id="gate" hidden>
   <form class="gate-card" id="gateForm">
-    <img class="gate-photo" src="portraits/cand-C-01.png" alt="">
+    <img class="gate-photo" src="img/diary-icon.png" alt="">
     <h1 class="gate-title">日記</h1>
     <p class="gate-copy">最初の一度だけ、あいことばを入れてください。</p>
     <input class="token-input" id="tokenIn" type="password" autocomplete="current-password" aria-label="あいことば">

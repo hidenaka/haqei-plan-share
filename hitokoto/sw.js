@@ -1,6 +1,6 @@
 // ひとこと service worker — push受信と通知タップ + 圏外でもアプリが開けるようにする
-const CACHE = 'hitokoto-shell-v1';
-const SHELL = ['./', 'index.html', 'talk.html', 'growth.html', 'profile.html', 'dev.html', 'manifest.json', 'portraits/cand-C-01.png'];
+const CACHE = 'hitokoto-shell-v2';
+const SHELL = ['./', 'index.html', 'talk.html', 'growth.html', 'profile.html', 'dev.html', 'manifest.json', 'img/diary-icon.png', 'portraits/cand-C-01.png'];
 
 self.addEventListener('install', (e) => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(SHELL)).then(() => self.skipWaiting()));
