@@ -1,0 +1,928 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#f4f2ed">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="portraits/cand-C-01.png">
+<title>まどかとのトーク</title>
+<style>
+  :root {
+    color-scheme: light;
+    --paper: #f4f2ed;
+    --panel: #fff;
+    --ink: #262522;
+    --muted: #85817a;
+    --line: #dedbd4;
+    --mine: #a9dd8e;
+    --mine-pressed: #94cd77;
+    --accent: #4f7758;
+    --shadow: 0 1px 1px rgba(30, 27, 22, .08), 0 2px 8px rgba(30, 27, 22, .04);
+  }
+
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body { width: 100%; height: 100%; margin: 0; background: var(--paper); }
+  body {
+    overflow: hidden;
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  button, textarea, input { font: inherit; }
+  button { -webkit-touch-callout: none; }
+  [hidden] { display: none !important; }
+
+  .app {
+    width: 100%;
+    height: 100vh;
+    height: 100svh;
+    height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: var(--paper);
+  }
+
+  .photo-panel {
+    position: relative;
+    flex: 0 0 clamp(190px, 31dvh, 282px);
+    min-height: 0;
+    overflow: hidden;
+    background: #bba993;
+  }
+  .photo-panel::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(180deg, rgba(0,0,0,.27) 0%, rgba(0,0,0,0) 38%, rgba(0,0,0,.05) 64%, rgba(0,0,0,.58) 100%);
+  }
+  .portrait {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    object-position: 50% 34%;
+    transition: opacity .18s ease;
+  }
+  .portrait.changing { opacity: .72; }
+  .portrait-video {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    object-fit: cover; object-position: 50% 34%;
+    opacity: 0; transition: opacity .8s ease; pointer-events: none;
+  }
+  .portrait-video.on { opacity: 1; }
+
+  .photo-top {
+    position: absolute;
+    z-index: 2;
+    top: max(10px, env(safe-area-inset-top));
+    left: 12px;
+    right: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .day-badge,
+  .notify-button {
+    min-height: 34px;
+    border: 0;
+    border-radius: 18px;
+    background: rgba(28, 27, 25, .52);
+    color: #fff;
+    box-shadow: 0 1px 4px rgba(0,0,0,.14);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+  .day-badge {
+    display: flex;
+    align-items: center;
+    padding: 0 12px;
+    font-size: 12px;
+    letter-spacing: .04em;
+  }
+  .notify-button {
+    width: 38px;
+    padding: 0;
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+  }
+  .notify-button svg { width: 18px; height: 18px; fill: currentColor; }
+  .notify-button.is-on { background: rgba(255,255,255,.88); color: #383733; }
+
+  .identity {
+    position: absolute;
+    z-index: 2;
+    left: 16px;
+    right: 16px;
+    bottom: 13px;
+    color: #fff;
+    text-shadow: 0 1px 5px rgba(0,0,0,.4);
+  }
+  .identity-name { font-size: 19px; font-weight: 650; letter-spacing: .02em; }
+  .identity-status { min-height: 17px; margin-top: 2px; font-size: 11px; color: rgba(255,255,255,.84); }
+
+  .thread {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+    padding: 14px 10px 18px;
+    scroll-behavior: smooth;
+    background-color: var(--paper);
+    background-image: radial-gradient(rgba(87, 78, 67, .045) .7px, transparent .7px);
+    background-size: 11px 11px;
+  }
+  .loading,
+  .empty-state {
+    min-height: 100%;
+    display: grid;
+    place-content: center;
+    justify-items: center;
+    text-align: center;
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.7;
+  }
+  .empty-avatar {
+    width: 58px;
+    height: 58px;
+    margin-bottom: 10px;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: 50% 27%;
+    box-shadow: var(--shadow);
+  }
+
+  .date-separator {
+    width: max-content;
+    margin: 7px auto 13px;
+    padding: 3px 9px;
+    border-radius: 10px;
+    color: #89857e;
+    background: rgba(224, 221, 214, .8);
+    font-size: 10.5px;
+  }
+  .message-row {
+    width: 100%;
+    display: flex;
+    align-items: flex-end;
+    gap: 7px;
+    margin-top: 10px;
+  }
+  .message-row.continued { margin-top: 3px; }
+  .message-row.mine { justify-content: flex-end; padding-left: 42px; }
+  .message-row.hers { justify-content: flex-start; padding-right: 42px; }
+  .avatar-slot { flex: 0 0 29px; width: 29px; }
+  .message-avatar {
+    width: 29px;
+    height: 29px;
+    display: block;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: 50% 28%;
+    box-shadow: var(--shadow);
+  }
+  .message-stack { min-width: 0; max-width: min(78vw, 460px); }
+  .mine .message-stack { display: flex; flex-direction: column; align-items: flex-end; }
+  .bubble {
+    position: relative;
+    width: fit-content;
+    max-width: 100%;
+    padding: 8px 11px 9px;
+    border-radius: 17px;
+    font-size: 15px;
+    line-height: 1.52;
+    letter-spacing: .005em;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    box-shadow: var(--shadow);
+  }
+  .hers .bubble { background: var(--panel); border-bottom-left-radius: 5px; }
+  .mine .bubble { background: var(--mine); border-bottom-right-radius: 5px; }
+  .continued.hers .bubble { border-top-left-radius: 7px; }
+  .continued.mine .bubble { border-top-right-radius: 7px; }
+  .message-meta {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    min-height: 15px;
+    margin: 2px 3px 0;
+    color: var(--muted);
+    font-size: 9.5px;
+    line-height: 1;
+  }
+  .mine .message-meta { justify-content: flex-end; }
+  .receipt { color: #6d8872; }
+
+  .voice-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    min-height: 29px;
+    margin-top: 7px;
+    padding: 4px 9px 4px 7px;
+    border: 1px solid #d6d2ca;
+    border-radius: 15px;
+    background: #f7f5f1;
+    color: #55524d;
+    font-size: 11px;
+    cursor: pointer;
+  }
+  .voice-icon {
+    width: 18px;
+    height: 18px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff;
+    font-size: 8px;
+    line-height: 1;
+  }
+  .voice-button.playing .voice-icon { animation: voicePulse 1s ease-in-out infinite; }
+
+  .typing-row { margin-top: 8px; }
+  .typing-bubble {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    width: 48px;
+    height: 34px;
+    padding: 0 13px;
+    border-radius: 17px;
+    border-bottom-left-radius: 5px;
+    background: #fff;
+    box-shadow: var(--shadow);
+  }
+  .typing-bubble i {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #aaa59d;
+    animation: typing 1.15s infinite ease-in-out;
+  }
+  .typing-bubble i:nth-child(2) { animation-delay: .14s; }
+  .typing-bubble i:nth-child(3) { animation-delay: .28s; }
+
+  .composer {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+    padding: 8px 10px calc(8px + env(safe-area-inset-bottom));
+    border-top: 1px solid var(--line);
+    background: rgba(255,255,255,.97);
+  }
+  .message-input {
+    flex: 1 1 auto;
+    width: 100%;
+    height: 40px;
+    max-height: 116px;
+    margin: 0;
+    padding: 9px 13px;
+    resize: none;
+    overflow-y: auto;
+    border: 1px solid #d9d6cf;
+    border-radius: 20px;
+    outline: none;
+    background: #f7f6f3;
+    color: var(--ink);
+    font-size: 16px;
+    line-height: 20px;
+  }
+  .message-input:focus { border-color: #aaa69d; background: #fff; }
+  .message-input::placeholder { color: #aaa69f; }
+  .send-button {
+    flex: 0 0 40px;
+    width: 40px;
+    height: 40px;
+    display: grid;
+    place-items: center;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: var(--mine);
+    color: #315333;
+    cursor: pointer;
+    transition: transform .1s, background .1s, opacity .1s;
+  }
+  .send-button:active:not(:disabled) { transform: scale(.94); background: var(--mine-pressed); }
+  .send-button:disabled { opacity: .36; cursor: default; }
+  .send-button svg { width: 20px; height: 20px; fill: currentColor; transform: translateX(1px); }
+
+  .gate,
+  .modal-backdrop {
+    position: fixed;
+    z-index: 20;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    padding: max(24px, env(safe-area-inset-top)) 22px max(24px, env(safe-area-inset-bottom));
+    background: rgba(38, 36, 32, .56);
+    backdrop-filter: blur(7px);
+    -webkit-backdrop-filter: blur(7px);
+  }
+  .gate { z-index: 30; background: #eeeae2; }
+  .gate-card,
+  .modal-card {
+    width: min(100%, 380px);
+    padding: 23px 20px 20px;
+    border-radius: 18px;
+    background: #fff;
+    box-shadow: 0 15px 55px rgba(39, 34, 28, .2);
+  }
+  .gate-photo {
+    width: 68px;
+    height: 68px;
+    display: block;
+    margin: -55px auto 13px;
+    border: 4px solid #fff;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: 50% 28%;
+    box-shadow: 0 4px 15px rgba(39, 34, 28, .15);
+  }
+  .gate-title,
+  .modal-title { margin: 0; font-size: 17px; font-weight: 650; text-align: center; }
+  .gate-copy,
+  .modal-copy { margin: 7px 0 16px; color: var(--muted); font-size: 12px; line-height: 1.6; text-align: center; }
+  .token-input,
+  .subscription-text {
+    width: 100%;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    outline: none;
+    background: #f7f6f3;
+    color: var(--ink);
+  }
+  .token-input { height: 44px; padding: 0 12px; font-size: 16px; text-align: center; }
+  .subscription-text { height: 115px; padding: 9px; resize: none; font-family: ui-monospace, monospace; font-size: 10px; }
+  .primary-button,
+  .plain-button {
+    width: 100%;
+    min-height: 43px;
+    margin-top: 11px;
+    border-radius: 11px;
+    cursor: pointer;
+  }
+  .primary-button { border: 0; background: #4f7758; color: #fff; font-weight: 600; }
+  .plain-button { border: 1px solid var(--line); background: #fff; color: #56534e; }
+  .gate-error { min-height: 17px; margin: 8px 0 0; color: #a34942; font-size: 11px; text-align: center; }
+
+  .toast {
+    position: fixed;
+    z-index: 40;
+    left: 50%;
+    bottom: calc(73px + env(safe-area-inset-bottom));
+    max-width: calc(100% - 36px);
+    padding: 8px 13px;
+    border-radius: 16px;
+    background: rgba(40, 38, 34, .88);
+    color: #fff;
+    font-size: 11px;
+    text-align: center;
+    transform: translate(-50%, 8px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .18s, transform .18s;
+  }
+  .toast.on { opacity: 1; transform: translate(-50%, 0); }
+
+  @keyframes typing {
+    0%, 60%, 100% { transform: translateY(0); opacity: .45; }
+    30% { transform: translateY(-3px); opacity: 1; }
+  }
+  @keyframes voicePulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(.88); } }
+
+  @media (max-height: 620px) {
+    .photo-panel { flex-basis: 160px; }
+    .identity { bottom: 9px; }
+  }
+  @media (min-width: 700px) {
+    body { display: grid; place-items: center; background: #d8d4cc; }
+    .app { max-width: 540px; box-shadow: 0 0 45px rgba(40,35,28,.15); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: .01ms !important; }
+  }
+</style>
+</head>
+<body>
+<main class="app">
+  <header class="photo-panel" aria-label="まどか">
+    <img class="portrait" id="portrait" src="portraits/hdr-cand-C.png" alt="まどかの写真">
+    <video class="portrait-video" id="portraitVid" muted playsinline loop autoplay></video>
+    <div class="photo-top">
+      <div class="day-badge" id="dayBadge">— / 50日</div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <a class="notify-button" href="index.html" aria-label="日記" title="日記" style="text-decoration:none;display:flex;align-items:center;justify-content:center;font-size:15px">📖</a>
+        <a class="notify-button" href="dev.html" aria-label="開発コックピット" title="開発コックピット" style="text-decoration:none;display:flex;align-items:center;justify-content:center;font-size:15px">⌨️</a>
+        <a class="notify-button" href="profile.html" aria-label="わたしの取扱説明書" title="わたしの取扱説明書" style="text-decoration:none;display:flex;align-items:center;justify-content:center;font-size:15px">👤</a>
+        <a class="notify-button" href="growth.html" aria-label="成長の現在地" title="成長の現在地" style="text-decoration:none;display:flex;align-items:center;justify-content:center;font-size:15px">📍</a>
+        <button class="notify-button" id="notifyBtn" type="button" aria-label="通知を設定" title="通知を設定">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22a2.5 2.5 0 0 0 2.35-1.67h-4.7A2.5 2.5 0 0 0 12 22Zm7-5.25-1.4-1.55V10a5.65 5.65 0 0 0-4.35-5.5V3.4a1.25 1.25 0 0 0-2.5 0v1.1A5.65 5.65 0 0 0 6.4 10v5.2L5 16.75V18h14v-1.25Z"/></svg>
+        </button>
+      </div>
+    </div>
+    <div class="identity">
+      <div class="identity-name">まどか</div>
+      <div class="identity-status" id="identityStatus" aria-live="polite"></div>
+    </div>
+  </header>
+
+  <section class="thread" id="thread" aria-label="まどかとのメッセージ" aria-live="polite">
+    <div class="loading">メッセージを読み込んでいます</div>
+  </section>
+
+  <form class="composer" id="composer">
+    <textarea class="message-input" id="box" rows="1" maxlength="4000" enterkeyhint="enter" aria-label="メッセージ" placeholder="メッセージ"></textarea>
+    <button class="send-button" id="sendBtn" type="submit" aria-label="送信" disabled>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3.4 3.15 17.45 8.02a.9.9 0 0 1 0 1.66L3.4 20.85a.84.84 0 0 1-1.15-.97l1.45-6.35 9.18-1.53-9.18-1.53-1.45-6.35A.84.84 0 0 1 3.4 3.15Z"/></svg>
+    </button>
+  </form>
+</main>
+
+<div class="gate" id="gate" hidden>
+  <form class="gate-card" id="gateForm">
+    <img class="gate-photo" src="portraits/cand-C-01.png" alt="">
+    <h1 class="gate-title">まどかとのトーク</h1>
+    <p class="gate-copy">最初の一度だけ、あいことばを入れてください。</p>
+    <input class="token-input" id="tokenIn" type="password" autocomplete="current-password" aria-label="あいことば">
+    <p class="gate-error" id="gateError" aria-live="polite"></p>
+    <button class="primary-button" type="submit">入る</button>
+  </form>
+</div>
+
+<div class="modal-backdrop" id="setup" hidden>
+  <section class="modal-card" role="dialog" aria-modal="true" aria-labelledby="setupTitle">
+    <h2 class="modal-title" id="setupTitle">通知の設定</h2>
+    <p class="modal-copy">下の設定用文字列をコピーして、制作側へ渡してください。</p>
+    <textarea class="subscription-text" id="subText" readonly aria-label="通知設定用文字列"></textarea>
+    <button class="plain-button" id="copySubBtn" type="button">コピー</button>
+    <button class="plain-button" id="closeSetupBtn" type="button">閉じる</button>
+  </section>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="config.js"></script>
+<script>
+const RELAY = 'https://hitokoto-relay.haqei64384.workers.dev';
+const EXPR = {
+  warm: 'portraits/cand-C-01.png',
+  proud: 'portraits/exp-proud-01.png',
+  gentle: 'portraits/exp-gentle-01.png',
+  playful: 'portraits/exp-playful-01.png',
+  serene: 'portraits/exp-serene-01.png'
+};
+const SCENE = {
+  bar: 'portraits/scene-bar-01.png',
+  morning: 'portraits/scene-morning-01.png',
+  rain: 'portraits/scene-rain-01.png',
+  nightwalk: 'portraits/scene-nightwalk-01.png',
+  // まどかのリアクション写真(返事の気分に合わせてAIが選ぶ)
+  ureshii: 'portraits/react-ureshii-01.png',
+  hakushu: 'portraits/react-hakushu-01.png',
+  yasashii: 'portraits/react-yasashii-01.png',
+  shinpai: 'portraits/react-shinpai-01.png',
+  nakiwarai: 'portraits/react-nakiwarai-01.png',
+  odoroki: 'portraits/react-odoroki-01.png',
+  tere: 'portraits/react-tere-01.png',
+  itazura: 'portraits/react-itazura-01.png',
+  ouen: 'portraits/react-ouen-01.png',
+  kanpai: 'portraits/react-kanpai-01.png',
+  negirai: 'portraits/react-negirai-01.png',
+  oyasumi: 'portraits/react-oyasumi-01.png',
+  waraisugi: 'portraits/react-waraisugi-01.png',
+  akire: 'portraits/react-akire-01.png',
+  doya: 'portraits/react-doya-01.png',
+  nemui: 'portraits/react-nemui-01.png',
+  shinken: 'portraits/react-shinken-01.png',
+  uruuru: 'portraits/react-uruuru-01.png',
+  banzai: 'portraits/react-banzai-01.png',
+  wink: 'portraits/react-wink-01.png',
+  kangae: 'portraits/react-kangae-01.png',
+  hotto: 'portraits/react-hotto-01.png',
+  fukigen: 'portraits/react-fukigen-01.png',
+  peace: 'portraits/react-peace-01.png'
+};
+
+let token = localStorage.getItem('hitokoto_token');
+let audioEl = null;
+let activeVoiceButton = null;
+let lastThreadLength = 0;
+let lastRenderSignature = '';
+let currentPortrait = EXPR.warm;
+let polling = false;
+let toastTimer = null;
+let firstLoad = true;
+
+const $ = id => document.getElementById(id);
+const threadEl = $('thread');
+const box = $('box');
+const sendBtn = $('sendBtn');
+
+function make(tag, className, text) {
+  const el = document.createElement(tag);
+  if (className) el.className = className;
+  if (text !== undefined) el.textContent = text;
+  return el;
+}
+
+function showGate(message = '') {
+  $('gate').hidden = false;
+  $('gateError').textContent = message;
+  requestAnimationFrame(() => $('tokenIn').focus());
+}
+
+function hideGate() {
+  $('gate').hidden = true;
+  $('gateError').textContent = '';
+}
+
+function showToast(message) {
+  const el = $('toast');
+  el.textContent = message;
+  el.classList.add('on');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.remove('on'), 2300);
+}
+
+async function api(method, path, body) {
+  const response = await fetch(RELAY + path, {
+    method,
+    headers: { 'x-token': token, 'Content-Type': 'application/json' },
+    body: body ? JSON.stringify(body) : undefined
+  });
+
+  if (response.status === 401) {
+    localStorage.removeItem('hitokoto_token');
+    token = null;
+    showGate('あいことばが違うようです');
+    throw new Error('unauthorized');
+  }
+  if (!response.ok) throw new Error(`${path}: ${response.status}`);
+  return response.json();
+}
+
+function validDate(ts) {
+  const date = new Date(ts);
+  return Number.isNaN(date.getTime()) ? null : date;
+}
+
+function timeText(ts) {
+  const date = validDate(ts);
+  if (!date) return '';
+  return `${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`;
+}
+
+function dateKey(ts) {
+  const date = validDate(ts);
+  if (!date) return 'unknown';
+  return `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
+}
+
+function dateText(ts) {
+  const date = validDate(ts);
+  if (!date) return '';
+  const now = new Date();
+  const today = dateKey(now.toISOString());
+  const yesterdayDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1);
+  const yesterday = dateKey(yesterdayDate.toISOString());
+  if (dateKey(ts) === today) return '今日';
+  if (dateKey(ts) === yesterday) return '昨日';
+  return `${date.getMonth() + 1}月${date.getDate()}日`;
+}
+
+function portraitFor(entry) {
+  if (!entry) return EXPR.warm;
+  return (entry.scene && SCENE[entry.scene]) || EXPR[entry.expression] || EXPR.warm;
+}
+
+function toHdr(src){ // ヘッダーは顔中心の合成版(hdr-*)を使う=顔が縦に切れない
+  const m = src && src.match(/portraits\/(.+)-01\.png$/);
+  return m ? `portraits/hdr-${m[1]}.png` : src;
+}
+// ヘッダーの写真をタップでシーン切替(一周して「おまかせ」に戻る)。おまかせ=会話に合わせて自動
+const SCENE_CYCLE = [
+  ['auto', 'おまかせ（会話に合わせる）'], ['cand-C', 'いつもの'], ['scene-cafe', 'カフェ'], ['scene-kitchen', 'キッチン'],
+  ['scene-sofa', '部屋でお茶'], ['scene-park', '公園'], ['scene-books', '本屋'], ['scene-beach', '海辺の夕方'],
+  ['scene-yukata', '夏祭り'], ['scene-snow', '雪の日'], ['scene-bar', 'バー'], ['scene-morning', '朝'],
+  ['scene-rain', '雨の日'], ['scene-nightwalk', '夜の散歩']
+];
+let manualScene = localStorage.getItem('madoka_scene') || 'auto';
+let lastAutoRaw = null;
+function setPortrait(rawSrc, force = false) {
+  if (!force) {
+    lastAutoRaw = rawSrc;
+    if (manualScene !== 'auto') return; // 手動シーン固定中は自動切替しない
+  }
+  const src = toHdr(rawSrc);
+  if (!src || src === currentPortrait) return;
+  const portrait = $('portrait');
+  const preload = new Image();
+  portrait.classList.add('changing');
+  preload.onload = () => {
+    portrait.src = src;
+    currentPortrait = src;
+    portrait.classList.remove('changing');
+    setMotion(src);
+  };
+  preload.onerror = () => portrait.classList.remove('changing');
+  preload.src = src;
+}
+// 静止画に対応する動きループ(DepthFlow)があれば重ねて再生。無ければ静止画のまま
+function setMotion(hdrSrc) {
+  const vid = $('portraitVid');
+  const m = hdrSrc && hdrSrc.match(/portraits\/(hdr-[\w-]+)\.png$/);
+  if (!m) { vid.classList.remove('on'); vid.removeAttribute('src'); return; }
+  const msrc = `motion/${m[1]}.mp4`;
+  if (vid.getAttribute('src') === msrc) return;
+  vid.classList.remove('on');
+  vid.src = msrc;
+  vid.oncanplay = () => { vid.play().catch(() => {}); vid.classList.add('on'); };
+  vid.onerror = () => { vid.classList.remove('on'); vid.removeAttribute('src'); };
+}
+setMotion($('portrait').getAttribute('src')); // 初期表示から動きを付ける
+$('portrait').addEventListener('click', () => {
+  const i = SCENE_CYCLE.findIndex(s => s[0] === manualScene);
+  const [key, label] = SCENE_CYCLE[(i + 1) % SCENE_CYCLE.length];
+  manualScene = key;
+  localStorage.setItem('madoka_scene', key);
+  if (key === 'auto') setPortrait(lastAutoRaw || EXPR.warm, true);
+  else setPortrait(`portraits/${key}-01.png`, true);
+  showToast(label);
+});
+
+function pendingUserIds(thread, pendingCount) {
+  const count = Math.max(0, Number(pendingCount) || 0);
+  if (count === 0) return new Set();
+  return new Set(thread.filter(entry => entry.role === 'user').slice(-count).map(entry => entry.id));
+}
+
+function stopVoice() {
+  if (audioEl) {
+    audioEl.pause();
+    audioEl.currentTime = 0;
+  }
+  audioEl = null;
+  if (activeVoiceButton) {
+    activeVoiceButton.classList.remove('playing');
+    activeVoiceButton.querySelector('.voice-icon').textContent = '▶';
+    activeVoiceButton.querySelector('.voice-label').textContent = '声をきく';
+    activeVoiceButton.setAttribute('aria-label', '声をきく');
+  }
+  activeVoiceButton = null;
+}
+
+function playVoice(src, button) {
+  if (activeVoiceButton === button) {
+    stopVoice();
+    return;
+  }
+  stopVoice();
+  audioEl = new Audio(src);
+  activeVoiceButton = button;
+  button.classList.add('playing');
+  button.querySelector('.voice-icon').textContent = '■';
+  button.querySelector('.voice-label').textContent = '止める';
+  button.setAttribute('aria-label', '声を止める');
+  audioEl.onended = stopVoice;
+  audioEl.onerror = () => { stopVoice(); showToast('音声を再生できませんでした'); };
+  audioEl.play().catch(() => { stopVoice(); showToast('音声を再生できませんでした'); });
+}
+
+function appendMessage(fragment, entry, options) {
+  const mine = entry.role === 'user';
+  const row = make('div', `message-row ${mine ? 'mine' : 'hers'}${options.continued ? ' continued' : ''}`);
+
+  if (!mine) {
+    const avatarSlot = make('div', 'avatar-slot');
+    if (options.showAvatar) {
+      const avatar = make('img', 'message-avatar');
+      avatar.src = EXPR.warm;
+      avatar.alt = 'まどか';
+      avatarSlot.append(avatar);
+    }
+    row.append(avatarSlot);
+  }
+
+  const stack = make('div', 'message-stack');
+  const bubble = make('div', 'bubble');
+  const messageText = make('div', 'message-text', typeof entry.text === 'string' ? entry.text : '');
+  bubble.append(messageText);
+
+  if (!mine && entry.audioId) {
+    const voice = make('button', 'voice-button');
+    voice.type = 'button';
+    voice.setAttribute('aria-label', '声をきく');
+    const icon = make('span', 'voice-icon', '▶');
+    const label = make('span', 'voice-label', '声をきく');
+    voice.append(icon, label);
+    voice.addEventListener('click', () => playVoice(`${RELAY}/audio/${encodeURIComponent(entry.audioId)}`, voice));
+    bubble.append(voice);
+  }
+
+  const meta = make('div', 'message-meta');
+  const time = make('span', '', timeText(entry.ts));
+  if (mine) {
+    const receiptText = options.isPending ? '送信済み' : '既読';
+    const receipt = make('span', `receipt${options.isPending ? '' : ' read'}`, receiptText);
+    meta.append(receipt, time);
+  } else {
+    meta.append(time);
+  }
+
+  stack.append(bubble, meta);
+  row.append(stack);
+  fragment.append(row);
+}
+
+function appendTyping(fragment) {
+  const row = make('div', 'message-row hers typing-row');
+  const avatarSlot = make('div', 'avatar-slot');
+  const avatar = make('img', 'message-avatar');
+  avatar.src = EXPR.warm;
+  avatar.alt = 'まどか';
+  avatarSlot.append(avatar);
+  const bubble = make('div', 'typing-bubble');
+  bubble.setAttribute('aria-label', 'まどかが入力中');
+  bubble.append(make('i'), make('i'), make('i'));
+  row.append(avatarSlot, bubble);
+  fragment.append(row);
+}
+
+function render(thread, pending = 0) {
+  const items = Array.isArray(thread) ? thread : [];
+  const signature = JSON.stringify([items, Number(pending) || 0]);
+  if (signature === lastRenderSignature) return;
+  const nearBottom = threadEl.scrollHeight - threadEl.scrollTop - threadEl.clientHeight < 100;
+  const fragment = document.createDocumentFragment();
+  const pendingIds = pendingUserIds(items, pending);
+
+  if (!items.length) {
+    const empty = make('div', 'empty-state');
+    const avatar = make('img', 'empty-avatar');
+    avatar.src = EXPR.warm;
+    avatar.alt = '';
+    empty.append(avatar, make('div', '', '今日あったこと、感じたこと。\n短くても、そのままで。'));
+    fragment.append(empty);
+  } else {
+    let previousDate = null;
+    items.forEach((entry, index) => {
+      const currentDate = dateKey(entry.ts);
+      if (currentDate !== previousDate) {
+        fragment.append(make('div', 'date-separator', dateText(entry.ts)));
+        previousDate = currentDate;
+      }
+      const previous = items[index - 1];
+      const next = items[index + 1];
+      const continued = Boolean(previous && previous.role === entry.role && dateKey(previous.ts) === currentDate);
+      const showAvatar = entry.role === 'her' && (!next || next.role !== 'her' || dateKey(next.ts) !== currentDate);
+      appendMessage(fragment, entry, { continued, showAvatar, isPending: pendingIds.has(entry.id) });
+    });
+    if (Number(pending) > 0) appendTyping(fragment);
+  }
+
+  if (activeVoiceButton) stopVoice();
+  threadEl.replaceChildren(fragment);
+  const lastHer = [...items].reverse().find(entry => entry.role === 'her');
+  if (lastHer) {
+    setPortrait(portraitFor(lastHer));
+    if (lastHer.day) $('dayBadge').textContent = `${lastHer.day} / 50日`;
+  }
+  $('identityStatus').textContent = Number(pending) > 0 ? '入力中…' : '';
+
+  if (nearBottom || items.length !== lastThreadLength || firstLoad) {
+    requestAnimationFrame(() => { threadEl.scrollTop = threadEl.scrollHeight; });
+  }
+  lastThreadLength = items.length;
+  lastRenderSignature = signature;
+  firstLoad = false;
+}
+
+async function poll(force = false) {
+  if (!token || polling) return;
+  polling = true;
+  try {
+    const data = await api('GET', '/thread');
+    render(data.thread, data.pending);
+  } catch (error) {
+    if (error.message !== 'unauthorized' && force) showToast('つながりませんでした。もう一度試してください');
+  } finally {
+    polling = false;
+  }
+}
+
+function resizeInput() {
+  box.style.height = '40px';
+  box.style.height = `${Math.min(box.scrollHeight, 116)}px`;
+  sendBtn.disabled = !box.value.trim() || !token;
+}
+
+async function send() {
+  const text = box.value.trim();
+  if (!text || !token || sendBtn.disabled) return;
+  sendBtn.disabled = true;
+  try {
+    await api('POST', '/send', { text });
+    box.value = '';
+    resizeInput();
+    await poll(true);
+  } catch (error) {
+    if (error.message !== 'unauthorized') showToast('送れませんでした。メッセージは残してあります');
+  } finally {
+    sendBtn.disabled = !box.value.trim() || !token;
+  }
+}
+
+async function enableNotify() {
+  try {
+    if (!('serviceWorker' in navigator) || !('Notification' in window)) throw new Error('この端末では通知を使えません');
+    const reg = await navigator.serviceWorker.register('sw.js');
+    const permission = await Notification.requestPermission();
+    if (permission !== 'granted') {
+      showToast('通知は許可されませんでした');
+      updateNotifyState();
+      return;
+    }
+    const existing = await reg.pushManager.getSubscription();
+    const sub = existing || await reg.pushManager.subscribe({
+      userVisibleOnly: true,
+      applicationServerKey: urlB64(window.HITOKOTO.vapidPublicKey)
+    });
+    $('subText').value = JSON.stringify(sub.toJSON());
+    $('setup').hidden = false;
+    updateNotifyState();
+  } catch (error) {
+    showToast(`iPhoneは「ホーム画面に追加」してから開いてください: ${error.message}`);
+  }
+}
+
+function urlB64(value) {
+  const padding = '='.repeat((4 - value.length % 4) % 4);
+  const base64 = (value + padding).replace(/-/g, '+').replace(/_/g, '/');
+  const raw = atob(base64);
+  return Uint8Array.from([...raw].map(char => char.charCodeAt(0)));
+}
+
+function updateNotifyState() {
+  const on = 'Notification' in window && Notification.permission === 'granted';
+  $('notifyBtn').classList.toggle('is-on', on);
+  $('notifyBtn').setAttribute('aria-label', on ? '通知はオンです' : '通知を設定');
+  $('notifyBtn').title = on ? '通知はオンです' : '通知を設定';
+}
+
+$('gateForm').addEventListener('submit', async event => {
+  event.preventDefault();
+  const nextToken = $('tokenIn').value.trim();
+  if (!nextToken) return;
+  token = nextToken;
+  localStorage.setItem('hitokoto_token', token);
+  hideGate();
+  sendBtn.disabled = !box.value.trim();
+  await poll(true);
+});
+
+$('composer').addEventListener('submit', event => {
+  event.preventDefault();
+  send();
+});
+box.addEventListener('input', resizeInput);
+box.addEventListener('keydown', event => {
+  if (event.key === 'Enter' && (event.metaKey || event.ctrlKey)) {
+    event.preventDefault();
+    send();
+  }
+});
+$('notifyBtn').addEventListener('click', enableNotify);
+$('closeSetupBtn').addEventListener('click', () => { $('setup').hidden = true; });
+$('setup').addEventListener('click', event => { if (event.target === $('setup')) $('setup').hidden = true; });
+$('copySubBtn').addEventListener('click', async () => {
+  const text = $('subText').value;
+  try {
+    await navigator.clipboard.writeText(text);
+    showToast('コピーしました');
+  } catch (error) {
+    $('subText').focus();
+    $('subText').select();
+    showToast('選択しました。コピーしてください');
+  }
+});
+
+if (!token) showGate();
+updateNotifyState();
+resizeInput();
+if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
+poll(true);
+setInterval(() => poll(false), 15000);
+</script>
+</body>
+</html>
