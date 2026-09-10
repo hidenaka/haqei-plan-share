@@ -168,9 +168,10 @@
 const RELAY = 'https://hitokoto-relay.haqei64384.workers.dev';
 const DRAFT_KEY = 'diary_draft';
 const QUEUE_KEY = 'diary_queue';
+const CACHE_KEY = 'diary_cache';
 
 let token = localStorage.getItem('hitokoto_token');
-let posts = [];
+let posts = JSON.parse(localStorage.getItem(CACHE_KEY) || '[]');
 let queue = JSON.parse(localStorage.getItem(QUEUE_KEY) || '[]');
 let pendingDelete = null;
 let toastTimer = null;
@@ -274,6 +275,7 @@ function render() {
     fragment.appendChild(make('div', 'empty', 'ここは、返事の来ない場所です。\n書いたものが下に積もります。'));
   }
   listEl.replaceChildren(fragment);
+  updateHint();
 }
 
 // ---- 読み込み ----
@@ -282,6 +284,7 @@ async function load() {
   try {
     const data = await api('GET', '/diary');
     posts = data.posts ?? [];
+    localStorage.setItem(CACHE_KEY, JSON.stringify(posts));
     render();
   } catch (error) {
     if (error.message !== 'unauthorized') console.warn(error);
@@ -310,6 +313,12 @@ async function flush() {
   } finally {
     flushing = false;
   }
+}
+
+// 書く欄のお知らせ。navigator.onLine はキャッシュ起動直後に当てにならないので、
+// 「送れていないものが実際にあるか」で出す
+function updateHint() {
+  $('hint').textContent = queue.length ? '電波が戻ったら送ります' : '';
 }
 
 function resizeBox() {
@@ -364,6 +373,7 @@ $('delBtn').addEventListener('click', async () => {
   try {
     await api('POST', '/diary/delete', { id });
     posts = posts.filter(p => p.id !== id);
+    localStorage.setItem(CACHE_KEY, JSON.stringify(posts));
     render();
   } catch (error) {
     if (error.message !== 'unauthorized') showToast('消せませんでした');
@@ -386,6 +396,7 @@ $('gateForm').addEventListener('submit', async event => {
 const draft = localStorage.getItem(DRAFT_KEY);
 if (draft) box.value = draft;
 resizeBox();
+updateHint();
 render();
 if (token) { load(); flush(); } else showGate();
 setInterval(() => { load(); flush(); }, 60000);
