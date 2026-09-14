@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>手札 — 企画案（リニューアル版）</title>
+<style>
+  :root { --ink:#1a1a1a; --ink-2:#4a4a4a; --bg:#f7f5ee; --paper:#fbf9f1; --line:#d8d2bf; --accent:#e0862f; --accent-soft:#f8e6d3; --warn:#c83a2c; --warn-soft:#f6dcd6; --ok:#2e8b57; --ok-soft:#e2f3e8; --yellow:#f4d35e; --shadow:0 1px 0 rgba(0,0,0,.04),0 8px 24px rgba(0,0,0,.06); --sans:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP","Yu Gothic","Meiryo",sans-serif; }
+  * { box-sizing:border-box; } html,body { margin:0; padding:0; }
+  body { font-family:var(--sans); background:var(--bg); color:var(--ink); line-height:1.7; -webkit-font-smoothing:antialiased; }
+  .wrap { max-width:1080px; margin:0 auto; padding:56px 28px 96px; }
+  .hero { margin-bottom:48px; }
+  .kicker { display:inline-block; background:var(--accent); color:#fff; font-size:12px; font-weight:700; letter-spacing:.12em; padding:6px 12px; border-radius:999px; margin-bottom:18px; }
+  h1 { font-size:40px; line-height:1.3; margin:0 0 14px; letter-spacing:-.01em; } h1 b { color:var(--accent); }
+  p.lede { font-size:18px; color:var(--ink-2); margin:0; max-width:820px; }
+  .tldr { margin-top:28px; padding:22px 24px; background:var(--paper); border:1px solid var(--line); border-radius:12px; box-shadow:var(--shadow); }
+  .tldr h2 { font-size:13px; letter-spacing:.15em; color:var(--accent); margin:0 0 10px; } .tldr ol { margin:0; padding-left:20px; } .tldr li { margin:4px 0; font-size:17px; }
+  section { margin:64px 0 0; }
+  section > h2 { font-size:28px; line-height:1.4; margin:0 0 6px; border-left:6px solid var(--accent); padding-left:12px; } section > h2 .num { color:var(--accent); margin-right:10px; }
+  section > p.sub { color:var(--ink-2); margin:0 0 22px; }
+  figure { margin:0 0 24px; padding:12px; background:var(--paper); border:1px solid var(--line); border-radius:14px; box-shadow:var(--shadow); } figcaption { font-size:13px; color:var(--ink-2); margin-top:10px; text-align:center; }
+  .table { width:100%; border-collapse:collapse; margin:12px 0 6px; background:var(--paper); border:1px solid var(--line); border-radius:12px; overflow:hidden; box-shadow:var(--shadow); }
+  .table th,.table td { text-align:left; padding:12px 14px; border-bottom:1px solid var(--line); vertical-align:top; font-size:14.5px; } .table th { background:#efeadb; font-weight:700; } .table tr:last-child td { border-bottom:0; }
+  .table .pick { background:var(--accent-soft); }
+  .tag { display:inline-block; font-size:11px; font-weight:800; padding:1px 8px; border-radius:999px; white-space:nowrap; }
+  .t-strong { background:var(--ok-soft); color:var(--ok); } .t-mid { background:#fff6cc; color:#8a6d00; } .t-weak { background:var(--warn-soft); color:var(--warn); }
+  .callout { margin:18px 0; padding:16px 18px; border-left:4px solid var(--accent); background:var(--accent-soft); border-radius:0 10px 10px 0; } .callout.warn { border-color:var(--warn); background:var(--warn-soft); } .callout p { margin:0; } .callout strong { color:var(--accent); } .callout.warn strong { color:var(--warn); }
+  .cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:14px; margin:14px 0; }
+  .card { background:var(--paper); border:1px solid var(--line); border-radius:14px; padding:18px; box-shadow:var(--shadow); } .card .emoji { font-size:40px; line-height:1; margin-bottom:8px; } .card h3 { margin:0 0 6px; font-size:17px; } .card p { margin:0; font-size:14.5px; color:var(--ink-2); }
+  .flow { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:10px; margin:14px 0; }
+  .step { background:var(--paper); border:1px solid var(--line); border-radius:12px; padding:14px; text-align:center; box-shadow:var(--shadow); } .step .t { font-size:12px; letter-spacing:.1em; color:var(--accent); font-weight:700; } .step .emoji { font-size:34px; line-height:1.2; } .step p { margin:6px 0 0; font-size:14px; }
+  .choice { margin:14px 0; background:var(--paper); border:1px solid var(--line); border-radius:14px; padding:18px 20px; box-shadow:var(--shadow); } .choice h3 { margin:0 0 10px; font-size:19px; } .choice h3 .q { display:inline-block; background:var(--ink); color:#fff; font-size:12px; padding:2px 8px; border-radius:6px; margin-right:8px; vertical-align:2px; }
+  .opts { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:10px; } .opt { border:2px solid var(--line); border-radius:10px; padding:12px 14px; font-size:14.5px; } .opt.rec { border-color:var(--accent); background:var(--accent-soft); } .opt .lab { font-weight:800; font-size:16px; } .opt .rec-tag { display:inline-block; background:var(--accent); color:#fff; font-size:11px; padding:1px 7px; border-radius:999px; margin-left:6px; vertical-align:2px; } .opt p { margin:4px 0 0; color:var(--ink-2); }
+  .src { font-size:13px; color:var(--ink-2); } .src a { color:var(--ink-2); }
+  .refs { font-size:13px; } .refs td { padding:8px 10px; } .refs a { color:var(--ink-2); word-break:break-all; }
+  .conclusion { margin-top:56px; padding:28px 28px 24px; background:var(--ink); color:#f6f3e8; border-radius:16px; } .conclusion h2 { color:var(--yellow); border:0; padding:0; margin:0 0 12px; } .conclusion ol { margin:0; padding-left:20px; } .conclusion li { margin:6px 0; }
+  footer { margin-top:36px; color:var(--ink-2); font-size:13px; }
+  @media (max-width:720px) { .wrap { padding:32px 18px 64px; } h1 { font-size:30px; } section > h2 { font-size:22px; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <span class="kicker">企画案（リニューアル版）｜2026-09-15</span>
+    <h1>手札 — やる気がなくても、<b>自分が変わっていく</b>アプリ</h1>
+    <p class="lede">「仕事はこなせている。でも、それ以外の自由な時間をどう使えばいいか決まっていない」——そういう人（日本の働く人の半分）が、いろんな人のやり方を1枚ずつ試し、使うほど「自分に合うもの」が分かっていく仕組み。まず自分用に、サブスクの Claude と常時起動の Mac mini で動かす。</p>
+    <div class="tldr">
+      <h2>3行でいうと</h2>
+      <ol>
+        <li><b>何を作る</b>: 行動×見方の「手札」を3回試して次へ回す。落ちても戻れる。出番・明け・公休のリズムに合わせて動く。AI が見立てを言い、数字は端末が数える。</li>
+        <li><b>本当に効くか</b>: 「着手→行動→意味→続く→戻る→自分が分かる」の6段の鎖で、各段に研究の根拠がある。ただし2段（占い調の言い切り／薄いデータの学習）は根拠が弱く、<b>測って確かめる</b>設計にしてある。</li>
+        <li><b>決めてほしい</b>: この企画で着手してよいか（A）。残る2つの質問（カレンダー／休憩の幅）は「仮でいい」でもOK。</li>
+      </ol>
+    </div>
+  </header>
+
+  <section>
+    <h2><span class="num">01</span>全体を1枚で</h2>
+    <p class="sub">左が「使う人の1回」、右が「裏側」。矢印が一周するたびに、手札が増え、山が高くなり、自分モデルが濃くなる。</p>
+    <figure>
+      <svg viewBox="0 0 1200 640" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="手札アプリの全体図" style="width:100%;height:auto;display:block;font-family:-apple-system,BlinkMacSystemFont,'Hiragino Kaku Gothic ProN','Hiragino Sans','Noto Sans JP',sans-serif">
+        <defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#e0862f"/></marker></defs>
+        <rect width="1200" height="640" rx="18" fill="#fffdf6"/>
+        <text x="330" y="44" text-anchor="middle" font-size="22" font-weight="800" fill="#e0862f">使う人の1回（合計1分）</text>
+        <text x="930" y="44" text-anchor="middle" font-size="22" font-weight="800" fill="#2e8b57">裏側（常時起動の Mac mini）</text>
+        <!-- loop left -->
+        <g font-size="15" fill="#1a1a1a">
+          <rect x="60" y="70" width="250" height="96" rx="12" fill="#f8e6d3" stroke="#e0862f" stroke-width="2"/>
+          <text x="78" y="100" font-size="26">🎴</text><text x="118" y="98" font-weight="800" font-size="17">① 手札が届く</text>
+          <text x="78" y="128">行動（例: 玄関でスクワット5回）</text><text x="78" y="150">× 見方（例: 終わり方を良くする）</text>
+          <rect x="360" y="70" width="250" height="96" rx="12" fill="#f8e6d3" stroke="#e0862f" stroke-width="2"/>
+          <text x="378" y="100" font-size="26">✨</text><text x="418" y="98" font-weight="800" font-size="17">② やる → 光る</text>
+          <text x="378" y="128">2分が床。完了は1タップ</text><text x="378" y="150">書いた物はそのまま山に残る</text>
+          <rect x="360" y="200" width="250" height="96" rx="12" fill="#f8e6d3" stroke="#e0862f" stroke-width="2"/>
+          <text x="378" y="230" font-size="26">❓</text><text x="418" y="228" font-weight="800" font-size="17">③ 今日の1問</text>
+          <text x="378" y="258">札に紐づく1問。3択＋任意1行</text><text x="378" y="280">飛ばせる。催促なし</text>
+          <rect x="60" y="200" width="250" height="96" rx="12" fill="#f8e6d3" stroke="#e0862f" stroke-width="2"/>
+          <text x="78" y="230" font-size="26">🔁</text><text x="118" y="228" font-weight="800" font-size="17">④ 3回できたら</text>
+          <text x="78" y="258">「また使う？／もういい」1タップ</text><text x="78" y="280">次の手札を3枚から選ぶ</text>
+          <line x1="310" y1="118" x2="358" y2="118" stroke="#e0862f" stroke-width="4" marker-end="url(#ar)"/>
+          <line x1="485" y1="168" x2="485" y2="198" stroke="#e0862f" stroke-width="4" marker-end="url(#ar)"/>
+          <line x1="358" y1="248" x2="312" y2="248" stroke="#e0862f" stroke-width="4" marker-end="url(#ar)"/>
+          <line x1="185" y1="198" x2="185" y2="168" stroke="#e0862f" stroke-width="4" marker-end="url(#ar)"/>
+          <!-- rhythm -->
+          <rect x="60" y="330" width="550" height="120" rx="12" fill="#fff6cc" stroke="#e0b93a" stroke-width="2"/>
+          <text x="80" y="360" font-weight="800" font-size="17">🕰️ あなたのリズムで動く</text>
+          <text x="80" y="388">🚕 出番: 休憩の幅に通知1回・1分の札・サボり扱いなし</text>
+          <text x="80" y="412">🛏️ 明け: 「起きた」1タップで枠が決まる（21時以降は来ない）</text>
+          <text x="80" y="436">🌤️ 公休: 一日使える。落ちても「起きた」がいつも戻る入口</text>
+          <!-- shelf -->
+          <rect x="60" y="480" width="550" height="130" rx="12" fill="#e2f3e8" stroke="#2e8b57" stroke-width="2"/>
+          <text x="80" y="510" font-weight="800" font-size="17">📚 手札の棚（枠は最初から大きく）</text>
+          <text x="80" y="538">研究者／ビジネス書の経験談／思想・宗教・武道／占い・易経</text>
+          <text x="80" y="562">有名人の習慣／民間の知恵／ネットの流行／自分で作った</text>
+          <text x="80" y="590" fill="#4a4a4a" font-size="14">📸 本の一節を写真で入れる → AI が手札にする。根拠の種類はタグで見せるだけ</text>
+        </g>
+        <!-- right side -->
+        <g font-size="15" fill="#1a1a1a">
+          <rect x="680" y="70" width="460" height="130" rx="12" fill="#e2f3e8" stroke="#2e8b57" stroke-width="2"/>
+          <text x="700" y="100" font-size="26">🧠</text><text x="740" y="98" font-weight="800" font-size="17">頭脳: Claude Code（サブスク内・自動）</text>
+          <text x="700" y="128">本の一節 → 手札／1問の答え → 1行返事（次に触れた時）</text>
+          <text x="700" y="152">見立て（占い調でOK。同じ見立てを3回試すまで次は出さない）</text>
+          <text x="700" y="176">カレンダーを読んで「今日は出番／明け／公休」を決める</text>
+          <rect x="680" y="220" width="460" height="110" rx="12" fill="#e2f3e8" stroke="#2e8b57" stroke-width="2"/>
+          <text x="700" y="250" font-size="26">🔢</text><text x="740" y="248" font-weight="800" font-size="17">自分モデル（数字は端末が数える）</text>
+          <text x="700" y="278">好きなタイプ n=9/12・合わない見方・方向の履歴・本人の言葉</text>
+          <text x="700" y="302">AI は数字を推定しない。各行に「根拠を見る」「違う」</text>
+          <rect x="680" y="350" width="460" height="100" rx="12" fill="#e2f3e8" stroke="#2e8b57" stroke-width="2"/>
+          <text x="700" y="380" font-size="26">⏰</text><text x="740" y="378" font-weight="800" font-size="17">目覚まし係（Web Push）</text>
+          <text x="700" y="408">枠の時刻に通知を送る。Mac mini が常時起動なので確実</text>
+          <text x="700" y="432">通知はタップで開くだけ。開いた最上部に今日の札と「起きた」</text>
+          <rect x="680" y="470" width="460" height="140" rx="12" fill="#f8e6d3" stroke="#e0862f" stroke-width="2"/>
+          <text x="700" y="500" font-size="26">📏</text><text x="740" y="498" font-weight="800" font-size="17">いい加減にしないのは3つだけ</text>
+          <text x="700" y="528">① 「変わったか」を測る（完了数・戻った回数・自分で変えた回数）</text>
+          <text x="700" y="552">② 害を入れない（自罰・恥・連続記録・診断）</text>
+          <text x="700" y="576">③ 規約の線（配布した瞬間に Claude Code 経路は使えない）</text>
+          <text x="700" y="600" fill="#4a4a4a" font-size="13">アプリ＝PWA（iPhone・iPad・Mac）／データ＝非公開 GitHub／費用 ¥0</text>
+        </g>
+        <line x1="612" y1="140" x2="676" y2="140" stroke="#2e8b57" stroke-width="3" stroke-dasharray="6 5"/>
+        <line x1="676" y1="270" x2="612" y2="270" stroke="#2e8b57" stroke-width="3" stroke-dasharray="6 5"/>
+      </svg>
+      <figcaption>使う人は1日1分。裏側で手札・自分モデル・通知が回る。すべてサブスクの Claude と自分の Mac mini の中。</figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <h2><span class="num">02</span>本当に「改善」につながるのか — 6段の鎖と根拠</h2>
+    <p class="sub">「アプリを使う」と「自分が変わる」の間には6つの段がある。段ごとに、何が起きるか／根拠の出典／確度（<span class="tag t-strong">研究あり</span> <span class="tag t-mid">条件つき</span> <span class="tag t-weak">仮説</span>）／外れたときの保険。</p>
+    <table class="table">
+      <thead><tr><th style="width:11%">段</th><th style="width:27%">仕組み</th><th style="width:34%">根拠（番号は末尾の出典）</th><th style="width:8%">確度</th><th>外れたときの保険</th></tr></thead>
+      <tbody>
+        <tr><td><b>1 着手</b><br>動き出せる</td><td>2分が床（上限ではない）。完了は1タップ。始める前の宿題ゼロ。通知はきっかけの時刻に1回</td><td>脳は「手間」と「ごほうび」を天秤にかけ、無気力ではごほうびが同じでも手間が重く見える [1][2]。だから手間をほぼゼロに。「動機×能力×きっかけ」が同時に揃う瞬間だけ行動が起きる [3]。「Xしたら Y」と決めておくと達成率が上がる（d=0.65・94研究）[4]。ただしその効果は「やりたい気持ち」がある人に限る [5]→ だから「何のため」を毎日見せる</td><td><span class="tag t-strong">研究あり</span></td><td>3日目・7日目の生存率を測る。落ちたら「起きた」から再開</td></tr>
+        <tr><td><b>2 行動が先</b><br>気分は後</td><td>気分が乗るのを待たない。「今日の1つ」を予定に置き、やった直後に光る</td><td>行動活性化（回避を減らし価値ある活動を先に入れる）はうつ治療で大きな効果（g=0.87・16試験）[6]。※臨床の値なので非臨床の停滞層で同じ大きさは期待しない。報酬の遅れをゼロにすると動機が上がる（動機＝期待×価値÷(1＋衝動性×遅延)）[7]</td><td><span class="tag t-mid">条件つき</span></td><td>効果量を過信しない。週の完了数が増えるかで判定</td></tr>
+        <tr><td><b>3 意味</b><br>「何のため」が消えない</td><td>目標は聞かず「今の何が嫌？」→「変わったら何が増える？」に言い換え、毎日画面の見出しに出す。書いた物はそのまま山に残る</td><td>「嫌」（回避目標）より「増える」（接近目標）の方が進捗と幸福度が高い [8]。本人の口から出た「変えたい理由」だけが動く力になる（動機づけ面接）[9]。意味ある仕事の小さな前進が最大の動機（238人・1万2千件の日記分析）[10]。目標は「試した後」に自分のものになる [11][12]</td><td><span class="tag t-strong">研究あり</span></td><td>意味が薄れたら方向を変える（「もういい」→次の候補）</td></tr>
+        <tr><td><b>4 続く</b><br>飽きない</td><td>3回できたら次の手札へ。行動も見方も回る。3枚から選ぶ。予告は行動で見せる</td><td>「多様性の提供」が継続率を上げ、その効果は「多様だと感じる」ことを介する（6週・無作為化）[13]。飽き＝快楽適応は多様性で防げる [14]。介入と期間を本人が選べる自己実験の方が記録疲れが少ない [15]。新奇性は探索とドーパミン系を駆動する [16]。※習慣の自動化には「同じ合図→同じ反応」が要る [17] ので、時刻と1タップは固定し、中身だけ回す</td><td><span class="tag t-strong">研究あり</span></td><td>「次の手札」を自分から押す率が上がりすぎたら（めくるだけ）、完了直後にしか押せない縛りで止める</td></tr>
+        <tr><td><b>5 戻る</b><br>落ちてもゼロにならない</td><td>連続記録なし。累計と「戻ってきた回数」。2日空くと通知が止まり、次の触れる日に中身でノック。「起きた」が常に戻る入口</td><td>1日抜けても習慣形成にほぼ影響なし（自動化まで中央値66日）[18]。1回の失敗を「自分はダメだ」と解釈して全部やめる（禁欲違反効果）を、連続記録が悪化させる [19]。節目（週の始め・月初）は再開しやすい [20]。予備つきの目標は厳格な目標より続く [21]。失敗後に自分に優しい方が再開しやすい [22]。健康・メンタル系アプリは70%が100日以内に離脱 [19]</td><td><span class="tag t-strong">研究あり</span></td><td>停止→再接触からの復帰率を測る。2通で無反応なら黙る（うるさくしない）</td></tr>
+        <tr><td><b>6 自分が分かる</b><br>合うものが見えてくる</td><td>「また使う／もういい」「👍👎」「1問の答え」を端末が数え、n つきで見せる。AI は「見立て」（占い調）を言ってよいが、数字は推定しない。本の一節を手札にする</td><td>個人の行動データから提案を学習するアプリは効く（歩行+10分/日・無作為化）[23]。ただしそれは大量の自動計測データで、本アプリの信号量（1日1〜2件）では統計学習は成立しない→ 集計＋未試行優先の巡回に単純化。利用者モデルは日本語で見せて本人が直せる形が信頼される [24]。AI が問う側だと無気力層でも日記が書ける [25]、AI の返事は思考を誘導する危険がある [26]→ 返事は1行・過去引用は求めた時だけ。「あなたは○○タイプ」は少ないデータでは占い（バーナム効果）になる [27]</td><td><span class="tag t-mid">条件つき</span></td><td>数字は3件未満なら出さない。「違う」で学習を消せる。自分モデルの正しさは測らない（行動が変わったかだけ測る）</td></tr>
+        <tr class="pick"><td><b>＋ 見立て</b><br>占い調の言い切り</td><td>「あなたは『整える』系。今週はこの3枚」と早くから言い切る（本人の指示: 変わればいい）</td><td>根拠は弱い。期待が行動を変える（期待効果・自己成就）[27] と、「難しさ＝自分に大事」と解釈できると粘れる [28] が近い知見。<b>効くかは分からない＝仮説として測る</b></td><td><span class="tag t-weak">仮説</span></td><td>同じ見立てを3回試すまで次を出さない。見立てが出た週と出ない週の完了数を比べる（自分実験）</td></tr>
+        <tr><td><b>＋ リズム</b><br>不規則でも使える</td><td>出番・明け・公休で枠を変える。「起きた」で今日が決まる。出番は中立</td><td>「その時その場」で届ける介入（JITAI）は固定時刻より効く [29]。文脈が安定していると自動化が進む [17]→ 時刻ではなく「起きた」「休憩の幅」を合図にする</td><td><span class="tag t-mid">条件つき</span></td><td>出番の完了率／明けの完了率を別々に測り、枠を直す</td></tr>
+      </tbody>
+    </table>
+    <div class="callout"><p><strong>正直な答え:</strong> 1〜5 の段は研究で支えられている。6 と「見立て」は<b>あなたの価値観（変わればいい）で採用した仮説</b>で、効くかどうかは自分実験で確かめる。だから「本当に改善につながるか」の最終回答は、作ってから3週間で出る（§04）。</p></div>
+  </section>
+
+  <section>
+    <h2><span class="num">03</span>効かないかもしれない点（14ラウンドのダメ出しで残ったもの）</h2>
+    <p class="sub">別AIのレビュアー（研究者／当事者／実装者）が最後まで「弱い」と言った点。隠さずに書く。</p>
+    <div class="cards">
+      <div class="card"><div class="emoji">📉</div><h3>効果量は借り物</h3><p>行動活性化の g=0.87 も実装意図の d=0.65 も、別の条件（臨床・目標あり）での数字。この層で同じ大きさは出ない。→ 数字を売りにしない。自分の完了数で判断する。</p></div>
+      <div class="card"><div class="emoji">🔮</div><h3>学習は薄い</h3><p>1日1〜2件の信号では「思想の傾向」は語れない。語れば占いになる。→ 数字は3件未満で出さない。見立ては占いと割り切り、効くかを測る。</p></div>
+      <div class="card"><div class="emoji">🎭</div><h3>札集めが目的化する</h3><p>手札をめくるのが楽しくて行動が増えない危険。→ 「次の手札」は完了直後だけ。「試していない札の割合」を常に見せる。</p></div>
+      <div class="card"><div class="emoji">🚕</div><h3>出番は本当に触れるか</h3><p>休憩は客次第で幅からずれる。通知を開いて1タップは30秒ではなく1分。→ 期待値を下げる。出番はサボり扱いにしない。</p></div>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="num">04</span>確かめ方 — 3週間の自分実験</h2>
+    <p class="sub">「自分モデルが当たったか」は測らない。<b>行動が変わったか</b>だけを測る。</p>
+    <div class="flow">
+      <div class="step"><div class="t">測る①</div><div class="emoji">📈</div><p>週の完了数が前の週より増えたか</p></div>
+      <div class="step"><div class="t">測る②</div><div class="emoji">📸</div><p>本から作った手札を3回やり切った枚数が2枚以上か</p></div>
+      <div class="step"><div class="t">測る③</div><div class="emoji">🧭</div><p>方向か行動を自分で変えた回数が1回以上か</p></div>
+      <div class="step"><div class="t">測る④</div><div class="emoji">❓</div><p>1問に答えた日が週3日以上か（義務感なしで）</p></div>
+      <div class="step"><div class="t">見立ての検証</div><div class="emoji">🔮</div><p>見立てが出た週と出ない週で完了数を比べる</p></div>
+      <div class="step"><div class="t">リズムの検証</div><div class="emoji">🚕</div><p>出番／明け／公休の完了率を別々に見て枠を直す</p></div>
+    </div>
+    <p class="src">状態機械のテスト（日付送り機能で通す境界）: 出番と予測して公休だった日／公休と予測して出番だった日／「起きた」を押さない日が3日続く／深夜4時／「起きた」を2時に押す（乗務直後）。</p>
+  </section>
+
+  <section>
+    <h2><span class="num">05</span>作るもの・順番・費用</h2>
+    <table class="table">
+      <thead><tr><th>順</th><th>作るもの</th><th>期間</th><th>使えるようになること</th></tr></thead>
+      <tbody>
+        <tr class="pick"><td>①</td><td><b>`tefuda-brain`</b>: Mac mini の Claude Code スキル</td><td>1週</td><td>今週から Claude Code 単体で: 本の一節→手札／判定→集計＋見立て／今日の実験＋1問／1行返事</td></tr>
+        <tr><td>②</td><td><b>PWA</b>（iPhone・iPad・Mac 共通。タクシー日報と同じ作り）</td><td>5〜6週</td><td>実験層・「起きた」・出番の休憩枠・1問・自分モデル画面</td></tr>
+        <tr><td>③</td><td><b>GitHub 橋＋目覚まし係＋カレンダー読み取り</b>（Mac mini）</td><td>1.5〜2週</td><td>通知が枠の時刻に届く／今日の日タイプが自動で決まる</td></tr>
+        <tr><td>④</td><td><b>3枚生成</b>（区切りごとに AI が手札を3枚作る）</td><td>1週</td><td>手札が尽きない</td></tr>
+      </tbody>
+    </table>
+    <p class="src">合計 約2か月（フルタイム換算）。費用 ¥0（サブスク内・Developer Program 不要・Cloudflare 不要）。着手前に実機で潰す2点: ホーム画面 PWA に Web Push が届くこと／Mac mini でカレンダー権限を手動で1回通すこと。規約: 自分1人・自分の Mac なら正規。配布する時は API 課金に切り替える。</p>
+  </section>
+
+  <section>
+    <h2><span class="num">06</span>あなたが決めること</h2>
+    <div class="choice">
+      <h3><span class="q">Q1</span>この企画で着手してよい？</h3>
+      <div class="opts">
+        <div class="opt rec"><span class="lab">A. はい</span><span class="rec-tag">おすすめ</span><p>実装計画を作り、①頭脳スキルから今週着手。</p></div>
+        <div class="opt"><span class="lab">B. もう1周ダメ出し</span><p>気になる点を1つ。そのレンズで回します。</p></div>
+        <div class="opt"><span class="lab">C. ここを変えたい</span><p>変えたい所を1行で。</p></div>
+      </div>
+    </div>
+    <div class="choice">
+      <h3><span class="q">Q2</span>カレンダーはどれ？ 出番・公休はどう書いてある？（「仮でいい」でもOK）</h3>
+      <div class="opts">
+        <div class="opt"><span class="lab">A. iCloud</span><p>Mac mini の「カレンダー」がそのまま読める。予定名を教えてください。</p></div>
+        <div class="opt"><span class="lab">B. Google</span><p>Mac mini のカレンダーに Google を追加すれば同じ。</p></div>
+        <div class="opt"><span class="lab">C. 公休しか書いていない／書いていない</span><p>隔勤パターン（出番⇄明け）＋公休だけで足ります。</p></div>
+      </div>
+    </div>
+    <div class="choice">
+      <h3><span class="q">Q3</span>出番の休憩の幅は？（「仮でいい」でもOK）</h3>
+      <div class="opts">
+        <div class="opt rec"><span class="lab">A. 昼 12〜14時＋夕方 17時半〜19時半</span><span class="rec-tag">仮</span><p>幅の始めに通知1回ずつ。</p></div>
+        <div class="opt"><span class="lab">B. 1枠だけ</span><p>例: 昼だけ。</p></div>
+        <div class="opt"><span class="lab">C. 出番は通知なし</span><p>開いた時だけ。アイコンのバッジだけ。</p></div>
+      </div>
+    </div>
+    <div class="callout warn"><p><strong>まだコードは書いていません。</strong> Q1 の答え（Q2・Q3 は「仮でいい」でOK）をもらい次第、実装計画 → `tefuda-brain` に入ります。</p></div>
+  </section>
+
+  <section>
+    <h2><span class="num">07</span>出典</h2>
+    <p class="sub">§02 の番号に対応。取得日 2026-09-14〜15。数字の解釈上の注意は §02・§03 に書いたとおり。</p>
+    <table class="table refs">
+      <tbody>
+        <tr><td>[1]</td><td>Husain &amp; Roiser (2018) Neuroscience of apathy and anhedonia: a transdiagnostic approach. <i>Nature Reviews Neuroscience</i>. <a href="https://www.nature.com/articles/s41583-018-0029-9">nature.com</a></td></tr>
+        <tr><td>[2]</td><td>A common alteration in effort-based decision-making in apathy, anhedonia, and late circadian rhythm (2024/25). <i>eLife</i>. <a href="https://elifesciences.org/articles/96803">elifesciences.org</a></td></tr>
+        <tr><td>[3]</td><td>Fogg, B.J. Fogg Behavior Model (B=MAP)／Tiny Habits (2019). <a href="https://www.behaviormodel.org/">behaviormodel.org</a></td></tr>
+        <tr><td>[4]</td><td>Gollwitzer &amp; Sheeran (2006) Implementation intentions and goal achievement: a meta-analysis (94 tests, d=0.65). <a href="https://www.researchgate.net/publication/37367696">researchgate.net</a></td></tr>
+        <tr><td>[5]</td><td>Sheeran, Webb &amp; Gollwitzer (2005) The interplay between goal intentions and implementation intentions. <i>PSPB</i>. <a href="https://journals.sagepub.com/doi/10.1177/0146167204271308">sagepub.com</a></td></tr>
+        <tr><td>[6]</td><td>Effectiveness of digital behavioral activation interventions for depression and anxiety: systematic review and meta-analysis (2025). <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC12227033/">PMC12227033</a>（g=0.87 は Cuijpers ら 2007 の16試験の値を含む）</td></tr>
+        <tr><td>[7]</td><td>Steel &amp; König, Temporal Motivation Theory; 縦断検証 (2018) <i>Frontiers in Psychology</i>. <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5891720/">PMC5891720</a></td></tr>
+        <tr><td>[8]</td><td>Elliot &amp; Sheldon (1997) Avoidance achievement motivation: a personal goals analysis. <i>JPSP</i>.</td></tr>
+        <tr><td>[9]</td><td>Motivational Interviewing as a Counseling Style. <i>TIP 35</i>, NCBI Bookshelf. <a href="https://www.ncbi.nlm.nih.gov/books/NBK571068/">NBK571068</a></td></tr>
+        <tr><td>[10]</td><td>Amabile &amp; Kramer (2011) The Power of Small Wins. <i>HBR</i>. <a href="https://hbr.org/2011/05/the-power-of-small-wins">hbr.org</a></td></tr>
+        <tr><td>[11]</td><td>Establishing self-concordant goals: ego identity → goal self-concordance (2024). <i>Frontiers in Psychology</i>. <a href="https://www.frontiersin.org/journals/psychology/articles/10.3389/fpsyg.2024.1382345/full">frontiersin.org</a></td></tr>
+        <tr><td>[12]</td><td>Possible selves experiment on new retirees’ physical activity (RCT). <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5002317/">PMC5002317</a></td></tr>
+        <tr><td>[13]</td><td>Sylvester et al. (2016) Variety support and exercise adherence behavior. <i>J Behav Med</i>. <a href="https://link.springer.com/article/10.1007/s10865-015-9688-4">springer.com</a></td></tr>
+        <tr><td>[14]</td><td>Sheldon, Boehm &amp; Lyubomirsky (2012) Variety is the spice of happiness: the Hedonic Adaptation Prevention model. <a href="https://sonjalyubomirsky.com/wp-content/uploads/2024/07/Sheldon-Boehm-Lyubomirsky-2012.pdf">PDF</a></td></tr>
+        <tr><td>[15]</td><td>Daskalova et al. (2020) SleepBandits: guided flexible self-experiments for sleep. <i>CHI 2020</i>. <a href="https://dl.acm.org/doi/10.1145/3313831.3376584">acm.org</a></td></tr>
+        <tr><td>[16]</td><td>Curiosity-driven exploration: foundations in neuroscience and computational modeling (2023). <i>Trends in Neurosciences</i>. <a href="https://www.sciencedirect.com/science/article/pii/S0166223623002400">sciencedirect.com</a></td></tr>
+        <tr><td>[17]</td><td>Context stability in habit building increases automaticity and goal attainment (2022). <i>Frontiers in Psychology</i>. <a href="https://www.frontiersin.org/journals/psychology/articles/10.3389/fpsyg.2022.883795/full">frontiersin.org</a></td></tr>
+        <tr><td>[18]</td><td>Lally et al. (2010) How are habits formed: modelling habit formation in the real world. <i>EJSP</i>. <a href="https://onlinelibrary.wiley.com/doi/abs/10.1002/ejsp.674">wiley.com</a></td></tr>
+        <tr><td>[19]</td><td>Streak Creep: when gamified engagement mechanics backfire（離脱率70%のスコーピングレビューを含む）. <i>The Decision Lab</i>. <a href="https://thedecisionlab.com/insights/consumer-insights/streak-creep-the-perils-of-too-much-gamification">thedecisionlab.com</a></td></tr>
+        <tr><td>[20]</td><td>Dai, Milkman &amp; Riis (2014) The Fresh Start Effect. <i>Management Science</i>.</td></tr>
+        <tr><td>[21]</td><td>Sharif &amp; Shu (2021) The benefits of emergency reserves. <i>OBHDP</i>. <a href="https://www.sciencedirect.com/science/article/abs/pii/S0749597818304187">sciencedirect.com</a></td></tr>
+        <tr><td>[22]</td><td>Adams &amp; Leary (2007) Promoting self-compassionate attitudes toward eating among restrictive and guilty eaters. <i>J Soc Clin Psychol</i>.</td></tr>
+        <tr><td>[23]</td><td>Rabbi et al. (2015) MyBehavior: automatic personalized health feedback（多腕バンディット・RCT）. <i>UbiComp 2015</i>／<i>JMIR mHealth</i>. <a href="https://dl.acm.org/doi/10.1145/2750858.2805840">acm.org</a></td></tr>
+        <tr><td>[24]</td><td>Balog et al. (2019) Transparent, scrutable and explainable user models for personalized recommendation. <i>SIGIR 2019</i>. <a href="https://dl.acm.org/doi/10.1145/3331184.3331211">acm.org</a></td></tr>
+        <tr><td>[25]</td><td>MindfulDiary: harnessing LLM to support psychiatric patients’ journaling. <i>CHI 2024</i>. <a href="https://dl.acm.org/doi/10.1145/3613904.3642937">acm.org</a></td></tr>
+        <tr><td>[26]</td><td>ExploreSelf: user-driven exploration and reflection with adaptive LLM guidance. <i>CHI 2025</i>. <a href="https://dl.acm.org/doi/10.1145/3706598.3713883">acm.org</a></td></tr>
+        <tr><td>[27]</td><td>バーナム効果と推薦の受容（CHI 2023）; 期待効果の一般的知見. <a href="https://dl.acm.org/doi/full/10.1145/3544548.3580656">acm.org</a></td></tr>
+        <tr><td>[28]</td><td>Oyserman (2024) Identity-based motivation and the motivational consequences of difficulty. <i>Social &amp; Personality Psychology Compass</i>. <a href="https://compass.onlinelibrary.wiley.com/doi/10.1111/spc3.70028">wiley.com</a></td></tr>
+        <tr><td>[29]</td><td>Just-in-time adaptive interventions: where are we now and what is next? <i>Annual Review of Psychology</i> (2025). <a href="https://www.annualreviews.org/content/journals/10.1146/annurev-psych-121024-044244">annualreviews.org</a></td></tr>
+        <tr><td>市場</td><td>パーソル総合研究所 (2022) グローバル就業実態・成長意識調査（日本 52.6%／18か国平均 18%）<a href="https://webtan.impress.co.jp/n/2022/11/16/43656">webtan</a>／ベネッセ (2024) 社会人の学びに関する意識調査（学習意欲なし 42%）<a href="https://prtimes.jp/main/html/rd/p/000001265.000000120.html">prtimes</a></td></tr>
+        <tr><td>規約</td><td>Anthropic: サブスク OAuth は Claude Code と claude.ai 専用（2026-02 明文化）. <a href="https://www.theregister.com/2026/02/20/anthropic_clarifies_ban_third_party_claude_access/">The Register</a>／データ保持 <a href="https://support.claude.com/en/articles/15425996-data-retention-practices-for-covered-models">support.claude.com</a></td></tr>
+      </tbody>
+    </table>
+    <p class="src">設計の全文（v14.1）と、別AI 14ラウンド・27本のダメ出し全文: アプリ開発/無気力サポートアプリ/docs/plan/</p>
+  </section>
+
+  <div class="conclusion">
+    <h2>結論</h2>
+    <ol>
+      <li>作るのは「やる気を出させる」アプリではなく、いろんな人のやり方を1枚ずつ試して、落ちても戻れて、使うほど自分に合うものが分かる「手札」。</li>
+      <li>改善につながる鎖の 1〜5 段（着手・行動・意味・続く・戻る）は研究で支えられている。6 段目（自分が分かる）と「見立て」は仮説として、3週間の自分実験で「行動が変わったか」を測る。</li>
+      <li>費用 ¥0・約2か月。決めてほしいのは「この企画で着手してよいか」だけ（カレンダーと休憩の幅は仮でいい）。</li>
+    </ol>
+  </div>
+
+  <footer>企画案 v14.1 ／ 2026-09-15 ／ 前の判断資料（経緯つき）: 2026-09-14-kickoff.html</footer>
+</div>
+</body>
+</html>
