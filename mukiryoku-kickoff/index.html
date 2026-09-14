@@ -1,0 +1,404 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>手札 — 自分を学習する自己改善AI（設計案）</title>
+<style>
+  :root {
+    --ink: #1a1a1a;
+    --ink-2: #4a4a4a;
+    --bg: #f7f5ee;
+    --paper: #fbf9f1;
+    --line: #d8d2bf;
+    --accent: #e0862f;
+    --accent-soft: #f8e6d3;
+    --warn: #c83a2c;
+    --warn-soft: #f6dcd6;
+    --yellow: #f4d35e;
+    --shadow: 0 1px 0 rgba(0,0,0,.04), 0 8px 24px rgba(0,0,0,.06);
+    --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+    --sans: -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN",
+            "Hiragino Sans", "Noto Sans JP", "Yu Gothic", "Meiryo", sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { font-family: var(--sans); background: var(--bg); color: var(--ink); line-height: 1.7; -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 56px 28px 96px; }
+  .hero { margin-bottom: 48px; }
+  .hero .kicker { display: inline-block; background: var(--accent); color: #fff; font-size: 12px; font-weight: 700; letter-spacing: .12em; padding: 6px 12px; border-radius: 999px; margin-bottom: 18px; }
+  .hero h1 { font-size: 40px; line-height: 1.3; margin: 0 0 14px; letter-spacing: -.01em; }
+  .hero h1 b { color: var(--accent); }
+  .hero p.lede { font-size: 18px; color: var(--ink-2); margin: 0; max-width: 780px; }
+  .tldr { margin-top: 28px; padding: 22px 24px; background: var(--paper); border: 1px solid var(--line); border-radius: 12px; box-shadow: var(--shadow); }
+  .tldr h2 { font-size: 13px; letter-spacing: .15em; color: var(--accent); margin: 0 0 10px; }
+  .tldr ol { margin: 0; padding-left: 20px; }
+  .tldr li { margin: 4px 0; font-size: 17px; }
+  section { margin: 64px 0 0; }
+  section > h2 { font-size: 28px; line-height: 1.4; margin: 0 0 6px; border-left: 6px solid var(--accent); padding-left: 12px; }
+  section > h2 .num { color: var(--accent); font-variant-numeric: tabular-nums; margin-right: 10px; }
+  section > p.sub { color: var(--ink-2); margin: 0 0 22px; }
+  figure { margin: 0 0 24px; padding: 12px; background: var(--paper); border: 1px solid var(--line); border-radius: 14px; box-shadow: var(--shadow); }
+  figure img { display: block; width: 100%; height: auto; border-radius: 8px; }
+  figcaption { font-size: 13px; color: var(--ink-2); margin-top: 10px; text-align: center; }
+  .table { width: 100%; border-collapse: collapse; margin: 12px 0 6px; background: var(--paper); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; box-shadow: var(--shadow); }
+  .table th, .table td { text-align: left; padding: 12px 14px; border-bottom: 1px solid var(--line); vertical-align: top; font-size: 14.5px; }
+  .table th { background: #efeadb; font-weight: 700; }
+  .table tr:last-child td { border-bottom: 0; }
+  .table .pick { background: var(--accent-soft); }
+  .table .pick td:first-child { font-weight: 700; color: var(--accent); }
+  .big { font-size: 22px; font-weight: 800; color: var(--accent); white-space: nowrap; }
+  .callout { margin: 18px 0; padding: 16px 18px; border-left: 4px solid var(--accent); background: var(--accent-soft); border-radius: 0 10px 10px 0; }
+  .callout.warn { border-color: var(--warn); background: var(--warn-soft); }
+  .callout p { margin: 0; }
+  .callout strong { color: var(--accent); }
+  .callout.warn strong { color: var(--warn); }
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 14px; margin: 14px 0; }
+  .card { background: var(--paper); border: 1px solid var(--line); border-radius: 14px; padding: 18px 18px 16px; box-shadow: var(--shadow); }
+  .card .emoji { font-size: 44px; line-height: 1; margin-bottom: 8px; }
+  .card h3 { margin: 0 0 6px; font-size: 17px; line-height: 1.4; }
+  .card p { margin: 0; font-size: 14.5px; color: var(--ink-2); }
+  .card .fix { margin-top: 10px; padding-top: 8px; border-top: 1px dashed var(--line); font-size: 14px; color: var(--ink); }
+  .card .fix b { color: var(--accent); }
+  .flow { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; margin: 14px 0; }
+  .step { background: var(--paper); border: 1px solid var(--line); border-radius: 12px; padding: 14px; text-align: center; box-shadow: var(--shadow); }
+  .step .t { font-size: 12px; letter-spacing: .1em; color: var(--accent); font-weight: 700; }
+  .step .emoji { font-size: 36px; line-height: 1.2; }
+  .step p { margin: 6px 0 0; font-size: 14px; }
+  .choice { margin: 14px 0; background: var(--paper); border: 1px solid var(--line); border-radius: 14px; padding: 18px 20px; box-shadow: var(--shadow); }
+  .choice h3 { margin: 0 0 10px; font-size: 19px; }
+  .choice h3 .q { display: inline-block; background: var(--ink); color: #fff; font-size: 12px; padding: 2px 8px; border-radius: 6px; margin-right: 8px; vertical-align: 2px; }
+  .opts { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; }
+  .opt { border: 2px solid var(--line); border-radius: 10px; padding: 12px 14px; font-size: 14.5px; }
+  .opt.rec { border-color: var(--accent); background: var(--accent-soft); }
+  .opt .lab { font-weight: 800; font-size: 16px; }
+  .opt .rec-tag { display: inline-block; background: var(--accent); color: #fff; font-size: 11px; padding: 1px 7px; border-radius: 999px; margin-left: 6px; vertical-align: 2px; }
+  .opt p { margin: 4px 0 0; color: var(--ink-2); }
+  .src { font-size: 13px; color: var(--ink-2); }
+  .src a { color: var(--ink-2); }
+  .conclusion { margin-top: 56px; padding: 28px 28px 24px; background: var(--ink); color: #f6f3e8; border-radius: 16px; }
+  .conclusion h2 { color: var(--yellow); border: 0; padding: 0; margin: 0 0 12px; }
+  .conclusion ol { margin: 0; padding-left: 20px; }
+  .conclusion li { margin: 6px 0; }
+  footer { margin-top: 36px; color: var(--ink-2); font-size: 13px; }
+  @media (max-width: 720px) {
+    .wrap { padding: 32px 18px 64px; }
+    .hero h1 { font-size: 30px; }
+    section > h2 { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <span class="kicker">自分を学習する自己改善AI「手札」｜調査と設計案 v12</span>
+    <h1>やる気はいらない。<b>手札</b>を1枚ずつ試すと、AIが「自分」を覚えていく</h1>
+    <p class="lede">「やるべきこと（仕事）はある。それ以外の自由時間をどう使えばいいか決まっていない」——Obsidian が空のまま終わる人のための、まず自分用の自己改善AI。科学的・非科学的を問わず「いろんな人のやり方」を手札にして試し、変わればいい。研究と、別AI 12ラウンドのダメ出しをもとに設計しました。あなたの隔日勤務（出番・明け・公休）に合わせてあります。最後の「あなたが決めること」だけ答えてください。</p>
+    <div class="tldr">
+      <h2>3行でいうと</h2>
+      <ol>
+        <li>動けないのは根性の問題ではなく、脳の「割に合わない」計算＋目標がない＋1回サボると全部やめる、の3重苦。</li>
+        <li>効くのは「やる気を出す」ことではなく、<b>自分の違和感から出た方向</b>の「本物のミニ版（2分）」をいつもの行動にくっつけ、できたものの山を見せ、サボってもゼロにしないこと。</li>
+        <li>頭脳は Mac の Claude Code（サブスク内で正規）、手足は iPhone、橋は iCloud。本人の隔日勤務に合わせ、「毎日同じ時刻」をやめて<b>「起きた」を押した日だけ触れる日</b>にした（v12）。最終判定は3観点 Yes・条件付きGO（条件反映済み）。</li>
+      </ol>
+    </div>
+  </header>
+
+  <section>
+    <h2><span class="num">01</span>全体を1枚で</h2>
+    <p class="sub">左が「なぜ動けないか」、右が「どう乗り越えるか」。真ん中がこのアプリの役割です。</p>
+    <figure>
+      <svg viewBox="0 0 1200 660" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="なぜ動けないかの4原因と、乗り越える5つの仕組みを1枚にまとめた図" style="width:100%;height:auto;display:block;font-family:-apple-system,BlinkMacSystemFont,'Hiragino Kaku Gothic ProN','Hiragino Sans','Noto Sans JP',sans-serif">
+        <defs>
+          <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#e0862f"/></marker>
+        </defs>
+        <rect width="1200" height="660" rx="18" fill="#fffdf6"/>
+        <!-- column headers -->
+        <text x="200" y="48" text-anchor="middle" font-size="24" font-weight="800" fill="#c83a2c">なぜ動けない？（4つ）</text>
+        <text x="1000" y="48" text-anchor="middle" font-size="24" font-weight="800" fill="#2e8b57">どう乗り越える？（5つ）</text>
+
+        <!-- left: causes -->
+        <g font-size="16" fill="#1a1a1a">
+          <rect x="30" y="70" width="355" height="100" rx="12" fill="#f6dcd6" stroke="#c83a2c" stroke-width="2"/>
+          <text x="48" y="100" font-size="34">⚖️</text>
+          <text x="98" y="100" font-weight="800" font-size="18">脳の天秤が「しんどい」側へ</text>
+          <text x="98" y="128">手間が重く、ごほうびが小さく見える</text>
+          <text x="98" y="152" fill="#4a4a4a" font-size="14">→ 「やる」判断が出にくい</text>
+
+          <rect x="30" y="185" width="355" height="100" rx="12" fill="#f6dcd6" stroke="#c83a2c" stroke-width="2"/>
+          <text x="48" y="215" font-size="34">🧭</text>
+          <text x="98" y="215" font-weight="800" font-size="18">目的地がない地図</text>
+          <text x="98" y="243">励ましは、目標がない人には効かない</text>
+          <text x="98" y="267" fill="#4a4a4a" font-size="14">→ 最初の画面「目標は？」で詰む</text>
+
+          <rect x="30" y="300" width="355" height="100" rx="12" fill="#f6dcd6" stroke="#c83a2c" stroke-width="2"/>
+          <text x="48" y="330" font-size="34">🔄</text>
+          <text x="98" y="330" font-weight="800" font-size="18">「やる気→行動」は逆</text>
+          <text x="98" y="358">気分が乗るのを待つと永遠に来ない</text>
+          <text x="98" y="382" fill="#4a4a4a" font-size="14">→ 行動が先、気分は後からついてくる</text>
+
+          <rect x="30" y="415" width="355" height="100" rx="12" fill="#f6dcd6" stroke="#c83a2c" stroke-width="2"/>
+          <text x="48" y="445" font-size="34">⛓️</text>
+          <text x="98" y="445" font-weight="800" font-size="18">1日サボると「もういいや」</text>
+          <text x="98" y="473">連続記録が切れて全部やめる</text>
+          <text x="98" y="497" fill="#4a4a4a" font-size="14">→ 実は1日抜けても習慣に影響なし</text>
+        </g>
+
+        <!-- center -->
+        <g>
+          <rect x="410" y="120" width="380" height="330" rx="20" fill="#f8e6d3" stroke="#e0862f" stroke-width="3"/>
+          <text x="600" y="175" text-anchor="middle" font-size="26" font-weight="900" fill="#1a1a1a">やる気はいらない。</text>
+          <text x="600" y="212" text-anchor="middle" font-size="30" font-weight="900" fill="#e0862f">補助輪をつける</text>
+          <text x="600" y="290" text-anchor="middle" font-size="64">🚗🔌🔋</text>
+          <text x="600" y="340" text-anchor="middle" font-size="14" fill="#4a4a4a">目的地の地図を渡すアプリではなく、</text>
+          <text x="600" y="364" text-anchor="middle" font-size="14" fill="#4a4a4a">上がったバッテリーにつなぐ「ジャンプケーブル」</text>
+          <text x="600" y="420" text-anchor="middle" font-size="15" font-weight="700" fill="#1a1a1a">1日の操作は30秒。目標は聞かない。</text>
+        </g>
+        <!-- arrows -->
+        <line x1="388" y1="290" x2="406" y2="290" stroke="#e0862f" stroke-width="4" marker-end="url(#arr)"/>
+        <line x1="794" y1="290" x2="812" y2="290" stroke="#e0862f" stroke-width="4" marker-end="url(#arr)"/>
+
+        <!-- right: fixes -->
+        <g font-size="14" fill="#1a1a1a">
+          <rect x="815" y="70" width="355" height="76" rx="12" fill="#e2f3e8" stroke="#2e8b57" stroke-width="2"/>
+          <text x="830" y="100" font-size="28">🎲</text>
+          <text x="875" y="98" font-weight="800" font-size="16">① 2分の小さな実験</text>
+          <text x="875" y="126">目標の代わりに「今日の2分」を1つ配る</text>
+
+          <rect x="815" y="156" width="355" height="76" rx="12" fill="#e2f3e8" stroke="#2e8b57" stroke-width="2"/>
+          <text x="830" y="186" font-size="28">🔗</text>
+          <text x="875" y="184" font-weight="800" font-size="16">② いつもの行動にくっつける</text>
+          <text x="875" y="212">「靴を脱いだら、○○」の形で保存</text>
+
+          <rect x="815" y="242" width="355" height="76" rx="12" fill="#e2f3e8" stroke="#2e8b57" stroke-width="2"/>
+          <text x="830" y="272" font-size="28">✨</text>
+          <text x="875" y="270" font-weight="800" font-size="16">③ やった直後に光る</text>
+          <text x="875" y="298">ごほうびの遅れをゼロにする</text>
+
+          <rect x="815" y="328" width="355" height="76" rx="12" fill="#e2f3e8" stroke="#2e8b57" stroke-width="2"/>
+          <text x="830" y="358" font-size="28">🛟</text>
+          <text x="875" y="356" font-weight="800" font-size="16">④ サボってもゼロにならない</text>
+          <text x="875" y="384">連続記録なし。「戻ってきた回数」を数える</text>
+
+          <rect x="815" y="414" width="355" height="76" rx="12" fill="#e2f3e8" stroke="#2e8b57" stroke-width="2"/>
+          <text x="830" y="444" font-size="28">🔔</text>
+          <text x="875" y="442" font-weight="800" font-size="16">⑤ ちょうどいい時に一声だけ</text>
+          <text x="875" y="470">きっかけの瞬間に1回。しつこくしない</text>
+        </g>
+
+        <!-- bottom numbers -->
+        <g>
+          <rect x="40" y="540" width="540" height="90" rx="12" fill="#fff6cc" stroke="#e0b93a" stroke-width="2" transform="rotate(-1 310 585)"/>
+          <text x="70" y="580" font-size="40" font-weight="900" fill="#c83a2c">52.6%</text>
+          <text x="215" y="572" font-size="15" fill="#1a1a1a">日本の働く人のうち、仕事以外で</text>
+          <text x="215" y="596" font-size="15" fill="#1a1a1a">何も学んでいない人（18か国平均は18%）</text>
+          <text x="215" y="618" font-size="12" fill="#4a4a4a">パーソル総合研究所 2022</text>
+
+          <rect x="620" y="540" width="540" height="90" rx="12" fill="#fff6cc" stroke="#e0b93a" stroke-width="2" transform="rotate(1 890 585)"/>
+          <text x="650" y="580" font-size="40" font-weight="900" fill="#c83a2c">70%</text>
+          <text x="760" y="572" font-size="15" fill="#1a1a1a">健康・メンタル系アプリの利用者が</text>
+          <text x="760" y="596" font-size="15" fill="#1a1a1a">100日以内にやめる割合（50万人規模の調査）</text>
+          <text x="760" y="618" font-size="12" fill="#4a4a4a">18研究スコーピングレビュー</text>
+        </g>
+      </svg>
+      <figcaption>目的地の地図を渡すアプリではなく、バッテリーが上がった車につなぐ「ジャンプケーブル」</figcaption>
+    </figure>
+    <div class="callout"><p><strong>ひとことで:</strong> 今のアプリは「目標を決めて、毎日続けて、途切れたらリセット」。それは一番できない人を一番早く追い出す設計です。逆をやります。</p></div>
+  </section>
+
+  <section>
+    <h2><span class="num">02</span>なぜ動けないのか（4つ）</h2>
+    <p class="sub">研究で分かっている「動けない人」の中身。全部、性格ではなく仕組みの話です。</p>
+    <div class="cards">
+      <div class="card">
+        <div class="emoji">⚖️</div>
+        <h3>脳の天秤が「しんどい」に傾く</h3>
+        <p>脳は毎回「手間」と「ごほうび」を天秤にかけます。無気力の人は、ごほうびが同じでも「手間」側が重く見える（脳科学で確認済み）。</p>
+        <div class="fix">だから → <b>手間をほぼゼロにする</b></div>
+      </div>
+      <div class="card">
+        <div class="emoji">🧭</div>
+        <h3>目標がない＝地図に目的地がない</h3>
+        <p>「やる気を出す」系の介入は、目標がない人にはほぼ効かない（効果ほぼゼロ）。自分らしい目標は「試して、少し良かった」を集めた後に立ち上がる。</p>
+        <div class="fix">だから → <b>先に小さく試す。目標は後</b></div>
+      </div>
+      <div class="card">
+        <div class="emoji">🔄</div>
+        <h3>「やる気→行動」は逆</h3>
+        <p>気分が乗るのを待つと永遠に来ない。先に体を動かすと、後から気分がついてくる（うつ治療でも一番効く方法の1つ）。</p>
+        <div class="fix">だから → <b>行動を先に、報酬をすぐに</b></div>
+      </div>
+      <div class="card">
+        <div class="emoji">⛓️</div>
+        <h3>1日サボると「もういいや」</h3>
+        <p>1回の失敗を「自分はダメだ」と解釈して全部やめる。連続記録（ストリーク）はこれを悪化させる。実は1日抜けても習慣には影響しない。</p>
+        <div class="fix">だから → <b>ゼロに戻さない。戻ってきたら褒める</b></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="num">03</span>効くと分かっている数字</h2>
+    <p class="sub">感覚ではなく、研究の数字で「これは効く／これはダメ」を押さえます。</p>
+    <table class="table">
+      <thead><tr><th>数字</th><th>意味</th><th>アプリでどう使うか</th></tr></thead>
+      <tbody>
+        <tr><td class="big">52.6%</td><td>日本の働く人のうち、仕事以外で何も学んでいない人の割合（18か国平均は18%で日本が1位）</td><td>ターゲットは「日本の働く人の半分」。ニッチではない</td></tr>
+        <tr><td class="big">70%</td><td>健康・メンタル系アプリの利用者が100日以内にやめる割合（50万人規模の調査）</td><td>「続けさせる」より「戻ってこられる」設計にする</td></tr>
+        <tr class="pick"><td class="big">×2分</td><td>「いつもの行動の直後に、30秒〜2分の行動」が習慣づくりで最も確実（Tiny Habits／Fogg）</td><td>1日の課題は必ず2分以下。それ以上は出さない</td></tr>
+        <tr class="pick"><td class="big">d=0.65</td><td>「Xしたら、Yする」と決めておくだけで達成率が中〜大きく上がる（94研究・8000人超）</td><td>「帰宅して靴を脱いだら、○○」の形で保存する</td></tr>
+        <tr class="pick"><td class="big">g=0.87</td><td>「気分より先に行動を予定に入れて実行する」方法の効果（うつ治療の大規模まとめ。大きい効果）</td><td>「今日の2分」を予定として置き、やった直後に光らせる</td></tr>
+        <tr><td class="big">66日</td><td>習慣が体に馴染むまでの中央値（18〜254日と幅が大きい）。1日抜けても影響なし</td><td>「◯日連続」を出さない。「累計」と「戻ってきた回数」を出す</td></tr>
+      </tbody>
+    </table>
+    <p class="src">出典: パーソル総合研究所 2022 国際比較 ／ 離脱率スコーピングレビュー（The Decision Lab 経由）／ Fogg Behavior Model ／ Gollwitzer &amp; Sheeran 2006 ／ デジタル行動活性化メタ分析 2025（PMC12227033）／ Lally 2010。URL は同フォルダの調査メモ（docs/research）に全部あります。</p>
+  </section>
+
+  <section>
+    <h2><span class="num">04</span>今あるアプリの「やってはいけない5つ」</h2>
+    <p class="sub">習慣アプリ・自己啓発アプリが、まさにこの層を追い出している設計。</p>
+    <table class="table">
+      <thead><tr><th>よくある設計</th><th>何が起きるか</th><th>このアプリでは</th></tr></thead>
+      <tbody>
+        <tr><td>❌ 最初に「目標を設定してください」</td><td>目標がない人は最初の画面で詰む</td><td>✅ 目標は聞かない。「今日の2分」から始まる</td></tr>
+        <tr><td>❌ 連続記録（ストリーク）とリセット</td><td>1日抜け → 怒って離脱</td><td>✅ 累計と「戻ってきた回数」だけ</td></tr>
+        <tr><td>❌ 毎日のチェックリスト</td><td>リストが「義務」になり、リスト自体が重荷に</td><td>✅ 1日1つだけ。増やさない</td></tr>
+        <tr><td>❌ やる気を出させる名言・通知</td><td>無気力の人には効かない。むしろ反発</td><td>✅ 通知は「きっかけの時」に1回だけ。中身は行動の指示のみ</td></tr>
+        <tr><td>❌ 記録が目的化</td><td>記録して満足、行動は増えない</td><td>✅ 記録はワンタップ。見返すのは「少し良かった」の集まりだけ</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2><span class="num">05</span>作りたい仕組み（v10）— 頭脳は Mac の Claude Code、手足は iPhone</h2>
+    <p class="sub">サブスクの Claude で使えるのは「Claude Code と claude.ai」だけ（他アプリからの流用は規約違反・2026年1月から遮断）。だから頭脳を Mac の Claude Code に置き、iPhone は手足、iCloud のフォルダが橋。OpenAI の契約は不要（ChatGPT Plus にも API は付かない）。</p>
+
+    <div class="flow">
+      <div class="step"><div class="t">頭脳（Mac）</div><div class="emoji">🧠</div><p><b>Claude Code のスキル 1本</b>（サブスク内・自動実行）。本の一節→手札、判定→集計＋見立て、今日の実験＋1問、1行返事。<b>1週目から Claude Code 単体で使える</b>（スマホのリモートからも）</p></div>
+      <div class="step"><div class="t">橋（iCloud）</div><div class="emoji">🌉</div><p>iPhone が「答え・判定・本の写真」を置く → Mac が読んで「返事・手札・見立て」を置く。返事は<b>翌日、次に開いた時</b>（夜書いて翌日の夜に一言）</p></div>
+      <div class="step"><div class="t">手足（iPhone）</div><div class="emoji">📱</div><p>実験層（行動×手札・3回で次へ・戻す装置）＋今日の1問＋集計。AI が落ちても動く</p></div>
+    </div>
+
+    <p style="margin:26px 0 6px;font-weight:700">枠は大きく — 「いろんな人のやり方」の棚</p>
+    <div class="cards">
+      <div class="card">
+        <div class="emoji">📚</div>
+        <h3>出典は8種、全部同じ棚</h3>
+        <p>研究者／ビジネス書の経験談／思想・宗教・武道／占い・易経・スピリチュアル／有名人の習慣／民間の知恵／ネットの流行／自分で作った。根拠の種類はタグで見せるだけ。載せる・載せないの門番にしない。</p>
+      </div>
+      <div class="card">
+        <div class="emoji">📸</div>
+        <h3>本から手札を作る（主役）</h3>
+        <p>読んだ本の一節を写真・貼り付けで入れる → AI が「この人のやり方」を 1〜3 枚の手札にする → 採用。30ページで止まった本でも1節あれば手札になる。</p>
+      </div>
+      <div class="card">
+        <div class="emoji">🕰️</div>
+        <h3>行動の枠も広い</h3>
+        <p>時間帯は朝・日中・帰宅後・寝る前。長さは30秒・2分・10分（2分は床で上限じゃない）。「寝る前に達成した場面を想像する」のような本のやり方を、歪めずそのまま試せる。</p>
+      </div>
+      <div class="card">
+        <div class="emoji">🔮</div>
+        <h3>見立て（占い調）OK</h3>
+        <p>AI は初日から「あなたは『整える』系。今週はこの3枚」と言い切ってよい。縛りは1つ：同じ見立てを3回試すまで次を出さない。数字（n）はタップすれば見える。</p>
+      </div>
+    </div>
+
+    <table class="table">
+      <thead><tr><th>いい加減でいいところ</th><th>いい加減にしないところ（これだけ）</th></tr></thead>
+      <tbody>
+        <tr><td>科学的根拠／著者の主張との一致／自分モデルの正確さ／手札の数（数千枚でよい）／実名・書名（自分用）</td><td><b>「変わったか」を測る</b>: 週の完了数・戻ってきた回数・自分で変えた回数・本から作った手札をやり切った枚数。<b>害の門番</b>: 自罰・恥・連続記録・診断は入れない、危機的内容は AI に触らせない。<b>規約の線</b>: 配布した瞬間に Claude Code 経路は使えない（API 課金に切替）</td></tr>
+      </tbody>
+    </table>
+
+    <p style="margin:26px 0 6px;font-weight:700">ダメ出しループの経過（全12ラウンド・レビュー24本）</p>
+    <table class="table">
+      <thead><tr><th>回</th><th>結論</th><th>直したこと</th></tr></thead>
+      <tbody>
+        <tr><td>1〜4</td><td>補助輪（v4）条件付きGO</td><td>戻す装置／削る／状態機械</td></tr>
+        <tr><td>5〜6</td><td>速さ・著者の多様性（v6）条件付きGO</td><td>行動×見方／3回で回す／図鑑</td></tr>
+        <tr><td>7〜8</td><td>AI が自分を学習（v8）条件付きGO</td><td>集計は端末／空欄→1問／バンディット廃止</td></tr>
+        <tr><td><b>本人指示→9</b></td><td>占い OK・枠は大きく・サブスク内で（v9）→ 本人役「行動の枠がまだ小さい。本から作るが3か月目では遅い」／実装役「規約は正規。配管の落とし穴5つ。返事は翌日」</td><td>v10: 時間帯4・長さ3・型4／<b>頭脳スキルを1週目に</b>／落とし穴を設計書に／「変わったか」で測る</td></tr>
+        <tr><td>10</td><td>4観点 Yes・条件付きGO（v10）</td><td>枠を広げる／頭脳を1週目に</td></tr>
+        <tr class="pick"><td><b>本人指示→11〜12（最終）</b></td><td>隔日勤務に同期 → <b>3観点 Yes・条件付きGO</b>（v12.1）</td><td>「起きた」ボタン方式／出番専用30秒札／明日は？1タップ。設計書 docs/plan/plan.md、レビュー 24 本 docs/plan/reviews/</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout"><p><strong>核になる発想（v10）:</strong> 世の中はいい加減でもうまくいっている人がいる。だから手札は科学も占いも同じ棚に置き、本の一節から作れるようにし、AI は占い調で背中を押してよい。いい加減にしないのは「行動が変わったかを測る」「害を入れない」「規約の線」の3つだけ。</p></div>
+    <p class="src">実装の順番: ① Claude Code スキル `tefuda-brain`（1週・今週から使える）→ ② iPhone アプリ（8〜9週・Developer Program 加入後）→ ③ iCloud 橋（2週・配管が9割）→ ④ 3枚生成（1週）。API 費用ゼロ（サブスク内）。Developer Program ¥15,000/年 は iPhone アプリ段階で必要。</p>
+  </section>
+
+  <section>
+    <h2><span class="num">05</span><span style="font-size:.7em;color:var(--ink-2)">b</span> あなたの生活リズムに同期（v12）— 「起きた」で今日が決まる</h2>
+    <p class="sub">出番は朝7時〜翌3時、合間は触れるが乗務後は触れない。明けは起きたら触れる。翌日出番なら早寝。公休は自分で決める。だから「毎日同じ時刻に通知」を捨てました。</p>
+
+    <div class="flow">
+      <div class="step"><div class="t">出番の日</div><div class="emoji">🚕</div><p><b>何も鳴らない。</b>ロック画面のウィジェットに「今日の30秒札」が1枚あるだけ（例: 抵抗に名前をつける・良かったこと1タップ）。合間に1タップ。乗務後は何も出ない。サボり扱いにもならない</p></div>
+      <div class="step"><div class="t">明けの日</div><div class="emoji">🛏️</div><p>起きたらウィジェットの<b>「起きた」を1タップ</b>。その瞬間から +1時間・+4時間・19時に札が来る（21時以降は来ない＝早寝）。最初の通知に「<b>明日は？ 出番／公休</b>」ボタン。答えなければ出番扱い</p></div>
+      <div class="step"><div class="t">公休の日</div><div class="emoji">🌤️</div><p>「起きた」を押せば一日使える。「寝る前」型の札もこの日だけ</p></div>
+      <div class="step"><div class="t">予測が外れた日</div><div class="emoji">🔁</div><p>「起きた」を押した日＝触れる日、押さない日＝出番。だからカレンダーや隔勤パターンが外れても壊れない。予測は「起きた？」の1通をどの日に出すかにだけ使う</p></div>
+      <div class="step"><div class="t">戻る入口</div><div class="emoji">🚪</div><p>止まっても、ウィジェットの「起きた」は常にそこにある。押せば「おかえり」で続きから</p></div>
+    </div>
+
+    <table class="table">
+      <thead><tr><th>日</th><th>触れる時間</th><th>札</th><th>通知</th></tr></thead>
+      <tbody>
+        <tr><td>出番</td><td>合間だけ</td><td>30秒札のみ（車内で1タップ・5枚）</td><td>なし（ウィジェット）</td></tr>
+        <tr><td>明け</td><td>起きてから</td><td>2分／10分</td><td>「起きた」+1h・+4h・19時。21時以降なし</td></tr>
+        <tr><td>公休</td><td>一日</td><td>2分／10分・寝る前型もOK</td><td>本人が選んだ最大2枠</td></tr>
+        <tr><td>明け（翌日公休）</td><td>夜も</td><td>寝る前型OK</td><td>21時枠も可</td></tr>
+      </tbody>
+    </table>
+    <p class="src">日タイプの決め方: 実測（「起きた」／「今日は出番」／「明日は？」の答え／タクシー日報の乗務開始・後で）が常に予測（カレンダー・隔勤パターン）に勝つ。出番の完了は山に積むだけで、3枚選び・1問は次の触れる日に持ち越す（客待ち中に飛び出させない）。ダメ出し: 当事者役「30秒札が1枚もない・明日が出番か分からない」、実装役「予測が外れると通知が沈黙する」→ 「起きた」方式で解決。最終判定 3観点 Yes。</p>
+  </section>
+
+  <section>
+    <h2><span class="num">06</span>あなたが決めること</h2>
+    <p class="sub">「A・A・A」の3文字でOK。答えをもらったら設計書 → 実装計画 → 実装へ進みます。</p>
+
+    <div class="choice">
+      <h3><span class="q">Q1</span>この v10 の形で、まず「頭脳スキル」から作り始めてよい？</h3>
+      <div class="opts">
+        <div class="opt rec"><span class="lab">A. はい、頭脳スキルから</span><span class="rec-tag">おすすめ</span><p>今週中に Claude Code で `/tefuda`（本の一節→手札、判定、今日、見立て）が動く。iPhone アプリはその後。</p></div>
+        <div class="opt"><span class="lab">B. もう1周ダメ出し</span><p>気になる点を1つ書いてください。そのレンズでもう1ラウンド回します。</p></div>
+        <div class="opt"><span class="lab">C. ここを変えたい</span><p>変えたい所を1行で。</p></div>
+      </div>
+    </div>
+
+    <div class="choice">
+      <h3><span class="q">Q2</span>Apple Developer Program（¥15,000/年）に入る？</h3>
+      <div class="opts">
+        <div class="opt rec"><span class="lab">A. iPhone アプリの段階で入る</span><span class="rec-tag">おすすめ</span><p>頭脳スキルだけなら不要。iPhone 実機・iCloud 橋で必須になる。</p></div>
+        <div class="opt"><span class="lab">B. 今すぐ入る</span><p>並行して iPhone 側も始めるなら。</p></div>
+        <div class="opt"><span class="lab">C. 入らない</span><p>頭脳スキル＋スマホのリモートコントロールだけで使う（アプリなし）。それでも回る。</p></div>
+      </div>
+    </div>
+
+    <div class="choice">
+      <h3><span class="q">Q3</span>カレンダーはどれ？ 出番・公休はどう書いてある？</h3>
+      <div class="opts">
+        <div class="opt"><span class="lab">A. 「起きた」だけ</span><p>カレンダーなし。起きたら1タップで今日の枠が決まる。</p></div>
+        <div class="opt rec"><span class="lab">B. カレンダーを読む＋「起きた」</span><span class="rec-tag">本人指示で確定</span><p>カレンダーで出番・公休を判定（明日は？を聞かない）。「起きた」は起床時刻の確定用。教えてほしいのは「どのカレンダーで、出番・公休をどう書いているか」。</p></div>
+        <div class="opt"><span class="lab">C. 日報アプリの乗務開始で自動判定</span><p>タクシー日報の記録開始＝出番確定（ショートカット連携）。後回しでも可。</p></div>
+      </div>
+      <p style="margin:10px 0 0;font-size:14px;color:var(--ink-2)">確定したもの: サブスク内の Claude Code を頭脳に／占い調 OK／科学・非科学を問わず同じ棚／自分用は実名・書名 OK／隔日勤務に同期（出番は中立・明けは起きたら）／最初の利用者＝あなた。</p>
+    </div>
+
+    <div class="callout warn"><p><strong>まだコードは書いていません。</strong> Q1〜Q3 の答えをもらってから、設計書 → 実装計画 → 実装の順で進めます。</p></div>
+  </section>
+
+  <div class="conclusion">
+    <h2>結論</h2>
+    <ol>
+      <li>Obsidian の逆を作る: 構造を作らせない。本の一節を入れれば手札になり、「やった」1タップと「1問の答え」で自分モデルが溜まる。</li>
+      <li>手札＝研究も、ビジネス書の「俺はこうやってきた」も、占い・易経も、同じ棚。本の一節を写真で入れると手札になる。3回試したら次へ。AI は「見立て」（占い調）を言ってよく、数字は端末が数える。成功の物差しは「行動が変わったか」だけ。</li>
+      <li>決めてほしいのは3つ: 頭脳スキルから始めてよいか・Developer Program にいつ入るか・「起きた」1タップ方式でよいか。</li>
+    </ol>
+  </div>
+
+  <footer>調査メモ（出典URL付き）: アプリ開発/無気力サポートアプリ/docs/research/2026-09-14-無気力と継続の行動科学.md ／ 作成 2026-09-14</footer>
+
+</div>
+</body>
+</html>
