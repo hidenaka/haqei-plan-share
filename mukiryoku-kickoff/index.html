@@ -93,15 +93,15 @@
 <div class="wrap">
 
   <header class="hero">
-    <span class="kicker">自分を学習する自己改善AI「手札」｜調査と設計案 v12</span>
+    <span class="kicker">自分を学習する自己改善AI「手札」｜調査と設計案 v14</span>
     <h1>やる気はいらない。<b>手札</b>を1枚ずつ試すと、AIが「自分」を覚えていく</h1>
-    <p class="lede">「やるべきこと（仕事）はある。それ以外の自由時間をどう使えばいいか決まっていない」——Obsidian が空のまま終わる人のための、まず自分用の自己改善AI。科学的・非科学的を問わず「いろんな人のやり方」を手札にして試し、変わればいい。研究と、別AI 12ラウンドのダメ出しをもとに設計しました。あなたの隔日勤務（出番・明け・公休）に合わせてあります。最後の「あなたが決めること」だけ答えてください。</p>
+    <p class="lede">「やるべきこと（仕事）はある。それ以外の自由時間をどう使えばいいか決まっていない」——Obsidian が空のまま終わる人のための、まず自分用の自己改善AI。科学的・非科学的を問わず「いろんな人のやり方」を手札にして試し、変わればいい。研究と、別AI 14ラウンドのダメ出しをもとに設計しました。あなたの隔日勤務（出番・明け・公休）に合わせ、PWA（ホーム画面に追加する Web アプリ）＋常時起動の Mac mini で動きます。最後の「あなたが決めること」だけ答えてください。</p>
     <div class="tldr">
       <h2>3行でいうと</h2>
       <ol>
         <li>動けないのは根性の問題ではなく、脳の「割に合わない」計算＋目標がない＋1回サボると全部やめる、の3重苦。</li>
         <li>効くのは「やる気を出す」ことではなく、<b>自分の違和感から出た方向</b>の「本物のミニ版（2分）」をいつもの行動にくっつけ、できたものの山を見せ、サボってもゼロにしないこと。</li>
-        <li>頭脳は Mac の Claude Code（サブスク内で正規）、手足は iPhone、橋は iCloud。本人の隔日勤務に合わせ、「毎日同じ時刻」をやめて<b>「起きた」を押した日だけ触れる日</b>にした（v12）。最終判定は3観点 Yes・条件付きGO（条件反映済み）。</li>
+        <li>頭脳と目覚まし係は<b>常時起動の Mac mini の Claude Code</b>（サブスク内で正規）、手足は <b>PWA</b>（iPhone・iPad・Mac 共通、App Store 不要・¥0）、橋は本人の非公開 GitHub リポジトリ（タクシー日報と同じ作り）。出番の日も休憩枠で触れる。最終判定 条件付きGO（条件反映済み・v14.1）。</li>
       </ol>
     </div>
   </header>
@@ -272,13 +272,13 @@
   </section>
 
   <section>
-    <h2><span class="num">05</span>作りたい仕組み（v10）— 頭脳は Mac の Claude Code、手足は iPhone</h2>
-    <p class="sub">サブスクの Claude で使えるのは「Claude Code と claude.ai」だけ（他アプリからの流用は規約違反・2026年1月から遮断）。だから頭脳を Mac の Claude Code に置き、iPhone は手足、iCloud のフォルダが橋。OpenAI の契約は不要（ChatGPT Plus にも API は付かない）。</p>
+    <h2><span class="num">05</span>作りたい仕組み（v14）— 頭脳は Mac mini の Claude Code、手足は PWA</h2>
+    <p class="sub">サブスクの Claude で使えるのは「Claude Code と claude.ai」だけ（他アプリからの流用は規約違反）。だから頭脳を常時起動の Mac mini の Claude Code に置く。手足は PWA（あなたの「タクシー日報」と同じ作り: ホーム画面に追加・データは非公開 GitHub）。App Store も Developer Program（¥15,000/年）も iCloud の配管も不要。OpenAI の契約も不要。</p>
 
     <div class="flow">
-      <div class="step"><div class="t">頭脳（Mac）</div><div class="emoji">🧠</div><p><b>Claude Code のスキル 1本</b>（サブスク内・自動実行）。本の一節→手札、判定→集計＋見立て、今日の実験＋1問、1行返事。<b>1週目から Claude Code 単体で使える</b>（スマホのリモートからも）</p></div>
-      <div class="step"><div class="t">橋（iCloud）</div><div class="emoji">🌉</div><p>iPhone が「答え・判定・本の写真」を置く → Mac が読んで「返事・手札・見立て」を置く。返事は<b>翌日、次に開いた時</b>（夜書いて翌日の夜に一言）</p></div>
-      <div class="step"><div class="t">手足（iPhone）</div><div class="emoji">📱</div><p>実験層（行動×手札・3回で次へ・戻す装置）＋今日の1問＋集計。AI が落ちても動く</p></div>
+      <div class="step"><div class="t">頭脳＋目覚まし（Mac mini）</div><div class="emoji">🧠</div><p><b>Claude Code のスキル 1本</b>（サブスク内・自動実行）。本の一節→手札、判定→集計＋見立て、1行返事。カレンダーを読んで今日の日タイプを決め、枠の時刻に通知を送る。<b>1週目から Claude Code 単体で使える</b></p></div>
+      <div class="step"><div class="t">橋（GitHub）</div><div class="emoji">🌉</div><p>PWA が「答え・判定・本の写真」を非公開リポジトリに置く → Mac mini が読んで「返事・手札・見立て・今日の日タイプ」を置く。Mac mini は常時起動なので数分で処理。読むのは次に触れた時</p></div>
+      <div class="step"><div class="t">手足（PWA）</div><div class="emoji">📱</div><p>iPhone・iPad・Mac で同じ画面。実験層（行動×手札・3回で次へ・戻す装置）＋今日の1問＋集計。通知は Web Push（Mac mini が送る）。AI が落ちても動く</p></div>
     </div>
 
     <p style="margin:26px 0 6px;font-weight:700">枠は大きく — 「いろんな人のやり方」の棚</p>
@@ -312,7 +312,7 @@
       </tbody>
     </table>
 
-    <p style="margin:26px 0 6px;font-weight:700">ダメ出しループの経過（全12ラウンド・レビュー24本）</p>
+    <p style="margin:26px 0 6px;font-weight:700">ダメ出しループの経過（全14ラウンド・レビュー27本）</p>
     <table class="table">
       <thead><tr><th>回</th><th>結論</th><th>直したこと</th></tr></thead>
       <tbody>
@@ -321,36 +321,37 @@
         <tr><td>7〜8</td><td>AI が自分を学習（v8）条件付きGO</td><td>集計は端末／空欄→1問／バンディット廃止</td></tr>
         <tr><td><b>本人指示→9</b></td><td>占い OK・枠は大きく・サブスク内で（v9）→ 本人役「行動の枠がまだ小さい。本から作るが3か月目では遅い」／実装役「規約は正規。配管の落とし穴5つ。返事は翌日」</td><td>v10: 時間帯4・長さ3・型4／<b>頭脳スキルを1週目に</b>／落とし穴を設計書に／「変わったか」で測る</td></tr>
         <tr><td>10</td><td>4観点 Yes・条件付きGO（v10）</td><td>枠を広げる／頭脳を1週目に</td></tr>
-        <tr class="pick"><td><b>本人指示→11〜12（最終）</b></td><td>隔日勤務に同期 → <b>3観点 Yes・条件付きGO</b>（v12.1）</td><td>「起きた」ボタン方式／出番専用30秒札／明日は？1タップ。設計書 docs/plan/plan.md、レビュー 24 本 docs/plan/reviews/</td></tr>
+        <tr><td>11〜12</td><td>隔日勤務に同期（v12）条件付きGO</td><td>「起きた」ボタン方式／出番専用札／カレンダー主</td></tr>
+        <tr class="pick"><td><b>本人回答→13〜14（最終）</b></td><td>PWA・出番でも触れる（v14）→ <b>条件付きGO</b>（v14.1）</td><td>PWA＋GitHub 橋／出番は休憩の幅に通知／通知の送信は常時起動の Mac mini／ウィジェット・iCloud を全廃。設計書 docs/plan/plan.md、レビュー 27 本</td></tr>
       </tbody>
     </table>
 
     <div class="callout"><p><strong>核になる発想（v10）:</strong> 世の中はいい加減でもうまくいっている人がいる。だから手札は科学も占いも同じ棚に置き、本の一節から作れるようにし、AI は占い調で背中を押してよい。いい加減にしないのは「行動が変わったかを測る」「害を入れない」「規約の線」の3つだけ。</p></div>
-    <p class="src">実装の順番: ① Claude Code スキル `tefuda-brain`（1週・今週から使える）→ ② iPhone アプリ（8〜9週・Developer Program 加入後）→ ③ iCloud 橋（2週・配管が9割）→ ④ 3枚生成（1週）。API 費用ゼロ（サブスク内）。Developer Program ¥15,000/年 は iPhone アプリ段階で必要。</p>
+    <p class="src">実装の順番: ① Claude Code スキル `tefuda-brain`（1週・今週から）→ ② PWA（5〜6週）→ ③ GitHub 橋＋Mac mini の目覚まし係＋カレンダー読み取り（1.5〜2週）→ ④ 3枚生成（1週）。合計約2か月。費用 ¥0（サブスク内・Developer Program 不要）。着手前に実機で潰す2点: ホーム画面 PWA に Web Push が届くこと／Mac mini でカレンダー権限を1回手動で通すこと。</p>
   </section>
 
   <section>
-    <h2><span class="num">05</span><span style="font-size:.7em;color:var(--ink-2)">b</span> あなたの生活リズムに同期（v12）— 「起きた」で今日が決まる</h2>
+    <h2><span class="num">05</span><span style="font-size:.7em;color:var(--ink-2)">b</span> あなたの生活リズムに同期（v14）— 出番も触れる、「起きた」で今日が決まる</h2>
     <p class="sub">出番は朝7時〜翌3時、合間は触れるが乗務後は触れない。明けは起きたら触れる。翌日出番なら早寝。公休は自分で決める。だから「毎日同じ時刻に通知」を捨てました。</p>
 
     <div class="flow">
       <div class="step"><div class="t">出番の日</div><div class="emoji">🚕</div><p><b>何も鳴らない。</b>ロック画面のウィジェットに「今日の30秒札」が1枚あるだけ（例: 抵抗に名前をつける・良かったこと1タップ）。合間に1タップ。乗務後は何も出ない。サボり扱いにもならない</p></div>
       <div class="step"><div class="t">明けの日</div><div class="emoji">🛏️</div><p>起きたらウィジェットの<b>「起きた」を1タップ</b>。その瞬間から +1時間・+4時間・19時に札が来る（21時以降は来ない＝早寝）。最初の通知に「<b>明日は？ 出番／公休</b>」ボタン。答えなければ出番扱い</p></div>
       <div class="step"><div class="t">公休の日</div><div class="emoji">🌤️</div><p>「起きた」を押せば一日使える。「寝る前」型の札もこの日だけ</p></div>
-      <div class="step"><div class="t">予測が外れた日</div><div class="emoji">🔁</div><p>「起きた」を押した日＝触れる日、押さない日＝出番。だからカレンダーや隔勤パターンが外れても壊れない。予測は「起きた？」の1通をどの日に出すかにだけ使う</p></div>
-      <div class="step"><div class="t">戻る入口</div><div class="emoji">🚪</div><p>止まっても、ウィジェットの「起きた」は常にそこにある。押せば「おかえり」で続きから</p></div>
+      <div class="step"><div class="t">カレンダーが外れた日</div><div class="emoji">🔁</div><p>「起きた」を押した日＝触れる日。押さない日＝出番。だからカレンダーが外れても壊れない。カレンダーは Mac mini が読む（アプリ側に権限ダイアログなし）</p></div>
+      <div class="step"><div class="t">戻る入口</div><div class="emoji">🚪</div><p>止まっても、アプリ最上部の「起きた」は常にそこにある。押せば「おかえり」で続きから</p></div>
     </div>
 
     <table class="table">
       <thead><tr><th>日</th><th>触れる時間</th><th>札</th><th>通知</th></tr></thead>
       <tbody>
-        <tr><td>出番</td><td>合間だけ</td><td>30秒札のみ（車内で1タップ・5枚）</td><td>なし（ウィジェット）</td></tr>
+        <tr><td>出番</td><td>休憩の幅（最大2）</td><td>1分以内の札（1タップ系。音声・1行入力なし）</td><td>幅の始めに1回ずつ（Mac mini から）</td></tr>
         <tr><td>明け</td><td>起きてから</td><td>2分／10分</td><td>「起きた」+1h・+4h・19時。21時以降なし</td></tr>
         <tr><td>公休</td><td>一日</td><td>2分／10分・寝る前型もOK</td><td>本人が選んだ最大2枠</td></tr>
         <tr><td>明け（翌日公休）</td><td>夜も</td><td>寝る前型OK</td><td>21時枠も可</td></tr>
       </tbody>
     </table>
-    <p class="src">日タイプの決め方: 実測（「起きた」／「今日は出番」／「明日は？」の答え／タクシー日報の乗務開始・後で）が常に予測（カレンダー・隔勤パターン）に勝つ。出番の完了は山に積むだけで、3枚選び・1問は次の触れる日に持ち越す（客待ち中に飛び出させない）。ダメ出し: 当事者役「30秒札が1枚もない・明日が出番か分からない」、実装役「予測が外れると通知が沈黙する」→ 「起きた」方式で解決。最終判定 3観点 Yes。</p>
+    <p class="src">日タイプの決め方: カレンダー（Mac mini が読む）が主、隔勤パターンで穴埋め、「起きた」と「今日は出番」のタップが常に勝つ。出番の完了も普通に積み、3枚選びは「後で」で次の触れる日に持ち越せる。ダメ出し（13回目）: 当事者役「触れるかどうかが自宅 Mac の電源に握られる」→ あなたの回答「Mac mini は常時起動」で解消（保険に Cloudflare の無料定時実行を後で足せる）。</p>
   </section>
 
   <section>
@@ -358,34 +359,32 @@
     <p class="sub">「A・A・A」の3文字でOK。答えをもらったら設計書 → 実装計画 → 実装へ進みます。</p>
 
     <div class="choice">
-      <h3><span class="q">Q1</span>この v10 の形で、まず「頭脳スキル」から作り始めてよい？</h3>
+      <h3><span class="q">Q1</span>回答済み: 頭脳スキルから着手（A）</h3>
       <div class="opts">
-        <div class="opt rec"><span class="lab">A. はい、頭脳スキルから</span><span class="rec-tag">おすすめ</span><p>今週中に Claude Code で `/tefuda`（本の一節→手札、判定、今日、見立て）が動く。iPhone アプリはその後。</p></div>
-        <div class="opt"><span class="lab">B. もう1周ダメ出し</span><p>気になる点を1つ書いてください。そのレンズでもう1ラウンド回します。</p></div>
-        <div class="opt"><span class="lab">C. ここを変えたい</span><p>変えたい所を1行で。</p></div>
+        <div class="opt rec"><span class="lab">A. 決定</span><span class="rec-tag">回答済み</span><p>今週中に Claude Code で `/tefuda`（本の一節→手札、判定、今日、見立て）が動くところから。次は実装計画を作ります。</p></div>
       </div>
     </div>
 
     <div class="choice">
-      <h3><span class="q">Q2</span>Apple Developer Program（¥15,000/年）に入る？</h3>
+      <h3><span class="q">Q2</span>カレンダーはどれ？ 出番・公休はどう書いてある？</h3>
       <div class="opts">
-        <div class="opt rec"><span class="lab">A. iPhone アプリの段階で入る</span><span class="rec-tag">おすすめ</span><p>頭脳スキルだけなら不要。iPhone 実機・iCloud 橋で必須になる。</p></div>
-        <div class="opt"><span class="lab">B. 今すぐ入る</span><p>並行して iPhone 側も始めるなら。</p></div>
-        <div class="opt"><span class="lab">C. 入らない</span><p>頭脳スキル＋スマホのリモートコントロールだけで使う（アプリなし）。それでも回る。</p></div>
+        <div class="opt"><span class="lab">A. iCloud カレンダー</span><p>Mac mini の「カレンダー」アプリがそのまま読める。予定の名前（例「出番」「公休」）を教えてください。</p></div>
+        <div class="opt"><span class="lab">B. Google カレンダー</span><p>Mac mini のカレンダーアプリに Google を追加すれば同じ。</p></div>
+        <div class="opt"><span class="lab">C. 公休しか書いていない／書いていない</span><p>隔勤パターン（出番⇄明け）＋公休の予定だけで足ります。</p></div>
       </div>
     </div>
 
     <div class="choice">
-      <h3><span class="q">Q3</span>カレンダーはどれ？ 出番・公休はどう書いてある？</h3>
+      <h3><span class="q">Q3</span>出番の日の「休憩の幅」はいつ？</h3>
       <div class="opts">
-        <div class="opt"><span class="lab">A. 「起きた」だけ</span><p>カレンダーなし。起きたら1タップで今日の枠が決まる。</p></div>
-        <div class="opt rec"><span class="lab">B. カレンダーを読む＋「起きた」</span><span class="rec-tag">本人指示で確定</span><p>カレンダーで出番・公休を判定（明日は？を聞かない）。「起きた」は起床時刻の確定用。教えてほしいのは「どのカレンダーで、出番・公休をどう書いているか」。</p></div>
-        <div class="opt"><span class="lab">C. 日報アプリの乗務開始で自動判定</span><p>タクシー日報の記録開始＝出番確定（ショートカット連携）。後回しでも可。</p></div>
+        <div class="opt rec"><span class="lab">A. 昼 12〜14時＋夕方 17時半〜19時半</span><span class="rec-tag">仮</span><p>幅の始めに1回ずつ通知。違えば時刻を1行で。</p></div>
+        <div class="opt"><span class="lab">B. 1枠だけ</span><p>例: 昼だけ。</p></div>
+        <div class="opt"><span class="lab">C. 出番は通知なし（開いた時だけ）</span><p>アイコンのバッジだけにする。</p></div>
       </div>
-      <p style="margin:10px 0 0;font-size:14px;color:var(--ink-2)">確定したもの: サブスク内の Claude Code を頭脳に／占い調 OK／科学・非科学を問わず同じ棚／自分用は実名・書名 OK／隔日勤務に同期（出番は中立・明けは起きたら）／最初の利用者＝あなた。</p>
+      <p style="margin:10px 0 0;font-size:14px;color:var(--ink-2)">確定したもの: 頭脳＝常時起動の Mac mini の Claude Code（サブスク内）／アプリ＝PWA（iPhone・iPad・Mac）／データ＝非公開 GitHub（タクシー日報と同じ）／占い調 OK／科学・非科学を問わず同じ棚／出番も明けも公休も触れる／最初の利用者＝あなた。</p>
     </div>
 
-    <div class="callout warn"><p><strong>まだコードは書いていません。</strong> Q1〜Q3 の答えをもらってから、設計書 → 実装計画 → 実装の順で進めます。</p></div>
+    <div class="callout warn"><p><strong>まだコードは書いていません。</strong> Q2・Q3 の答え（分からなければ「仮でいい」でOK）をもらい次第、実装計画 → `tefuda-brain` スキルの実装に入ります。</p></div>
   </section>
 
   <div class="conclusion">
@@ -393,7 +392,7 @@
     <ol>
       <li>Obsidian の逆を作る: 構造を作らせない。本の一節を入れれば手札になり、「やった」1タップと「1問の答え」で自分モデルが溜まる。</li>
       <li>手札＝研究も、ビジネス書の「俺はこうやってきた」も、占い・易経も、同じ棚。本の一節を写真で入れると手札になる。3回試したら次へ。AI は「見立て」（占い調）を言ってよく、数字は端末が数える。成功の物差しは「行動が変わったか」だけ。</li>
-      <li>決めてほしいのは3つ: 頭脳スキルから始めてよいか・Developer Program にいつ入るか・「起きた」1タップ方式でよいか。</li>
+      <li>残る質問は2つ: カレンダーはどれで出番・公休をどう書いているか／出番の休憩の幅はいつか。</li>
     </ol>
   </div>
 
