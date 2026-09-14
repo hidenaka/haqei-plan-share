@@ -49,9 +49,9 @@
     <div class="tldr">
       <h2>3行でいうと</h2>
       <ol>
-        <li><b>何を作る</b>: 行動×見方の「手札」を3回試して次へ回す。落ちても戻れる。出番・明け・公休のリズムに合わせて動く。AI が見立てを言い、数字は端末が数える。</li>
+        <li><b>何を作る</b>: 行動×見方の「手札」を3回試して次へ回す。完了のたびに<b>自分の木が育つ</b>（枯れない）。落ちても戻れる。出番・明け・公休のリズムに合わせて動く。AI が見立てを言い、数字は端末が数える。</li>
         <li><b>本当に効くか</b>: 「着手→行動→意味→続く→戻る→自分が分かる」の6段の鎖で、各段に研究の根拠がある。ただし2段（占い調の言い切り／薄いデータの学習）は根拠が弱く、<b>測って確かめる</b>設計にしてある。</li>
-        <li><b>決めてほしい</b>: この企画で着手してよいか（A）。残る2つの質問（カレンダー／休憩の幅）は「仮でいい」でもOK。</li>
+        <li><b>開き続けると</b>: 1年で手札の束・自分の説明書・木の成長写真12枚が残り、ゴールは「アプリなしで回る自分」（卒業あり）。決めてほしいのは、この企画で着手してよいか（A）。</li>
       </ol>
     </div>
   </header>
@@ -184,7 +184,34 @@
   </section>
 
   <section>
-    <h2><span class="num">06</span>あなたが決めること</h2>
+    <h2><span class="num">06</span>ゲーム性と道のり — 返ってきたくなる仕組み／開き続けたらどうなるか</h2>
+    <p class="sub">本人指示で追加（v16）。ゲームで人が戻ってくる本当の理由は「自分で選ぶ・できた実感・物語」[30][31]。逆効果と分かっている「連続記録・罰・ランキング・開くだけ報酬」は入れない [19]。</p>
+
+    <div class="cards">
+      <div class="card"><div class="emoji">🌳</div><h3>木が育つ（中心）</h3><p>完了1回で葉が1枚。5つの方向＝5本の枝、手札のタイプで葉の色、本から作った手札は実になる。<b>枯れない・減らない</b>（世話は要らない）。落ちて戻ると幹に年輪。30日ごとに姿が保存され、1年で12枚の成長写真。1年後の姿は最初から薄く見える。絵は式で描くので個人開発で作れる。</p></div>
+      <div class="card"><div class="emoji">✉️</div><h3>封筒（未開封の手札）</h3><p>次の手札は封筒で届き、開けられるのは完了直後だけ。中身が分からない＝知りたい隙間 [33]。低確率で演出だけ特別な「当たり」（内容は同じ・通貨なし・約1/10・開く理由になり始めたら外す）。開封と木が伸びる瞬間だけ音とアニメを強めに。</p></div>
+      <div class="card"><div class="emoji">📚</div><h3>図鑑の完成欲</h3><p>地方ごとに12枚の組。半分を超えると残りを埋めたくなる [34]。「もういい」も1枚として埋まる（外れが罰にならない）。</p></div>
+      <div class="card"><div class="emoji">🚕</div><h3>出番の日にも手応え</h3><p>1分の札でも完了で葉が1枚＋短い音。しんどい日に開いても木は変わらないが「今日はここにいる」の一言だけ（評価も励ましもなし）。</p></div>
+    </div>
+
+    <p style="margin:26px 0 6px;font-weight:700">開き続けたらどうなるか — 道のり（今日画面の木の横に、1年後のシルエットが薄く見える）</p>
+    <table class="table">
+      <thead><tr><th>いつ</th><th>アプリの中（木・図鑑）</th><th><b>生活の側の兆し</b>（これが本当の物差し）</th></tr></thead>
+      <tbody>
+        <tr><td>1日目</td><td>自分の1語／最初の手札／木は芽</td><td>「今日2分だけやった」が1回ある</td></tr>
+        <tr><td>1週目</td><td>手札2〜3枚／葉5〜7枚／封筒を2回開けた</td><td>明けの午後の「何もしない時間」が1つ「何かした時間」に変わった日がある</td></tr>
+        <tr><td>1か月</td><td>図鑑10枚／枝1本／成長写真1枚目／本から作った手札1〜2枚</td><td>30ページで止まっていた本の1節を「試した」。「増えるもの」を自分の言葉で言い直した</td></tr>
+        <tr><td>3か月</td><td>図鑑30枚／枝2本／好きなタイプが数字で出る／<b>自分の説明書 v1</b></td><td>同じ方向の行動を、通知なしでやった日が週1回以上（自走の兆し）</td></tr>
+        <tr><td>半年</td><td>図鑑50枚／本から作った手札10枚超／方向を1回変えた</td><td>自由時間に「何をするか」で迷う時間が短くなった</td></tr>
+        <tr class="pick"><td>1年</td><td>図鑑100枚／枝5本／成長写真12枚／自分の説明書 v4</td><td><b>アプリがなくても回る</b>。「自分の説明書 v2」が出た時点で「通知なし1週間」を1回だけ提案。できたら木に花。卒業しても木・図鑑・説明書は残り、いつでも戻れる</td></tr>
+      </tbody>
+    </table>
+    <div class="callout"><p><strong>1年後に手元に残るもの:</strong> ①自分の本棚から作った手札の束 ②自分の説明書 ③1本の木の成長写真12枚。そして「アプリなしでも自由時間に何かしている自分」。1年後もまだ毎日開いている前提にはしない（本人役レビュー「本当に欲しいのは、このアプリがなくても回る自分」）。</p></div>
+    <p class="src">ダメ出し（15〜16回目）: ゲームデザイナー役「地図のマス・30日ごとの章・帰還の印は日次で効かない。育つもの1つに統合しろ」／本人役「道のりがアプリ内の数字ばかりで生活の変化がない」→ 木に一本化、各段に生活側の兆し、卒業を追加。最終判定 条件付きGO（木の描き方を擬似コードで確定→反映済み）。</p>
+  </section>
+
+  <section>
+    <h2><span class="num">07</span>あなたが決めること</h2>
     <div class="choice">
       <h3><span class="q">Q1</span>この企画で着手してよい？</h3>
       <div class="opts">
@@ -213,8 +240,8 @@
   </section>
 
   <section>
-    <h2><span class="num">07</span>出典</h2>
-    <p class="sub">§02 の番号に対応。取得日 2026-09-14〜15。数字の解釈上の注意は §02・§03 に書いたとおり。</p>
+    <h2><span class="num">08</span>出典</h2>
+    <p class="sub">§02・§06 の番号に対応。取得日 2026-09-14〜15。数字の解釈上の注意は §02・§03 に書いたとおり。</p>
     <table class="table refs">
       <tbody>
         <tr><td>[1]</td><td>Husain &amp; Roiser (2018) Neuroscience of apathy and anhedonia: a transdiagnostic approach. <i>Nature Reviews Neuroscience</i>. <a href="https://www.nature.com/articles/s41583-018-0029-9">nature.com</a></td></tr>
@@ -246,11 +273,17 @@
         <tr><td>[27]</td><td>バーナム効果と推薦の受容（CHI 2023）; 期待効果の一般的知見. <a href="https://dl.acm.org/doi/full/10.1145/3544548.3580656">acm.org</a></td></tr>
         <tr><td>[28]</td><td>Oyserman (2024) Identity-based motivation and the motivational consequences of difficulty. <i>Social &amp; Personality Psychology Compass</i>. <a href="https://compass.onlinelibrary.wiley.com/doi/10.1111/spc3.70028">wiley.com</a></td></tr>
         <tr><td>[29]</td><td>Just-in-time adaptive interventions: where are we now and what is next? <i>Annual Review of Psychology</i> (2025). <a href="https://www.annualreviews.org/content/journals/10.1146/annurev-psych-121024-044244">annualreviews.org</a></td></tr>
+        <tr><td>[30]</td><td>Ryan, Rigby &amp; Przybylski (2006) The motivational pull of video games: a self-determination theory approach（PENS: 自律・有能感・つながり）. <i>Motivation and Emotion</i>. <a href="https://selfdeterminationtheory.org/player-experience-of-needs-satisfaction-pens/">selfdeterminationtheory.org</a></td></tr>
+        <tr><td>[31]</td><td>Sailer &amp; Homner (2020) The gamification of learning: a meta-analysis（行動 g=0.25、物語が最大の調整変数）. <i>Educational Psychology Review</i>. <a href="https://eric.ed.gov/?id=EJ1245270">eric.ed.gov</a>／Koivisto &amp; Hamari (2019) review <a href="https://www.sciencedirect.com/science/article/pii/S0268401217305169">sciencedirect.com</a></td></tr>
+        <tr><td>[32]</td><td>Nunes &amp; Drèze (2006) The endowed progress effect（2つ押した状態で完走率 19%→34%）. <i>Journal of Consumer Research</i>. <a href="https://academic.oup.com/jcr/article-abstract/32/4/504/1787425">oup.com</a></td></tr>
+        <tr><td>[33]</td><td>Loewenstein (1994) The psychology of curiosity: information-gap theory. <i>Psychological Bulletin</i>. <a href="https://www.cmu.edu/dietrich/sds/docs/golman/golman_loewenstein_curiosity.pdf">cmu.edu（Golman &amp; Loewenstein）</a></td></tr>
+        <tr><td>[34]</td><td>Carey (2008) Modeling collecting behavior: the role of set completion. <i>J Economic Psychology</i>. <a href="https://www.sciencedirect.com/science/article/abs/pii/S0167487007000682">sciencedirect.com</a></td></tr>
+        <tr><td>[35]</td><td>Finch（自己ケア・育成アプリ）の分析: 「誰かのため」で続く／3か月で世話が負担になる. <a href="https://slate.com/technology/2026/09/finch-app-self-care-wellness-review.html">Slate 2026</a></td></tr>
         <tr><td>市場</td><td>パーソル総合研究所 (2022) グローバル就業実態・成長意識調査（日本 52.6%／18か国平均 18%）<a href="https://webtan.impress.co.jp/n/2022/11/16/43656">webtan</a>／ベネッセ (2024) 社会人の学びに関する意識調査（学習意欲なし 42%）<a href="https://prtimes.jp/main/html/rd/p/000001265.000000120.html">prtimes</a></td></tr>
         <tr><td>規約</td><td>Anthropic: サブスク OAuth は Claude Code と claude.ai 専用（2026-02 明文化）. <a href="https://www.theregister.com/2026/02/20/anthropic_clarifies_ban_third_party_claude_access/">The Register</a>／データ保持 <a href="https://support.claude.com/en/articles/15425996-data-retention-practices-for-covered-models">support.claude.com</a></td></tr>
       </tbody>
     </table>
-    <p class="src">設計の全文（v14.1）と、別AI 14ラウンド・27本のダメ出し全文: アプリ開発/無気力サポートアプリ/docs/plan/</p>
+    <p class="src">設計の全文（v16.1）と、別AI 16ラウンド・30本のダメ出し全文: アプリ開発/無気力サポートアプリ/docs/plan/</p>
   </section>
 
   <div class="conclusion">
@@ -262,7 +295,7 @@
     </ol>
   </div>
 
-  <footer>企画案 v14.1 ／ 2026-09-15 ／ 前の判断資料（経緯つき）: 2026-09-14-kickoff.html</footer>
+  <footer>企画案 v16.1 ／ 2026-09-15 ／ 前の判断資料（経緯つき）: 2026-09-14-kickoff.html</footer>
 </div>
 </body>
 </html>
