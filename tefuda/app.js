@@ -1,4 +1,4 @@
-// 手札 app.js — 自動生成（scripts/build-pwa.mjs）build 202609151035
+// 手札 app.js — 自動生成（scripts/build-pwa.mjs）build 202609152127
 (() => {
 "use strict";
 // ---- pwa/src/store.mjs
@@ -375,61 +375,191 @@ function renderToday(state, cards, log, { shift = false } = {}) {
 }
 
 // ---- brain/lib/monshin.mjs
-// 棚卸し（問診 v2）— 設計書 §18 / docs/research/2026-09-15-生きる目的を問診で仮決めする.md
-// 本人指示（2026-09-15）「仮でも雑すぎる。丁寧にボリュームを取得して、それを集中させるやり方に」
-//   1) 拡げる: 6つの束 × 自由記述（1つずつ改行・思いつくだけ・数日かけてよい）＋ 価値の言葉の選別（40語超 → 10 → 5 → 3）
-//   2) 絞る:   自分の答えを見返して「今も本当」に星（上限10）→ 3つに
+// 棚卸し（問診 v3）— 設計書 §18 / docs/research/2026-09-15-生きる目的を問診で仮決めする.md
+// 本人指示（2026-09-15/16）「丁寧にボリュームを取得して、それを集中させる」「いろんな手法のカードを増やして。やりたくないやつは飛ばしていい。性格診断くらい設問は多くていい」
+//   1) 拡げる: 手法カード（出典つき）を好きな順に。型は 書く／選ぶ／当てはまり度 の3種。飛ばしてよい
+//   2) 絞る:   集まった材料を見返して「今も本当」に星（上限10）→ 3つに
 //   3) 組み立て: 残った自分の言葉で「［誰］のために、［使うもの］を使って、［増やすもの］を増やす人」
-// 「なぜ」は聞かない。研究者名は画面に出さない（出典は research）。AI は推定しない。数字は端末が数える。
+// AI は推定しない。数字は端末が数える。タイプ名で固定しない（当てはまり度は目盛りのまま見せる）。
 
 const STAR_LIMIT = 10;
 const FINAL_LIMIT = 3;
 const VALUE_STEPS = [10, 5, 3];
 
-const p = (id, text, hint = '', max = 3) => ({ id, text, hint, max });
+const GROUPS = [
+  { id: 'now', title: 'いまのこと' },
+  { id: 'past', title: '昔のこと' },
+  { id: 'future', title: 'これからのこと' },
+  { id: 'people', title: 'まわりの人' },
+  { id: 'self', title: '好き・得意・大事' },
+  { id: 'whole', title: '全体を見る（当てはまり度）' },
+];
 
-const BUNDLES = [
-  { id: 'now', title: 'いまのこと', intro: '最近の時間の使い方から、「好き」と「消耗」を拾う。正解はない。', prompts: [
-    p('now1', '休みの日、気づいたらやっていること', '例: 車の掃除／YouTube／昼寝', 5),
-    p('now2', 'この1か月で、時間を忘れた瞬間', '無ければ「なし」でよい', 3),
-    p('now3', 'やっていると元気が出ること', '小さいことでよい', 5),
-    p('now4', 'やると疲れる・消耗すること', 'ここは避ける方向を知るため', 5),
-    p('now5', '出番の合間に、つい見ているもの・考えていること', '', 3),
-    p('now6', '「これだけは手を抜かない」と思っていること', '仕事でも家でも', 3),
-  ] },
-  { id: 'past', title: '昔のこと', intro: '昔から変わらない興味と、自分を決めた出来事を拾う。', prompts: [
-    p('past1', '12歳のころ、放っておくとやっていたこと', '', 5),
-    p('past2', '子どものころ、褒められたこと・得意だったこと', '', 5),
-    p('past3', 'これまでで「ここで変わった」と思う出来事', '1つずつ改行', 3),
-    p('past4', 'いちばん誇らしかった瞬間', '', 3),
-    p('past5', '途中でやめたけど、今も少し気になっていること', '', 3),
-    p('past6', '昔の自分が今の自分を見たら、驚くこと', '', 3),
-  ] },
-  { id: 'future', title: 'これからのこと', intro: '長い目で見たときに残る「やっておけばよかった」を先に拾う。', prompts: [
-    p('fut1', '80歳の自分が「やっておけばよかった」と言いそうなこと', '80歳の目で見る', 5),
-    p('fut2', '絶対にこうはなりたくない、と思う生き方', '「嫌」をひっくり返すと大事なものが出る', 3),
-    p('fut3', '1週間、仕事も家事も無かったら、3日目に何をしている？', '', 3),
-    p('fut4', '1年後「これが増えた」と言えたら嬉しいこと', '', 5),
-    p('fut5', 'お金の心配が無かったら、続けたいこと・始めたいこと', '', 5),
-    p('fut6', 'いつか行きたい場所・会いたい人・やってみたいこと', '', 5),
-  ] },
-  { id: 'people', title: 'まわりの人', intro: '「誰の役に立っているか」と「得意」は、人からの反応に出る。', prompts: [
-    p('ppl1', 'よく頼まれること', '', 5),
-    p('ppl2', '「ありがとう」と言われたこと（最近の分）', '', 3),
-    p('ppl3', 'うらやましいと思った人と、その人の何が', '例: 〇〇さんの、体が軽そうなところ', 3),
-    p('ppl4', '尊敬している人と、その人のどこが', '', 3),
-    p('ppl5', '自分がいなくなったら困る人・場面', '', 3),
-    p('ppl6', '誰の役に立ちたいか', '例: 家族／客／仲間／知らない人／未来の自分', 3),
-  ] },
-  { id: 'like', title: '好きと得意', intro: '好きなことと得意なことを別々に、数を出す。重なりは後で見る。', prompts: [
-    p('like1', '好きなこと', '思いつくだけ。10個まで', 10),
-    p('like2', '得意なこと・人より楽にできること', '思いつくだけ。10個まで', 10),
-    p('like3', '苦手だけどやっていること', '', 3),
-    p('like4', '人に教えられること', '', 3),
-    p('like5', '好きと得意が重なっていること', '上の2つを見て、あれば', 3),
-    p('like6', 'お金をもらわなくてもやること', '', 3),
-  ] },
-  { id: 'values', title: '大事なもの', intro: 'たくさんの言葉から選んで絞る。10 → 5 → 3。', prompts: [] }, // 画面は価値の言葉の選別
+const w = (id, text, hint = '', max = 3) => ({ id, text, hint, max });
+const r = (id, text, dir = null) => ({ id, text, dir });
+
+// kind: write=1問ずつ自由記述 / pick=言葉を選んで絞る / rate=当てはまり度（scale 段階）
+const METHODS = [
+  // ---- いまのこと ----
+  { id: 'gtj', group: 'now', kind: 'write', title: '良い時間の日記', source: 'Burnett & Evans『スタンフォード式 人生デザイン講座』', minutes: 6,
+    why: '最近の時間の使い方から「好き」と「消耗」を拾う。正解はない。', items: [
+      w('gtj1', '休みの日、気づいたらやっていること', '例: 車の掃除／YouTube／昼寝', 5),
+      w('gtj2', 'この1か月で、時間を忘れた瞬間', '無ければ「なし」でよい', 3),
+      w('gtj3', 'やっていると元気が出ること', '小さいことでよい', 5),
+      w('gtj4', 'やると疲れる・消耗すること', 'ここは避ける方向を知るため', 5),
+      w('gtj5', '出番の合間に、つい見ているもの・考えていること', '', 3),
+      w('gtj6', '「これだけは手を抜かない」と思っていること', '仕事でも家でも', 3),
+    ] },
+  { id: 'energy', group: 'now', kind: 'write', title: 'エネルギーの棚卸し', source: 'Loehr & Schwartz『成功と幸せのための4つのエネルギー管理術』', minutes: 4,
+    why: '1週間のうち、体と気持ちが上がる時間・下がる時間を分ける。', items: [
+      w('en1', '1週間の中で、いちばん気分がいい時間帯・場面', '例: 明けの午前、風呂上がり', 3),
+      w('en2', '1週間の中で、いちばん重い時間帯・場面', '', 3),
+      w('en3', '考えるだけで体が軽くなること', '', 5),
+      w('en4', '考えるだけで体が重くなること', '', 5),
+    ] },
+  { id: 'flow', group: 'now', kind: 'write', title: '夢中の記録', source: 'Csikszentmihalyi『フロー体験』', minutes: 4,
+    why: '「難しいけど楽しい」が続くことは、合っている活動のしるし。', items: [
+      w('fl1', '難しいけど楽しい、と思えること', '', 5),
+      w('fl2', '少しずつ上手くなっている実感があること', '', 3),
+      w('fl3', '終わった後に満足が残ること', '', 3),
+      w('fl4', '人に言われなくても続けていること', '', 5),
+      w('fl5', 'やりかけて放ってあるが、気になっていること', '', 3),
+    ] },
+  // ---- 昔のこと ----
+  { id: 'story', group: 'past', kind: 'write', title: '人生の物語', source: 'McAdams「ライフストーリー・インタビュー」', minutes: 10,
+    why: '自分が大事にしていることは、覚えている場面に出る。書きたい場面だけでよい。', items: [
+      w('st1', '人生を3つの章に分けるなら、それぞれの題名', '例: 実家／独立／今', 3),
+      w('st2', 'いちばん良かった場面', 'いつ・どこで・誰と', 3),
+      w('st3', 'いちばんつらかった場面（書ける範囲で）', '', 2),
+      w('st4', '「ここで変わった」と思う転機', '', 3),
+      w('st5', '子どものころの、はっきり覚えている記憶', '', 3),
+      w('st6', '誇らしかった瞬間', '', 3),
+      w('st7', '影響を受けた人と、その人から受け取ったもの', '', 3),
+      w('st8', '昔から変わらない自分のところ', '', 5),
+    ] },
+  { id: 'kid', group: 'past', kind: 'write', title: '12歳の自分', source: 'Damon『「目的」を持って生きる』', minutes: 4,
+    why: '昔から続く興味は、いちばん信用できる材料。', items: [
+      w('kd1', '12歳のころ、放っておくとやっていたこと', '', 5),
+      w('kd2', '子どものころ、褒められたこと・得意だったこと', '', 5),
+      w('kd3', '子どものころに夢中だった物・場所・遊び', '', 5),
+      w('kd4', '昔の自分が今の自分を見たら、驚くこと', '', 3),
+    ] },
+  { id: 'regret', group: 'past', kind: 'write', title: '後悔の一覧', source: 'Gilovich & Medvec「やらなかった後悔は長く残る」', minutes: 4,
+    why: '「やった後悔」は薄れ、「やらなかった後悔」は残る。残っているものを出す。', items: [
+      w('rg1', 'やらなくて後悔していること', '', 5),
+      w('rg2', 'やめてしまって、今も気になっていること', '', 3),
+      w('rg3', '言えなかったこと・伝えていないこと', '', 3),
+      w('rg4', 'もう一度やり直せるなら、変えること', '', 3),
+    ] },
+  // ---- これからのこと ----
+  { id: 'bps', group: 'future', kind: 'write', title: '最高の未来の自分', source: 'King「Best Possible Self」（King 2001）', minutes: 6,
+    why: '全部うまくいった5年後の1日を、細かく書く。願いではなく描写で。', items: [
+      w('bp1', '5年後、全部うまくいっているとして、朝起きてから寝るまでの1日', '細かく', 5),
+      w('bp2', 'その1日で、体はどんな感じか', '', 3),
+      w('bp3', 'その1日で、仕事以外に何があるか', '', 5),
+      w('bp4', 'その1日で、誰と、どんなやりとりをしているか', '', 3),
+      w('bp5', 'その1日で、お金の状態はどうか', '', 2),
+    ] },
+  { id: 'odyssey', group: 'future', kind: 'write', title: '3つの5年', source: 'Burnett & Evans「オデッセイ・プラン」', minutes: 5,
+    why: '「1つの正解」を探さず、3つ並べると本音が見える。', items: [
+      w('od1', 'このまま続けた場合の5年後', '', 3),
+      w('od2', '今の仕事が無くなった場合の5年後', '', 3),
+      w('od3', 'お金と人の目を気にしなくていい場合の5年後', '', 3),
+    ] },
+  { id: 'eulogy', group: 'future', kind: 'write', title: '80歳と弔辞', source: 'Covey『7つの習慣』（終わりを思い描く）', minutes: 5,
+    why: '長い目で見ると、何が残るかが分かる。', items: [
+      w('eu1', '80歳の自分が「やっておけばよかった」と言いそうなこと', '80歳の目で見る', 5),
+      w('eu2', '家族に、自分について言ってほしいこと', '', 3),
+      w('eu3', '客や仲間に、自分について言ってほしいこと', '', 3),
+      w('eu4', '1年後「これが増えた」と言えたら嬉しいこと', '', 5),
+    ] },
+  { id: 'anti', group: 'future', kind: 'write', title: 'なりたくない生き方', source: 'Elliot & Sheldon「回避目標」の研究', minutes: 3,
+    why: '「嫌」をひっくり返すと、大事なものが出てくる。', items: [
+      w('an1', '絶対にこうはなりたくない、と思う生き方', '', 3),
+      w('an2', '身近で「ああはなりたくない」と思った例', '書ける範囲で', 3),
+      w('an3', 'それをひっくり返すと、どうなっていたいか', '', 3),
+    ] },
+  { id: 'bucket', group: 'future', kind: 'write', title: 'やってみたいこと100', source: '「バケットリスト」（Gilovich の後悔研究と対）', minutes: 8,
+    why: '数を出す。大小・現実性は問わない。', items: [
+      w('bk1', 'やってみたいこと・行きたい場所・会いたい人', '思いつくだけ。30まで', 30),
+    ] },
+  // ---- まわりの人 ----
+  { id: 'reaction', group: 'people', kind: 'write', title: '人からの反応', source: '八木仁平『世界一やさしい「やりたいこと」の見つけ方』／神谷美恵子『生きがいについて』', minutes: 5,
+    why: '「得意」と「誰の役に立っているか」は、人からの反応に出る。', items: [
+      w('re1', 'よく頼まれること', '', 5),
+      w('re2', '「ありがとう」と言われたこと（最近の分）', '', 3),
+      w('re3', '人に教えられること', '', 3),
+      w('re4', '自分がいなくなったら困る人・場面', '', 3),
+      w('re5', '誰の役に立ちたいか', '例: 家族／客／仲間／知らない人／未来の自分', 3),
+    ] },
+  { id: 'envy', group: 'people', kind: 'write', title: 'うらやましさと尊敬', source: 'Schwartz「価値の理論」／Bandura「モデリング」', minutes: 4,
+    why: 'うらやましさと尊敬は、自分が大事にしているものの映し。', items: [
+      w('ev1', 'うらやましいと思った人と、その人の何が', '例: 〇〇さんの、体が軽そうなところ', 3),
+      w('ev2', '尊敬している人と、その人のどこが', '', 3),
+      w('ev3', 'その人たちに共通していること', '', 3),
+    ] },
+  { id: 'contrib', group: 'people', kind: 'write', title: '貢献感', source: 'アドラー（岸見『嫌われる勇気』）／Damon「自分を超えた誰か」', minutes: 4,
+    why: '目的には「自分以外の誰か」が要る。', items: [
+      w('co1', '最近「誰かの役に立った」と感じた場面', '', 3),
+      w('co2', '誰のために動くと、疲れにくいか', '', 3),
+      w('co3', '死ぬまでに、誰に何を渡したいか', '物でも技でも言葉でも', 3),
+    ] },
+  { id: 'friend', group: 'people', kind: 'write', title: '親友への助言', source: 'Kross「自己距離化」（Ethan Kross『Chatter』）', minutes: 3,
+    why: '自分のことは分からなくても、親友のことなら言える。', items: [
+      w('fr1', '親友が今のあなたと同じ状況なら、何と言ってあげるか', '', 3),
+      w('fr2', '10年後の自分から、今の自分への手紙（3行）', '', 3),
+      w('fr3', '尊敬する人なら、今のあなたに何を勧めるか', '', 3),
+    ] },
+  // ---- 好き・得意・大事 ----
+  { id: 'likes', group: 'self', kind: 'write', title: '好きの一覧', source: '八木仁平「好き×得意×大事」', minutes: 4,
+    why: '好きと得意は別に出す。重なりは後で見る。', items: [
+      w('lk1', '好きなこと', '思いつくだけ。15まで', 15),
+      w('lk2', 'お金をもらわなくてもやること', '', 5),
+      w('lk3', '話し出すと止まらない話題', '', 5),
+    ] },
+  { id: 'skills', group: 'self', kind: 'write', title: '得意の一覧', source: '八木仁平「好き×得意×大事」', minutes: 4,
+    why: '「人より楽にできる」が得意。すごい必要はない。', items: [
+      w('sk1', '得意なこと・人より楽にできること', '思いつくだけ。15まで', 15),
+      w('sk2', '苦手だけどやっていること', '', 5),
+      w('sk3', '好きと得意が重なっていること', '上の一覧を見て', 5),
+    ] },
+  { id: 'values', group: 'self', kind: 'pick', title: '大事な言葉', source: 'Miller「価値カード分類」（Personal Values Card Sort）', minutes: 5,
+    why: 'たくさんの言葉から選んで絞る。10 → 5 → 3。', items: [] },
+  { id: 'via', group: 'self', kind: 'rate', scale: 5, top: 5, title: '強みの自己評価', source: 'Peterson & Seligman「VIA 24の強み」（短縮・自己評価）', minutes: 5,
+    why: '24の強みに「どれくらい自分らしいか」を1〜5で。上位5つが「使うもの」の候補になる。', items: [
+      r('v01', '新しいやり方を思いつく', 'make'), r('v02', '好奇心が強い', 'head'), r('v03', '物事をいろんな角度から考える', 'head'), r('v04', '学ぶのが好き', 'head'), r('v05', '人に助言を求められる', 'people'),
+      r('v06', '怖くてもやる', null), r('v07', '始めたことをやり抜く', null), r('v08', '正直で裏表がない', null), r('v09', '元気で活動的', 'body'),
+      r('v10', '人を大事にし、大事にされる', 'people'), r('v11', '親切で世話好き', 'people'), r('v12', '人の気持ちが分かる', 'people'),
+      r('v13', 'チームで動ける', 'people'), r('v14', '公平である', null), r('v15', 'まとめ役になれる', 'people'),
+      r('v16', '許せる', null), r('v17', '控えめ', null), r('v18', '慎重', 'money'), r('v19', '自分を律せる', 'body'),
+      r('v20', '美しいものに気づく', null), r('v21', '感謝を忘れない', null), r('v22', '希望を持てる', null), r('v23', 'ユーモアがある', 'people'), r('v24', '大きな何かにつながっている感覚がある', null),
+    ] },
+  { id: 'meaning', group: 'self', kind: 'rate', scale: 5, top: 5, title: '意味の源', source: 'Schnell「意味の源 26」（Sources of Meaning）', minutes: 5,
+    why: '「これがあると生きている感じがする」ものに1〜5。上位が「増やすもの」の候補になる。', items: [
+      r('m01', '体を動かすこと', 'body'), r('m02', '健康でいること', 'body'), r('m03', '自然の中にいること', 'body'), r('m04', '楽しむこと・遊び', null),
+      r('m05', '何かを作ること', 'make'), r('m06', '知ること・学ぶこと', 'head'), r('m07', '上手くなること', 'make'), r('m08', '自分のやり方でやること', null),
+      r('m09', '家族といること', 'people'), r('m10', '仲間といること', 'people'), r('m11', '人の役に立つこと', 'people'), r('m12', '誰かを育てること', 'people'),
+      r('m13', '認められること', null), r('m14', '力や影響を持つこと', null), r('m15', '安定していること', 'money'), r('m16', '自由でいること', null),
+      r('m17', '伝統や土地とのつながり', null), r('m18', '正しいことをすること', null), r('m19', '静かに自分と向き合うこと', null), r('m20', '大きなものへの信頼（自然・運命・信仰など）', null),
+      r('m21', 'お金の見通しが立っていること', 'money'), r('m22', '考えて分かること', 'head'), r('m23', '人と深く話すこと', 'people'), r('m24', '体が軽いこと', 'body'),
+      r('m25', '何かを完成させること', 'make'), r('m26', '笑うこと', 'people'),
+    ] },
+  // ---- 全体を見る ----
+  { id: 'ikigai9', group: 'whole', kind: 'rate', scale: 5, top: 0, title: '生きがい9', source: 'Imai ほか「ikigai-9」（2012）', minutes: 2,
+    why: '今の「生きがい感」を9問で。点は目安。3か月後にまた測る。', items: [
+      r('ik1', '自分は何かの役に立っていると感じる'), r('ik2', '毎日が新鮮で楽しい'), r('ik3', '心に余裕がある'), r('ik4', '自分の考えを持っている'),
+      r('ik5', '新しいことを学びたい'), r('ik6', '将来に向けて何かをしている'), r('ik7', '自分は成長していると感じる'), r('ik8', '世の中や人のために何かしたい'), r('ik9', '自分の存在に意味があると感じる'),
+    ] },
+  { id: 'wheel', group: 'whole', kind: 'rate', scale: 10, top: 0, low: 2, title: '生活の輪', source: 'コーチングの「Wheel of Life」（Meyer）', minutes: 2,
+    why: '8つの領域に、今の満足を1〜10で。低いところが「変えたい」の候補。', items: [
+      r('wh1', '体・健康', 'body'), r('wh2', '仕事', null), r('wh3', 'お金', 'money'), r('wh4', '家族', 'people'),
+      r('wh5', '友人・仲間', 'people'), r('wh6', '学び・作ること', 'make'), r('wh7', '遊び・楽しみ', null), r('wh8', '住まい・暮らしの整い', 'body'),
+    ] },
+  { id: 'tipi', group: 'whole', kind: 'rate', scale: 7, top: 0, title: '性格の傾向', source: 'Gosling ほか「TIPI」（ビッグファイブ10項目）', minutes: 2,
+    why: 'タイプ分けではなく、5つの目盛り。「合う手札」を選ぶ参考にする。', items: [
+      r('tp1', '外向的で、社交的'), r('tp2', '批判的で、口論しがち'), r('tp3', '信頼でき、自分を律している'), r('tp4', '不安になりやすく、動揺しやすい'), r('tp5', '新しい経験に開かれていて、複雑なことも好き'),
+      r('tp6', '控えめで、静か'), r('tp7', '思いやりがあり、温かい'), r('tp8', 'だらしなく、不注意'), r('tp9', '落ち着いていて、感情が安定している'), r('tp10', '型どおりで、創造的ではない'),
+    ] },
 ];
 
 // 価値の言葉（方向のタグつき。null は方向に寄らない）
@@ -439,42 +569,67 @@ const VALUES = [
   ...['安心', '余裕', '蓄え', 'お金が分かっていること', '自立', '備え'].map(w => ({ w, dir: 'money' })),
   ...['家族', '仲間', '感謝されること', '信頼', '会話', '役に立つこと', '居場所', '笑い'].map(w => ({ w, dir: 'people' })),
   ...['理解', '考えること', '知ること', '説明できること', '判断力'].map(w => ({ w, dir: 'head' })),
-  ...['自由', '静けさ', '誠実', '挑戦', '安定', '楽しさ', '美しさ', '誇り'].map(w => ({ w, dir: null })),
+  ...['自由', '静けさ', '誠実', '挑戦', '安定', '楽しさ', '美しさ', '誇り', '感謝', '正直', '思いやり', '勇気', '遊び', '伝統', '静かな時間', 'ユーモア'].map(w => ({ w, dir: null })),
 ];
 
 const WHO_CHIPS = ['家族', '客', '仲間', '自分', '未来の自分', '知らない誰か'];
 
-const PROMPTS = BUNDLES.flatMap(b => b.prompts.map(q => ({ ...q, bundleId: b.id })));
+const PROMPTS = METHODS.filter(x => x.kind === 'write').flatMap(c => c.items.map(q => ({ ...q, methodId: c.id })));
+const ITEM_COUNT = METHODS.reduce((n, c) => n + (c.kind === 'pick' ? VALUES.length : c.items.length), 0);
+const method = id => METHODS.find(x => x.id === id);
 
-// 自由記述を「1行＝1項目」に割る。answers: { [promptId]: string }
-function itemsFrom(answers) {
+// 材料: 自由記述は1行＝1項目。当てはまり度は上位（top 個・中央より上）を項目にする
+// state: { answers:{promptId:string}, rates:{methodId:{itemId:number}}, values:{picks:[[],[],[]]}, skipped:[] }
+function itemsFrom(state) {
   const out = [];
   for (const q of PROMPTS) {
-    const raw = answers?.[q.id];
+    const raw = state?.answers?.[q.id];
     if (!raw) continue;
-    String(raw).split(/\r?\n/).map(s => s.trim()).filter(Boolean).forEach((text, i) => out.push({ id: `${q.id}#${i}`, pid: q.id, bundleId: q.bundleId, text }));
+    String(raw).split(/\r?\n/).map(s => s.trim()).filter(Boolean).forEach((text, i) => out.push({ id: `${q.id}#${i}`, pid: q.id, methodId: q.methodId, text }));
+  }
+  for (const c of METHODS.filter(x => x.kind === 'rate' && x.top > 0)) {
+    for (const it of rateTop(c, state?.rates?.[c.id])) out.push({ id: `${c.id}#${it.id}`, pid: c.id, methodId: c.id, text: it.text, dir: it.dir, score: it.score });
   }
   return out;
 }
 
-// 進み具合。valueTop3 は値の選別が終わっていれば配列
-function progress(answers, valueTop3) {
-  const per = {};
-  for (const b of BUNDLES) {
-    if (b.id === 'values') { per[b.id] = { done: valueTop3?.length === 3 ? 1 : 0, total: 1 }; continue; }
-    const done = b.prompts.filter(q => (answers?.[q.id] ?? '').trim()).length;
-    per[b.id] = { done, total: b.prompts.length };
-  }
-  const items = itemsFrom(answers).length;
-  const bundlesDone = Object.values(per).filter(x => x.done === x.total).length;
-  // 絞りに進める最低ライン: 項目 12 以上、または束 3 つ完了
-  return { per, items, bundlesDone, canNarrow: items >= 12 || bundlesDone >= 3 };
+function rateTop(card, rates) {
+  if (!rates) return [];
+  const mid = (card.scale + 1) / 2;
+  return card.items.map(it => ({ ...it, score: rates[it.id] })).filter(it => it.score != null && it.score > mid)
+    .sort((a, b) => b.score - a.score || a.id.localeCompare(b.id)).slice(0, card.top);
 }
 
-// 価値の上位3語から方向を推定（同数は DIRECTIONS 順）。null タグは無視
-function directionFromValues(top) {
+function rateLow(card, rates) {
+  if (!rates) return [];
+  return card.items.map(it => ({ ...it, score: rates[it.id] })).filter(it => it.score != null)
+    .sort((a, b) => a.score - b.score || a.id.localeCompare(b.id)).slice(0, card.low ?? 0);
+}
+
+function methodStatus(card, state) {
+  if (state?.skipped?.includes(card.id)) return { skipped: true, done: 0, total: 0 };
+  if (card.kind === 'pick') return { skipped: false, done: state?.values?.picks?.[2]?.length === 3 ? 1 : 0, total: 1 };
+  if (card.kind === 'rate') { const rt = state?.rates?.[card.id] ?? {}; return { skipped: false, done: card.items.filter(i => rt[i.id] != null).length, total: card.items.length }; }
+  return { skipped: false, done: card.items.filter(q => (state?.answers?.[q.id] ?? '').trim()).length, total: card.items.length };
+}
+
+function progress(state) {
+  const per = {};
+  let cardsDone = 0, cardsSkipped = 0;
+  for (const c of METHODS) {
+    const s = methodStatus(c, state); per[c.id] = s;
+    if (s.skipped) cardsSkipped += 1; else if (s.done === s.total) cardsDone += 1;
+  }
+  const items = itemsFrom(state).length;
+  return { per, items, cardsDone, cardsSkipped, cardsTotal: METHODS.length, canNarrow: items >= 12 || cardsDone >= 3 };
+}
+
+// 方向の推定: 大事な言葉の上位3 ＋ 生活の輪の低い領域 ＋ 意味の源の上位（タグの多数決。同数は DIRECTIONS 順）
+function directionHint(state) {
   const score = Object.fromEntries(DIRECTIONS.map(d => [d.id, 0]));
-  for (const w of top ?? []) { const v = VALUES.find(x => x.w === w); if (v?.dir) score[v.dir] += 1; }
+  for (const w of state?.values?.picks?.[2] ?? []) { const v = VALUES.find(x => x.w === w); if (v?.dir) score[v.dir] += 2; }
+  for (const it of rateLow(method('wheel'), state?.rates?.wheel)) if (it.dir) score[it.dir] += 2;
+  for (const it of rateTop(method('meaning'), state?.rates?.meaning)) if (it.dir) score[it.dir] += 1;
   const best = DIRECTIONS.map(d => d.id).reduce((a, b) => (score[b] > score[a] ? b : a));
   return score[best] > 0 ? best : null;
 }
@@ -488,17 +643,30 @@ function buildPurpose({ who, use, grow }) {
   return parts.join('、');
 }
 
-// 組み立て画面に出す候補の言葉（自分の答えだけから。順は 星 → 価値 → 好き/得意）
-function chipsFor({ stars, valueTop3, answers }) {
-  const items = itemsFrom(answers);
+// 組み立て画面に出す候補の言葉（本人の材料だけ。順は 残した3つ → 星 → 各手法の上位）
+function chipsFor(state, stars) {
+  const items = itemsFrom(state);
   const starred = (stars ?? []).map(id => items.find(i => i.id === id)?.text).filter(Boolean);
-  const likes = items.filter(i => i.pid === 'like1' || i.pid === 'like2' || i.pid === 'like5').map(i => i.text);
-  const uniq = arr => [...new Set(arr)];
+  const byPid = (...pids) => items.filter(i => pids.includes(i.pid)).map(i => i.text);
+  const uniq = arr => [...new Set(arr.filter(Boolean))];
   return {
-    use: uniq([...starred, ...likes]).slice(0, 12),
-    grow: uniq([...(valueTop3 ?? []), ...starred]).slice(0, 12),
-    who: uniq([...items.filter(i => i.pid === 'ppl6').map(i => i.text), ...WHO_CHIPS]).slice(0, 8),
+    use: uniq([...starred, ...byPid('via'), ...byPid('lk1', 'sk1', 'sk3', 'lk2')]).slice(0, 14),
+    grow: uniq([...(state?.values?.picks?.[2] ?? []), ...starred, ...byPid('meaning'), ...byPid('eu4')]).slice(0, 14),
+    who: uniq([...byPid('re5', 'co2'), ...WHO_CHIPS]).slice(0, 8),
   };
+}
+
+// 当てはまり度カードの要約（表示用。タイプ名は付けない）
+function rateSummary(card, rates) {
+  if (!rates || Object.keys(rates).length === 0) return null;
+  if (card.id === 'ikigai9') { const vals = card.items.map(i => rates[i.id]).filter(v => v != null); return `合計 ${vals.reduce((a, b) => a + b, 0)} / ${card.items.length * card.scale}（答えた ${vals.length} 問）`; }
+  if (card.id === 'wheel') return `低め: ${rateLow(card, rates).map(i => `${i.text} ${i.score}`).join('・') || '—'}`;
+  if (card.id === 'tipi') {
+    const rev = v => (v == null ? null : card.scale + 1 - v);
+    const pair = (a, b, label) => { const x = rates[a], y = rev(rates[b]); if (x == null || y == null) return null; return `${label} ${((x + y) / 2).toFixed(1)}`; };
+    return [pair('tp1', 'tp6', '外向'), pair('tp7', 'tp2', '協調'), pair('tp3', 'tp8', '勤勉'), pair('tp9', 'tp4', '安定'), pair('tp5', 'tp10', '開放')].filter(Boolean).join('／') + `（1〜${card.scale}）`;
+  }
+  return `上位: ${rateTop(card, rates).map(i => i.text).join('・') || '—'}`;
 }
 
 // ---- pwa/src/app.mjs
@@ -522,8 +690,8 @@ const REVIEW_DAYS = 90; // 仮の目的の書き直し（設計書 §18）
 
 // 棚卸し（§18 v2）。db とは別に保存: はじめる前からでも、途中で閉じても残る
 const M_KEY = 'tefuda.monshin';
-const M_INIT = () => ({ phase: 'home', answers: {}, cur: { bundleId: null, idx: 0 }, values: { step: 0, picks: [[], [], []], custom: [] }, stars: [], final: [], slots: { who: '', use: '', grow: '' }, finalText: '', startedOn: null });
-let m = (() => { try { return JSON.parse(localStorage.getItem(M_KEY)) ?? M_INIT(); } catch { return M_INIT(); } })();
+const M_INIT = () => ({ phase: 'home', answers: {}, rates: {}, skipped: [], cur: { methodId: null, idx: 0 }, values: { step: 0, picks: [[], [], []], custom: [] }, stars: [], final: [], slots: { who: '', use: '', grow: '' }, finalText: '', startedOn: null });
+let m = (() => { try { const x = JSON.parse(localStorage.getItem(M_KEY)); return x ? { ...M_INIT(), ...x, cur: { methodId: null, idx: 0 }, phase: 'home' } : M_INIT(); } catch { return M_INIT(); } })();
 let inMonshin = false; // true の間は棚卸しの画面だけを出す
 function persistM() { try { localStorage.setItem(M_KEY, JSON.stringify(m)); } catch {} }
 function openMonshin(phase = 'home') { m.phase = phase; m.startedOn ??= today(); inMonshin = true; persistM(); render(); }
@@ -571,7 +739,7 @@ function onbIntro() {
     <section class="card">
       <h2>最初に「棚卸し」で、仮の目的を決める</h2>
       <p class="why">「何のために」が無いと、2分の実験も続きません。でも目的は、考えて当てるものではなく、<b>材料をたくさん出して、絞って、残ったものを1文にする</b>と出てきます。<br>
-      ① <b>拡げる</b>: 6つの束の質問に、思いつくだけ書く（1日1束でよい。途中で閉じても残る）<br>
+      ① <b>拡げる</b>: いろんな人のやり方の「手法カード」${METHODS.length}枚（${ITEM_COUNT}問）から好きなものを。やりたくないカードは飛ばしてよい。1日1〜2枚でよく、途中で閉じても残る<br>
       ② <b>絞る</b>: 自分の答えを見返して「今も本当だ」と思うものに星 → 3つに<br>
       ③ <b>組み立てる</b>: 残った自分の言葉で「誰のために、何を使って、何を増やす人」の1文にする<br>
       できた文は「今日」の画面の上に出て、実験の方向を決めます。3か月たったら書き直します。</p>
@@ -581,58 +749,75 @@ function onbIntro() {
     <p class="note">通知はありません。データはこの端末の中だけに保存されます。</p>`;
 }
 
-// ---------- 棚卸し（§18 v2）----------
+// ---------- 棚卸し（§18 v3: 手法カード）----------
 function viewMonshin() {
-  return { home: mHome, bundle: mBundle, values: mValues, review: mReview, narrow: mNarrow, compose: mCompose }[m.phase]();
+  return { home: mHome, write: mWrite, values: mValues, rate: mRate, review: mReview, narrow: mNarrow, compose: mCompose }[m.phase]();
 }
+const KIND_LABEL = { write: '書く', pick: '選ぶ', rate: '当てはまり度' };
 
 function mHome() {
-  const pr = progress(m.answers, m.values.picks[2]);
+  const pr = progress(m);
+  const row = c => {
+    const x = pr.per[c.id];
+    if (x.skipped) return `<div class="opt btn skipped"><b>${esc(c.title)}</b><span class="small">飛ばした ／ <a href="#" data-unskip="${c.id}">戻す</a></span></div>`;
+    const done = x.done === x.total;
+    const sum = c.kind === 'rate' && x.done ? rateSummary(c, m.rates[c.id]) : null;
+    return `<button class="opt btn ${done ? 'done' : ''}" data-method="${c.id}"><b>${esc(c.title)}</b><span class="small">${esc(c.source)}</span><span class="small">${KIND_LABEL[c.kind]}・約${c.minutes}分 ／ ${done ? '✔ 済' : x.done ? `${x.done} / ${x.total}` : 'まだ'}${sum ? ` ／ ${esc(sum)}` : ''}</span></button>`;
+  };
   return `
     <h1>棚卸し</h1>
     <p class="lede">材料を出す → 絞る → 1文にする。</p>
     <section class="card">
-      <h2>① 拡げる（6つの束）</h2>
-      <p class="why">1束 5〜6問。思いつくだけ、1つずつ改行して書く。うまく書こうとしない。空でも次へ進める。1日1束でよい。</p>
-      ${BUNDLES.map(b => { const x = pr.per[b.id]; const done = x.done === x.total; return `<button class="opt btn ${done ? 'done' : ''}" data-bundle="${b.id}"><b>${esc(b.title)}</b><span class="small">${esc(b.intro)}</span><span class="small">${done ? '✔ 済' : `${x.done} / ${x.total}`}</span></button>`; }).join('')}
+      <h2>① 拡げる（手法カード ${METHODS.length} 枚・${ITEM_COUNT} 問）</h2>
+      <p class="why">いろんな人のやり方を1枚ずつ。<b>好きな順で、やりたくないカードは飛ばしてよい</b>（飛ばしたカードは一覧で戻せる）。1日1〜2枚でよく、途中で閉じても残る。型は3つ: <b>書く</b>（1行に1つ、思いつくだけ）／<b>選ぶ</b>（言葉をタップして絞る）／<b>当てはまり度</b>（1〜5などで答える。性格テストと同じ形）。</p>
+      <p class="small">済 ${pr.cardsDone} 枚・飛ばした ${pr.cardsSkipped} 枚・材料 ${pr.items} 個</p>
+      ${GROUPS.map(g => `<h3>${esc(g.title)}</h3>${METHODS.filter(c => c.group === g.id).map(row).join('')}`).join('')}
     </section>
     <section class="card">
       <h2>② 絞る → ③ 1文にする</h2>
-      <p class="why">書いた材料 ${pr.items} 個。${pr.canNarrow ? '絞りに進めます。' : '材料が 12 個以上、または束が 3 つ終わると進めます。'}${m.final.length ? ` いま残している3つ: ${m.final.length} 個。` : ''}</p>
+      <p class="why">材料 ${pr.items} 個。${pr.canNarrow ? '絞りに進めます（あとからカードを足して、また絞り直してもよい）。' : '材料が 12 個以上、またはカード 3 枚が終わると進めます。'}${m.final.length ? ` いま残している: ${m.final.length} 個。` : ''}</p>
       <button class="primary" id="mToReview" ${pr.canNarrow ? '' : 'disabled'}>${m.stars.length ? '星のつづきから絞る' : '見返して星をつける'}</button>
       ${m.final.length ? `<button id="mToCompose">1文にする画面へ</button>` : ''}
     </section>
     <button class="ghost" id="mClose">閉じる（途中でも残る）</button>`;
 }
 
-function mBundle() {
-  const b = BUNDLES.find(x => x.id === m.cur.bundleId);
-  const q = b.prompts[m.cur.idx];
+function mHeader(c) {
+  return `<div class="progress">${esc(c.title)} <span class="small">${esc(c.source)}</span></div>`;
+}
+
+function mWrite() {
+  const c = method(m.cur.methodId);
+  const q = c.items[m.cur.idx];
   const v = m.answers[q.id] ?? '';
   const lines = v.split('\n').filter(s => s.trim()).length;
   return `
-    <div class="progress">${esc(b.title)} ${m.cur.idx + 1} / ${b.prompts.length}</div>
+    ${mHeader(c)}
     <section class="card">
+      <div class="small">${m.cur.idx + 1} / ${c.items.length}${m.cur.idx === 0 ? ` ・ ${esc(c.why)}` : ''}</div>
       <h2>${esc(q.text)}</h2>
       <p class="why">${q.hint ? esc(q.hint) + '。' : ''}1つずつ改行。${q.max}個まで。思いつかなければ空で次へ。</p>
       <textarea id="mAns" rows="6" placeholder="ここに書く（1行に1つ）">${esc(v)}</textarea>
       <p class="small">${lines} 個</p>
     </section>
-    <button class="primary" id="mNext">${m.cur.idx === b.prompts.length - 1 ? 'この束を終える' : '次へ'}</button>
+    <button class="primary" id="mNext">${m.cur.idx === c.items.length - 1 ? 'このカードを終える' : '次へ'}</button>
     <div class="row">
-      <button class="ghost choice" id="mBack">${m.cur.idx === 0 ? '束の一覧へ' : '戻る'}</button>
+      <button class="ghost choice" id="mBack">${m.cur.idx === 0 ? '一覧へ' : '戻る'}</button>
       <button class="ghost choice" id="mHome">一覧へ（残る）</button>
-    </div>`;
+    </div>
+    <button class="ghost small" id="mSkipCard">このカードはやりたくない → 飛ばす（一覧で戻せる）</button>`;
 }
 
 function mValues() {
+  const c = method('values');
   const step = m.values.step;
   const limit = VALUE_STEPS[step];
   const pool = step === 0 ? [...VALUES.map(v => v.w), ...m.values.custom] : m.values.picks[step - 1];
   const picked = m.values.picks[step];
   return `
-    <div class="progress">大事なもの ${step + 1} / 3</div>
+    ${mHeader(c)}
     <section class="card">
+      <div class="small">${step + 1} / 3 ・ ${esc(c.why)}</div>
       <h2>${step === 0 ? '大事だと思う言葉を、10個まで選ぶ' : step === 1 ? 'その中から 5つ' : 'その中から 3つ'}</h2>
       <p class="why">${step === 0 ? '深く考えず、目に止まったものをタップ。無い言葉は下で足せる。' : '「これだけは」を残す。捨てた言葉も消えず、戻れる。'} いま ${picked.length} / ${limit}</p>
       <div class="chips">${pool.map(w => `<button class="chip ${picked.includes(w) ? 'on' : ''}" data-val="${esc(w)}">${esc(w)}</button>`).join('')}</div>
@@ -640,29 +825,50 @@ function mValues() {
     </section>
     <button class="primary" id="mValNext" ${picked.length === 0 ? 'disabled' : ''}>${step === 2 ? '3つに決める' : '次へ'}</button>
     <div class="row">
-      <button class="ghost choice" id="mValBack">${step === 0 ? '束の一覧へ' : '戻る'}</button>
-    </div>`;
+      <button class="ghost choice" id="mValBack">${step === 0 ? '一覧へ' : '戻る'}</button>
+    </div>
+    <button class="ghost small" id="mSkipCard">このカードはやりたくない → 飛ばす（一覧で戻せる）</button>`;
+}
+
+function mRate() {
+  const c = method(m.cur.methodId);
+  const rt = m.rates[c.id] ?? {};
+  const scaleLabel = c.scale === 10 ? '1＝不満 … 10＝満足' : c.scale === 7 ? '1＝全く当てはまらない … 7＝とても当てはまる' : '1＝当てはまらない … 5＝よく当てはまる';
+  const answered = c.items.filter(i => rt[i.id] != null).length;
+  const sum = answered ? rateSummary(c, rt) : null;
+  return `
+    ${mHeader(c)}
+    <section class="card">
+      <h2>${esc(c.why)}</h2>
+      <p class="why">${scaleLabel}。直感で。全部でなくてもよい。${c.id === 'tipi' ? '結果は5つの目盛りで出る（タイプ名は付けない）。' : ''}</p>
+      ${c.items.map(it => `<div class="rateRow"><div class="rateText">${esc(it.text)}</div><div class="rateBtns">${Array.from({ length: c.scale }, (_, k) => k + 1).map(n => `<button class="rb ${rt[it.id] === n ? 'on' : ''}" data-rate="${it.id}" data-n="${n}">${n}</button>`).join('')}</div></div>`).join('')}
+      <p class="small">答えた ${answered} / ${c.items.length}${sum ? `<br>${esc(sum)}` : ''}</p>
+    </section>
+    <button class="primary" id="mRateDone">このカードを終える</button>
+    <div class="row"><button class="ghost choice" id="mHome">一覧へ（残る）</button></div>
+    <button class="ghost small" id="mSkipCard">このカードはやりたくない → 飛ばす（一覧で戻せる）</button>`;
 }
 
 function mReview() {
-  const items = itemsFrom(m.answers);
+  const items = itemsFrom(m);
   const top3 = m.values.picks[2];
+  const label = i => i.methodId === i.pid ? `${method(i.methodId).title}（当てはまり度 ${i.score}）` : PROMPTS.find(q => q.id === i.pid).text;
   return `
     <div class="progress">② 絞る 1 / 2</div>
     <section class="card">
       <h2>見返して、「今も本当だ」と思うものに ★</h2>
-      <p class="why">自分が書いたものを全部並べています。読んで、まだ本当だと思うものに星（${STAR_LIMIT}個まで）。星は「これが自分」の材料になります。 いま ${m.stars.length} / ${STAR_LIMIT}</p>
+      <p class="why">あなたの材料を全部並べています（当てはまり度カードは上位だけ）。読んで、まだ本当だと思うものに星（${STAR_LIMIT}個まで）。星は「これが自分」の材料になります。 いま ${m.stars.length} / ${STAR_LIMIT}</p>
       ${top3.length ? `<p class="small">大事な言葉（決めた3つ）: ${top3.map(esc).join('・')}</p>` : ''}
-      ${BUNDLES.filter(b => items.some(i => i.bundleId === b.id)).map(b => `
-        <h3>${esc(b.title)}</h3>
-        ${items.filter(i => i.bundleId === b.id).map(i => `<button class="opt btn star ${m.stars.includes(i.id) ? 'on' : ''}" data-star="${i.id}"><span class="mark">${m.stars.includes(i.id) ? '★' : '☆'}</span><span class="body">${esc(i.text)}<span class="small">${esc(PROMPTS.find(q => q.id === i.pid).text)}</span></span></button>`).join('')}`).join('')}
+      ${METHODS.filter(c => items.some(i => i.methodId === c.id)).map(c => `
+        <h3>${esc(c.title)}</h3>
+        ${items.filter(i => i.methodId === c.id).map(i => `<button class="opt btn star ${m.stars.includes(i.id) ? 'on' : ''}" data-star="${i.id}"><span class="mark">${m.stars.includes(i.id) ? '★' : '☆'}</span><span class="body">${esc(i.text)}<span class="small">${esc(label(i))}</span></span></button>`).join('')}`).join('')}
     </section>
     <button class="primary" id="mToNarrow" ${m.stars.length === 0 ? 'disabled' : ''}>星から3つに絞る</button>
     <div class="row"><button class="ghost choice" id="mHome">一覧へ（残る）</button></div>`;
 }
 
 function mNarrow() {
-  const items = itemsFrom(m.answers);
+  const items = itemsFrom(m);
   const starred = m.stars.map(id => items.find(i => i.id === id)).filter(Boolean);
   return `
     <div class="progress">② 絞る 2 / 2</div>
@@ -676,10 +882,10 @@ function mNarrow() {
 }
 
 function mCompose() {
-  const chips = chipsFor({ stars: m.final.length ? m.final : m.stars, valueTop3: m.values.picks[2], answers: m.answers });
+  const chips = chipsFor(m, m.final.length ? m.final : m.stars);
   const computed = buildPurpose(m.slots);
   const text = m.finalText || computed;
-  const dirGuess = directionFromValues(m.values.picks[2]) ?? db?.state?.direction?.id ?? 'body';
+  const dirGuess = directionHint(m) ?? db?.state?.direction?.id ?? 'body';
   const d = DIRECTIONS.find(x => x.id === (m.slots.dir ?? dirGuess));
   const slot = (key, label, why, list) => `
       <h3>${label}</h3>
@@ -690,16 +896,16 @@ function mCompose() {
     <div class="progress">③ 1文にする</div>
     <section class="card">
       <h2>残った言葉で、仮の目的を1文にする</h2>
-      <p class="why">型は「［誰］のために、［使うもの］を使って、［増やすもの］を増やす人」。下の言葉は全部あなたが書いたもの。タップで入る。空のところは省かれる。当たっている必要はなく、3か月後に書き直します。</p>
+      <p class="why">型は「［誰］のために、［使うもの］を使って、［増やすもの］を増やす人」。下の言葉は全部あなたの材料から。タップで入る。空のところは省かれる。当たっている必要はなく、3か月後に書き直します。</p>
       ${slot('who', '誰のために', '自分でもよい。「自分を超えた誰か」が入ると続きやすい。', chips.who)}
-      ${slot('use', '使うもの（好き・得意）', '残した3つ、好き・得意から。', chips.use)}
-      ${slot('grow', '増やすもの', '大事な言葉、残した3つから。', chips.grow)}
+      ${slot('use', '使うもの（好き・得意・強み）', '残した3つ、好き・得意、強みの上位から。', chips.use)}
+      ${slot('grow', '増やすもの', '大事な言葉、残した3つ、意味の源の上位から。', chips.grow)}
       <h3>できた文（直してよい）</h3>
       <input id="mFinalText" value="${esc(text)}" placeholder="例: 家族のために、体を動かすことを使って、眠れる夜を増やす人">
     </section>
     <section class="card">
       <h3>実験の方向</h3>
-      <p class="why">この文に合う「変えたいこと」を1つ。大事な言葉から「${esc(DIRECTIONS.find(x => x.id === dirGuess).trouble)}」を先に入れてあります。違えば変える。</p>
+      <p class="why">この文に合う「変えたいこと」を1つ。大事な言葉・生活の輪の低いところから「${esc(DIRECTIONS.find(x => x.id === dirGuess).trouble)}」を先に入れてあります。違えば変える。</p>
       <select id="mDir">${DIRECTIONS.map(x => `<option value="${x.id}" ${x.id === d.id ? 'selected' : ''}>${esc(x.trouble)}</option>`).join('')}</select>
       <select id="mGain">${d.gains.map((g, i) => `<option value="${i}" ${i === (m.slots.gain ?? 0) ? 'selected' : ''}>${esc(g)}</option>`).join('')}</select>
     </section>
@@ -737,10 +943,10 @@ function startApp({ directionId, gainIndex, ownWord, purpose }) {
 function savePurpose({ text, directionId, gainIndex }) {
   const d = DIRECTIONS.find(x => x.id === directionId);
   const prev = db?.purpose ?? null;
-  const items = itemsFrom(m.answers);
+  const items = itemsFrom(m);
   const purpose = {
     text, directionId, gainIndex, gain: d.gains[gainIndex],
-    slots: { ...m.slots }, final: m.final.map(id => items.find(i => i.id === id)?.text).filter(Boolean), stars: m.stars.length, values: m.values.picks[2], itemsCount: items.length,
+    slots: { ...m.slots }, final: m.final.map(id => items.find(i => i.id === id)?.text).filter(Boolean), stars: m.stars.length, values: m.values.picks[2], itemsCount: items.length, cardsDone: progress(m).cardsDone, ikigai9: m.rates.ikigai9 ? rateSummary(method('ikigai9'), m.rates.ikigai9) : null,
     decidedOn: today(), reviewOn: addDays(today(), REVIEW_DAYS),
     history: [...(prev?.history ?? []), ...(prev ? [{ text: prev.text, on: prev.decidedOn }] : [])],
   };
@@ -756,7 +962,7 @@ function viewHelp() {
     <h2>手札の使い方</h2>
     <p><b>実験</b>＝「やること（2分）」×「重ねる考え方（手札）」。たとえば「玄関でスクワット5回」×「終わり方を良くする（最後の10秒だけ丁寧に）」。</p>
     <p><b>できた</b>を押すと木に葉が1枚。連続記録はなく、減ることもない。サボった翌日に押すと「おかえり」で年輪が1本増える。</p>
-    <p><b>仮の目的</b>＝棚卸しで作る1文（「誰のために、何を使って、何を増やす人」）。棚卸しは、①6つの束の質問に思いつくだけ書く（数日かけてよい）→ ②自分の答えに星をつけて3つに絞る → ③残った自分の言葉で1文にする。当たっている必要はなく、3か月ごとに書き直す。目的は考えて決めるより、動きながら見つかる、という研究に沿っている。</p>
+    <p><b>仮の目的</b>＝棚卸しで作る1文（「誰のために、何を使って、何を増やす人」）。棚卸しは、①手法カード（書く／選ぶ／当てはまり度）を好きな順に。やりたくないカードは飛ばす（数日かけてよい）→ ②自分の答えに星をつけて3つに絞る → ③残った自分の言葉で1文にする。当たっている必要はなく、3か月ごとに書き直す。目的は考えて決めるより、動きながら見つかる、という研究に沿っている。</p>
     <p><b>3回できたら</b>「この考え方、また使う？／もういい」を1回だけ聞く。どちらも図鑑に1枚として残る（外れも収集）。次の考え方は3枚から選び、やることは自動で次の候補に回る。</p>
     <p><b>今日の1問</b>は、さっき試した考え方について「どうだった？」を3択で聞くだけ。飛ばしてよい。答えは「自分」の画面に本人の言葉として溜まる。</p>
     <p><b>出番の日</b>は上のスイッチを入れると、車内で1分でできる札だけになり、通知もサボり扱いもない。</p>
@@ -781,7 +987,7 @@ function viewToday() {
   </header>
   ${db.ui?.welcomeBack ? `<div class="okaeri">おかえり。続きから。</div>` : ''}
   ${db.purpose && db.purpose.reviewOn <= today() ? `<section class="card q"><b>3か月たった。仮の目的、書き直す？</b><p class="why">目的は動きながら見つかるもの。棚卸しの材料を見返して星をつけ直すと、文も変わる。いまの文のままでもよい。</p><div class="row"><button id="purposeReview">見返して書き直す</button><button class="ghost" id="purposeKeep">このままでいい（また3か月後）</button></div></section>` : ''}
-  ${!db.purpose ? (() => { const pr = progress(m.answers, m.values.picks[2]); return `<section class="card q"><b>仮の目的は、まだ無い</b><p class="why">「何のために」が無いと実験は続きにくい。棚卸し（材料を出す → 絞る → 1文）は、1日1束でよい。いま 束 ${pr.bundlesDone} / ${BUNDLES.length}・材料 ${pr.items} 個。</p><button id="openMonshin">${m.startedOn ? '棚卸しの続き' : '棚卸しをはじめる'}</button></section>`; })() : ''}
+  ${!db.purpose ? (() => { const pr = progress(m); return `<section class="card q"><b>仮の目的は、まだ無い</b><p class="why">「何のために」が無いと実験は続きにくい。棚卸し（材料を出す → 絞る → 1文）は、1日1〜2枚でよい。いま カード ${pr.cardsDone} / ${pr.cardsTotal} 枚・材料 ${pr.items} 個。</p><button id="openMonshin">${m.startedOn ? '棚卸しの続き' : '棚卸しをはじめる'}</button></section>`; })() : ''}
   <section class="card exp">
     <div class="tag">今回の実験 ${s.experiment.completions}/${CUTOFF_N} <button class="mini" id="helpBtn">使い方？</button></div>
     <div class="lbl">やること（2分）</div>
@@ -921,21 +1127,37 @@ function viewSettings() {
 // ---------- 操作 ----------
 function bindMonshin() {
   const go = phase => { m.phase = phase; persistM(); render(); };
+  const openCard = id => { const c = method(id); m.cur = { methodId: id, idx: 0 }; if (c.kind === 'pick') go('values'); else if (c.kind === 'rate') go('rate'); else go('write'); };
   $('#mClose') && ($('#mClose').onclick = closeMonshin);
   $('#mHome') && ($('#mHome').onclick = () => { if ($('#mAns')) saveAns(); go('home'); });
-  document.querySelectorAll('[data-bundle]').forEach(b => b.onclick = () => {
-    if (b.dataset.bundle === 'values') { go('values'); return; }
-    m.cur = { bundleId: b.dataset.bundle, idx: 0 }; go('bundle');
-  });
+  document.querySelectorAll('[data-method]').forEach(b => b.onclick = () => openCard(b.dataset.method));
+  document.querySelectorAll('[data-unskip]').forEach(a => a.onclick = e => { e.preventDefault(); m.skipped = m.skipped.filter(x => x !== a.dataset.unskip); persistM(); render(); });
+  $('#mSkipCard') && ($('#mSkipCard').onclick = () => { const id = m.phase === 'values' ? 'values' : m.cur.methodId; if (!m.skipped.includes(id)) m.skipped.push(id); flash = { text: `「${method(id).title}」を飛ばした（一覧で戻せる）`, kind: 'ok' }; go('home'); });
   $('#mToReview') && ($('#mToReview').onclick = () => go('review'));
   $('#mToCompose') && ($('#mToCompose').onclick = () => go('compose'));
 
-  const saveAns = () => { const b = BUNDLES.find(x => x.id === m.cur.bundleId); const q = b.prompts[m.cur.idx]; m.answers[q.id] = $('#mAns').value.replace(/\r/g, ''); persistM(); };
-  if (m.phase === 'bundle') {
-    const b = BUNDLES.find(x => x.id === m.cur.bundleId);
+  const saveAns = () => { const c = method(m.cur.methodId); const q = c.items[m.cur.idx]; m.answers[q.id] = $('#mAns').value.replace(/\r/g, ''); persistM(); };
+  if (m.phase === 'write') {
+    const c = method(m.cur.methodId);
     $('#mAns').oninput = () => { saveAns(); const n = $('#mAns').value.split('\n').filter(s => s.trim()).length; $('#mAns').nextElementSibling.textContent = `${n} 個`; };
-    $('#mNext').onclick = () => { saveAns(); if (m.cur.idx >= b.prompts.length - 1) go('home'); else { m.cur.idx += 1; go('bundle'); } };
-    $('#mBack').onclick = () => { saveAns(); if (m.cur.idx === 0) go('home'); else { m.cur.idx -= 1; go('bundle'); } };
+    $('#mNext').onclick = () => { saveAns(); if (m.cur.idx >= c.items.length - 1) go('home'); else { m.cur.idx += 1; go('write'); } };
+    $('#mBack').onclick = () => { saveAns(); if (m.cur.idx === 0) go('home'); else { m.cur.idx -= 1; go('write'); } };
+  }
+
+  if (m.phase === 'rate') {
+    const c = method(m.cur.methodId);
+    m.rates[c.id] ??= {};
+    document.querySelectorAll('[data-rate]').forEach(b => b.onclick = () => {
+      const id = b.dataset.rate, n = Number(b.dataset.n);
+      m.rates[c.id][id] = m.rates[c.id][id] === n ? undefined : n;
+      if (m.rates[c.id][id] === undefined) delete m.rates[c.id][id];
+      persistM();
+      const row = b.parentElement; row.querySelectorAll('.rb').forEach(x => x.classList.toggle('on', x === b && m.rates[c.id][id] === n));
+      const answered = c.items.filter(i => m.rates[c.id][i.id] != null).length;
+      const p = row.parentElement.parentElement.querySelector('p.small'); const sum = answered ? rateSummary(c, m.rates[c.id]) : null;
+      p.innerHTML = `答えた ${answered} / ${c.items.length}${sum ? `<br>${esc(sum)}` : ''}`;
+    });
+    $('#mRateDone').onclick = () => go('home');
   }
 
   if (m.phase === 'values') {
@@ -987,6 +1209,7 @@ function bindMonshin() {
     $('#mBackNarrow').onclick = () => go('narrow');
   }
 }
+
 
 function bindOnboarding() {
   const go = phase => { onb.phase = phase; render(); };
@@ -1070,7 +1293,7 @@ function bind() {
     $('#dirChange').onclick = () => { db.state = changeDirection(s, { directionId: $('#dirSel').value, gainIndex: Number($('#gainSel').value), ownWord: $('#dirWord').value.trim() || null }); persist(); flash = { text: '方向を変えた。', kind: 'ok' }; tab = 'today'; render(); };
   }
   $('#helpBtn2') && ($('#helpBtn2').onclick = () => { tab = 'help'; render(); });
-  $('#purposeReview') && ($('#purposeReview').onclick = () => openMonshin(itemsFrom(m.answers).length ? 'review' : 'home'));
+  $('#purposeReview') && ($('#purposeReview').onclick = () => openMonshin(itemsFrom(m).length ? 'review' : 'home'));
   $('#openMonshin') && ($('#openMonshin').onclick = () => openMonshin('home'));
   $('#purposeKeep') && ($('#purposeKeep').onclick = () => { db.purpose.reviewOn = addDays(today(), REVIEW_DAYS); persist(); flash = { text: 'このまま。次は3か月後。', kind: 'ok' }; render(); });
   $('#purposeSet') && ($('#purposeSet').onclick = () => {
