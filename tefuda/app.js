@@ -1,4 +1,4 @@
-// 手札 app.js — 自動生成（scripts/build-pwa.mjs）build 202609150609
+// 手札 app.js — 自動生成（scripts/build-pwa.mjs）build 202609151035
 (() => {
 "use strict";
 // ---- pwa/src/store.mjs
@@ -375,81 +375,130 @@ function renderToday(state, cards, log, { shift = false } = {}) {
 }
 
 // ---- brain/lib/monshin.mjs
-// 問診 v1（設計書 §18 / docs/research/2026-09-15-生きる目的を問診で仮決めする.md）
-// 12問・各3択＋一言。「なぜ」は聞かない。過去・現在・未来・他者の4方向。出口は行動1つ。
-// 各選択肢のタグ: dir=方向(body/make/money/people/head) / who=誰のため / kind=好き|得意|大事 / w=重み（負は避ける方向）
+// 棚卸し（問診 v2）— 設計書 §18 / docs/research/2026-09-15-生きる目的を問診で仮決めする.md
+// 本人指示（2026-09-15）「仮でも雑すぎる。丁寧にボリュームを取得して、それを集中させるやり方に」
+//   1) 拡げる: 6つの束 × 自由記述（1つずつ改行・思いつくだけ・数日かけてよい）＋ 価値の言葉の選別（40語超 → 10 → 5 → 3）
+//   2) 絞る:   自分の答えを見返して「今も本当」に星（上限10）→ 3つに
+//   3) 組み立て: 残った自分の言葉で「［誰］のために、［使うもの］を使って、［増やすもの］を増やす人」
+// 「なぜ」は聞かない。研究者名は画面に出さない（出典は research）。AI は推定しない。数字は端末が数える。
 
-const o = (t, dir = null, extra = {}) => ({ t, dir, w: 1, ...extra });
+const STAR_LIMIT = 10;
+const FINAL_LIMIT = 3;
+const VALUE_STEPS = [10, 5, 3];
 
-const QUESTIONS = [
-  { id: 'q01', axis: '現在', text: '休みの日、気づいたら何をしている？', why: '素の興味を知るため（Good Time Journal）',
-    options: [o('体を動かしている・外に出ている', 'body', { kind: '好き' }), o('何かを見たり読んだり作ったりしている', 'make', { kind: '好き' }), o('誰かと話している・連絡している', 'people', { kind: '好き' })] },
-  { id: 'q02', axis: '現在', text: '最近、時間を忘れたのはいつ？ 何をしていた？', why: '没頭できること＝合う活動の信号（フロー）',
-    options: [o('手や体を使っていた', 'body', { kind: '好き' }), o('調べたり考えたり作ったりしていた', 'head', { kind: '好き' }), o('人と一緒に何かしていた', 'people', { kind: '好き' })] },
-  { id: 'q03', axis: '現在', text: '逆に、いちばん消耗したのは？', why: '避けたい方向を知るため（エネルギーが下がる活動）',
-    options: [o('体を使うこと', 'body', { w: -1 }), o('お金や手続きのこと', 'money', { w: -1 }), o('人づきあい', 'people', { w: -1 })] },
-  { id: 'q04', axis: '他者', text: '人からよく頼まれること、「ありがとう」と言われることは？', why: '得意と、人からの反響を知るため（八木／神谷）',
-    options: [o('体を動かす手伝い・運ぶ・直す', 'body', { kind: '得意', who: '家族' }), o('調べる・教える・説明する', 'head', { kind: '得意', who: '仲間' }), o('話を聞く・場を和ませる', 'people', { kind: '得意', who: '客' })] },
-  { id: 'q05', axis: '過去', text: '12歳のころ、放っておくと何をしていた？', why: '昔から続く興味（Damon／McAdams）',
-    options: [o('外で遊ぶ・体を動かす', 'body', { kind: '好き' }), o('作る・描く・集める・読む', 'make', { kind: '好き' }), o('友だちとつるむ', 'people', { kind: '好き' })] },
-  { id: 'q06', axis: '過去', text: '「ここで変わった」と思う出来事は？', why: '転機は自分を決める記憶（McAdams）。一言でよい',
-    options: [o('仕事・お金の出来事', 'money', { kind: '大事' }), o('人との出会い・別れ', 'people', { kind: '大事' }), o('体・健康の出来事', 'body', { kind: '大事' })] },
-  { id: 'q07', axis: '他者', text: '最近、羨ましいと思った人は？ その人の何が？', why: '羨望は自分の価値の映し（Schwartz）',
-    options: [o('体が軽そう・元気そう', 'body', { kind: '大事' }), o('自分の作ったもので生きている', 'make', { kind: '大事' }), o('お金や時間に余裕がある', 'money', { kind: '大事' })] },
-  { id: 'q08', axis: '未来', text: '絶対にこうはなりたくない、という生き方は？', why: '「嫌」を反転すると価値が出る（Elliot & Sheldon）',
-    options: [o('体を壊して動けない', 'body', { kind: '大事' }), o('仕事以外に何もない', 'make', { kind: '大事' }), o('誰ともつながっていない', 'people', { kind: '大事' })] },
-  { id: 'q09', axis: '未来', text: '80歳のあなたが「やっておけばよかった」と言いそうなことは？', why: '長く残る後悔は「やらなかったこと」（Gilovich）。80歳の視点で',
-    options: [o('体を大事にすること', 'body', { kind: '大事' }), o('何かを作る・学ぶこと', 'make', { kind: '大事' }), o('人ともっと関わること', 'people', { kind: '大事' })] },
-  { id: 'q10', axis: '未来', text: 'もし1週間、仕事も家事も無かったら、3日目に何をしている？', why: '最良の未来の自分（Best Possible Self）の軽い版',
-    options: [o('体を動かす・どこかへ行く', 'body', { kind: '好き' }), o('作る・学ぶ・読む', 'make', { kind: '好き' }), o('誰かと過ごす', 'people', { kind: '好き' })] },
-  { id: 'q11', axis: '他者', text: '誰かの役に立ったと感じた最近の場面は？', why: '目的には「自分を超えた誰か」が要る（Damon／アドラー）',
-    options: [o('家族に', null, { who: '家族' }), o('客・仕事相手に', null, { who: '客' }), o('友人・仲間に', null, { who: '仲間' })] },
-  { id: 'q12', axis: '出口', text: '今の生活に、1つだけ増やせるなら？', why: 'ここが最初の実験の方向になる（values activation）',
-    options: [o('体が軽い時間', 'body', { w: 2 }), o('自分の作ったもの・学んだこと', 'make', { w: 2 }), o('誰かとのやりとり', 'people', { w: 2 }), o('お金の余裕・分かっている感', 'money', { w: 2 }), o('分かった感・話せること', 'head', { w: 2 })] },
+const p = (id, text, hint = '', max = 3) => ({ id, text, hint, max });
+
+const BUNDLES = [
+  { id: 'now', title: 'いまのこと', intro: '最近の時間の使い方から、「好き」と「消耗」を拾う。正解はない。', prompts: [
+    p('now1', '休みの日、気づいたらやっていること', '例: 車の掃除／YouTube／昼寝', 5),
+    p('now2', 'この1か月で、時間を忘れた瞬間', '無ければ「なし」でよい', 3),
+    p('now3', 'やっていると元気が出ること', '小さいことでよい', 5),
+    p('now4', 'やると疲れる・消耗すること', 'ここは避ける方向を知るため', 5),
+    p('now5', '出番の合間に、つい見ているもの・考えていること', '', 3),
+    p('now6', '「これだけは手を抜かない」と思っていること', '仕事でも家でも', 3),
+  ] },
+  { id: 'past', title: '昔のこと', intro: '昔から変わらない興味と、自分を決めた出来事を拾う。', prompts: [
+    p('past1', '12歳のころ、放っておくとやっていたこと', '', 5),
+    p('past2', '子どものころ、褒められたこと・得意だったこと', '', 5),
+    p('past3', 'これまでで「ここで変わった」と思う出来事', '1つずつ改行', 3),
+    p('past4', 'いちばん誇らしかった瞬間', '', 3),
+    p('past5', '途中でやめたけど、今も少し気になっていること', '', 3),
+    p('past6', '昔の自分が今の自分を見たら、驚くこと', '', 3),
+  ] },
+  { id: 'future', title: 'これからのこと', intro: '長い目で見たときに残る「やっておけばよかった」を先に拾う。', prompts: [
+    p('fut1', '80歳の自分が「やっておけばよかった」と言いそうなこと', '80歳の目で見る', 5),
+    p('fut2', '絶対にこうはなりたくない、と思う生き方', '「嫌」をひっくり返すと大事なものが出る', 3),
+    p('fut3', '1週間、仕事も家事も無かったら、3日目に何をしている？', '', 3),
+    p('fut4', '1年後「これが増えた」と言えたら嬉しいこと', '', 5),
+    p('fut5', 'お金の心配が無かったら、続けたいこと・始めたいこと', '', 5),
+    p('fut6', 'いつか行きたい場所・会いたい人・やってみたいこと', '', 5),
+  ] },
+  { id: 'people', title: 'まわりの人', intro: '「誰の役に立っているか」と「得意」は、人からの反応に出る。', prompts: [
+    p('ppl1', 'よく頼まれること', '', 5),
+    p('ppl2', '「ありがとう」と言われたこと（最近の分）', '', 3),
+    p('ppl3', 'うらやましいと思った人と、その人の何が', '例: 〇〇さんの、体が軽そうなところ', 3),
+    p('ppl4', '尊敬している人と、その人のどこが', '', 3),
+    p('ppl5', '自分がいなくなったら困る人・場面', '', 3),
+    p('ppl6', '誰の役に立ちたいか', '例: 家族／客／仲間／知らない人／未来の自分', 3),
+  ] },
+  { id: 'like', title: '好きと得意', intro: '好きなことと得意なことを別々に、数を出す。重なりは後で見る。', prompts: [
+    p('like1', '好きなこと', '思いつくだけ。10個まで', 10),
+    p('like2', '得意なこと・人より楽にできること', '思いつくだけ。10個まで', 10),
+    p('like3', '苦手だけどやっていること', '', 3),
+    p('like4', '人に教えられること', '', 3),
+    p('like5', '好きと得意が重なっていること', '上の2つを見て、あれば', 3),
+    p('like6', 'お金をもらわなくてもやること', '', 3),
+  ] },
+  { id: 'values', title: '大事なもの', intro: 'たくさんの言葉から選んで絞る。10 → 5 → 3。', prompts: [] }, // 画面は価値の言葉の選別
 ];
 
-// answers: { [qid]: { option: index|null, text: string|null } }
-function tallyMonshin(answers) {
-  const dir = Object.fromEntries(DIRECTIONS.map(d => [d.id, 0]));
-  const who = {};
-  const kind = { '好き': {}, '得意': {}, '大事': {} };
-  let answered = 0;
-  for (const q of QUESTIONS) {
-    const a = answers?.[q.id];
-    if (!a || a.option === null || a.option === undefined) continue;
-    const opt = q.options[a.option];
-    if (!opt) continue;
-    answered += 1;
-    if (opt.dir) dir[opt.dir] += opt.w;
-    if (opt.who) who[opt.who] = (who[opt.who] ?? 0) + 1;
-    if (opt.kind && opt.dir) kind[opt.kind][opt.dir] = (kind[opt.kind][opt.dir] ?? 0) + 1;
+// 価値の言葉（方向のタグつき。null は方向に寄らない）
+const VALUES = [
+  ...['健康', '体力', '眠り', '軽さ', '動くこと', '外に出ること', '自然'].map(w => ({ w, dir: 'body' })),
+  ...['学び', '作ること', '上達', '集中', '好奇心', '表現', '完成させること'].map(w => ({ w, dir: 'make' })),
+  ...['安心', '余裕', '蓄え', 'お金が分かっていること', '自立', '備え'].map(w => ({ w, dir: 'money' })),
+  ...['家族', '仲間', '感謝されること', '信頼', '会話', '役に立つこと', '居場所', '笑い'].map(w => ({ w, dir: 'people' })),
+  ...['理解', '考えること', '知ること', '説明できること', '判断力'].map(w => ({ w, dir: 'head' })),
+  ...['自由', '静けさ', '誠実', '挑戦', '安定', '楽しさ', '美しさ', '誇り'].map(w => ({ w, dir: null })),
+];
+
+const WHO_CHIPS = ['家族', '客', '仲間', '自分', '未来の自分', '知らない誰か'];
+
+const PROMPTS = BUNDLES.flatMap(b => b.prompts.map(q => ({ ...q, bundleId: b.id })));
+
+// 自由記述を「1行＝1項目」に割る。answers: { [promptId]: string }
+function itemsFrom(answers) {
+  const out = [];
+  for (const q of PROMPTS) {
+    const raw = answers?.[q.id];
+    if (!raw) continue;
+    String(raw).split(/\r?\n/).map(s => s.trim()).filter(Boolean).forEach((text, i) => out.push({ id: `${q.id}#${i}`, pid: q.id, bundleId: q.bundleId, text }));
   }
-  const rank = Object.entries(dir).sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0])).map(([id, score]) => ({ id, score }));
-  const topWho = Object.entries(who).sort((a, b) => b[1] - a[1])[0]?.[0] ?? null;
-  const topKind = k => Object.entries(kind[k]).sort((a, b) => b[1] - a[1])[0]?.[0] ?? null;
-  return { answered, rank, topWho, like: topKind('好き'), skill: topKind('得意'), value: topKind('大事') };
+  return out;
 }
 
-const NOUN = { body: '体を動かすこと', make: '作ること・学ぶこと', money: 'お金を分かっていること', people: '人とのやりとり', head: '調べて分かること' };
+// 進み具合。valueTop3 は値の選別が終わっていれば配列
+function progress(answers, valueTop3) {
+  const per = {};
+  for (const b of BUNDLES) {
+    if (b.id === 'values') { per[b.id] = { done: valueTop3?.length === 3 ? 1 : 0, total: 1 }; continue; }
+    const done = b.prompts.filter(q => (answers?.[q.id] ?? '').trim()).length;
+    per[b.id] = { done, total: b.prompts.length };
+  }
+  const items = itemsFrom(answers).length;
+  const bundlesDone = Object.values(per).filter(x => x.done === x.total).length;
+  // 絞りに進める最低ライン: 項目 12 以上、または束 3 つ完了
+  return { per, items, bundlesDone, canNarrow: items >= 12 || bundlesDone >= 3 };
+}
 
-// 仮の目的の候補（3つ）。型:「［誰］のために、［好き×得意］を使って、［増えるもの］を増やす人」（Damon の定義に沿う）
-function purposeCandidates(t) {
-  if (!t || t.answered === 0) return [];
-  const top = t.rank[0]?.id;
-  const second = t.rank[1]?.id;
-  const d1 = DIRECTIONS.find(d => d.id === top);
-  const d2 = DIRECTIONS.find(d => d.id === second);
-  if (!d1) return [];
-  const who = t.topWho ?? '自分';
-  const like = NOUN[t.like ?? top];
-  const skill = t.skill ? NOUN[t.skill] : null;
-  const tool = skill && skill !== like ? `${like}と${skill}` : like;
-  const cands = [
-    { text: `${who}のために、${tool}を使って、『${d1.gains[0]}』を増やす人`, directionId: d1.id, gainIndex: 0 },
-    { text: `『${d1.gains[1]}』を、まず${like}から増やす人`, directionId: d1.id, gainIndex: 1 },
-  ];
-  if (d2 && d2.id !== d1.id) cands.push({ text: `${who}のために、『${d2.gains[0]}』も少しずつ増やす人`, directionId: d2.id, gainIndex: 0 });
-  return cands.slice(0, 3);
+// 価値の上位3語から方向を推定（同数は DIRECTIONS 順）。null タグは無視
+function directionFromValues(top) {
+  const score = Object.fromEntries(DIRECTIONS.map(d => [d.id, 0]));
+  for (const w of top ?? []) { const v = VALUES.find(x => x.w === w); if (v?.dir) score[v.dir] += 1; }
+  const best = DIRECTIONS.map(d => d.id).reduce((a, b) => (score[b] > score[a] ? b : a));
+  return score[best] > 0 ? best : null;
+}
+
+// 型に流し込む。空のスロットは省く
+function buildPurpose({ who, use, grow }) {
+  const parts = [];
+  if (who?.trim()) parts.push(`${who.trim()}のために`);
+  if (use?.trim()) parts.push(`${use.trim()}を使って`);
+  if (grow?.trim()) parts.push(`${grow.trim()}を増やす人`);
+  return parts.join('、');
+}
+
+// 組み立て画面に出す候補の言葉（自分の答えだけから。順は 星 → 価値 → 好き/得意）
+function chipsFor({ stars, valueTop3, answers }) {
+  const items = itemsFrom(answers);
+  const starred = (stars ?? []).map(id => items.find(i => i.id === id)?.text).filter(Boolean);
+  const likes = items.filter(i => i.pid === 'like1' || i.pid === 'like2' || i.pid === 'like5').map(i => i.text);
+  const uniq = arr => [...new Set(arr)];
+  return {
+    use: uniq([...starred, ...likes]).slice(0, 12),
+    grow: uniq([...(valueTop3 ?? []), ...starred]).slice(0, 12),
+    who: uniq([...items.filter(i => i.pid === 'ppl6').map(i => i.text), ...WHO_CHIPS]).slice(0, 8),
+  };
 }
 
 // ---- pwa/src/app.mjs
@@ -468,9 +517,17 @@ const today = () => logicalDate(new Date());
 let db = loadDb();
 let tab = 'today';
 let flash = null; // { text, kind }
-// はじめる前の画面の進み具合（保存はしない。db ができたら不要）
-let onb = { phase: 'intro', idx: 0, answers: {}, cands: [], pick: 0, text: '' };
+let onb = { phase: 'intro' }; // はじめる前の画面: intro | direction
 const REVIEW_DAYS = 90; // 仮の目的の書き直し（設計書 §18）
+
+// 棚卸し（§18 v2）。db とは別に保存: はじめる前からでも、途中で閉じても残る
+const M_KEY = 'tefuda.monshin';
+const M_INIT = () => ({ phase: 'home', answers: {}, cur: { bundleId: null, idx: 0 }, values: { step: 0, picks: [[], [], []], custom: [] }, stars: [], final: [], slots: { who: '', use: '', grow: '' }, finalText: '', startedOn: null });
+let m = (() => { try { return JSON.parse(localStorage.getItem(M_KEY)) ?? M_INIT(); } catch { return M_INIT(); } })();
+let inMonshin = false; // true の間は棚卸しの画面だけを出す
+function persistM() { try { localStorage.setItem(M_KEY, JSON.stringify(m)); } catch {} }
+function openMonshin(phase = 'home') { m.phase = phase; m.startedOn ??= today(); inMonshin = true; persistM(); render(); }
+function closeMonshin() { inMonshin = false; persistM(); render(); }
 
 function persist() { saveDb(db); }
 function addDays(iso, n) { const d = new Date(iso + 'T12:00:00'); d.setDate(d.getDate() + n); return d.toISOString().slice(0, 10); }
@@ -480,6 +537,7 @@ function leaves() { return db.log.entries.filter(e => e.type === 'completion'); 
 // ---------- 画面 ----------
 function render() {
   const root = $('#app');
+  if (inMonshin) { root.innerHTML = `${flash ? `<div class="flash ${flash.kind}">${esc(flash.text)}</div>` : ''}<main class="onb">${viewMonshin()}</main>`; flash = null; bindMonshin(); return; }
   if (!db) { root.innerHTML = viewOnboarding(); bind(); return; }
   const views = { today: viewToday, tree: viewTree, deck: viewDeck, model: viewModel, settings: viewSettings, help: viewHelp };
   root.innerHTML = `
@@ -494,7 +552,7 @@ function render() {
 }
 
 function viewOnboarding() {
-  const inner = { intro: onbIntro, monshin: onbMonshin, purpose: onbPurpose, direction: onbDirection }[onb.phase]();
+  const inner = { intro: onbIntro, direction: onbDirection }[onb.phase]();
   return `<main class="onb">${inner}</main>`;
 }
 
@@ -511,54 +569,142 @@ function onbIntro() {
       </ol>
     </section>
     <section class="card">
-      <h2>最初に、12の質問（5分）</h2>
-      <p class="why">「生きる目的」を<b>仮に</b>決めるための質問です。正解はなく、「なぜ」も聞きません。昔・今・これから・まわりの人、の4方向から「気づいたらやっていること」を聞くだけ。答えると、あなたに合いそうな<b>仮の目的の候補が3つ</b>出て、それが最初の実験の方向になります。3か月たったら書き直します（目的は動きながら見つかるもの、という研究に沿っています）。</p>
-      <button class="primary" id="monshinStart">12の質問に答える</button>
-      <button class="ghost" id="monshinSkip">今は飛ばして、方向だけ選ぶ</button>
+      <h2>最初に「棚卸し」で、仮の目的を決める</h2>
+      <p class="why">「何のために」が無いと、2分の実験も続きません。でも目的は、考えて当てるものではなく、<b>材料をたくさん出して、絞って、残ったものを1文にする</b>と出てきます。<br>
+      ① <b>拡げる</b>: 6つの束の質問に、思いつくだけ書く（1日1束でよい。途中で閉じても残る）<br>
+      ② <b>絞る</b>: 自分の答えを見返して「今も本当だ」と思うものに星 → 3つに<br>
+      ③ <b>組み立てる</b>: 残った自分の言葉で「誰のために、何を使って、何を増やす人」の1文にする<br>
+      できた文は「今日」の画面の上に出て、実験の方向を決めます。3か月たったら書き直します。</p>
+      <button class="primary" id="monshinStart">${m.startedOn ? '棚卸しの続きから' : '棚卸しをはじめる'}</button>
+      <button class="ghost" id="monshinSkip">先に方向だけ選んで始める（棚卸しはあとで）</button>
     </section>
     <p class="note">通知はありません。データはこの端末の中だけに保存されます。</p>`;
 }
 
-function onbMonshin() {
-  const q = QUESTIONS[onb.idx];
-  const a = onb.answers[q.id] ?? { option: null, text: '' };
+// ---------- 棚卸し（§18 v2）----------
+function viewMonshin() {
+  return { home: mHome, bundle: mBundle, values: mValues, review: mReview, narrow: mNarrow, compose: mCompose }[m.phase]();
+}
+
+function mHome() {
+  const pr = progress(m.answers, m.values.picks[2]);
   return `
-    <div class="progress">質問 ${onb.idx + 1} / ${QUESTIONS.length} <span class="small">（${esc(q.axis)}）</span></div>
+    <h1>棚卸し</h1>
+    <p class="lede">材料を出す → 絞る → 1文にする。</p>
+    <section class="card">
+      <h2>① 拡げる（6つの束）</h2>
+      <p class="why">1束 5〜6問。思いつくだけ、1つずつ改行して書く。うまく書こうとしない。空でも次へ進める。1日1束でよい。</p>
+      ${BUNDLES.map(b => { const x = pr.per[b.id]; const done = x.done === x.total; return `<button class="opt btn ${done ? 'done' : ''}" data-bundle="${b.id}"><b>${esc(b.title)}</b><span class="small">${esc(b.intro)}</span><span class="small">${done ? '✔ 済' : `${x.done} / ${x.total}`}</span></button>`; }).join('')}
+    </section>
+    <section class="card">
+      <h2>② 絞る → ③ 1文にする</h2>
+      <p class="why">書いた材料 ${pr.items} 個。${pr.canNarrow ? '絞りに進めます。' : '材料が 12 個以上、または束が 3 つ終わると進めます。'}${m.final.length ? ` いま残している3つ: ${m.final.length} 個。` : ''}</p>
+      <button class="primary" id="mToReview" ${pr.canNarrow ? '' : 'disabled'}>${m.stars.length ? '星のつづきから絞る' : '見返して星をつける'}</button>
+      ${m.final.length ? `<button id="mToCompose">1文にする画面へ</button>` : ''}
+    </section>
+    <button class="ghost" id="mClose">閉じる（途中でも残る）</button>`;
+}
+
+function mBundle() {
+  const b = BUNDLES.find(x => x.id === m.cur.bundleId);
+  const q = b.prompts[m.cur.idx];
+  const v = m.answers[q.id] ?? '';
+  const lines = v.split('\n').filter(s => s.trim()).length;
+  return `
+    <div class="progress">${esc(b.title)} ${m.cur.idx + 1} / ${b.prompts.length}</div>
     <section class="card">
       <h2>${esc(q.text)}</h2>
-      <p class="why">${esc(q.why)}。近いものを1つ。どれも違えば飛ばしてよい。</p>
-      ${q.options.map((o, i) => `<label class="opt"><input type="radio" name="mq" value="${i}" ${a.option === i ? 'checked' : ''}> ${esc(o.t)}</label>`).join('')}
-      <label class="opt small">一言あれば（任意・あとで「自分」の画面に残る）<input type="text" id="mqText" value="${esc(a.text ?? '')}" placeholder="例: 車の掃除"></label>
+      <p class="why">${q.hint ? esc(q.hint) + '。' : ''}1つずつ改行。${q.max}個まで。思いつかなければ空で次へ。</p>
+      <textarea id="mAns" rows="6" placeholder="ここに書く（1行に1つ）">${esc(v)}</textarea>
+      <p class="small">${lines} 個</p>
     </section>
-    <button class="primary" id="mqNext">${onb.idx === QUESTIONS.length - 1 ? '候補を見る' : '次へ'}</button>
+    <button class="primary" id="mNext">${m.cur.idx === b.prompts.length - 1 ? 'この束を終える' : '次へ'}</button>
     <div class="row">
-      <button class="ghost choice" id="mqBack" ${onb.idx === 0 ? 'disabled' : ''}>戻る</button>
-      <button class="ghost choice" id="mqSkip">この質問は飛ばす</button>
+      <button class="ghost choice" id="mBack">${m.cur.idx === 0 ? '束の一覧へ' : '戻る'}</button>
+      <button class="ghost choice" id="mHome">一覧へ（残る）</button>
     </div>`;
 }
 
-function onbPurpose() {
-  if (onb.cands.length === 0) {
-    return `
-    <section class="card">
-      <h2>答えが少なくて、候補が作れなかった</h2>
-      <p class="why">3問以上答えると候補が出ます。いまは方向だけ選んではじめることもできます。</p>
-      <button class="primary" id="mqRetry">質問に戻る</button>
-      <button class="ghost" id="toDirection">方向だけ選んではじめる</button>
-    </section>`;
-  }
-  const c = onb.cands[onb.pick];
-  const d = DIRECTIONS.find(x => x.id === c.directionId);
+function mValues() {
+  const step = m.values.step;
+  const limit = VALUE_STEPS[step];
+  const pool = step === 0 ? [...VALUES.map(v => v.w), ...m.values.custom] : m.values.picks[step - 1];
+  const picked = m.values.picks[step];
   return `
+    <div class="progress">大事なもの ${step + 1} / 3</div>
     <section class="card">
-      <h2>仮の目的の候補（3つ）</h2>
-      <p class="why">答えから組み立てた文です。当たっている必要はありません。「まあ、これかな」で十分。選んだ文は「今日」の画面の上に出て、実験の方向（${esc(d.trouble)} → 『${esc(d.gains[c.gainIndex])}』）を決めます。3か月後に書き直しを聞きます。</p>
-      ${onb.cands.map((x, i) => `<label class="opt"><input type="radio" name="pc" value="${i}" ${i === onb.pick ? 'checked' : ''}> ${esc(x.text)}</label>`).join('')}
-      <label class="opt small">自分の言葉に直してよい（任意）<input type="text" id="pcText" value="${esc(onb.text)}" placeholder="例: 家族のために、体が軽い時間を増やす人"></label>
+      <h2>${step === 0 ? '大事だと思う言葉を、10個まで選ぶ' : step === 1 ? 'その中から 5つ' : 'その中から 3つ'}</h2>
+      <p class="why">${step === 0 ? '深く考えず、目に止まったものをタップ。無い言葉は下で足せる。' : '「これだけは」を残す。捨てた言葉も消えず、戻れる。'} いま ${picked.length} / ${limit}</p>
+      <div class="chips">${pool.map(w => `<button class="chip ${picked.includes(w) ? 'on' : ''}" data-val="${esc(w)}">${esc(w)}</button>`).join('')}</div>
+      ${step === 0 ? `<div class="row"><input id="mCustom" placeholder="自分の言葉を足す"><button id="mAddCustom">足す</button></div>` : ''}
     </section>
-    <button class="primary" id="purposeStart">この仮の目的ではじめる（最初の実験が届く）</button>
-    <button class="ghost" id="toDirection">候補は使わず、方向を自分で選ぶ</button>
-    <button class="ghost" id="mqRetry">質問に戻る</button>`;
+    <button class="primary" id="mValNext" ${picked.length === 0 ? 'disabled' : ''}>${step === 2 ? '3つに決める' : '次へ'}</button>
+    <div class="row">
+      <button class="ghost choice" id="mValBack">${step === 0 ? '束の一覧へ' : '戻る'}</button>
+    </div>`;
+}
+
+function mReview() {
+  const items = itemsFrom(m.answers);
+  const top3 = m.values.picks[2];
+  return `
+    <div class="progress">② 絞る 1 / 2</div>
+    <section class="card">
+      <h2>見返して、「今も本当だ」と思うものに ★</h2>
+      <p class="why">自分が書いたものを全部並べています。読んで、まだ本当だと思うものに星（${STAR_LIMIT}個まで）。星は「これが自分」の材料になります。 いま ${m.stars.length} / ${STAR_LIMIT}</p>
+      ${top3.length ? `<p class="small">大事な言葉（決めた3つ）: ${top3.map(esc).join('・')}</p>` : ''}
+      ${BUNDLES.filter(b => items.some(i => i.bundleId === b.id)).map(b => `
+        <h3>${esc(b.title)}</h3>
+        ${items.filter(i => i.bundleId === b.id).map(i => `<button class="opt btn star ${m.stars.includes(i.id) ? 'on' : ''}" data-star="${i.id}"><span class="mark">${m.stars.includes(i.id) ? '★' : '☆'}</span><span class="body">${esc(i.text)}<span class="small">${esc(PROMPTS.find(q => q.id === i.pid).text)}</span></span></button>`).join('')}`).join('')}
+    </section>
+    <button class="primary" id="mToNarrow" ${m.stars.length === 0 ? 'disabled' : ''}>星から3つに絞る</button>
+    <div class="row"><button class="ghost choice" id="mHome">一覧へ（残る）</button></div>`;
+}
+
+function mNarrow() {
+  const items = itemsFrom(m.answers);
+  const starred = m.stars.map(id => items.find(i => i.id === id)).filter(Boolean);
+  return `
+    <div class="progress">② 絞る 2 / 2</div>
+    <section class="card">
+      <h2>この中で、3つだけ残すなら？</h2>
+      <p class="why">残した3つと「大事な言葉」が、次の1文の材料になります。迷ったら「80歳の自分が残すもの」で選ぶ。 いま ${m.final.length} / ${FINAL_LIMIT}</p>
+      ${starred.map(i => `<button class="opt btn star ${m.final.includes(i.id) ? 'on' : ''}" data-final="${i.id}"><span class="mark">${m.final.includes(i.id) ? '◉' : '○'}</span><span class="body">${esc(i.text)}</span></button>`).join('')}
+    </section>
+    <button class="primary" id="mToCompose" ${m.final.length === 0 ? 'disabled' : ''}>1文にする</button>
+    <div class="row"><button class="ghost choice" id="mBackReview">星に戻る</button></div>`;
+}
+
+function mCompose() {
+  const chips = chipsFor({ stars: m.final.length ? m.final : m.stars, valueTop3: m.values.picks[2], answers: m.answers });
+  const computed = buildPurpose(m.slots);
+  const text = m.finalText || computed;
+  const dirGuess = directionFromValues(m.values.picks[2]) ?? db?.state?.direction?.id ?? 'body';
+  const d = DIRECTIONS.find(x => x.id === (m.slots.dir ?? dirGuess));
+  const slot = (key, label, why, list) => `
+      <h3>${label}</h3>
+      <p class="why">${why}</p>
+      <div class="chips">${list.map(w => `<button class="chip ${m.slots[key] === w ? 'on' : ''}" data-slot="${key}" data-word="${esc(w)}">${esc(w)}</button>`).join('')}</div>
+      <input data-slotin="${key}" value="${esc(m.slots[key])}" placeholder="自分で書いてもよい">`;
+  return `
+    <div class="progress">③ 1文にする</div>
+    <section class="card">
+      <h2>残った言葉で、仮の目的を1文にする</h2>
+      <p class="why">型は「［誰］のために、［使うもの］を使って、［増やすもの］を増やす人」。下の言葉は全部あなたが書いたもの。タップで入る。空のところは省かれる。当たっている必要はなく、3か月後に書き直します。</p>
+      ${slot('who', '誰のために', '自分でもよい。「自分を超えた誰か」が入ると続きやすい。', chips.who)}
+      ${slot('use', '使うもの（好き・得意）', '残した3つ、好き・得意から。', chips.use)}
+      ${slot('grow', '増やすもの', '大事な言葉、残した3つから。', chips.grow)}
+      <h3>できた文（直してよい）</h3>
+      <input id="mFinalText" value="${esc(text)}" placeholder="例: 家族のために、体を動かすことを使って、眠れる夜を増やす人">
+    </section>
+    <section class="card">
+      <h3>実験の方向</h3>
+      <p class="why">この文に合う「変えたいこと」を1つ。大事な言葉から「${esc(DIRECTIONS.find(x => x.id === dirGuess).trouble)}」を先に入れてあります。違えば変える。</p>
+      <select id="mDir">${DIRECTIONS.map(x => `<option value="${x.id}" ${x.id === d.id ? 'selected' : ''}>${esc(x.trouble)}</option>`).join('')}</select>
+      <select id="mGain">${d.gains.map((g, i) => `<option value="${i}" ${i === (m.slots.gain ?? 0) ? 'selected' : ''}>${esc(g)}</option>`).join('')}</select>
+    </section>
+    <button class="primary" id="mSave">${db ? 'この仮の目的にする' : 'この仮の目的ではじめる（最初の実験が届く）'}</button>
+    <div class="row"><button class="ghost choice" id="mBackNarrow">3つに戻る</button><button class="ghost choice" id="mHome">一覧へ（残る）</button></div>`;
 }
 
 function onbDirection() {
@@ -579,18 +725,29 @@ function onbDirection() {
     <p class="note">通知はありません。データはこの端末の中だけに保存されます。</p>`;
 }
 
-// はじめる: 共通の初期化。purpose は問診経由のときだけ
+// はじめる: 共通の初期化。purpose は棚卸し経由のときだけ
 function startApp({ directionId, gainIndex, ownWord, purpose }) {
   const state = initState({ directionId, gainIndex, ownWord, today: today() });
   db = { cards: SEED_CARDS, state, log: { entries: [] }, model: { denied: [], words: [], selfDesc: null }, ui: {}, purpose: purpose ?? null };
-  if (purpose) {
-    for (const q of QUESTIONS) {
-      const t = purpose.answers?.[q.id]?.text;
-      if (t) db.model.words.push({ on: today(), text: `${q.text} → ${t}` });
-    }
-  }
-  persist(); onb = { phase: 'intro', idx: 0, answers: {}, cands: [], pick: 0, text: '' };
+  persist(); onb = { phase: 'intro' }; inMonshin = false;
   tab = 'today'; flash = { text: `はじめました。まず「${findAction(state.experiment.actionId).name}」。`, kind: 'ok' }; render();
+}
+
+// 棚卸しの結果を「仮の目的」として置く（db が無ければ、ここではじめる）
+function savePurpose({ text, directionId, gainIndex }) {
+  const d = DIRECTIONS.find(x => x.id === directionId);
+  const prev = db?.purpose ?? null;
+  const items = itemsFrom(m.answers);
+  const purpose = {
+    text, directionId, gainIndex, gain: d.gains[gainIndex],
+    slots: { ...m.slots }, final: m.final.map(id => items.find(i => i.id === id)?.text).filter(Boolean), stars: m.stars.length, values: m.values.picks[2], itemsCount: items.length,
+    decidedOn: today(), reviewOn: addDays(today(), REVIEW_DAYS),
+    history: [...(prev?.history ?? []), ...(prev ? [{ text: prev.text, on: prev.decidedOn }] : [])],
+  };
+  if (!db) { startApp({ directionId, gainIndex, ownWord: null, purpose }); return; }
+  db.purpose = purpose;
+  if (db.state.direction.id !== directionId || db.state.direction.gain !== purpose.gain) db.state = changeDirection(db.state, { directionId, gainIndex, ownWord: null });
+  persist(); inMonshin = false; tab = 'today'; flash = { text: '仮の目的を置いた。', kind: 'ok' }; render();
 }
 
 function viewHelp() {
@@ -599,7 +756,7 @@ function viewHelp() {
     <h2>手札の使い方</h2>
     <p><b>実験</b>＝「やること（2分）」×「重ねる考え方（手札）」。たとえば「玄関でスクワット5回」×「終わり方を良くする（最後の10秒だけ丁寧に）」。</p>
     <p><b>できた</b>を押すと木に葉が1枚。連続記録はなく、減ることもない。サボった翌日に押すと「おかえり」で年輪が1本増える。</p>
-    <p><b>仮の目的</b>＝最初の12問から組み立てた1文（「誰のために、何を使って、何を増やす人」）。当たっている必要はなく、3か月ごとに書き直す。目的は考えて決めるより、動きながら見つかる、という研究に沿っている。</p>
+    <p><b>仮の目的</b>＝棚卸しで作る1文（「誰のために、何を使って、何を増やす人」）。棚卸しは、①6つの束の質問に思いつくだけ書く（数日かけてよい）→ ②自分の答えに星をつけて3つに絞る → ③残った自分の言葉で1文にする。当たっている必要はなく、3か月ごとに書き直す。目的は考えて決めるより、動きながら見つかる、という研究に沿っている。</p>
     <p><b>3回できたら</b>「この考え方、また使う？／もういい」を1回だけ聞く。どちらも図鑑に1枚として残る（外れも収集）。次の考え方は3枚から選び、やることは自動で次の候補に回る。</p>
     <p><b>今日の1問</b>は、さっき試した考え方について「どうだった？」を3択で聞くだけ。飛ばしてよい。答えは「自分」の画面に本人の言葉として溜まる。</p>
     <p><b>出番の日</b>は上のスイッチを入れると、車内で1分でできる札だけになり、通知もサボり扱いもない。</p>
@@ -623,7 +780,8 @@ function viewToday() {
     <label class="switch"><input type="checkbox" id="shiftToggle" ${shift ? 'checked' : ''}> 今日は出番（1分の札だけ・通知なし・サボり扱いなし）</label>
   </header>
   ${db.ui?.welcomeBack ? `<div class="okaeri">おかえり。続きから。</div>` : ''}
-  ${db.purpose && db.purpose.reviewOn <= today() ? `<section class="card q"><b>3か月たった。仮の目的、書き直す？</b><p class="why">目的は動きながら見つかるもの。いまの文のままでも、言い直してもよい。</p><div class="row"><button id="purposeReview">設定で書き直す</button><button class="ghost" id="purposeKeep">このままでいい（また3か月後）</button></div></section>` : ''}
+  ${db.purpose && db.purpose.reviewOn <= today() ? `<section class="card q"><b>3か月たった。仮の目的、書き直す？</b><p class="why">目的は動きながら見つかるもの。棚卸しの材料を見返して星をつけ直すと、文も変わる。いまの文のままでもよい。</p><div class="row"><button id="purposeReview">見返して書き直す</button><button class="ghost" id="purposeKeep">このままでいい（また3か月後）</button></div></section>` : ''}
+  ${!db.purpose ? (() => { const pr = progress(m.answers, m.values.picks[2]); return `<section class="card q"><b>仮の目的は、まだ無い</b><p class="why">「何のために」が無いと実験は続きにくい。棚卸し（材料を出す → 絞る → 1文）は、1日1束でよい。いま 束 ${pr.bundlesDone} / ${BUNDLES.length}・材料 ${pr.items} 個。</p><button id="openMonshin">${m.startedOn ? '棚卸しの続き' : '棚卸しをはじめる'}</button></section>`; })() : ''}
   <section class="card exp">
     <div class="tag">今回の実験 ${s.experiment.completions}/${CUTOFF_N} <button class="mini" id="helpBtn">使い方？</button></div>
     <div class="lbl">やること（2分）</div>
@@ -729,10 +887,11 @@ function viewSettings() {
   </section>
   <section class="card">
     <h3>仮の目的</h3>
-    <p class="why">最初の12問から組み立てた文。当たっている必要はない。書き直すと「今日」の画面の上の文が変わる（方向は下で別に変える）。3か月ごとに書き直しを聞く。</p>
-    ${db.purpose ? `<p>いま: ${esc(db.purpose.text)}<br><span class="small">決めた日 ${esc(db.purpose.decidedOn)} ／ 次の見直し ${esc(db.purpose.reviewOn)}${db.purpose.history?.length ? ` ／ 書き直し ${db.purpose.history.length} 回` : ''}</span></p>` : '<p class="small">まだ決めていない（問診を飛ばした）。下に1行書けば置ける。</p>'}
-    <input id="purposeText" placeholder="例: 家族のために、体が軽い時間を増やす人" value="${esc(db.purpose?.text ?? '')}">
-    <button id="purposeSet">この文にする（次の見直しは3か月後）</button>
+    <p class="why">棚卸し（材料を出す → 絞る → 1文）で作った文。当たっている必要はない。3か月ごとに書き直しを聞く。材料は残っているので、いつでも見返せる。</p>
+    ${db.purpose ? `<p>いま: ${esc(db.purpose.text)}<br><span class="small">決めた日 ${esc(db.purpose.decidedOn)} ／ 次の見直し ${esc(db.purpose.reviewOn)}${db.purpose.history?.length ? ` ／ 書き直し ${db.purpose.history.length} 回` : ''}${db.purpose.final?.length ? `<br>残した3つ: ${db.purpose.final.map(esc).join('・')}` : ''}${db.purpose.values?.length ? `<br>大事な言葉: ${db.purpose.values.map(esc).join('・')}` : ''}</span></p>` : '<p class="small">まだ決めていない。</p>'}
+    <button id="openMonshin">${db.purpose ? '棚卸しを開く（材料を見返す・書き直す）' : (m.startedOn ? '棚卸しの続き' : '棚卸しをはじめる')}</button>
+    <input id="purposeText" placeholder="文だけ直すなら、ここに" value="${esc(db.purpose?.text ?? '')}">
+    <button class="ghost" id="purposeSet">文だけ直す（次の見直しは3か月後）</button>
   </section>
   <section class="card">
     <h3>方向</h3>
@@ -760,41 +919,80 @@ function viewSettings() {
 }
 
 // ---------- 操作 ----------
+function bindMonshin() {
+  const go = phase => { m.phase = phase; persistM(); render(); };
+  $('#mClose') && ($('#mClose').onclick = closeMonshin);
+  $('#mHome') && ($('#mHome').onclick = () => { if ($('#mAns')) saveAns(); go('home'); });
+  document.querySelectorAll('[data-bundle]').forEach(b => b.onclick = () => {
+    if (b.dataset.bundle === 'values') { go('values'); return; }
+    m.cur = { bundleId: b.dataset.bundle, idx: 0 }; go('bundle');
+  });
+  $('#mToReview') && ($('#mToReview').onclick = () => go('review'));
+  $('#mToCompose') && ($('#mToCompose').onclick = () => go('compose'));
+
+  const saveAns = () => { const b = BUNDLES.find(x => x.id === m.cur.bundleId); const q = b.prompts[m.cur.idx]; m.answers[q.id] = $('#mAns').value.replace(/\r/g, ''); persistM(); };
+  if (m.phase === 'bundle') {
+    const b = BUNDLES.find(x => x.id === m.cur.bundleId);
+    $('#mAns').oninput = () => { saveAns(); const n = $('#mAns').value.split('\n').filter(s => s.trim()).length; $('#mAns').nextElementSibling.textContent = `${n} 個`; };
+    $('#mNext').onclick = () => { saveAns(); if (m.cur.idx >= b.prompts.length - 1) go('home'); else { m.cur.idx += 1; go('bundle'); } };
+    $('#mBack').onclick = () => { saveAns(); if (m.cur.idx === 0) go('home'); else { m.cur.idx -= 1; go('bundle'); } };
+  }
+
+  if (m.phase === 'values') {
+    const step = m.values.step; const limit = VALUE_STEPS[step]; const picked = m.values.picks[step];
+    document.querySelectorAll('[data-val]').forEach(c => c.onclick = () => {
+      const w = c.dataset.val; const i = picked.indexOf(w);
+      if (i >= 0) picked.splice(i, 1); else if (picked.length < limit) picked.push(w); else { flash = { text: `${limit}個まで。外してから足す。`, kind: 'ng' }; }
+      persistM(); render();
+    });
+    $('#mAddCustom') && ($('#mAddCustom').onclick = () => { const w = $('#mCustom').value.trim(); if (!w || m.values.custom.includes(w) || VALUES.some(v => v.w === w)) return; m.values.custom.push(w); persistM(); render(); });
+    $('#mValNext').onclick = () => {
+      if (step < 2) { m.values.step = step + 1; m.values.picks[step + 1] = m.values.picks[step + 1].filter(w => picked.includes(w)); go('values'); }
+      else { m.values.step = 0; go('home'); }
+    };
+    $('#mValBack').onclick = () => { if (step === 0) go('home'); else { m.values.step = step - 1; go('values'); } };
+  }
+
+  if (m.phase === 'review') {
+    document.querySelectorAll('[data-star]').forEach(b => b.onclick = () => {
+      const id = b.dataset.star; const i = m.stars.indexOf(id);
+      if (i >= 0) { m.stars.splice(i, 1); m.final = m.final.filter(x => x !== id); } else if (m.stars.length < STAR_LIMIT) m.stars.push(id); else flash = { text: `星は${STAR_LIMIT}個まで。`, kind: 'ng' };
+      persistM(); render();
+    });
+    $('#mToNarrow').onclick = () => go('narrow');
+  }
+
+  if (m.phase === 'narrow') {
+    document.querySelectorAll('[data-final]').forEach(b => b.onclick = () => {
+      const id = b.dataset.final; const i = m.final.indexOf(id);
+      if (i >= 0) m.final.splice(i, 1); else if (m.final.length < FINAL_LIMIT) m.final.push(id); else flash = { text: `${FINAL_LIMIT}つまで。`, kind: 'ng' };
+      persistM(); render();
+    });
+    $('#mToCompose').onclick = () => go('compose');
+    $('#mBackReview').onclick = () => go('review');
+  }
+
+  if (m.phase === 'compose') {
+    const readSlots = () => { document.querySelectorAll('[data-slotin]').forEach(i => { m.slots[i.dataset.slotin] = i.value.trim(); }); m.finalText = $('#mFinalText').value.trim(); m.slots.dir = $('#mDir').value; m.slots.gain = Number($('#mGain').value); };
+    document.querySelectorAll('[data-slot]').forEach(c => c.onclick = () => { readSlots(); m.slots[c.dataset.slot] = m.slots[c.dataset.slot] === c.dataset.word ? '' : c.dataset.word; m.finalText = ''; persistM(); render(); });
+    document.querySelectorAll('[data-slotin]').forEach(i => i.onchange = () => { readSlots(); m.finalText = ''; persistM(); render(); });
+    $('#mDir').onchange = () => { readSlots(); m.slots.gain = 0; persistM(); render(); };
+    $('#mSave').onclick = () => {
+      readSlots();
+      const text = m.finalText || buildPurpose(m.slots);
+      if (!text) { flash = { text: '言葉を1つ以上入れる。', kind: 'ng' }; render(); return; }
+      persistM();
+      savePurpose({ text, directionId: m.slots.dir, gainIndex: m.slots.gain });
+    };
+    $('#mBackNarrow').onclick = () => go('narrow');
+  }
+}
+
 function bindOnboarding() {
   const go = phase => { onb.phase = phase; render(); };
-  $('#monshinStart') && ($('#monshinStart').onclick = () => { onb.idx = 0; go('monshin'); });
+  $('#monshinStart') && ($('#monshinStart').onclick = () => openMonshin('home'));
   $('#monshinSkip') && ($('#monshinSkip').onclick = () => go('direction'));
   $('#backIntro') && ($('#backIntro').onclick = () => go('intro'));
-  $('#toDirection') && ($('#toDirection').onclick = () => go('direction'));
-  $('#mqRetry') && ($('#mqRetry').onclick = () => { onb.idx = 0; go('monshin'); });
-
-  if (onb.phase === 'monshin') {
-    const q = QUESTIONS[onb.idx];
-    const save = () => {
-      const v = document.querySelector('input[name=mq]:checked')?.value;
-      onb.answers[q.id] = { option: v === undefined ? null : Number(v), text: $('#mqText').value.trim() || null };
-    };
-    const finish = () => {
-      onb.cands = purposeCandidates(tallyMonshin(onb.answers));
-      onb.pick = 0; onb.text = '';
-      go('purpose');
-    };
-    const advance = () => { if (onb.idx >= QUESTIONS.length - 1) finish(); else { onb.idx += 1; render(); } };
-    $('#mqNext').onclick = () => { save(); advance(); };
-    $('#mqSkip').onclick = () => { onb.answers[q.id] = { option: null, text: $('#mqText').value.trim() || null }; advance(); };
-    $('#mqBack').onclick = () => { save(); onb.idx = Math.max(0, onb.idx - 1); render(); };
-  }
-
-  if (onb.phase === 'purpose' && onb.cands.length) {
-    document.querySelectorAll('input[name=pc]').forEach(r => r.onchange = () => { onb.text = $('#pcText').value.trim(); onb.pick = Number(r.value); render(); });
-    $('#purposeStart').onclick = () => {
-      const c = onb.cands[onb.pick];
-      const text = $('#pcText').value.trim() || c.text;
-      const d = DIRECTIONS.find(x => x.id === c.directionId);
-      startApp({ directionId: c.directionId, gainIndex: c.gainIndex, ownWord: null,
-        purpose: { text, directionId: c.directionId, gainIndex: c.gainIndex, gain: d.gains[c.gainIndex], answers: onb.answers, candidates: onb.cands.map(x => x.text), decidedOn: today(), reviewOn: addDays(today(), REVIEW_DAYS), history: [] } });
-    };
-  }
 
   if (onb.phase === 'direction') {
     document.querySelectorAll('input[name=dir]').forEach(r => r.onchange = () => {
@@ -872,7 +1070,8 @@ function bind() {
     $('#dirChange').onclick = () => { db.state = changeDirection(s, { directionId: $('#dirSel').value, gainIndex: Number($('#gainSel').value), ownWord: $('#dirWord').value.trim() || null }); persist(); flash = { text: '方向を変えた。', kind: 'ok' }; tab = 'today'; render(); };
   }
   $('#helpBtn2') && ($('#helpBtn2').onclick = () => { tab = 'help'; render(); });
-  $('#purposeReview') && ($('#purposeReview').onclick = () => { tab = 'settings'; render(); });
+  $('#purposeReview') && ($('#purposeReview').onclick = () => openMonshin(itemsFrom(m.answers).length ? 'review' : 'home'));
+  $('#openMonshin') && ($('#openMonshin').onclick = () => openMonshin('home'));
   $('#purposeKeep') && ($('#purposeKeep').onclick = () => { db.purpose.reviewOn = addDays(today(), REVIEW_DAYS); persist(); flash = { text: 'このまま。次は3か月後。', kind: 'ok' }; render(); });
   $('#purposeSet') && ($('#purposeSet').onclick = () => {
     const text = $('#purposeText').value.trim(); if (!text) return;
@@ -884,7 +1083,7 @@ function bind() {
   $('#mitateSet') && ($('#mitateSet').onclick = () => { const r = setMitate(s, $('#mitateText').value.trim()); if (!r.ok) { flash = { text: r.reason, kind: 'ng' }; render(); return; } db.state = r.state; persist(); flash = { text: '見立てを置いた。', kind: 'ok' }; render(); });
   $('#exportBtn') && ($('#exportBtn').onclick = () => { $('#ioBox').value = JSON.stringify(db); $('#ioBox').select(); });
   $('#importBtn') && ($('#importBtn').onclick = () => { try { const d = JSON.parse($('#ioBox').value); if (!d.state || !d.cards) throw new Error(); db = d; persist(); flash = { text: '読み込んだ。', kind: 'ok' }; render(); } catch { flash = { text: '読み込めない JSON', kind: 'ng' }; render(); } });
-  $('#resetBtn') && ($('#resetBtn').onclick = () => { if (confirm('本当に最初から？ 木も図鑑も消えます。')) { localStorage.removeItem('tefuda.v1'); db = null; render(); } });
+  $('#resetBtn') && ($('#resetBtn').onclick = () => { if (confirm('本当に最初から？ 木も図鑑も棚卸しも消えます。')) { localStorage.removeItem('tefuda.v1'); localStorage.removeItem(M_KEY); db = null; m = M_INIT(); render(); } });
 }
 
 render();
