@@ -1,4 +1,4 @@
-// 手札 app.js — 自動生成（scripts/build-pwa.mjs）build 202609150011
+// 手札 app.js — 自動生成（scripts/build-pwa.mjs）build 202609150241
 (() => {
 "use strict";
 // ---- pwa/src/store.mjs
@@ -398,7 +398,7 @@ function leaves() { return db.log.entries.filter(e => e.type === 'completion'); 
 function render() {
   const root = $('#app');
   if (!db) { root.innerHTML = viewOnboarding(); bind(); return; }
-  const views = { today: viewToday, tree: viewTree, deck: viewDeck, model: viewModel, settings: viewSettings };
+  const views = { today: viewToday, tree: viewTree, deck: viewDeck, model: viewModel, settings: viewSettings, help: viewHelp };
   root.innerHTML = `
     ${flash ? `<div class="flash ${flash.kind}">${esc(flash.text)}</div>` : ''}
     <main>${views[tab]()}</main>
@@ -414,19 +414,43 @@ function viewOnboarding() {
   return `
   <main class="onb">
     <h1>手札</h1>
-    <p class="lede">やる気はいらない。手札を1枚ずつ試すと、木が育って、自分に合うものが分かってくる。</p>
+    <p class="lede">やる気も目標もいらないアプリです。</p>
+    <section class="card intro">
+      <h2>これは何？</h2>
+      <ol class="steps">
+        <li><b>毎日、2分の「実験」が1つ届く</b>。中身は「やること」と、誰かの「考え方」を1枚重ねたもの。</li>
+        <li><b>やったら「できた」を押す</b>。木に葉が1枚増える。サボっても減らない。</li>
+        <li><b>3回できたら「この考え方、また使う？」と聞く</b>。答えるほど、自分に合うやり方が分かってくる。</li>
+      </ol>
+      <p class="note">最初に答えるのは下の2つだけ。あとから設定で変えられます。</p>
+    </section>
     <section class="card">
-      <h2>1. 今の何が嫌？</h2>
+      <h2>1. 今、いちばん「変えたいな」と思うのは？</h2>
+      <p class="why">目標を決める質問ではありません。なんとなく嫌だな、と思っていることを1つ選ぶだけ。これが「どの方向の実験が届くか」を決めます。</p>
       ${DIRECTIONS.map(d => `<label class="opt"><input type="radio" name="dir" value="${d.id}"> ${esc(d.trouble)}</label>`).join('')}
     </section>
     <section class="card" id="gainBox" hidden>
       <h2>2. それが少し変わったら、何が増える？</h2>
+      <p class="why">「嫌」のままだと人は動きにくいので、「増えるもの」に言い換えます。ここで選んだ言葉が、毎日の画面のいちばん上に出ます（「〇〇のために 12回」のように）。</p>
       <div id="gains"></div>
-      <label class="opt small">自分の言葉で言い直す（任意）<input type="text" id="ownWord" placeholder="例: 朝が軽い日"></label>
+      <label class="opt small">自分の言葉で言い直してもいい（任意）<input type="text" id="ownWord" placeholder="例: 朝が軽い日"></label>
     </section>
-    <button class="primary" id="startBtn" disabled>はじめる（最初の手札が届く）</button>
+    <button class="primary" id="startBtn" disabled>はじめる（最初の実験が届く）</button>
     <p class="note">通知はありません。データはこの端末の中だけに保存されます。</p>
   </main>`;
+}
+
+function viewHelp() {
+  return `
+  <section class="card">
+    <h2>手札の使い方</h2>
+    <p><b>実験</b>＝「やること（2分）」×「重ねる考え方（手札）」。たとえば「玄関でスクワット5回」×「終わり方を良くする（最後の10秒だけ丁寧に）」。</p>
+    <p><b>できた</b>を押すと木に葉が1枚。連続記録はなく、減ることもない。サボった翌日に押すと「おかえり」で年輪が1本増える。</p>
+    <p><b>3回できたら</b>「この考え方、また使う？／もういい」を1回だけ聞く。どちらも図鑑に1枚として残る（外れも収集）。次の考え方は3枚から選び、やることは自動で次の候補に回る。</p>
+    <p><b>今日の1問</b>は、さっき試した考え方について「どうだった？」を3択で聞くだけ。飛ばしてよい。答えは「自分」の画面に本人の言葉として溜まる。</p>
+    <p><b>出番の日</b>は上のスイッチを入れると、車内で1分でできる札だけになり、通知もサボり扱いもない。</p>
+    <p><b>自分</b>の画面の数字は、この端末が数えたもの。3件たまるまでは出さない。</p>
+  </section>`;
 }
 
 function viewToday() {
@@ -445,19 +469,23 @@ function viewToday() {
   </header>
   ${db.ui?.welcomeBack ? `<div class="okaeri">おかえり。続きから。</div>` : ''}
   <section class="card exp">
-    <div class="tag">今回の実験 ${s.experiment.completions}/${CUTOFF_N}</div>
+    <div class="tag">今回の実験 ${s.experiment.completions}/${CUTOFF_N} <button class="mini" id="helpBtn">使い方？</button></div>
+    <div class="lbl">やること（2分）</div>
     <div class="act">${esc(action.name)}</div>
-    <div class="lens"><b>${esc(card.name)}</b><span class="how">${esc(card.how)}</span><span class="src">${esc(card.source)}・${esc(card.evidence)}</span></div>
-    ${cut ? '' : `<button class="primary big" id="doneBtn">できた</button>`}
+    <div class="lbl">重ねる考え方（手札）</div>
+    <div class="lens"><b>${esc(card.name)}</b><span class="how">${esc(card.how)}</span><span class="src">出典: ${esc(card.source)}（${esc(card.evidence)}）</span></div>
+    ${cut ? '' : `<p class="why">やることを2分やって、その前後にこの考え方を1つ試す。終わったら下を押す。</p><button class="primary big" id="doneBtn">できた</button>`}
   </section>
   ${cut ? `
   <section class="card">
-    <h2>3回できた。この見方、また使う？</h2>
+    <h2>3回できた。この考え方「${esc(card.name)}」、また使う？</h2>
+    <p class="why">「また使う」＝自分に合った（図鑑に色がつく）。「もういい」＝合わなかった（外れも1枚として残る）。どちらでも次へ進めます。</p>
     <div class="row">
       <button class="choice" data-verdict="また使う">また使う</button>
       <button class="choice ghost" data-verdict="もういい">もういい</button>
     </div>
-    <h3>次の1枚を選ぶ</h3>
+    <h3>次に重ねる考え方を3枚から選ぶ</h3>
+    <p class="why">やることは自動で次の候補に回ります（同じ方向の別の2分）。</p>
     ${cands.map(c => `<label class="opt"><input type="radio" name="next" value="${c.id}"> <b>${esc(c.name)}</b><span class="small">（${esc(c.category)}）${esc(c.how)}</span></label>`).join('')}
     ${cands.length === 0 ? '<p class="note">候補が尽きた。図鑑で手札を足すか、設定で方向を変える。</p>' : ''}
     <button class="primary" id="verdictBtn" disabled>この見方で次へ</button>
@@ -466,13 +494,14 @@ function viewToday() {
   ${db.ui?.askQuestion ? `
   <section class="card q">
     <h2>今日の1問（飛ばしてよい）</h2>
-    <p>${esc(card.question.text)}</p>
+    <p class="why">さっき試した考え方「${esc(card.name)}」について。3択で1つ、一言は任意。答えは「自分」の画面に本人の言葉として溜まります。</p>
+    <p><b>${esc(card.question.text)}</b></p>
     <div class="row wrap">${card.question.options.map((o, i) => `<button class="choice" data-answer="${i + 1}">${esc(o)}</button>`).join('')}</div>
     <input type="text" id="answerText" placeholder="一言（任意）">
     <div class="row"><button id="answerSave">記録</button><button class="ghost" id="answerSkip">飛ばす</button></div>
   </section>` : ''}
   ${s.mitate ? `<section class="card mitate">🔮 見立て: ${esc(s.mitate.text)}</section>` : ''}
-  <section class="card road"><b>道のり</b> いま: ${esc(st.label)} → 次: ${esc(st.next)}</section>`;
+  <section class="card road"><b>道のり</b> いま: ${esc(st.label)} → 次: ${esc(st.next)}<br><span class="small">試した考え方の枚数で段が進む。遅れても消えない。</span></section>`;
 }
 
 function viewTree() {
@@ -489,7 +518,7 @@ function viewDeck() {
   const untried = db.cards.filter(c => !tried.has(c.id) && c.id !== s.experiment.cardId).length;
   const groups = CATEGORIES.map(cat => ({ cat, cards: db.cards.filter(c => c.category === cat) }));
   return `
-  <section class="card"><b>図鑑</b> ${db.cards.length} 枚のうち試した ${tried.size} 枚<span class="small">（試していない ${untried} 枚）</span></section>
+  <section class="card"><b>図鑑</b> ${db.cards.length} 枚のうち試した ${tried.size} 枚<span class="small">（試していない ${untried} 枚）</span><p class="why">手札＝いろんな人の「考え方」。研究者も、本の著者も、占いも、同じ棚。色つき＝また使う、灰色＝もういい、点線＝まだ。</p></section>
   ${groups.map(g => `<section class="card"><h3>${esc(g.cat)}</h3><div class="grid">${g.cards.map(c => {
     const v = verdictOf(c.id);
     const cls = c.id === s.experiment.cardId ? 'now' : v === 'また使う' ? 'yes' : v === 'もういい' ? 'no' : tried.has(c.id) ? 'tried' : 'un';
@@ -497,6 +526,7 @@ function viewDeck() {
   }).join('')}</div></section>`).join('')}
   <section class="card">
     <h3>手札を足す（本の一節から・自分で）</h3>
+    <p class="why">読んだ本の「この人はこうやってきた」を、2分の実験に重ねられる形にして1枚追加します。正確さより「試せる形」であればOK。</p>
     <input id="c_name" placeholder="見方の名前（12字以内）">
     <input id="c_claim" placeholder="1行の主張（その人はこう言っている）">
     <input id="c_how" placeholder="試し方（60字以内）">
@@ -521,7 +551,8 @@ function viewModel() {
   return `
   <section class="card"><div class="gain">『${esc(s.direction.gain)}』のために ${s.totals.completions} 回</div><div class="sub">戻ってきた回数 ${s.totals.returns}</div></section>
   <section class="card">
-    <h3>見方のタイプ <span class="small">（数字は端末が数える。3件未満は出さない）</span></h3>
+    <h3>考え方のタイプ <span class="small">（数字は端末が数える。3件未満は出さない）</span></h3>
+    <p class="why">「また使う／もういい」の答えを5つのタイプ別に数えたもの。増えてくると「自分は〇〇系が合う」が見えてくる。根拠を押すと、その1件を数えから外せる。</p>
     ${t.rows.length === 0 ? '<p class="note">まだ数字はない（3件たまると出る）</p>' : ''}
     ${t.rows.map(r => `<div class="tallyrow"><b>${esc(r.category)}</b> また使う ${r.matauka} ／ もういい ${r.mouii} ／ 👍${r.up} 👎${r.down} <span class="small">n=${r.n}</span>
       <div class="ev">${r.evidence.map(e => `<button class="mini" data-deny="${esc(e)}">${esc(e)} ✕</button>`).join(' ')}</div></div>`).join('')}
@@ -538,7 +569,11 @@ function viewSettings() {
   const s = db.state;
   return `
   <section class="card">
+    <h3>使い方</h3><button id="helpBtn2">使い方を読む</button>
+  </section>
+  <section class="card">
     <h3>方向</h3>
+    <p class="why">最初に選んだ「変えたいこと」と「増えるもの」。変えると、届く実験の方向が変わる。これまでの木と図鑑は残る。</p>
     <p>いま: ${esc(s.direction.trouble)} → 『${esc(s.direction.gain)}』</p>
     <select id="dirSel">${DIRECTIONS.map(d => `<option value="${d.id}" ${d.id === s.direction.id ? 'selected' : ''}>${esc(d.trouble)}</option>`).join('')}</select>
     <select id="gainSel"></select>
@@ -547,6 +582,7 @@ function viewSettings() {
   </section>
   <section class="card">
     <h3>見立て（占い調でよい・3回試すまで次は出ない）</h3>
+    <p class="why">「あなたは〇〇系」のような言い切りを1つ置ける。今日の画面に出る。3回試すまで次の見立てには変えられない（毎週別人の占いにしないため）。</p>
     <input id="mitateText" placeholder="例: あなたは『整える』系。今週はこの3枚" value="${esc(s.mitate?.text ?? '')}">
     <button id="mitateSet">置く</button>
   </section>
@@ -583,6 +619,7 @@ function bind() {
   }
 
   const s = db.state;
+  $('#helpBtn') && ($('#helpBtn').onclick = () => { tab = 'help'; render(); });
   $('#shiftToggle') && ($('#shiftToggle').onchange = e => { db.ui.shiftDate = e.target.checked ? today() : null; persist(); render(); });
 
   $('#doneBtn') && ($('#doneBtn').onclick = () => {
@@ -637,6 +674,7 @@ function bind() {
     fillGains(); $('#dirSel').onchange = fillGains;
     $('#dirChange').onclick = () => { db.state = changeDirection(s, { directionId: $('#dirSel').value, gainIndex: Number($('#gainSel').value), ownWord: $('#dirWord').value.trim() || null }); persist(); flash = { text: '方向を変えた。', kind: 'ok' }; tab = 'today'; render(); };
   }
+  $('#helpBtn2') && ($('#helpBtn2').onclick = () => { tab = 'help'; render(); });
   $('#mitateSet') && ($('#mitateSet').onclick = () => { const r = setMitate(s, $('#mitateText').value.trim()); if (!r.ok) { flash = { text: r.reason, kind: 'ng' }; render(); return; } db.state = r.state; persist(); flash = { text: '見立てを置いた。', kind: 'ok' }; render(); });
   $('#exportBtn') && ($('#exportBtn').onclick = () => { $('#ioBox').value = JSON.stringify(db); $('#ioBox').select(); });
   $('#importBtn') && ($('#importBtn').onclick = () => { try { const d = JSON.parse($('#ioBox').value); if (!d.state || !d.cards) throw new Error(); db = d; persist(); flash = { text: '読み込んだ。', kind: 'ok' }; render(); } catch { flash = { text: '読み込めない JSON', kind: 'ng' }; render(); } });
