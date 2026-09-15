@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>問診 — 生きる目的を「仮決め」する</title>
+<style>
+  :root { --ink:#1a1a1a; --ink-2:#4a4a4a; --bg:#f7f5ee; --paper:#fbf9f1; --line:#d8d2bf; --accent:#7b61ff; --accent-soft:#ebe6ff; --warn:#c83a2c; --warn-soft:#f6dcd6; --ok:#2e8b57; --ok-soft:#e2f3e8; --yellow:#f4d35e; --shadow:0 1px 0 rgba(0,0,0,.04),0 8px 24px rgba(0,0,0,.06); --sans:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP","Yu Gothic","Meiryo",sans-serif; }
+  * { box-sizing:border-box; } html,body { margin:0; padding:0; }
+  body { font-family:var(--sans); background:var(--bg); color:var(--ink); line-height:1.7; -webkit-font-smoothing:antialiased; }
+  .wrap { max-width:1080px; margin:0 auto; padding:56px 28px 96px; }
+  .kicker { display:inline-block; background:var(--accent); color:#fff; font-size:12px; font-weight:700; letter-spacing:.12em; padding:6px 12px; border-radius:999px; margin-bottom:18px; }
+  h1 { font-size:38px; line-height:1.3; margin:0 0 14px; } h1 b { color:var(--accent); }
+  p.lede { font-size:18px; color:var(--ink-2); margin:0; max-width:820px; }
+  .tldr { margin-top:28px; padding:22px 24px; background:var(--paper); border:1px solid var(--line); border-radius:12px; box-shadow:var(--shadow); }
+  .tldr h2 { font-size:13px; letter-spacing:.15em; color:var(--accent); margin:0 0 10px; } .tldr ol { margin:0; padding-left:20px; } .tldr li { margin:4px 0; font-size:17px; }
+  section { margin:64px 0 0; } section > h2 { font-size:28px; line-height:1.4; margin:0 0 6px; border-left:6px solid var(--accent); padding-left:12px; } section > h2 .num { color:var(--accent); margin-right:10px; } section > p.sub { color:var(--ink-2); margin:0 0 22px; }
+  figure { margin:0 0 24px; padding:12px; background:var(--paper); border:1px solid var(--line); border-radius:14px; box-shadow:var(--shadow); } figcaption { font-size:13px; color:var(--ink-2); margin-top:10px; text-align:center; }
+  .table { width:100%; border-collapse:collapse; margin:12px 0 6px; background:var(--paper); border:1px solid var(--line); border-radius:12px; overflow:hidden; box-shadow:var(--shadow); }
+  .table th,.table td { text-align:left; padding:11px 13px; border-bottom:1px solid var(--line); vertical-align:top; font-size:14.5px; } .table th { background:#efeadb; font-weight:700; } .table tr:last-child td { border-bottom:0; } .table .pick { background:var(--accent-soft); }
+  .callout { margin:18px 0; padding:16px 18px; border-left:4px solid var(--accent); background:var(--accent-soft); border-radius:0 10px 10px 0; } .callout.warn { border-color:var(--warn); background:var(--warn-soft); } .callout p { margin:0; } .callout strong { color:var(--accent); } .callout.warn strong { color:var(--warn); }
+  .cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:14px; margin:14px 0; } .card { background:var(--paper); border:1px solid var(--line); border-radius:14px; padding:18px; box-shadow:var(--shadow); } .card .emoji { font-size:40px; line-height:1; margin-bottom:8px; } .card h3 { margin:0 0 6px; font-size:17px; } .card p { margin:0; font-size:14.5px; color:var(--ink-2); }
+  .choice { margin:14px 0; background:var(--paper); border:1px solid var(--line); border-radius:14px; padding:18px 20px; box-shadow:var(--shadow); } .choice h3 { margin:0 0 10px; font-size:19px; } .choice h3 .q { display:inline-block; background:var(--ink); color:#fff; font-size:12px; padding:2px 8px; border-radius:6px; margin-right:8px; vertical-align:2px; }
+  .opts { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:10px; } .opt { border:2px solid var(--line); border-radius:10px; padding:12px 14px; font-size:14.5px; } .opt.rec { border-color:var(--accent); background:var(--accent-soft); } .opt .lab { font-weight:800; font-size:16px; } .opt .rec-tag { display:inline-block; background:var(--accent); color:#fff; font-size:11px; padding:1px 7px; border-radius:999px; margin-left:6px; vertical-align:2px; } .opt p { margin:4px 0 0; color:var(--ink-2); }
+  .src { font-size:13px; color:var(--ink-2); } .refs { font-size:13px; } .refs td { padding:8px 10px; } .refs a { color:var(--ink-2); word-break:break-all; }
+  .conclusion { margin-top:56px; padding:28px 28px 24px; background:var(--ink); color:#f6f3e8; border-radius:16px; } .conclusion h2 { color:var(--yellow); border:0; padding:0; margin:0 0 12px; } .conclusion ol { margin:0; padding-left:20px; } .conclusion li { margin:6px 0; }
+  footer { margin-top:36px; color:var(--ink-2); font-size:13px; }
+  @media (max-width:720px) { .wrap { padding:32px 18px 64px; } h1 { font-size:30px; } section > h2 { font-size:22px; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <span class="kicker">調査と提案｜2026-09-15</span>
+    <h1>「生きる目的」は、聞いて決めるものか？ — 論文と書籍の答えは<b>「仮決めして、動いて、書き直す」</b></h1>
+    <p class="lede">あなたの問い「多角的な質問で生きる目的を決めた方がよくないか」を、論文 約15本・書籍 8冊で調べました。結論は「半分正しい」。直接聞くと空欄になるが、<b>間接的な質問を4方向から当てて"仮の目的"を1行にし、2分の実験で確かめる</b>のは根拠がある。問診12問（各問に出典つき）を提案します。</p>
+    <div class="tldr">
+      <h2>3行でいうと</h2>
+      <ol>
+        <li><b>目的は動きながら見つかる</b>（Damon の30年の研究）。だから「確定」ではなく「仮決め」。3か月ごとに書き直す。</li>
+        <li><b>質問は「なぜ」ではなく「何・いつ・誰」で</b>（Eurich／Kross: なぜ、は反芻を招く）。過去・現在・未来・他者の4方向から三角測量する。</li>
+        <li><b>出口は必ず行動1つ</b>（大事な領域を選ぶ→言葉にする→1週間以内に1つやる、で自己理解が上がった476人の試験）。問診だけで終わらせない。</li>
+      </ol>
+    </div>
+  </header>
+
+  <section>
+    <h2><span class="num">01</span>全体を1枚で</h2>
+    <figure>
+      <svg viewBox="0 0 1200 520" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="4方向の問診から仮の目的を作り、実験で確かめ、3か月で書き直す流れ" style="width:100%;height:auto;display:block;font-family:-apple-system,BlinkMacSystemFont,'Hiragino Kaku Gothic ProN','Hiragino Sans','Noto Sans JP',sans-serif">
+        <defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#7b61ff"/></marker></defs>
+        <rect width="1200" height="520" rx="18" fill="#fffdf6"/>
+        <g font-size="15" fill="#1a1a1a">
+          <rect x="40" y="60" width="200" height="90" rx="12" fill="#ebe6ff" stroke="#7b61ff" stroke-width="2"/><text x="60" y="90" font-size="24">⏪</text><text x="100" y="88" font-weight="800" font-size="17">過去</text><text x="60" y="118">12歳のころ／転機</text><text x="60" y="140" fill="#4a4a4a" font-size="13">Damon・McAdams</text>
+          <rect x="40" y="170" width="200" height="90" rx="12" fill="#ebe6ff" stroke="#7b61ff" stroke-width="2"/><text x="60" y="200" font-size="24">📍</text><text x="100" y="198" font-weight="800" font-size="17">現在</text><text x="60" y="228">休みの日／時間を忘れた</text><text x="60" y="250" fill="#4a4a4a" font-size="13">フロー・Good Time Journal</text>
+          <rect x="40" y="280" width="200" height="90" rx="12" fill="#ebe6ff" stroke="#7b61ff" stroke-width="2"/><text x="60" y="310" font-size="24">⏩</text><text x="100" y="308" font-weight="800" font-size="17">未来</text><text x="60" y="338">80歳の後悔／自由な1週間</text><text x="60" y="360" fill="#4a4a4a" font-size="13">Gilovich・Best Possible Self</text>
+          <rect x="40" y="390" width="200" height="90" rx="12" fill="#ebe6ff" stroke="#7b61ff" stroke-width="2"/><text x="60" y="420" font-size="24">👥</text><text x="100" y="418" font-weight="800" font-size="17">他者</text><text x="60" y="448">頼まれること／羨ましい人</text><text x="60" y="470" fill="#4a4a4a" font-size="13">神谷「反響」・アドラー貢献感</text>
+          <line x1="242" y1="105" x2="330" y2="240" stroke="#7b61ff" stroke-width="3" marker-end="url(#a)"/><line x1="242" y1="215" x2="330" y2="255" stroke="#7b61ff" stroke-width="3" marker-end="url(#a)"/><line x1="242" y1="325" x2="330" y2="285" stroke="#7b61ff" stroke-width="3" marker-end="url(#a)"/><line x1="242" y1="435" x2="330" y2="300" stroke="#7b61ff" stroke-width="3" marker-end="url(#a)"/>
+          <rect x="335" y="190" width="270" height="160" rx="16" fill="#fff6cc" stroke="#e0b93a" stroke-width="3"/><text x="470" y="225" text-anchor="middle" font-size="18" font-weight="900">🔮 仮の生きる目的（1行）</text><text x="470" y="258" text-anchor="middle" font-size="14">「［誰］のために、</text><text x="470" y="280" text-anchor="middle" font-size="14">［好き×得意］を使って、</text><text x="470" y="302" text-anchor="middle" font-size="14">［増えるもの］を増やす人」</text><text x="470" y="332" text-anchor="middle" font-size="12" fill="#4a4a4a">占い調でOK・本人が「そのまま／直す／違う」</text>
+          <line x1="608" y1="270" x2="690" y2="270" stroke="#7b61ff" stroke-width="4" marker-end="url(#a)"/>
+          <rect x="695" y="190" width="230" height="160" rx="16" fill="#e2f3e8" stroke="#2e8b57" stroke-width="3"/><text x="810" y="225" text-anchor="middle" font-size="18" font-weight="900">🎴 2分の実験</text><text x="810" y="258" text-anchor="middle" font-size="14">目的の方向の行動×考え方</text><text x="810" y="280" text-anchor="middle" font-size="14">3回で「また使う？」</text><text x="810" y="302" text-anchor="middle" font-size="14">木が育つ</text><text x="810" y="332" text-anchor="middle" font-size="12" fill="#4a4a4a">既存の仕組みにそのまま流れる</text>
+          <line x1="928" y1="270" x2="1010" y2="270" stroke="#7b61ff" stroke-width="4" marker-end="url(#a)"/>
+          <rect x="1015" y="190" width="150" height="160" rx="16" fill="#f8e6d3" stroke="#e0862f" stroke-width="3"/><text x="1090" y="225" text-anchor="middle" font-size="18" font-weight="900">🔁 3か月</text><text x="1090" y="258" text-anchor="middle" font-size="14">問診をやり直す</text><text x="1090" y="280" text-anchor="middle" font-size="14">目的 v2</text><text x="1090" y="302" text-anchor="middle" font-size="14">説明書の1行目</text>
+          <path d="M1090,352 L1090,430 L470,430 L470,352" fill="none" stroke="#e0862f" stroke-width="3" stroke-dasharray="7 5" marker-end="url(#a)"/>
+          <text x="780" y="450" text-anchor="middle" font-size="13" fill="#4a4a4a">実験の結果（また使う／もういい・1問の答え）が、次の目的の言葉を変える</text>
+        </g>
+      </svg>
+      <figcaption>4方向 × 12問（5分）→ 仮の目的1行 → 実験で確かめる → 3か月で書き直す。「聞いて決める」と「動いて見つける」の両取り。</figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <h2><span class="num">02</span>調べて分かったこと（絵で）</h2>
+    <div class="cards">
+      <div class="card"><div class="emoji">🌱</div><h3>目的は育つもの</h3><p>目的＝「意図」＋「実際にやる」＋「自分を超えた誰かのため」。若年成人でも持っているのは3人に1人。動きながらゆっくり見つかる（Damon）。</p></div>
+      <div class="card"><div class="emoji">🚫</div><h3>「なぜ」は聞かない</h3><p>自己認識が高い人は「なぜ」でなく「何」を問う（Eurich）。「なぜ」で没入すると反芻に落ちる。未来の自分や第三者の視点で聞くと洞察だけ残る（Kross）。</p></div>
+      <div class="card"><div class="emoji">🎯</div><h3>短い介入でも進む</h3><p>オンライン4回×15分で目的の探索が進んだ（Bronk）。「大事な領域を選ぶ→大切さを言う→1週間以内に1つやる」で自己理解が上がった（476人試験）。「最良の未来の自分」を書くと肯定感情が上がる（29研究）。</p></div>
+      <div class="card"><div class="emoji">⚠️</div><h3>探すだけは苦しい</h3><p>「意味を探している」だけが高くて「意味がある」が低い状態は苦痛と相関（Steger MLQ）。だから問診の出口は必ず行動1つ。</p></div>
+      <div class="card"><div class="emoji">🇯🇵</div><h3>生きがい研究</h3><p>神谷美恵子: 充実・成長・未来・反響（人からの応答）・自由・自己実現・意味。大崎コホート4.4万人: 生きがいのある人は死亡率が低い。茂木: 5つの柱の1番目は「小さく始める」。</p></div>
+      <div class="card"><div class="emoji">📐</div><h3>3つの交点</h3><p>八木仁平「好き×得意×大事」、スタンフォード人生デザイン「考えるより試作」、Good Time Journal「時間を忘れた／消耗した」。答えにタグを付けて交点を出す。</p></div>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="num">03</span>問診 v1 — 12問・各3択＋一言・約5分・全部飛ばせる</h2>
+    <p class="sub">全部「何・いつ・誰」で聞く。過去・現在・未来・他者の4方向。各問に出典。裏で「方向（体・作る・金・人・頭）」「好き・得意・大事」「誰のため」のタグが付く。</p>
+    <table class="table">
+      <thead><tr><th>#</th><th>方向</th><th>質問</th><th>何を探るか（出典）</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>現在</td><td>休みの日、気づいたら何をしている？</td><td>素の興味（Good Time Journal）</td></tr>
+        <tr><td>2</td><td>現在</td><td>最近、時間を忘れたのはいつ？ 何をしていた？</td><td>フロー（Csikszentmihalyi）</td></tr>
+        <tr><td>3</td><td>現在</td><td>逆に、いちばん消耗したのは？</td><td>エネルギーが下がる活動＝避ける方向（GTJ）</td></tr>
+        <tr><td>4</td><td>他者</td><td>人からよく頼まれること、「ありがとう」と言われることは？</td><td>得意・意義（八木／Martela／神谷の「反響」）</td></tr>
+        <tr><td>5</td><td>過去</td><td>12歳のころ、放っておくと何をしていた？</td><td>幼少期から続く興味（Damon／McAdams）</td></tr>
+        <tr><td>6</td><td>過去</td><td>「ここで変わった」と思う出来事は？（一言）</td><td>転機（McAdams）。第三者視点で（Kross）</td></tr>
+        <tr><td>7</td><td>他者</td><td>最近、羨ましいと思った人は？ その人の何が？</td><td>価値の投影（Schwartz）</td></tr>
+        <tr><td>8</td><td>未来</td><td>絶対にこうはなりたくない、という生き方は？</td><td>回避価値→反転して接近価値（Elliot &amp; Sheldon）</td></tr>
+        <tr><td>9</td><td>未来</td><td>80歳のあなたが「やっておけばよかった」と言いそうなことは？</td><td>やらなかった後悔（Gilovich）。自己距離化（Kross）</td></tr>
+        <tr><td>10</td><td>未来</td><td>もし1週間、仕事も家事も無かったら、3日目に何をしている？</td><td>Best Possible Self の軽量版（King）</td></tr>
+        <tr><td>11</td><td>他者</td><td>誰かの役に立ったと感じた最近の場面は？</td><td>自分を超えた対象（Damon／アドラーの貢献感）</td></tr>
+        <tr class="pick"><td>12</td><td>出口</td><td>今の生活に、1つだけ増やせるなら？</td><td>接近形・行動へ（values activation RCT）</td></tr>
+        <tr><td>任意</td><td>占い</td><td>易経の1枚（HaQei）を引いて「今の自分に近い卦」を1つ</td><td>占いの角度（あなたの方針「占い的でもいい」）</td></tr>
+      </tbody>
+    </table>
+    <div class="callout"><p><strong>仮の目的の作り方:</strong> タグを数えて「誰のため」「好き×得意」「増えるもの」を埋める → <b>「［誰］のために、［好き×得意］を使って、［増えるもの］を増やす人」</b>。例:「乗せた客のために、静かな運転と一言を使って、『誰かとのやりとり』を増やす人」。AI 接続後は占い調で言い切り、本人が「そのまま／直す／違う」。接続前はテンプレートで候補3つ。</p></div>
+  </section>
+
+  <section>
+    <h2><span class="num">04</span>やってはいけないこと（調査から）</h2>
+    <table class="table">
+      <thead><tr><th>やらない</th><th>なぜ</th><th>代わりに</th></tr></thead>
+      <tbody>
+        <tr><td>「生きる目的は？」「なぜ？」と直接聞く</td><td>空欄で止まる・反芻に落ちる（Eurich／Kross）</td><td>「何・いつ・誰」で外側から絞る</td></tr>
+        <tr><td>長文の振り返りを書かせる</td><td>反芻・負担（Nolen-Hoeksema）</td><td>3択＋一言</td></tr>
+        <tr><td>目的を確定扱いにする</td><td>目的は育つ（Damon）</td><td>仮・3か月で書き直す</td></tr>
+        <tr><td>問診だけで終わる</td><td>探索だけは苦痛（Steger）</td><td>最後は必ず行動1つ</td></tr>
+        <tr><td>「〜が嫌」のまま置く</td><td>回避目標は進まない（Elliot &amp; Sheldon）</td><td>「〜が増える」へ反転</td></tr>
+        <tr><td>12問だけで「あなたは○○タイプ」と断定</td><td>データが少ない（前回のバーナムの指摘）</td><td>仮＝見立て。実験の結果で更新</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2><span class="num">05</span>あなたが決めること</h2>
+    <div class="choice">
+      <h3><span class="q">Q1</span>この問診（12問・5分・飛ばせる）を PWA の最初に入れる？</h3>
+      <div class="opts">
+        <div class="opt rec"><span class="lab">A. 入れる</span><span class="rec-tag">おすすめ</span><p>既存の5択の前に置く。飛ばした人は5択のまま。仮の目的が「増えるもの」と方向を決める。</p></div>
+        <div class="opt"><span class="lab">B. 今の5択のまま</span><p>問診は後回し。</p></div>
+        <div class="opt"><span class="lab">C. 質問を直したい</span><p>足したい・消したい質問を1つ書いてください。</p></div>
+      </div>
+    </div>
+    <div class="choice">
+      <h3><span class="q">Q2</span>易経（HaQei）の角度を入れる？</h3>
+      <div class="opts">
+        <div class="opt"><span class="lab">A. 入れる（任意の1問）</span><p>「今の自分に近い卦」を1つ引く。あなたの既存プロジェクトの資産を使う。</p></div>
+        <div class="opt rec"><span class="lab">B. 後で</span><span class="rec-tag">おすすめ</span><p>まず12問で動かし、易経は AI 接続後に。</p></div>
+      </div>
+    </div>
+    <p class="src">設計への反映: 設計書 §18「問診と仮の目的」を追加 → PWA の最初の画面に組み込み（1〜2日）。調査メモ: docs/research/2026-09-15-生きる目的を問診で仮決めする.md</p>
+  </section>
+
+  <section>
+    <h2><span class="num">06</span>出典</h2>
+    <table class="table refs"><tbody>
+      <tr><td>論文</td><td>McKnight &amp; Kashdan (2009) Purpose in life as a system… <i>Rev Gen Psychol</i> <a href="https://journals.sagepub.com/doi/10.1037/a0017152">link</a>／Damon, Menon &amp; Bronk (2003) The development of purpose during adolescence／Stanford Report 2015 <a href="https://news.stanford.edu/stories/2015/04/purpose-youth-damon-041415">link</a>／Bronk et al. (2019) Fostering purpose among young adults: effective online interventions <a href="https://doi.org/10.1108/JCED-10-2019-0004">link</a>／Martela &amp; Steger (2016) The three meanings of meaning in life <a href="https://www.tandfonline.com/doi/abs/10.1080/17439760.2015.1137623">link</a>／Schnell (2009) SoMe <a href="https://www.tandfonline.com/doi/abs/10.1080/17439760903271074">link</a>／Steger et al. (2006) MLQ／Sheldon &amp; Elliot (1999) self-concordance／Elliot &amp; Sheldon (1997) avoidance goals／Values activation RCT (2024, n=476)／Carrillo et al. (2019) Best Possible Self meta-analysis <a href="https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0222386">link</a>／Gilovich &amp; Medvec (1994) temporal pattern of regret（追試 2022, 2023）／Kross, Ayduk &amp; Mischel (2005) When asking why does not hurt／Nolen-Hoeksema et al. (2008) Rethinking rumination／McAdams Life Story Interview II <a href="https://cpb-us-e1.wpmucdn.com/sites.northwestern.edu/dist/4/3901/files/2020/11/The-Life-Story-Interview-II-2007.pdf">PDF</a>／Sone et al. (2008) 大崎コホート <i>Psychosom Med</i>／Kumano (2018) ikigai-9／Miller et al. (2001) Personal Values Card Sort</td></tr>
+      <tr><td>書籍</td><td>神谷美恵子『生きがいについて』(1966, みすず書房)／茂木健一郎『IKIGAI』(2018)／八木仁平『世界一やさしい「やりたいこと」の見つけ方』(2020, KADOKAWA)／Burnett &amp; Evans『スタンフォード式 人生デザイン講座』(2016)／Damon『The Path to Purpose』(2008)／Eurich『insight』(2017)／岸見一郎・古賀史健『嫌われる勇気』(2013)／Frankl『夜と霧』</td></tr>
+    </tbody></table>
+  </section>
+
+  <div class="conclusion">
+    <h2>結論</h2>
+    <ol>
+      <li>「目的を先に決める」と「動いて見つける」は対立しない。<b>仮決め→実験→書き直し</b>で両取りする。</li>
+      <li>問診は12問・5分・全部「何・いつ・誰」・出口は行動1つ。各問に出典がある。</li>
+      <li>決めてほしいのは2つ: 問診を最初に入れるか（A）、易経の角度を入れるか。</li>
+    </ol>
+  </div>
+  <footer>問診 v1 ／ 2026-09-15 ／ 企画案: tefuda-kikaku.html</footer>
+</div>
+</body>
+</html>
