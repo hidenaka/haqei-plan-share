@@ -1,4 +1,4 @@
-// 手札 app.js — 自動生成（scripts/build-pwa.mjs）build 202609152127
+// 手札 app.js — 自動生成（scripts/build-pwa.mjs）build 202609152151
 (() => {
 "use strict";
 // ---- pwa/src/store.mjs
@@ -555,6 +555,29 @@ const METHODS = [
       r('wh1', '体・健康', 'body'), r('wh2', '仕事', null), r('wh3', 'お金', 'money'), r('wh4', '家族', 'people'),
       r('wh5', '友人・仲間', 'people'), r('wh6', '学び・作ること', 'make'), r('wh7', '遊び・楽しみ', null), r('wh8', '住まい・暮らしの整い', 'body'),
     ] },
+  { id: 'frankl', group: 'self', kind: 'write', title: '3つの価値', source: 'Frankl『夜と霧』『それでも人生にイエスと言う』', minutes: 4,
+    why: '意味は3つの道から来る: 作って与える／受け取って感じる／変えられないことへの向き合い方。', items: [
+      w('fk1', '自分が作って、誰かに与えているもの', '仕事の中でも外でも', 5),
+      w('fk2', '受け取って、心が動いたもの（景色・人・音楽・出来事）', '', 5),
+      w('fk3', '変えられない苦しさに、どう向き合っているか', '書ける範囲で', 3),
+    ] },
+  { id: 'schwartz', group: 'self', kind: 'rate', scale: 5, top: 5, title: '19の価値', source: 'Schwartz「基本的価値の理論」（PVQ-RR 短縮・自己評価）', minutes: 4,
+    why: '「こういう人でありたい」に1〜5。上位が「増やすもの」「使うもの」の候補になる。', items: [
+      r('sz01', '自分の考えで決めたい', 'head'), r('sz02', '自分のやり方で動きたい', null), r('sz03', '刺激や新しい経験がほしい', 'make'), r('sz04', '楽しみたい', null),
+      r('sz05', '成し遂げて認められたい', 'make'), r('sz06', '人を動かす立場にいたい', 'people'), r('sz07', 'お金や物の余裕がほしい', 'money'), r('sz08', '恥をかきたくない・面目を保ちたい', null),
+      r('sz09', '自分と身近な人の安全がほしい', 'money'), r('sz10', '世の中が安定していてほしい', null), r('sz11', '昔からのやり方・伝統を守りたい', null), r('sz12', '決まりを守りたい', null),
+      r('sz13', '人を怒らせたくない', 'people'), r('sz14', '目立ちたくない・謙虚でいたい', null), r('sz15', '身近な人の面倒を見たい', 'people'), r('sz16', '信頼できる人でありたい', 'people'),
+      r('sz17', '弱い立場の人を大事にしたい', 'people'), r('sz18', '自然を守りたい', 'body'), r('sz19', '自分と違う人も受け入れたい', 'people'),
+    ] },
+  { id: 'osaki', group: 'whole', kind: 'write', title: '生きがいの1問', source: 'Sone ほか「大崎コホート研究」（2008）', minutes: 1,
+    why: '研究では、この1問に「ある」と答えた人ほど長生きした。', items: [
+      w('os1', 'あなたには「生きがい」がありますか？', '「ある」「ない」「分からない」のどれかを書く', 1),
+      w('os2', '「ある」なら、それは何？', '無ければ「候補になりそうなもの」を', 3),
+    ] },
+  { id: 'perma', group: 'whole', kind: 'rate', scale: 10, top: 0, low: 2, title: '幸せの5つの柱', source: 'Seligman「PERMA」（Butler & Kern の短縮版）', minutes: 2,
+    why: '5つの柱に今の状態を1〜10で。低いところが「増やしたいもの」の候補。', items: [
+      r('pm1', 'いい気分でいる時間がある', null), r('pm2', '夢中になれるものがある', 'make'), r('pm3', '支え合える人がいる', 'people'), r('pm4', '自分のしていることに意味を感じる', null), r('pm5', 'やり遂げている感覚がある', 'make'),
+    ] },
   { id: 'tipi', group: 'whole', kind: 'rate', scale: 7, top: 0, title: '性格の傾向', source: 'Gosling ほか「TIPI」（ビッグファイブ10項目）', minutes: 2,
     why: 'タイプ分けではなく、5つの目盛り。「合う手札」を選ぶ参考にする。', items: [
       r('tp1', '外向的で、社交的'), r('tp2', '批判的で、口論しがち'), r('tp3', '信頼でき、自分を律している'), r('tp4', '不安になりやすく、動揺しやすい'), r('tp5', '新しい経験に開かれていて、複雑なことも好き'),
@@ -577,12 +600,16 @@ const WHO_CHIPS = ['家族', '客', '仲間', '自分', '未来の自分', '知�
 const PROMPTS = METHODS.filter(x => x.kind === 'write').flatMap(c => c.items.map(q => ({ ...q, methodId: c.id })));
 const ITEM_COUNT = METHODS.reduce((n, c) => n + (c.kind === 'pick' ? VALUES.length : c.items.length), 0);
 const method = id => METHODS.find(x => x.id === id);
+function promptText(state, pid) { return PROMPTS.find(q => q.id === pid)?.text ?? aiCard(state)?.items.find(q => q.id === pid)?.text ?? pid; }
+function methodTitle(state, id) { return id === 'ai' ? (aiCard(state)?.title ?? 'AI からの問い') : (method(id)?.title ?? id); }
 
 // 材料: 自由記述は1行＝1項目。当てはまり度は上位（top 個・中央より上）を項目にする
 // state: { answers:{promptId:string}, rates:{methodId:{itemId:number}}, values:{picks:[[],[],[]]}, skipped:[] }
 function itemsFrom(state) {
   const out = [];
-  for (const q of PROMPTS) {
+  const ai = aiCard(state);
+  const prompts = ai ? [...PROMPTS, ...ai.items.map(q => ({ ...q, methodId: 'ai' }))] : PROMPTS;
+  for (const q of prompts) {
     const raw = state?.answers?.[q.id];
     if (!raw) continue;
     String(raw).split(/\r?\n/).map(s => s.trim()).filter(Boolean).forEach((text, i) => out.push({ id: `${q.id}#${i}`, pid: q.id, methodId: q.methodId, text }));
@@ -629,6 +656,7 @@ function directionHint(state) {
   const score = Object.fromEntries(DIRECTIONS.map(d => [d.id, 0]));
   for (const w of state?.values?.picks?.[2] ?? []) { const v = VALUES.find(x => x.w === w); if (v?.dir) score[v.dir] += 2; }
   for (const it of rateLow(method('wheel'), state?.rates?.wheel)) if (it.dir) score[it.dir] += 2;
+  for (const it of rateLow(method('perma'), state?.rates?.perma)) if (it.dir) score[it.dir] += 1;
   for (const it of rateTop(method('meaning'), state?.rates?.meaning)) if (it.dir) score[it.dir] += 1;
   const best = DIRECTIONS.map(d => d.id).reduce((a, b) => (score[b] > score[a] ? b : a));
   return score[best] > 0 ? best : null;
@@ -650,9 +678,9 @@ function chipsFor(state, stars) {
   const byPid = (...pids) => items.filter(i => pids.includes(i.pid)).map(i => i.text);
   const uniq = arr => [...new Set(arr.filter(Boolean))];
   return {
-    use: uniq([...starred, ...byPid('via'), ...byPid('lk1', 'sk1', 'sk3', 'lk2')]).slice(0, 14),
-    grow: uniq([...(state?.values?.picks?.[2] ?? []), ...starred, ...byPid('meaning'), ...byPid('eu4')]).slice(0, 14),
-    who: uniq([...byPid('re5', 'co2'), ...WHO_CHIPS]).slice(0, 8),
+    use: uniq([...starred, ...latestRound(state).candidates.flatMap(c => c.use ? [c.use] : []), ...byPid('via'), ...byPid('lk1', 'sk1', 'sk3', 'lk2', 'fk1')]).slice(0, 14),
+    grow: uniq([...(state?.values?.picks?.[2] ?? []), ...starred, ...latestRound(state).candidates.flatMap(c => c.grow ? [c.grow] : []), ...byPid('meaning'), ...byPid('schwartz'), ...byPid('eu4'), ...byPid('os2')]).slice(0, 14),
+    who: uniq([...byPid('re5', 'co2'), ...latestRound(state).candidates.flatMap(c => c.who ? [c.who] : []), ...WHO_CHIPS]).slice(0, 8),
   };
 }
 
@@ -660,13 +688,96 @@ function chipsFor(state, stars) {
 function rateSummary(card, rates) {
   if (!rates || Object.keys(rates).length === 0) return null;
   if (card.id === 'ikigai9') { const vals = card.items.map(i => rates[i.id]).filter(v => v != null); return `合計 ${vals.reduce((a, b) => a + b, 0)} / ${card.items.length * card.scale}（答えた ${vals.length} 問）`; }
-  if (card.id === 'wheel') return `低め: ${rateLow(card, rates).map(i => `${i.text} ${i.score}`).join('・') || '—'}`;
+  if (card.id === 'wheel' || card.id === 'perma') return `低め: ${rateLow(card, rates).map(i => `${i.text} ${i.score}`).join('・') || '—'}`;
   if (card.id === 'tipi') {
     const rev = v => (v == null ? null : card.scale + 1 - v);
     const pair = (a, b, label) => { const x = rates[a], y = rev(rates[b]); if (x == null || y == null) return null; return `${label} ${((x + y) / 2).toFixed(1)}`; };
     return [pair('tp1', 'tp6', '外向'), pair('tp7', 'tp2', '協調'), pair('tp3', 'tp8', '勤勉'), pair('tp9', 'tp4', '安定'), pair('tp5', 'tp10', '開放')].filter(Boolean).join('／') + `（1〜${card.scale}）`;
   }
   return `上位: ${rateTop(card, rates).map(i => i.text).join('・') || '—'}`;
+}
+
+// ---------- AI ループ（設計書 §18-4）----------
+// 本人指示（2026-09-16）「様子見を作る段階でするのではなく、私に問いを投げて、出た答えを AI が読んで様子見する仕組みがいい」
+// 経路: PWA が材料を1つのテキストにまとめる（dumpForAI）→ 本人が Claude Code に貼る（/tefuda 棚卸し）→ AI が JSON で返す
+//       （観察・仮の目的の候補・次の問い・次にやるカード）→ PWA に貼り戻す（parseAIReply）→ 「AI からの問い」カードが増える
+// AI は数字を数えない・タイプ名を付けない・本人の言葉を引用して候補を作る。決めるのは本人。
+
+const AI_QUESTION_MAX = 5;
+function latestRound(state) { const r = state?.ai?.rounds ?? []; return r[r.length - 1] ?? { observations: [], candidates: [], questions: [], nextCards: [], note: '' }; }
+
+// AI の問いは「書く」型の動的カード。answers のキーは ai:<round>:<n>
+function aiCard(state) {
+  const rounds = state?.ai?.rounds ?? [];
+  const items = rounds.flatMap((r, ri) => (r.questions ?? []).map((q, qi) => ({ id: `ai:${ri + 1}:${qi + 1}`, text: q.text, hint: q.hint ?? '', max: q.max ?? 3, round: ri + 1 })));
+  if (!items.length) return null;
+  return { id: 'ai', group: 'ai', kind: 'write', title: 'AI からの問い', source: 'あなたの材料を読んだ AI（Claude）', minutes: Math.max(2, items.length), why: '前回の材料を読んで、AI が「ここをもう少し聞きたい」と思ったところ。答えるほど次の候補が本人の言葉に近づく。', items };
+}
+
+const compact = s => String(s ?? '').replace(/\r?\n/g, ' / ').trim();
+
+// AI 読み取り用の1テキスト。PWA が作り、本人がコピーして Claude Code に貼る
+function dumpForAI(state, { today = '', purpose = null } = {}) {
+  const L = [];
+  L.push(`# 手札 棚卸し（AI 読み取り用 v1）${today ? ' ' + today : ''}`);
+  L.push('ルール: 数字は数えない。タイプ名を付けない。候補の文は本人の言葉を引用して作る。返事は下の JSON 形式だけ。');
+  if (purpose) L.push(`## いまの仮の目的: ${purpose.text}（決めた日 ${purpose.decidedOn}）`);
+  const items = itemsFrom(state);
+  const stars = (state?.stars ?? []).map(id => items.find(i => i.id === id)?.text).filter(Boolean);
+  const fin = (state?.final ?? []).map(id => items.find(i => i.id === id)?.text).filter(Boolean);
+  const v3 = state?.values?.picks?.[2] ?? [];
+  if (v3.length) L.push(`## 大事な言葉（本人が 49語→3 に絞った）: ${v3.join('・')}`);
+  if (stars.length) L.push(`## 星（本人が「今も本当」と選んだ ${stars.length}）: ${stars.join(' ／ ')}`);
+  if (fin.length) L.push(`## 残した3つ: ${fin.join(' ／ ')}`);
+  for (const c of METHODS) {
+    if (state?.skipped?.includes(c.id)) continue;
+    if (c.kind === 'write') {
+      const rows = c.items.map(q => [q, compact(state?.answers?.[q.id])]).filter(([, a]) => a);
+      if (!rows.length) continue;
+      L.push(`## [${c.title}]`);
+      for (const [q, a] of rows) L.push(`- ${q.text}: ${a}`);
+    } else if (c.kind === 'rate') {
+      const rt = state?.rates?.[c.id]; if (!rt || !Object.keys(rt).length) continue;
+      const byScore = {};
+      for (const it of c.items) if (rt[it.id] != null) (byScore[rt[it.id]] ??= []).push(it.text);
+      L.push(`## [${c.title}]（1〜${c.scale}）` + Object.keys(byScore).sort((a, b) => b - a).map(k => ` ${k}: ${byScore[k].join('、')}`).join(' /'));
+    }
+  }
+  const ai = aiCard(state);
+  if (ai) {
+    L.push('## [AI からの問い]（前回の問いと本人の答え）');
+    for (const q of ai.items) L.push(`- (${q.round}回目) ${q.text}: ${compact(state?.answers?.[q.id]) || '（未回答）'}`);
+  }
+  if (state?.skipped?.length) L.push(`## 飛ばしたカード: ${state.skipped.map(id => method(id)?.title ?? id).join('・')}`);
+  L.push('');
+  L.push('## 返事の形式（この JSON だけを ```json フェンスで。他の文は書かない）');
+  L.push('{"observations":["本人の言葉を引用した観察を3行まで（評価・診断はしない）"],');
+  L.push(' "candidates":[{"text":"［誰］のために、［使うもの］を使って、［増やすもの］を増やす人","who":"","use":"","grow":"","basis":["引用1","引用2"]}],  // 3つまで');
+  L.push(` "questions":[{"text":"次に聞きたい問い","hint":"答え方の例"}],  // ${AI_QUESTION_MAX}つまで。「なぜ」は聞かない`);
+  L.push(' "nextCards":["まだやっていないカードの id を2つまで"], "note":"本人への一言（1行）"}');
+  L.push(`カード id: ${METHODS.map(c => `${c.id}=${c.title}`).join(', ')}`);
+  return L.join('\n');
+}
+
+// AI の返事（テキスト）→ round。形が崩れていれば {ok:false, error}
+function parseAIReply(text) {
+  const m = String(text ?? '').match(/```json\s*([\s\S]*?)```/) ?? [null, String(text ?? '')];
+  let obj;
+  try { obj = JSON.parse(m[1].trim()); } catch { return { ok: false, error: 'JSON として読めない' }; }
+  const str = x => (typeof x === 'string' ? x.trim() : '');
+  const round = {
+    observations: (Array.isArray(obj.observations) ? obj.observations : []).map(str).filter(Boolean).slice(0, 3),
+    candidates: (Array.isArray(obj.candidates) ? obj.candidates : []).map(c => ({ text: str(c?.text), who: str(c?.who), use: str(c?.use), grow: str(c?.grow), basis: (Array.isArray(c?.basis) ? c.basis : []).map(str).filter(Boolean).slice(0, 3) })).filter(c => c.text).slice(0, 3),
+    questions: (Array.isArray(obj.questions) ? obj.questions : []).map(q => ({ text: str(q?.text), hint: str(q?.hint), max: 3 })).filter(q => q.text && !q.text.includes('なぜ')).slice(0, AI_QUESTION_MAX),
+    nextCards: (Array.isArray(obj.nextCards) ? obj.nextCards : []).map(str).filter(id => method(id)).slice(0, 2),
+    note: str(obj.note).slice(0, 120),
+  };
+  if (!round.observations.length && !round.candidates.length && !round.questions.length) return { ok: false, error: '観察・候補・問いのどれも無い' };
+  const banned = ['診断', '病', '怠け', 'ダメ', '型です', 'タイプです'];
+  const all = JSON.stringify(round);
+  const hit = banned.find(b => all.includes(b));
+  if (hit) return { ok: false, error: `禁止語「${hit}」が入っている` };
+  return { ok: true, round };
 }
 
 // ---- pwa/src/app.mjs
@@ -690,7 +801,7 @@ const REVIEW_DAYS = 90; // 仮の目的の書き直し（設計書 §18）
 
 // 棚卸し（§18 v2）。db とは別に保存: はじめる前からでも、途中で閉じても残る
 const M_KEY = 'tefuda.monshin';
-const M_INIT = () => ({ phase: 'home', answers: {}, rates: {}, skipped: [], cur: { methodId: null, idx: 0 }, values: { step: 0, picks: [[], [], []], custom: [] }, stars: [], final: [], slots: { who: '', use: '', grow: '' }, finalText: '', startedOn: null });
+const M_INIT = () => ({ phase: 'home', answers: {}, rates: {}, skipped: [], ai: { rounds: [] }, cur: { methodId: null, idx: 0 }, values: { step: 0, picks: [[], [], []], custom: [] }, stars: [], final: [], slots: { who: '', use: '', grow: '' }, finalText: '', startedOn: null });
 let m = (() => { try { const x = JSON.parse(localStorage.getItem(M_KEY)); return x ? { ...M_INIT(), ...x, cur: { methodId: null, idx: 0 }, phase: 'home' } : M_INIT(); } catch { return M_INIT(); } })();
 let inMonshin = false; // true の間は棚卸しの画面だけを出す
 function persistM() { try { localStorage.setItem(M_KEY, JSON.stringify(m)); } catch {} }
@@ -754,6 +865,7 @@ function viewMonshin() {
   return { home: mHome, write: mWrite, values: mValues, rate: mRate, review: mReview, narrow: mNarrow, compose: mCompose }[m.phase]();
 }
 const KIND_LABEL = { write: '書く', pick: '選ぶ', rate: '当てはまり度' };
+const cardOf = id => (id === 'ai' ? aiCard(m) : method(id));
 
 function mHome() {
   const pr = progress(m);
@@ -764,14 +876,32 @@ function mHome() {
     const sum = c.kind === 'rate' && x.done ? rateSummary(c, m.rates[c.id]) : null;
     return `<button class="opt btn ${done ? 'done' : ''}" data-method="${c.id}"><b>${esc(c.title)}</b><span class="small">${esc(c.source)}</span><span class="small">${KIND_LABEL[c.kind]}・約${c.minutes}分 ／ ${done ? '✔ 済' : x.done ? `${x.done} / ${x.total}` : 'まだ'}${sum ? ` ／ ${esc(sum)}` : ''}</span></button>`;
   };
+  const ai = aiCard(m); const lr = latestRound(m); const rounds = m.ai.rounds.length;
+  const aiRow = ai ? (() => { const done = ai.items.filter(q => (m.answers[q.id] ?? '').trim()).length; return `<button class="opt btn ai ${done === ai.items.length ? 'done' : ''}" data-method="ai"><b>${esc(ai.title)}（${rounds}回目）</b><span class="small">${esc(ai.why)}</span><span class="small">書く・${ai.items.length}問 ／ ${done === ai.items.length ? '✔ 済' : `${done} / ${ai.items.length}`}</span></button>`; })() : '';
   return `
     <h1>棚卸し</h1>
-    <p class="lede">材料を出す → 絞る → 1文にする。</p>
+    <p class="lede">材料を出す → AI が読む → 問いが返る → 絞る → 1文にする。</p>
+    ${rounds ? `<section class="card ai">
+      <h2>AI が読んだ（${rounds}回目）</h2>
+      ${lr.observations.map(o => `<p>・${esc(o)}</p>`).join('')}
+      ${lr.note ? `<p class="small">${esc(lr.note)}</p>` : ''}
+      ${lr.nextCards.length ? `<p class="small">次にやるとよさそうなカード: ${lr.nextCards.map(id => `<a href="#" data-method="${id}">${esc(method(id).title)}</a>`).join('・')}</p>` : ''}
+      ${aiRow}
+    </section>` : ''}
+    <section class="card">
+      <h2>AI に読ませる</h2>
+      <p class="why">ここまでの材料を1つの文章にまとめてコピーし、Claude（Claude Code のチャット。スマホからでも）に貼る → AI が「観察・仮の目的の候補・次の問い」を返す → その返事をここに貼り戻す。<b>様子を見て次を決めるのは AI、決めるのはあなた</b>。材料が少なくてもよい（少ないなりの問いが返る）。</p>
+      <div class="row"><button id="mCopyDump">材料をコピーする</button><button class="ghost" id="mShowDump">文章を見る</button></div>
+      <textarea id="mDumpBox" rows="4" hidden readonly></textarea>
+      <p class="small">貼る先: Claude Code で <code>/tefuda 棚卸し</code> のあとに貼る（返事は <code>\`\`\`json</code> で返る）</p>
+      <textarea id="mReplyBox" rows="3" placeholder="AI の返事（json）をここに貼る"></textarea>
+      <button id="mReadReply">返事を読み込む</button>
+    </section>
     <section class="card">
       <h2>① 拡げる（手法カード ${METHODS.length} 枚・${ITEM_COUNT} 問）</h2>
       <p class="why">いろんな人のやり方を1枚ずつ。<b>好きな順で、やりたくないカードは飛ばしてよい</b>（飛ばしたカードは一覧で戻せる）。1日1〜2枚でよく、途中で閉じても残る。型は3つ: <b>書く</b>（1行に1つ、思いつくだけ）／<b>選ぶ</b>（言葉をタップして絞る）／<b>当てはまり度</b>（1〜5などで答える。性格テストと同じ形）。</p>
       <p class="small">済 ${pr.cardsDone} 枚・飛ばした ${pr.cardsSkipped} 枚・材料 ${pr.items} 個</p>
-      ${GROUPS.map(g => `<h3>${esc(g.title)}</h3>${METHODS.filter(c => c.group === g.id).map(row).join('')}`).join('')}
+      ${!rounds && ai ? aiRow : ''}${GROUPS.map(g => `<h3>${esc(g.title)}</h3>${METHODS.filter(c => c.group === g.id).map(row).join('')}`).join('')}
     </section>
     <section class="card">
       <h2>② 絞る → ③ 1文にする</h2>
@@ -787,7 +917,7 @@ function mHeader(c) {
 }
 
 function mWrite() {
-  const c = method(m.cur.methodId);
+  const c = cardOf(m.cur.methodId);
   const q = c.items[m.cur.idx];
   const v = m.answers[q.id] ?? '';
   const lines = v.split('\n').filter(s => s.trim()).length;
@@ -805,7 +935,7 @@ function mWrite() {
       <button class="ghost choice" id="mBack">${m.cur.idx === 0 ? '一覧へ' : '戻る'}</button>
       <button class="ghost choice" id="mHome">一覧へ（残る）</button>
     </div>
-    <button class="ghost small" id="mSkipCard">このカードはやりたくない → 飛ばす（一覧で戻せる）</button>`;
+    ${c.id === 'ai' ? '' : '<button class="ghost small" id="mSkipCard">このカードはやりたくない → 飛ばす（一覧で戻せる）</button>'}`;
 }
 
 function mValues() {
@@ -852,14 +982,14 @@ function mRate() {
 function mReview() {
   const items = itemsFrom(m);
   const top3 = m.values.picks[2];
-  const label = i => i.methodId === i.pid ? `${method(i.methodId).title}（当てはまり度 ${i.score}）` : PROMPTS.find(q => q.id === i.pid).text;
+  const label = i => i.methodId === i.pid ? `${method(i.methodId).title}（当てはまり度 ${i.score}）` : promptText(m, i.pid);
   return `
     <div class="progress">② 絞る 1 / 2</div>
     <section class="card">
       <h2>見返して、「今も本当だ」と思うものに ★</h2>
       <p class="why">あなたの材料を全部並べています（当てはまり度カードは上位だけ）。読んで、まだ本当だと思うものに星（${STAR_LIMIT}個まで）。星は「これが自分」の材料になります。 いま ${m.stars.length} / ${STAR_LIMIT}</p>
       ${top3.length ? `<p class="small">大事な言葉（決めた3つ）: ${top3.map(esc).join('・')}</p>` : ''}
-      ${METHODS.filter(c => items.some(i => i.methodId === c.id)).map(c => `
+      ${[...(aiCard(m) ? [aiCard(m)] : []), ...METHODS].filter(c => items.some(i => i.methodId === c.id)).map(c => `
         <h3>${esc(c.title)}</h3>
         ${items.filter(i => i.methodId === c.id).map(i => `<button class="opt btn star ${m.stars.includes(i.id) ? 'on' : ''}" data-star="${i.id}"><span class="mark">${m.stars.includes(i.id) ? '★' : '☆'}</span><span class="body">${esc(i.text)}<span class="small">${esc(label(i))}</span></span></button>`).join('')}`).join('')}
     </section>
@@ -897,6 +1027,7 @@ function mCompose() {
     <section class="card">
       <h2>残った言葉で、仮の目的を1文にする</h2>
       <p class="why">型は「［誰］のために、［使うもの］を使って、［増やすもの］を増やす人」。下の言葉は全部あなたの材料から。タップで入る。空のところは省かれる。当たっている必要はなく、3か月後に書き直します。</p>
+      ${latestRound(m).candidates.length ? `<h3>AI が材料から組んだ候補（タップで入る。直してよい）</h3>${latestRound(m).candidates.map((c, i) => `<button class="opt btn cand" data-cand="${i}"><b>${esc(c.text)}</b>${c.basis.length ? `<span class="small">根拠（あなたの言葉）: ${c.basis.map(esc).join('／')}</span>` : ''}</button>`).join('')}` : ''}
       ${slot('who', '誰のために', '自分でもよい。「自分を超えた誰か」が入ると続きやすい。', chips.who)}
       ${slot('use', '使うもの（好き・得意・強み）', '残した3つ、好き・得意、強みの上位から。', chips.use)}
       ${slot('grow', '増やすもの', '大事な言葉、残した3つ、意味の源の上位から。', chips.grow)}
@@ -1127,18 +1258,34 @@ function viewSettings() {
 // ---------- 操作 ----------
 function bindMonshin() {
   const go = phase => { m.phase = phase; persistM(); render(); };
-  const openCard = id => { const c = method(id); m.cur = { methodId: id, idx: 0 }; if (c.kind === 'pick') go('values'); else if (c.kind === 'rate') go('rate'); else go('write'); };
+  const openCard = id => { const c = cardOf(id); if (!c) return; m.cur = { methodId: id, idx: 0 }; if (c.kind === 'pick') go('values'); else if (c.kind === 'rate') go('rate'); else go('write'); };
   $('#mClose') && ($('#mClose').onclick = closeMonshin);
   $('#mHome') && ($('#mHome').onclick = () => { if ($('#mAns')) saveAns(); go('home'); });
-  document.querySelectorAll('[data-method]').forEach(b => b.onclick = () => openCard(b.dataset.method));
+  document.querySelectorAll('[data-method]').forEach(b => b.onclick = e => { e.preventDefault(); openCard(b.dataset.method); });
   document.querySelectorAll('[data-unskip]').forEach(a => a.onclick = e => { e.preventDefault(); m.skipped = m.skipped.filter(x => x !== a.dataset.unskip); persistM(); render(); });
   $('#mSkipCard') && ($('#mSkipCard').onclick = () => { const id = m.phase === 'values' ? 'values' : m.cur.methodId; if (!m.skipped.includes(id)) m.skipped.push(id); flash = { text: `「${method(id).title}」を飛ばした（一覧で戻せる）`, kind: 'ok' }; go('home'); });
   $('#mToReview') && ($('#mToReview').onclick = () => go('review'));
+  if ($('#mCopyDump')) {
+    const dump = () => dumpForAI(m, { today: today(), purpose: db?.purpose ?? null });
+    $('#mShowDump').onclick = () => { $('#mDumpBox').value = dump(); $('#mDumpBox').hidden = false; $('#mDumpBox').select(); };
+    $('#mCopyDump').onclick = async () => {
+      const t = dump();
+      try { await navigator.clipboard.writeText(t); flash = { text: `コピーした（${t.length}字）。Claude に貼る。`, kind: 'ok' }; }
+      catch { $('#mDumpBox').value = t; $('#mDumpBox').hidden = false; $('#mDumpBox').select(); flash = { text: 'コピーできない端末。下の文章を長押しでコピー。', kind: 'ng' }; }
+      render();
+    };
+    $('#mReadReply').onclick = () => {
+      const r = parseAIReply($('#mReplyBox').value);
+      if (!r.ok) { flash = { text: '読み込めない: ' + r.error, kind: 'ng' }; render(); return; }
+      m.ai.rounds.push({ ...r.round, on: today() }); persistM();
+      flash = { text: `AI の返事を読み込んだ（${m.ai.rounds.length}回目）。${r.round.questions.length ? `問いが ${r.round.questions.length} つ増えた。` : ''}`, kind: 'ok' }; render();
+    };
+  }
   $('#mToCompose') && ($('#mToCompose').onclick = () => go('compose'));
 
-  const saveAns = () => { const c = method(m.cur.methodId); const q = c.items[m.cur.idx]; m.answers[q.id] = $('#mAns').value.replace(/\r/g, ''); persistM(); };
+  const saveAns = () => { const c = cardOf(m.cur.methodId); const q = c.items[m.cur.idx]; m.answers[q.id] = $('#mAns').value.replace(/\r/g, ''); persistM(); };
   if (m.phase === 'write') {
-    const c = method(m.cur.methodId);
+    const c = cardOf(m.cur.methodId);
     $('#mAns').oninput = () => { saveAns(); const n = $('#mAns').value.split('\n').filter(s => s.trim()).length; $('#mAns').nextElementSibling.textContent = `${n} 個`; };
     $('#mNext').onclick = () => { saveAns(); if (m.cur.idx >= c.items.length - 1) go('home'); else { m.cur.idx += 1; go('write'); } };
     $('#mBack').onclick = () => { saveAns(); if (m.cur.idx === 0) go('home'); else { m.cur.idx -= 1; go('write'); } };
@@ -1196,6 +1343,7 @@ function bindMonshin() {
 
   if (m.phase === 'compose') {
     const readSlots = () => { document.querySelectorAll('[data-slotin]').forEach(i => { m.slots[i.dataset.slotin] = i.value.trim(); }); m.finalText = $('#mFinalText').value.trim(); m.slots.dir = $('#mDir').value; m.slots.gain = Number($('#mGain').value); };
+    document.querySelectorAll('[data-cand]').forEach(b => b.onclick = () => { readSlots(); const c = latestRound(m).candidates[Number(b.dataset.cand)]; m.slots.who = c.who; m.slots.use = c.use; m.slots.grow = c.grow; m.finalText = c.text; persistM(); render(); });
     document.querySelectorAll('[data-slot]').forEach(c => c.onclick = () => { readSlots(); m.slots[c.dataset.slot] = m.slots[c.dataset.slot] === c.dataset.word ? '' : c.dataset.word; m.finalText = ''; persistM(); render(); });
     document.querySelectorAll('[data-slotin]').forEach(i => i.onchange = () => { readSlots(); m.finalText = ''; persistM(); render(); });
     $('#mDir').onchange = () => { readSlots(); m.slots.gain = 0; persistM(); render(); };
