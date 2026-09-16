@@ -1,5 +1,5 @@
 // 手札 PWA — オフライン用。キャッシュ優先、裏で更新
-const CACHE = 'tefuda-202609161052';
+const CACHE = 'tefuda-202609161115';
 const ASSETS = ['./', './index.html', './app.js', './manifest.webmanifest', './icon-180.png', './icon-192.png', './icon-512.png'];
 
 self.addEventListener('install', e => {

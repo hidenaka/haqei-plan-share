@@ -1,4 +1,4 @@
-// 手札 app.js — 自動生成（scripts/build-pwa.mjs）build 202609161052
+// 手札 app.js — 自動生成（scripts/build-pwa.mjs）build 202609161115
 (() => {
 "use strict";
 // ---- pwa/src/store.mjs
@@ -776,7 +776,7 @@ function aiCard(state) {
 const compact = s => String(s ?? '').replace(/\r?\n/g, ' / ').trim();
 
 // AI 読み取り用の1テキスト。PWA が作り、本人がコピーして Claude Code に貼る
-function dumpForAI(state, { today = '', purpose = null } = {}) {
+function dumpForAI(state, { today = '', purpose = null, task = 'questions' } = {}) {
   const L = [];
   L.push(`# 手札 棚卸し（AI 読み取り用 v1）${today ? ' ' + today : ''}`);
   L.push('ルール: 数字は数えない。タイプ名を付けない。候補の文は本人の言葉を引用して作る。返事は下の JSON 形式だけ。');
@@ -817,7 +817,9 @@ function dumpForAI(state, { today = '', purpose = null } = {}) {
     L.push(`## これまでの記録（${hist.length} 回。古い順）— 時系列の変化も見て、観察と問いに使う`);
     hist.forEach((sn, i) => { L.push(`- ${snapshotLine(sn)}`); const d = diffSnapshots(hist[i - 1], sn); if (d.length) L.push(`  変化: ${d.join('；')}`); });
   }
+  L.push(...profileDumpSection(state));
   L.push('');
+  if (task === 'profile') { L.push('# 依頼: プロファイル（多面）と「可能性」を作る'); L.push(...profileReplyFormat()); return L.join('\n'); }
   L.push('## 返事の形式（この JSON だけを ```json フェンスで。他の文は書かない）');
   L.push('{"observations":["本人の言葉を引用した観察を3行まで（評価・診断はしない）"],');
   L.push(' "candidates":[{"text":"［誰］のために、［使うもの］を使って、［増やすもの］を増やす人","who":"","use":"","grow":"","basis":["引用1","引用2"]}],  // 3つまで');
@@ -911,6 +913,109 @@ function snapshotLine(sn) {
   const cx = Object.entries(sn.context ?? {}).slice(0, 4).map(([k, v]) => `${k}=${v.replace(/\r?\n/g, ' / ').slice(0, 40)}`);
   if (cx.length) parts.push(`状況: ${cx.join('；')}`);
   return parts.join(' ／ ');
+}
+
+// ---------- プロファイル（多面）と「可能性」（設計書 §18-6）----------
+// 本人指示（2026-09-16）「入力された情報からプロファイリングをかけるボタン。多面的なプロファイルを作っていく機能と、そこから読み取れる『こういう可能性もあるかも』を提案する仕組み」
+// 面は固定 10。AI は本人の言葉を引用して各面を1〜2文で書く。可能性は 3〜6、根拠の引用＋2分で試せる実験つき。診断名・タイプ名・断定はしない。
+const FACETS = [
+  { id: 'energy', name: '元気の源', hint: 'やると元気が出ること・夢中になれること' },
+  { id: 'drain', name: '消耗の源', hint: '疲れること・避けたい方向' },
+  { id: 'strength', name: '強み（本人の評価）', hint: '得意・強みの上位・人から頼まれること' },
+  { id: 'values', name: '大事にしているもの', hint: '大事な言葉・意味の源・19の価値の上位' },
+  { id: 'who', name: '誰のために', hint: '役に立ちたい相手・疲れにくい相手' },
+  { id: 'core', name: '昔から変わらない芯', hint: '12歳の自分・人生の物語・変わらないところ' },
+  { id: 'avoid', name: '避けたい未来', hint: 'なりたくない生き方・80歳の後悔' },
+  { id: 'now', name: 'いまの状況の読み', hint: '仕事・人間関係・体・お金・考えていること' },
+  { id: 'traits', name: '性格の傾向（数字のまま）', hint: 'TIPI の5つの目盛り・生活の輪・生きがい9' },
+  { id: 'mitate', name: '見立て（占い調・外れてよい）', hint: '1行の言い切り。§16 の「見立て」と同じ扱い' },
+];
+const POSSIBILITY_MIN = 3, POSSIBILITY_MAX = 6;
+const VOTE = ['○', '×', '？'];
+const LEVELS = ['2分', '1週間', '3か月']; // 試す大きさ（O*NET の Job Zone に相当。本人が絞る）
+const FACET_MIN_ITEMS = 2; // 材料がこれ未満の面は「まだ材料がない」（Crystal の confidence check に相当）
+
+// 方向のスコアの内訳（形の照合＝O*NET の職業照合に相当。端末が出す）
+function directionScores(state) {
+  const score = Object.fromEntries(DIRECTIONS.map(d => [d.id, 0]));
+  for (const w of pickFinal(state, 'values')) { const d = pickDir('values', w); if (d) score[d] += 2; }
+  for (const w of pickFinal(state, 'growpick')) { const d = pickDir('growpick', w); if (d) score[d] += 2; }
+  for (const it of rateLow(method('wheel'), state?.rates?.wheel, state)) if (it.dir) score[it.dir] += 2;
+  for (const it of rateLow(method('perma'), state?.rates?.perma, state)) if (it.dir) score[it.dir] += 1;
+  for (const it of rateTop(method('meaning'), state?.rates?.meaning, state)) if (it.dir) score[it.dir] += 1;
+  for (const it of rateTop(method('schwartz'), state?.rates?.schwartz, state)) if (it.dir) score[it.dir] += 1;
+  for (const it of rateTop(method('via'), state?.rates?.via, state)) if (it.dir) score[it.dir] += 1;
+  return score;
+}
+
+// 端末が出す可能性（形の照合）: 上位2方向 × その2分の行動。探索の候補であって正解ではない
+function localPossibilities(state) {
+  const sc = directionScores(state);
+  const total = Object.values(sc).reduce((a, b) => a + b, 0);
+  if (total === 0) return [];
+  return DIRECTIONS.map(d => ({ d, s: sc[d.id] })).filter(x => x.s > 0).sort((a, b) => b.s - a.s || DIRECTIONS.indexOf(a.d) - DIRECTIONS.indexOf(b.d)).slice(0, 2)
+    .map(({ d, s }) => ({ id: `dir:${d.id}`, directionId: d.id, text: `「${d.trouble}」の方向に材料が寄っている（${s}/${total}）。『${d.gains[0]}』か『${d.gains[1]}』が増える実験が合うかも`, try: d.actions[0].name, level: '2分', confidence: s / total >= 0.4 ? '当たりそう' : '推測', basis: ['大事な言葉・増やしたいもの・生活の輪・意味の源・強みの方向タグの集計'] }));
+}
+
+// 端末が数字だけで作る「面」（AI 無しでも即時に出る部分）
+function localProfile(state) {
+  const n = rateNumbers(state);
+  const items = itemsFrom(state);
+  const by = pid => items.filter(i => i.pid === pid).map(i => i.text);
+  const out = [];
+  const val = pickFinal(state, 'values'); if (val.length) out.push({ id: 'values', name: '大事にしているもの', text: `大事な言葉: ${val.join('・')}${n.meaning?.length ? `／意味の源の上位: ${n.meaning.join('・')}` : ''}` });
+  const st = [...pickFinal(state, 'skillpick'), ...(n.via ?? [])]; if (st.length) out.push({ id: 'strength', name: '強み（本人の評価）', text: [...new Set(st)].slice(0, 8).join('・') });
+  const en = [...pickFinal(state, 'likepick'), ...by('gtj3'), ...by('fl1')]; if (en.length) out.push({ id: 'energy', name: '元気の源', text: [...new Set(en)].slice(0, 8).join('・') });
+  const dr = [...by('gtj4'), ...by('en4')]; if (dr.length) out.push({ id: 'drain', name: '消耗の源', text: [...new Set(dr)].slice(0, 6).join('・') });
+  const who = [...pickFinal(state, 'whopick'), ...by('re5')]; if (who.length) out.push({ id: 'who', name: '誰のために', text: [...new Set(who)].slice(0, 5).join('・') });
+  const tr = []; if (n.tipi) tr.push('性格の傾向 ' + Object.entries(n.tipi).filter(([, v]) => v != null).map(([k, v]) => `${k}${v}`).join(' ')); if (n.wheel) tr.push('生活の輪 ' + Object.entries(n.wheel).map(([k, v]) => `${k}${v}`).join(' ')); if (n.ikigai9) tr.push(`生きがい9 ${n.ikigai9.total}/${n.ikigai9.max}`); if (tr.length) out.push({ id: 'traits', name: '性格の傾向（数字のまま）', text: tr.join('／') });
+  const av = [...pickFinal(state, 'regretpick'), ...by('an1')]; if (av.length) out.push({ id: 'avoid', name: '避けたい未来', text: [...new Set(av)].slice(0, 5).join('・') });
+  const dirId = directionHint(state); if (dirId) { const d = DIRECTIONS.find(x => x.id === dirId); out.push({ id: 'direction', name: '実験の方向（数字から）', text: `${d.trouble} → 『${d.gains[0]}』／『${d.gains[1]}』` }); }
+  return out;
+}
+
+// AI の返事（プロファイル）を読む。形と禁止語を検査
+function parseProfile(text) {
+  const m = String(text ?? '').match(/```json\s*([\s\S]*?)```/) ?? [null, String(text ?? '')];
+  let obj; try { obj = JSON.parse(m[1].trim()); } catch { return { ok: false, error: 'JSON として読めない' }; }
+  const str = x => (typeof x === 'string' ? x.trim() : '');
+  const arr = x => (Array.isArray(x) ? x : []);
+  const facets = arr(obj.facets).map(f => ({ id: str(f?.id), name: FACETS.find(x => x.id === str(f?.id))?.name ?? str(f?.name), text: str(f?.text), thrive: str(f?.thrive), blind: str(f?.blind), basis: arr(f?.basis).map(str).filter(Boolean).slice(0, 3) })).filter(f => f.text && FACETS.some(x => x.id === f.id));
+  const possibilities = arr(obj.possibilities).map((p, i) => ({ id: str(p?.id) || `p${i + 1}`, text: str(p?.text), basis: arr(p?.basis).map(str).filter(Boolean).slice(0, 3), try: str(p?.try), level: LEVELS.includes(str(p?.level)) ? str(p?.level) : '2分', confidence: ['推測', '当たりそう'].includes(str(p?.confidence)) ? str(p?.confidence) : '推測' })).filter(p => p.text).slice(0, POSSIBILITY_MAX);
+  const profile = { facets, possibilities, summary: str(obj.summary).slice(0, 200), caution: str(obj.caution).slice(0, 200) };
+  if (!facets.length && !possibilities.length) return { ok: false, error: '面も可能性も無い' };
+  const banned = ['診断', '病', '怠け', 'ダメ', '型です', 'タイプです', '障害', 'に違いない', '間違いなく'];
+  const all = JSON.stringify(profile);
+  const hit = banned.find(b => all.includes(b));
+  if (hit) return { ok: false, error: `禁止語「${hit}」が入っている` };
+  return { ok: true, profile };
+}
+
+// ダンプに足す: 前回のプロファイルと、可能性への本人の ○×？
+function profileDumpSection(state) {
+  const L = [];
+  const profs = state?.profiles ?? [];
+  const last = profs[profs.length - 1];
+  if (!last) return L;
+  L.push(`## 前回のプロファイル（${last.on}・${profs.length}回目）— 今回は「変わった面」「変わらない面」も書く`);
+  for (const f of last.profile.facets) L.push(`- ${f.name}: ${f.text}`);
+  const votes = state?.votes ?? {};
+  if (last.profile.possibilities.length) {
+    L.push('## 前回の「可能性」と本人の反応（○=そうかも ×=違う ？=分からない 無印=未回答）');
+    for (const p of last.profile.possibilities) L.push(`- [${votes[`${last.id}:${p.id}`] ?? '無印'}] ${p.text}`);
+  }
+  return L;
+}
+
+function profileReplyFormat() {
+  return [
+    '## 返事の形式（この JSON だけを ```json フェンスで。他の文は書かない）',
+    `{"facets":[{"id":"${FACETS.map(f => f.id).join('|')}","text":"あなたの場合: 本人の言葉を引用して1〜2文。「〜かもしれない」「〜の可能性が高い」と断定を避ける（Gallup の Strengths Insights と同じ書き方）。材料が2個未満の面は text を「まだ材料がない」にして thrive/blind は空","thrive":"活かし方: 2分で試せること1つ","blind":"裏目に出るかも: 1つ（無ければ空）","basis":["引用1","引用2"]}],  // 10面すべて`,
+    ` "possibilities":[{"id":"p1","text":"〜という可能性もあるかも（断定しない。探索の候補であって正解ではない）","basis":["引用1","引用2"],"try":"その大きさで試せること1つ","level":"${LEVELS.join('|')}","confidence":"推測|当たりそう"}],  // 3〜6。level は 2分 を最低2つ入れる`,
+    ' "summary":"全体を1〜2文で（本人の言葉で）","caution":"この読みの限界を1文（材料の偏り・足りない面）"}',
+    `面の id と意味: ${FACETS.map(f => `${f.id}=${f.name}（${f.hint}）`).join(' / ')}`,
+    'やらないこと: 診断名・タイプ名・病名・断定（「に違いない」「間違いなく」）・励まし。前回の可能性に × が付いたものは繰り返さない。○ が付いたものは深める。前回のプロファイルがあれば「変わった面」「変わらない面」を summary に書く。',
+  ];
 }
 
 // ---- pwa/src/sync.mjs
@@ -1007,6 +1112,19 @@ const Sync = {
     const f = await this.ghGet('data/ai-reply.json'); return f?.text ?? null;
   },
 
+  // ---- プロファイル（Mac mini が即時に作る）----
+  async requestProfile(dump) {
+    if (!this.enabled() || this.cfg.mode !== 'macmini') throw new Error('Mac mini とつながっていない');
+    const r = await this.mmFetch('/api/profile', { method: 'POST', headers: { 'Content-Type': 'text/plain; charset=utf-8' }, body: dump });
+    if (!r.ok) throw new Error(`Mac mini ${r.status}`);
+    return r.json();
+  },
+  async readProfile() {
+    if (!this.enabled() || this.cfg.mode !== 'macmini') return null;
+    const r = await this.mmFetch('/api/profile'); if (!r.ok) return null; return r.json();
+  },
+  async profileStatus() { const r = await this.mmFetch('/api/profile-status'); return r.ok ? r.json() : null; },
+
   // 取り込み: 向こうが新しければ置き換える。AI の返事も見る
   async pull({ quiet = false } = {}) {
     if (!this.enabled() || this.busy) return null;
@@ -1082,7 +1200,7 @@ const REVIEW_DAYS = 90; // 仮の目的の書き直し（設計書 §18）
 
 // 棚卸し（§18 v2）。db とは別に保存: はじめる前からでも、途中で閉じても残る
 const M_KEY = 'tefuda.monshin';
-const M_INIT = () => ({ phase: 'home', answers: {}, rates: {}, picks: {}, rewrite: {}, customItems: {}, skipped: [], ai: { rounds: [] }, history: [], cur: { methodId: null, idx: 0 }, values: { step: 0, picks: [[], [], []], custom: [] }, stars: [], final: [], slots: { who: '', use: '', grow: '' }, finalText: '', startedOn: null });
+const M_INIT = () => ({ phase: 'home', answers: {}, rates: {}, picks: {}, rewrite: {}, customItems: {}, skipped: [], ai: { rounds: [] }, profiles: [], votes: {}, history: [], cur: { methodId: null, idx: 0 }, values: { step: 0, picks: [[], [], []], custom: [] }, stars: [], final: [], slots: { who: '', use: '', grow: '' }, finalText: '', startedOn: null });
 let m = (() => { try { const x = JSON.parse(localStorage.getItem(M_KEY)); if (!x) return M_INIT(); const y = { ...M_INIT(), ...x, cur: { methodId: null, idx: 0 }, phase: 'home' }; if (x.values && !y.picks.values) y.picks.values = x.values; delete y.values; return y; } catch { return M_INIT(); } })();
 let inMonshin = false; // true の間は棚卸しの画面だけを出す
 const META_KEY = 'tefuda.meta';
@@ -1146,7 +1264,7 @@ function onbIntro() {
 
 // ---------- 棚卸し（§18 v3: 手法カード）----------
 function viewMonshin() {
-  return { home: mHome, write: mWrite, pick: mPick, rate: mRate, review: mReview, narrow: mNarrow, compose: mCompose, timeline: mTimeline }[m.phase]();
+  return { home: mHome, write: mWrite, pick: mPick, rate: mRate, review: mReview, narrow: mNarrow, compose: mCompose, timeline: mTimeline, profile: mProfile }[m.phase]();
 }
 const KIND_LABEL = { write: '書く', pick: '選ぶ', rate: '当てはまり度' };
 const cardOf = id => (id === 'ai' ? aiCard(m) : method(id));
@@ -1172,6 +1290,12 @@ function mHome() {
       ${lr.nextCards.length ? `<p class="small">次にやるとよさそうなカード: ${lr.nextCards.map(id => `<a href="#" data-method="${id}">${esc(method(id).title)}</a>`).join('・')}</p>` : ''}
       ${aiRow}
     </section>` : ''}
+    <section class="card">
+      <h2>プロファイル（多面）${m.profiles.length ? `・${m.profiles.length} 回目まで` : ''}</h2>
+      <p class="why">ここまでの材料を、<b>10の面</b>（元気の源／消耗の源／強み／大事にしているもの／誰のために／昔からの芯／避けたい未来／いまの状況／性格の傾向／見立て）で読む。面ごとに「あなたの場合（あなたの言葉を引用）」「活かし方（2分）」「裏目に出るかも」。そこから<b>「こういう可能性もあるかも」</b>を3〜6個、根拠と試し方つきで出す（正解ではなく探索の候補）。○×？を付けると次回に効く。数字で決まる面は AI 無しで今すぐ出る。</p>
+      ${profileBusy ? `<p class="okaeri">AI が読んでいる… ${profileBusy}</p>` : ''}
+      <div class="row"><button class="primary choice" id="mProfileMake">${m.profiles.length ? 'プロファイルを更新する' : 'プロファイルを作る'}（AI・1〜2分）</button>${m.profiles.length ? `<button class="choice" id="mProfileOpen">見る</button>` : `<button class="choice" id="mProfileOpen">数字だけ見る</button>`}</div>
+    </section>
     <section class="card">
       <h2>記録（自分の年表）${m.history.length ? `・${m.history.length} 回` : ''}</h2>
       <p class="why">その時の材料（答え・当てはまり度・大事な言葉・星・仮の目的・いまの状況）を丸ごと凍結して残す。あとで答えを直しても、白紙からやり直しても、記録は変わらない。年表で「その時、何を大事にして、何をして、何を考えていたか」と前回からの変化が見える。仮の目的を決めた時は自動で1回記録される。3か月ごとにも1回。</p>
@@ -1310,6 +1434,33 @@ function mNarrow() {
     </section>
     <button class="primary" id="mToCompose" ${m.final.length === 0 ? 'disabled' : ''}>1文にする</button>
     <div class="row"><button class="ghost choice" id="mBackReview">星に戻る</button></div>`;
+}
+
+let profileBusy = ''; let profilePoll = null;
+function mProfile() {
+  const lp = localProfile(m); const lpos = localPossibilities(m);
+  const P = m.profiles[m.profiles.length - 1] ?? null;
+  const lvl = m.ui?.profileLevel ?? '全部';
+  const poss = [...lpos.map(p => ({ ...p, src: '数字' })), ...(P ? P.profile.possibilities.map(p => ({ ...p, src: 'AI' })) : [])].filter(p => lvl === '全部' || p.level === lvl);
+  const voteKey = p => `${P?.id ?? 'local'}:${p.id}`;
+  return `
+    <div class="progress">プロファイル ${P ? `（AI ${P.on}・${m.profiles.length}回目）` : '（数字だけ。AI はまだ）'}</div>
+    ${P?.profile.summary ? `<section class="card ai"><b>まとめ</b> ${esc(P.profile.summary)}${P.profile.caution ? `<p class="small">限界: ${esc(P.profile.caution)}</p>` : ''}</section>` : ''}
+    <section class="card">
+      <h2>10の面</h2>
+      <p class="why">「あなたの場合」はあなたの言葉からの読み。当たっている必要はない。断定はしない。</p>
+      ${FACETS.map(f => { const a = P?.profile.facets.find(x => x.id === f.id); const l = lp.find(x => x.id === f.id); if (!a && !l) return `<div class="facet dim"><b>${esc(f.name)}</b><span class="small">まだ材料がない（${esc(f.hint)}）</span></div>`; return `<div class="facet"><b>${esc(f.name)}</b>${l ? `<div class="small">数字から: ${esc(l.text)}</div>` : ''}${a ? `<div>${esc(a.text)}</div>${a.thrive ? `<div class="small">活かし方（2分）: ${esc(a.thrive)}</div>` : ''}${a.blind ? `<div class="small">裏目に出るかも: ${esc(a.blind)}</div>` : ''}${a.basis?.length ? `<div class="small">根拠: ${a.basis.map(esc).join('／')}</div>` : ''}` : ''}</div>`; }).join('')}
+      ${lp.find(x => x.id === 'direction') ? `<div class="facet"><b>実験の方向（数字から）</b><div class="small">${esc(lp.find(x => x.id === 'direction').text)}</div></div>` : ''}
+    </section>
+    <section class="card">
+      <h2>こういう可能性もあるかも</h2>
+      <p class="why">探索の候補であって正解ではない。<b>試す大きさ</b>で絞れる。○＝そうかも ×＝違う ？＝分からない。付けた反応は次回のプロファイルに渡る（× は繰り返さない、○ は深める）。</p>
+      <div class="chips">${['全部', ...LEVELS].map(x => `<button class="chip ${lvl === x ? 'on' : ''}" data-lvl="${x}">${x}</button>`).join('')}</div>
+      ${poss.length ? poss.map(p => `<div class="poss"><div><span class="tag">${p.src}・${esc(p.level)}・${esc(p.confidence)}</span></div><b>${esc(p.text)}</b>${p.try ? `<div class="small">試す: ${esc(p.try)}</div>` : ''}${p.basis?.length ? `<div class="small">根拠: ${p.basis.map(esc).join('／')}</div>` : ''}<div class="row">${VOTE.map(v => `<button class="choice ${m.votes[voteKey(p)] === v ? 'sel' : ''}" data-vote="${esc(voteKey(p))}" data-v="${v}">${v}</button>`).join('')}</div></div>`).join('') : '<p class="small">この大きさの候補はまだ無い。</p>'}
+    </section>
+    <button class="primary" id="mProfileMake">${P ? 'プロファイルを更新する' : 'AI に読ませてプロファイルを作る'}（1〜2分）</button>
+    ${m.profiles.length > 1 ? `<p class="small">これまで ${m.profiles.length} 回。前回: ${esc(m.profiles[m.profiles.length - 2].on)}</p>` : ''}
+    <div class="row"><button class="ghost choice" id="mHome">一覧へ</button></div>`;
 }
 
 function mTimeline() {
@@ -1591,6 +1742,19 @@ function viewSettings() {
 }
 
 // ---------- 操作 ----------
+function pollProfile() {
+  clearInterval(profilePoll); const started = Date.now();
+  profilePoll = setInterval(async () => {
+    try {
+      const st = await Sync.profileStatus();
+      const p = await Sync.readProfile();
+      if (p && !m.profiles.some(x => x.id === p.id)) { clearInterval(profilePoll); profileBusy = ''; m.profiles.push({ id: p.id, on: p.on, profile: p.profile }); m.phase = 'profile'; persistM(); flash = { text: `プロファイルができた（面${p.profile.facets.length}・可能性${p.profile.possibilities.length}）。`, kind: 'ok' }; render(); return; }
+      if (st && !st.running && st.status && !st.status.ok) { clearInterval(profilePoll); profileBusy = ''; flash = { text: 'AI が失敗: ' + st.status.msg, kind: 'ng' }; render(); return; }
+      if (Date.now() - started > 240000) { clearInterval(profilePoll); profileBusy = ''; flash = { text: '4分待ったが返事が無い。あとで「見る」を押すと届いていることがある。', kind: 'ng' }; render(); }
+    } catch {}
+  }, 5000);
+}
+
 function bindMonshin() {
   const go = phase => { m.phase = phase; persistM(); render(); };
   const openCard = id => { const c = cardOf(id); if (!c) return; m.cur = { methodId: id, idx: 0 }; if (c.kind === 'pick') go('pick'); else if (c.kind === 'rate') go('rate'); else go('write'); };
@@ -1601,6 +1765,19 @@ function bindMonshin() {
   $('#mSkipCard') && ($('#mSkipCard').onclick = () => { const id = m.cur.methodId; if (!m.skipped.includes(id)) m.skipped.push(id); flash = { text: `「${method(id).title}」を飛ばした（一覧で戻せる）`, kind: 'ok' }; go('home'); });
   $('#mToReview') && ($('#mToReview').onclick = () => go('review'));
   $('#mTimeline') && ($('#mTimeline').onclick = () => go('timeline'));
+  $('#mProfileOpen') && ($('#mProfileOpen').onclick = () => go('profile'));
+  document.querySelectorAll('[data-lvl]').forEach(b => b.onclick = () => { m.ui ??= {}; m.ui.profileLevel = b.dataset.lvl; persistM(); render(); });
+  document.querySelectorAll('[data-vote]').forEach(b => b.onclick = () => { const k = b.dataset.vote; m.votes[k] = m.votes[k] === b.dataset.v ? undefined : b.dataset.v; if (m.votes[k] === undefined) delete m.votes[k]; persistM(); render(); });
+  $('#mProfileMake') && ($('#mProfileMake').onclick = async () => {
+    const dump = dumpForAI(m, { today: today(), purpose: db?.purpose ?? null, task: 'profile' });
+    if (Sync.enabled() && Sync.cfg.mode === 'macmini') {
+      try { const r = await Sync.requestProfile(dump); profileBusy = r.msg ?? '…'; flash = { text: 'Mac mini の AI が読み始めた。1〜2分で出る（この画面のままで待てる）。', kind: 'ok' }; render(); pollProfile(); }
+      catch (e) { flash = { text: 'AI に頼めない: ' + e.message, kind: 'ng' }; render(); }
+      return;
+    }
+    try { await navigator.clipboard.writeText(dump); } catch {}
+    flash = { text: 'Mac mini とつながっていない。材料（プロファイル依頼つき）をコピーしたので、Claude Code に「/tefuda プロファイル」と書いて貼り、返事を下の欄に貼る。', kind: 'ng' }; render();
+  });
   $('#mSnap') && ($('#mSnap').onclick = () => { const sn = snapshot(m, { today: today(), label: $('#mSnapLabel').value.trim(), purpose: db?.purpose ?? null }); m.history.push(sn); persistM(); flash = { text: `記録した（${m.history.length} 回目・${today()}）。`, kind: 'ok' }; go('timeline'); });
   $('#mWipe') && ($('#mWipe').onclick = () => {
     if (!confirm('答え・当てはまり度・大事な言葉・星・AI の問いを白紙にします。記録（年表）と飛ばしたカードは残ります。先に「いまを記録する」を押しましたか？')) return;
@@ -1617,7 +1794,9 @@ function bindMonshin() {
       render();
     };
     $('#mReadReply').onclick = () => {
-      const r = parseAIReply($('#mReplyBox').value);
+      const raw = $('#mReplyBox').value;
+      if (/"facets"/.test(raw)) { const pr = parseProfile(raw); if (!pr.ok) { flash = { text: '読み込めない: ' + pr.error, kind: 'ng' }; render(); return; } m.profiles.push({ id: `prof:manual:${Date.now()}`, on: today(), profile: pr.profile }); persistM(); flash = { text: 'プロファイルを読み込んだ。', kind: 'ok' }; m.phase = 'profile'; render(); return; }
+      const r = parseAIReply(raw);
       if (!r.ok) { flash = { text: '読み込めない: ' + r.error, kind: 'ng' }; render(); return; }
       m.ai.rounds.push({ ...r.round, on: today() }); persistM();
       flash = { text: `AI の返事を読み込んだ（${m.ai.rounds.length}回目）。${r.round.questions.length ? `問いが ${r.round.questions.length} つ増えた。` : ''}`, kind: 'ok' }; render();
@@ -1864,7 +2043,7 @@ Sync.init({
   onStatus: () => { if (tab === 'settings' && !inMonshin) render(); },
 });
 render();
-if (Sync.enabled()) Sync.pull({ quiet: true });
+if (Sync.enabled()) Sync.pull({ quiet: true }).then(async () => { try { const p = await Sync.readProfile(); if (p && !m.profiles.some(x => x.id === p.id)) { m.profiles.push({ id: p.id, on: p.on, profile: p.profile }); persistM(); } } catch {} });
 if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js').catch(() => {});
 
 })();
