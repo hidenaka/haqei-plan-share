@@ -1,4 +1,4 @@
-// 手札 app.js — 自動生成（scripts/build-pwa.mjs）build 202609160659
+// 手札 app.js — 自動生成（scripts/build-pwa.mjs）build 202609160946
 (() => {
 "use strict";
 // ---- pwa/src/store.mjs
@@ -1418,7 +1418,7 @@ function viewSettings() {
   </section>
   <section class="card">
     <h3>データ</h3>
-    <p class="small">この端末の中だけに保存。別の端末に移す時は書き出して読み込む。</p>
+    <p class="why"><b>データはこの端末の中だけ</b>（iPad で書いたものは iPhone には無い）。端末をまたぐ自動の同期は、次の段階（Mac mini と GitHub の橋）で作る。それまでは「書き出す」→ 別の端末の同じ欄に貼って「読み込む」で手で移す（木・図鑑・棚卸し・年表がまとめて入る）。<br>注意: iPad/iPhone では「ホーム画面に追加したアプリ」と「Safari で開いたページ」は別の保存場所。どちらか1つで使う。</p>
     <div class="row"><button id="exportBtn">書き出す（JSON）</button><button id="importBtn" class="ghost">読み込む</button></div>
     <textarea id="ioBox" rows="4" placeholder="ここに貼る／ここに出る"></textarea>
     <button class="danger" id="resetBtn">最初からやり直す</button>
@@ -1642,8 +1642,23 @@ function bind() {
     persist(); flash = { text: '仮の目的を置いた。', kind: 'ok' }; tab = 'today'; render();
   });
   $('#mitateSet') && ($('#mitateSet').onclick = () => { const r = setMitate(s, $('#mitateText').value.trim()); if (!r.ok) { flash = { text: r.reason, kind: 'ng' }; render(); return; } db.state = r.state; persist(); flash = { text: '見立てを置いた。', kind: 'ok' }; render(); });
-  $('#exportBtn') && ($('#exportBtn').onclick = () => { $('#ioBox').value = JSON.stringify(db); $('#ioBox').select(); });
-  $('#importBtn') && ($('#importBtn').onclick = () => { try { const d = JSON.parse($('#ioBox').value); if (!d.state || !d.cards) throw new Error(); db = d; persist(); flash = { text: '読み込んだ。', kind: 'ok' }; render(); } catch { flash = { text: '読み込めない JSON', kind: 'ng' }; render(); } });
+  // 書き出しは 本体(db) と 棚卸し(m) をまとめて1つに。読み込みは新旧どちらの形も受ける
+  $('#exportBtn') && ($('#exportBtn').onclick = async () => {
+    const t = JSON.stringify({ tefuda: 1, exportedOn: today(), db, monshin: m });
+    $('#ioBox').value = t; $('#ioBox').select();
+    try { await navigator.clipboard.writeText(t); flash = { text: `コピーした（${t.length}字）。別の端末の同じ欄に貼って「読み込む」。`, kind: 'ok' }; render(); $('#ioBox').value = t; } catch {}
+  });
+  $('#importBtn') && ($('#importBtn').onclick = () => {
+    try {
+      const d = JSON.parse($('#ioBox').value);
+      const newDb = d.tefuda ? d.db : d;
+      if (!newDb?.state || !newDb?.cards) throw new Error();
+      if (!confirm('この端末のデータを、貼った内容で置き換えます（木・図鑑・棚卸し・年表も）。よいですか？')) return;
+      db = newDb; persist();
+      if (d.tefuda && d.monshin) { m = { ...M_INIT(), ...d.monshin, cur: { methodId: null, idx: 0 }, phase: 'home' }; persistM(); }
+      flash = { text: `読み込んだ（${d.exportedOn ? d.exportedOn + ' の書き出し' : '旧形式'}）。`, kind: 'ok' }; render();
+    } catch { flash = { text: '読み込めない JSON', kind: 'ng' }; render(); }
+  });
   $('#resetBtn') && ($('#resetBtn').onclick = () => { if (confirm('本当に最初から？ 木も図鑑も棚卸しも消えます。')) { localStorage.removeItem('tefuda.v1'); localStorage.removeItem(M_KEY); db = null; m = M_INIT(); render(); } });
 }
 
