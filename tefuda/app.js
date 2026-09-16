@@ -1,4 +1,4 @@
-// 手札 app.js — 自動生成（scripts/build-pwa.mjs）build 202609160946
+// 手札 app.js — 自動生成（scripts/build-pwa.mjs）build 202609161004
 (() => {
 "use strict";
 // ---- pwa/src/store.mjs
@@ -913,6 +913,118 @@ function snapshotLine(sn) {
   return parts.join(' ／ ');
 }
 
+// ---- pwa/src/sync.mjs
+// 端末間の同期（設計書 §14-3 順番③・v17.6）— GitHub の非公開リポ 1 ファイルを橋にする（タクシー日報と同じ作り）
+//   data/tefuda.json  : { tefuda:1, updatedAt, device, db, monshin }  新しい updatedAt が勝つ（1人で順番に使う前提）
+//   data/dump.txt     : 棚卸しの AI 読み取り用テキスト（Mac mini の Claude Code が読む）
+//   data/ai-reply.json: Mac mini が書く返事 { on, forDumpHash, round }。PWA が取り込んで「AI からの問い」に
+// 合言葉（fine-grained PAT）はこの端末の localStorage だけに置く。画面には出さない。
+const SYNC_KEY = 'tefuda.sync';
+const API = 'https://api.github.com/repos';
+
+const Sync = {
+  cfg: null, timer: null, busy: false, last: { at: null, msg: '', ok: true },
+  hooks: { getLocal: () => null, setLocal: () => {}, onStatus: () => {}, getDump: () => '', onAIReply: () => false },
+
+  init(hooks) {
+    this.hooks = { ...this.hooks, ...hooks };
+    try { this.cfg = JSON.parse(localStorage.getItem(SYNC_KEY)); } catch { this.cfg = null; }
+    if (this.cfg && !this.cfg.device) { this.cfg.device = this.deviceName(); this.save(); }
+    document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible' && this.enabled()) this.pull({ quiet: true }); });
+    window.addEventListener('online', () => { if (this.enabled()) this.push(); });
+  },
+  enabled() { return !!(this.cfg?.token && this.cfg?.repo); },
+  save() { try { localStorage.setItem(SYNC_KEY, JSON.stringify(this.cfg)); } catch {} },
+  deviceName() {
+    const ua = navigator.userAgent;
+    const kind = /iPad/.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1) ? 'iPad' : /iPhone/.test(ua) ? 'iPhone' : /Macintosh/.test(ua) ? 'Mac' : '端末';
+    return `${kind}-${Math.random().toString(36).slice(2, 6)}`;
+  },
+  configure({ repo, token }) {
+    this.cfg = { repo: repo.trim(), token: token.trim(), device: this.cfg?.device ?? this.deviceName(), sha: null, lastAt: null, appliedReplies: this.cfg?.appliedReplies ?? [] };
+    this.save();
+  },
+  disconnect() { this.cfg = null; try { localStorage.removeItem(SYNC_KEY); } catch {} this.status('同期を外した', true); },
+  status(msg, ok = true) { this.last = { at: new Date().toISOString(), msg, ok }; this.hooks.onStatus(this.last); },
+
+  headers() { return { Authorization: `Bearer ${this.cfg.token}`, Accept: 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28' }; },
+  async getFile(path) {
+    const r = await fetch(`${API}/${this.cfg.repo}/contents/${path}?ref=main&t=${Date.now()}`, { headers: this.headers(), cache: 'no-store' });
+    if (r.status === 404) return null;
+    if (r.status === 401 || r.status === 403) throw new Error('合言葉（PAT）が通らない。期限切れか、権限（Contents 読み書き）か、リポ名を確認');
+    if (!r.ok) throw new Error(`GitHub ${r.status}（${path}）`);
+    const j = await r.json();
+    const text = j.content ? new TextDecoder().decode(Uint8Array.from(atob(j.content.replace(/\n/g, '')), c => c.charCodeAt(0))) : '';
+    return { sha: j.sha, text };
+  },
+  async putFile(path, text, sha, message) {
+    const content = btoa(String.fromCharCode(...new TextEncoder().encode(text)));
+    const r = await fetch(`${API}/${this.cfg.repo}/contents/${path}`, { method: 'PUT', headers: { ...this.headers(), 'Content-Type': 'application/json' }, body: JSON.stringify({ message, content, sha: sha ?? undefined, branch: 'main' }) });
+    if (r.status === 409 || r.status === 422) return { conflict: true };
+    if (!r.ok) throw new Error(`GitHub ${r.status}（${path} 書き込み）`);
+    const j = await r.json();
+    return { sha: j.content.sha };
+  },
+
+  // 取り込み: 向こうが新しければ置き換える。AI の返事も見る
+  async pull({ quiet = false } = {}) {
+    if (!this.enabled() || this.busy) return null;
+    this.busy = true;
+    try {
+      const f = await this.getFile('data/tefuda.json');
+      let took = false;
+      if (f) {
+        const remote = JSON.parse(f.text);
+        this.cfg.sha = f.sha;
+        const local = this.hooks.getLocal();
+        if (remote.updatedAt && (!local.updatedAt || remote.updatedAt > local.updatedAt)) {
+          this.hooks.setLocal(remote); took = true;
+        }
+      }
+      const gotAI = await this.pullAIReply();
+      this.cfg.lastAt = new Date().toISOString(); this.save();
+      if (!quiet || took || gotAI) this.status(took ? `他の端末（${f ? JSON.parse(f.text).device ?? '?' : ''}）の方が新しいので取り込んだ` : gotAI ? 'AI の返事を取り込んだ' : '取り込み: こちらが最新', true);
+      return { took, gotAI };
+    } catch (e) { this.status('取り込めない: ' + e.message, false); return null; }
+    finally { this.busy = false; }
+  },
+  async pullAIReply() {
+    const f = await this.getFile('data/ai-reply.json');
+    if (!f) return false;
+    let reply; try { reply = JSON.parse(f.text); } catch { return false; }
+    const id = reply.id ?? `${reply.on}:${reply.forDumpHash}`;
+    if (this.cfg.appliedReplies.includes(id)) return false;
+    const ok = this.hooks.onAIReply(reply);
+    if (ok) { this.cfg.appliedReplies = [...this.cfg.appliedReplies.slice(-20), id]; this.save(); }
+    return ok;
+  },
+
+  // 送信: 保存のたびに 3 秒遅らせてまとめる
+  schedulePush() { if (!this.enabled()) return; clearTimeout(this.timer); this.timer = setTimeout(() => this.push(), 3000); },
+  async push() {
+    if (!this.enabled() || this.busy) { if (this.busy) this.schedulePush(); return; }
+    this.busy = true;
+    try {
+      const local = this.hooks.getLocal();
+      const body = JSON.stringify({ tefuda: 1, updatedAt: local.updatedAt, device: this.cfg.device, db: local.db, monshin: local.monshin });
+      let r = await this.putFile('data/tefuda.json', body, this.cfg.sha, `sync from ${this.cfg.device} ${local.updatedAt}`);
+      if (r.conflict) {
+        const f = await this.getFile('data/tefuda.json');
+        const remote = f ? JSON.parse(f.text) : null;
+        if (remote?.updatedAt && remote.updatedAt > local.updatedAt) { this.hooks.setLocal(remote); this.cfg.sha = f.sha; this.save(); this.status(`他の端末（${remote.device ?? '?'}）の方が新しいので取り込んだ`, true); return; }
+        r = await this.putFile('data/tefuda.json', body, f?.sha ?? null, `sync from ${this.cfg.device} ${local.updatedAt} (retry)`);
+        if (r.conflict) throw new Error('書き込みがぶつかった。もう一度「今すぐ同期」');
+      }
+      this.cfg.sha = r.sha;
+      const dump = this.hooks.getDump();
+      if (dump) { const d = await this.getFile('data/dump.txt'); if (!d || d.text !== dump) await this.putFile('data/dump.txt', dump, d?.sha ?? null, `dump from ${this.cfg.device}`); }
+      this.cfg.lastAt = new Date().toISOString(); this.save();
+      this.status('送った', true);
+    } catch (e) { this.status('送れない: ' + e.message, false); }
+    finally { this.busy = false; }
+  },
+};
+
 // ---- pwa/src/app.mjs
 // 手札 PWA — 画面と操作。ロジックは brain/lib と同じ関数（ビルドで1本にまとめる）
 
@@ -937,11 +1049,14 @@ const M_KEY = 'tefuda.monshin';
 const M_INIT = () => ({ phase: 'home', answers: {}, rates: {}, picks: {}, rewrite: {}, customItems: {}, skipped: [], ai: { rounds: [] }, history: [], cur: { methodId: null, idx: 0 }, values: { step: 0, picks: [[], [], []], custom: [] }, stars: [], final: [], slots: { who: '', use: '', grow: '' }, finalText: '', startedOn: null });
 let m = (() => { try { const x = JSON.parse(localStorage.getItem(M_KEY)); if (!x) return M_INIT(); const y = { ...M_INIT(), ...x, cur: { methodId: null, idx: 0 }, phase: 'home' }; if (x.values && !y.picks.values) y.picks.values = x.values; delete y.values; return y; } catch { return M_INIT(); } })();
 let inMonshin = false; // true の間は棚卸しの画面だけを出す
-function persistM() { try { localStorage.setItem(M_KEY, JSON.stringify(m)); } catch {} }
+const META_KEY = 'tefuda.meta';
+let meta = (() => { try { return JSON.parse(localStorage.getItem(META_KEY)) ?? {}; } catch { return {}; } })();
+function touch() { meta.updatedAt = new Date().toISOString(); try { localStorage.setItem(META_KEY, JSON.stringify(meta)); } catch {} Sync.schedulePush(); }
+function persistM() { try { localStorage.setItem(M_KEY, JSON.stringify(m)); } catch {} touch(); }
 function openMonshin(phase = 'home') { m.phase = phase; m.startedOn ??= today(); inMonshin = true; persistM(); render(); }
 function closeMonshin() { inMonshin = false; persistM(); render(); }
 
-function persist() { saveDb(db); }
+function persist() { saveDb(db); touch(); }
 function addDays(iso, n) { const d = new Date(iso + 'T12:00:00'); d.setDate(d.getDate() + n); return d.toISOString().slice(0, 10); }
 function isShift() { return db?.ui?.shiftDate === today(); }
 function leaves() { return db.log.entries.filter(e => e.type === 'completion'); }
@@ -1417,6 +1532,16 @@ function viewSettings() {
     <button id="mitateSet">置く</button>
   </section>
   <section class="card">
+    <h3>同期（端末をまたぐ）</h3>
+    <p class="why">GitHub の非公開の倉庫（<code>hidenaka/tefuda-data</code>）を橋にして、iPad・iPhone・Mac で同じデータにする。開いた時に取り込み、保存の3秒後に送る。<b>新しい方が勝つ</b>ので、1つの端末で操作してから別の端末を開く。合言葉（PAT）はこの端末の中だけに保存され、画面には出ない。Mac mini の AI も同じ倉庫を読むので、「AI に読ませる」のコピー＆貼りも自動になる。</p>
+    ${Sync.enabled() ? `<p>つながっている: <b>${esc(Sync.cfg.repo)}</b> ／ この端末の名前 ${esc(Sync.cfg.device)}<br><span class="small">最終同期 ${esc(Sync.cfg.lastAt ? Sync.cfg.lastAt.replace('T', ' ').slice(0, 16) : 'まだ')} ／ ${esc(Sync.last.msg || '—')}</span></p>
+    <div class="row"><button id="syncNow">今すぐ同期</button><button class="ghost" id="syncOff">外す（この端末だけ）</button></div>` : `
+    <input id="syncRepo" placeholder="倉庫（owner/repo）" value="hidenaka/tefuda-data">
+    <input id="syncToken" type="password" placeholder="合言葉（fine-grained PAT。tefuda-data だけ・Contents 読み書き）" autocomplete="off">
+    <button id="syncOn">つなぐ（試しに1回取り込む）</button>
+    <p class="small">合言葉の作り方: GitHub → Settings → Developer settings → Fine-grained tokens → Repository access を tefuda-data だけ → Permissions: Contents = Read and write。期限は1年でよい。</p>`}
+  </section>
+  <section class="card">
     <h3>データ</h3>
     <p class="why"><b>データはこの端末の中だけ</b>（iPad で書いたものは iPhone には無い）。端末をまたぐ自動の同期は、次の段階（Mac mini と GitHub の橋）で作る。それまでは「書き出す」→ 別の端末の同じ欄に貼って「読み込む」で手で移す（木・図鑑・棚卸し・年表がまとめて入る）。<br>注意: iPad/iPhone では「ホーム画面に追加したアプリ」と「Safari で開いたページ」は別の保存場所。どちらか1つで使う。</p>
     <div class="row"><button id="exportBtn">書き出す（JSON）</button><button id="importBtn" class="ghost">読み込む</button></div>
@@ -1643,6 +1768,17 @@ function bind() {
   });
   $('#mitateSet') && ($('#mitateSet').onclick = () => { const r = setMitate(s, $('#mitateText').value.trim()); if (!r.ok) { flash = { text: r.reason, kind: 'ng' }; render(); return; } db.state = r.state; persist(); flash = { text: '見立てを置いた。', kind: 'ok' }; render(); });
   // 書き出しは 本体(db) と 棚卸し(m) をまとめて1つに。読み込みは新旧どちらの形も受ける
+  $('#syncOn') && ($('#syncOn').onclick = async () => {
+    const repo = $('#syncRepo').value.trim(), token = $('#syncToken').value.trim();
+    if (!/^[\w.-]+\/[\w.-]+$/.test(repo) || token.length < 20) { flash = { text: '倉庫名か合言葉が空・短い。', kind: 'ng' }; render(); return; }
+    Sync.configure({ repo, token });
+    const r = await Sync.pull();
+    if (r === null) { Sync.disconnect(); flash = { text: 'つなげない: ' + Sync.last.msg, kind: 'ng' }; render(); return; }
+    if (!r.took) Sync.schedulePush();
+    flash = { text: r.took ? '倉庫の方が新しかったので取り込んだ。' : 'つながった。この端末の内容を送る。', kind: 'ok' }; render();
+  });
+  $('#syncNow') && ($('#syncNow').onclick = async () => { const r = await Sync.pull(); if (r && !r.took) await Sync.push(); flash = { text: Sync.last.msg, kind: Sync.last.ok ? 'ok' : 'ng' }; render(); });
+  $('#syncOff') && ($('#syncOff').onclick = () => { if (confirm('この端末の同期を外します。データは残ります。')) { Sync.disconnect(); render(); } });
   $('#exportBtn') && ($('#exportBtn').onclick = async () => {
     const t = JSON.stringify({ tefuda: 1, exportedOn: today(), db, monshin: m });
     $('#ioBox').value = t; $('#ioBox').select();
@@ -1662,7 +1798,26 @@ function bind() {
   $('#resetBtn') && ($('#resetBtn').onclick = () => { if (confirm('本当に最初から？ 木も図鑑も棚卸しも消えます。')) { localStorage.removeItem('tefuda.v1'); localStorage.removeItem(M_KEY); db = null; m = M_INIT(); render(); } });
 }
 
+Sync.init({
+  getLocal: () => ({ updatedAt: meta.updatedAt ?? null, db, monshin: m }),
+  setLocal: remote => {
+    if (remote.db?.state && remote.db?.cards) { db = remote.db; saveDb(db); }
+    if (remote.monshin) { m = { ...M_INIT(), ...remote.monshin, cur: { methodId: null, idx: 0 }, phase: 'home' }; try { localStorage.setItem(M_KEY, JSON.stringify(m)); } catch {} }
+    meta.updatedAt = remote.updatedAt; try { localStorage.setItem(META_KEY, JSON.stringify(meta)); } catch {}
+    inMonshin = false; render();
+  },
+  getDump: () => (progress(m).items || m.ai.rounds.length ? dumpForAI(m, { today: today(), purpose: db?.purpose ?? null }) : ''),
+  onAIReply: reply => {
+    const r = reply?.round ? { ok: true, round: reply.round } : parseAIReply(JSON.stringify(reply));
+    if (!r.ok) return false;
+    m.ai.rounds.push({ ...r.round, on: reply.on ?? today(), auto: true }); persistM();
+    flash = { text: `Mac mini の AI から返事が届いた（${m.ai.rounds.length}回目）。棚卸しに「AI からの問い」が増えた。`, kind: 'ok' }; render();
+    return true;
+  },
+  onStatus: () => { if (tab === 'settings' && !inMonshin) render(); },
+});
 render();
+if (Sync.enabled()) Sync.pull({ quiet: true });
 if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js').catch(() => {});
 
 })();
