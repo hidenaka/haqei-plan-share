@@ -1,4 +1,4 @@
-// 手札 app.js — 自動生成（scripts/build-pwa.mjs）build 202609160043
+// 手札 app.js — 自動生成（scripts/build-pwa.mjs）build 202609160659
 (() => {
 "use strict";
 // ---- pwa/src/store.mjs
@@ -397,9 +397,20 @@ const GROUPS = [
 ];
 
 const w = (id, text, hint = '', max = 3) => ({ id, text, hint, max });
+const pk = (words, dir = null) => words.split(/\s+/).filter(Boolean).map(w => ({ w, dir }));
 const r = (id, text, dir = null) => ({ id, text, dir });
 
-// kind: write=1問ずつ自由記述 / pick=言葉を選んで絞る / rate=当てはまり度（scale 段階）
+// 価値の言葉（方向のタグつき。null は方向に寄らない）
+const VALUES = [
+  ...['健康', '体力', '眠り', '軽さ', '動くこと', '外に出ること', '自然'].map(w => ({ w, dir: 'body' })),
+  ...['学び', '作ること', '上達', '集中', '好奇心', '表現', '完成させること'].map(w => ({ w, dir: 'make' })),
+  ...['安心', '余裕', '蓄え', 'お金が分かっていること', '自立', '備え'].map(w => ({ w, dir: 'money' })),
+  ...['家族', '仲間', '感謝されること', '信頼', '会話', '役に立つこと', '居場所', '笑い'].map(w => ({ w, dir: 'people' })),
+  ...['理解', '考えること', '知ること', '説明できること', '判断力'].map(w => ({ w, dir: 'head' })),
+  ...['自由', '静けさ', '誠実', '挑戦', '安定', '楽しさ', '美しさ', '誇り', '感謝', '正直', '思いやり', '勇気', '遊び', '伝統', '静かな時間', 'ユーモア'].map(w => ({ w, dir: null })),
+];
+
+// kind: write=1問ずつ自由記述 / pick=言葉を選んで絞る（options・steps） / rate=当てはまり度（scale 段階）
 const METHODS = [
   // ---- いまのこと ----
   { id: 'gtj', group: 'now', kind: 'write', title: '良い時間の日記', source: 'Burnett & Evans『スタンフォード式 人生デザイン講座』', minutes: 6,
@@ -524,8 +535,27 @@ const METHODS = [
       w('sk2', '苦手だけどやっていること', '', 5),
       w('sk3', '好きと得意が重なっていること', '上の一覧を見て', 5),
     ] },
-  { id: 'values', group: 'self', kind: 'pick', title: '大事な言葉', source: 'Miller「価値カード分類」（Personal Values Card Sort）', minutes: 5,
-    why: 'たくさんの言葉から選んで絞る。10 → 5 → 3。', items: [] },
+  { id: 'values', group: 'self', kind: 'pick', steps: [10, 5, 3], title: '大事な言葉', source: 'Miller「価値カード分類」（Personal Values Card Sort）', minutes: 5,
+    why: 'たくさんの言葉から選んで絞る。10 → 5 → 3。', items: [], get options() { return VALUES; } },
+  { id: 'likepick', group: 'self', kind: 'pick', steps: [10, 5], title: '好きなこと（選ぶ）', source: '八木仁平「好き」の一覧化（選択肢版）', minutes: 3,
+    why: '目に止まったものをタップ。無ければ自分の言葉を足す。10 → 5。', items: [], options: pk('釣り 車 ドライブ 料理 掃除 片づけ 散歩 筋トレ 風呂 昼寝 音楽 映画 動画 ゲーム 読書 漫画 写真 絵 工作 DIY 園芸 動物 旅行 温泉 神社・寺 食べ歩き 酒 コーヒー 買い物 人と話す 相談に乗る 教える 調べる 数字 地図 天気 歴史 機械 電気 パソコン 将棋・囲碁 麻雀 スポーツ観戦 ゴルフ キャンプ 海 山 川 星') },
+  { id: 'skillpick', group: 'self', kind: 'pick', steps: [10, 5], title: '得意なこと（選ぶ）', source: '八木仁平「得意」の一覧化（選択肢版）', minutes: 3,
+    why: '「人より楽にできる」を選ぶ。すごい必要はない。10 → 5。', items: [], options: pk('運転 道を覚える 段取り 早起き 続ける 手を動かす 直す 片づける 数字に強い 計算 記憶 観察 聞く 話す なだめる 場を和ませる 説明 教える まとめる 決める 待つ 我慢 体力 力仕事 細かい作業 料理 掃除 交渉 探す 調べる 先読み 危険を避ける 冷静 顔を覚える 気配り 笑わせる 文章 写真 機械 電気 パソコン') },
+  { id: 'whopick', group: 'people', kind: 'pick', steps: [5, 3], title: '誰のために（選ぶ）', source: 'Damon「自分を超えた誰か」（選択肢版）', minutes: 2,
+    why: '動くと疲れにくい相手を選ぶ。5 → 3。', items: [], options: pk('家族 妻・夫 子 親 兄弟 常連の客 一見の客 同業の仲間 昔の友人 近所の人 知らない人 未来の自分 過去の自分 若い人 年配の人 困っている人 動物 地域 自分自身') },
+  { id: 'kidpick', group: 'past', kind: 'pick', steps: [10, 5], title: '12歳の自分（選ぶ）', source: 'Damon／McAdams（選択肢版）', minutes: 3,
+    why: '子どものころ放っておくとやっていたことを選ぶ。10 → 5。', items: [], options: pk('外で遊ぶ 自転車 虫・魚 川・海 山 秘密基地 野球 サッカー 走る 泳ぐ ゲーム 漫画 アニメ 図鑑 読書 絵 工作 プラモ 機械いじり ラジオ 音楽 歌 楽器 料理 家の手伝い 動物 植物 集める 友だちの家 一人で空想 テレビ 映画 地図 電車・車 星 釣り') },
+  { id: 'regretpick', group: 'future', kind: 'pick', steps: [10, 3], title: '80歳の後悔（選ぶ）', source: 'Gilovich「やらなかった後悔」（選択肢版）', minutes: 3,
+    why: '80歳の自分が「やっておけばよかった」と言いそうなものを選ぶ。10 → 3。', items: [], options: pk('体を大事にしなかった 歯 眠らなかった 運動しなかった 学ばなかった 資格 本を読まなかった 作らなかった 旅をしなかった 会いたい人に会わなかった 親と話さなかった 子と遊ばなかった 友人と疎遠 好きと言わなかった 謝らなかった お金を貯めなかった お金を使わなかった 独立しなかった 仕事を変えなかった 挑戦しなかった 断らなかった 人の目を気にした 怒りすぎた 我慢しすぎた 楽しまなかった 写真を残さなかった 記録しなかった 感謝を言わなかった 自分の時間を持たなかった') },
+  { id: 'growpick', group: 'future', kind: 'pick', steps: [10, 5, 3], title: '増やしたいもの（選ぶ）', source: '手札の「増えるもの」（§3）の選択肢版', minutes: 3,
+    why: '1年後「これが増えた」と言えたら嬉しいものを選ぶ。10 → 5 → 3。最後の3つが「増やすもの」と実験の方向の候補になる。', items: [], options: [
+      ...pk('体が軽い時間 眠れる夜 朝の余裕 動ける体 痛みのない日 整った部屋 手入れされた車・家', 'body'),
+      ...pk('貯金 お金の見通し 収入の柱', 'money'),
+      ...pk('家族との時間 笑い 会話 仲間 役に立った感 感謝された数', 'people'),
+      ...pk('作ったもの 覚えたこと 読んだ本 行った場所 写真 続いていること 新しい経験', 'make'),
+      ...pk('分かっている感 決められる感 自信', 'head'),
+      ...pk('一人の時間 静けさ 楽しみの予定 自由な時間'),
+    ] },
   { id: 'via', group: 'self', kind: 'rate', scale: 5, top: 5, title: '強みの自己評価', source: 'Peterson & Seligman「VIA 24の強み」（短縮・自己評価）', minutes: 5,
     why: '24の強みに「どれくらい自分らしいか」を1〜5で。上位5つが「使うもの」の候補になる。', items: [
       r('v01', '新しいやり方を思いつく', 'make'), r('v02', '好奇心が強い', 'head'), r('v03', '物事をいろんな角度から考える', 'head'), r('v04', '学ぶのが好き', 'head'), r('v05', '人に助言を求められる', 'people'),
@@ -598,25 +628,36 @@ const METHODS = [
     ] },
 ];
 
-// 価値の言葉（方向のタグつき。null は方向に寄らない）
-const VALUES = [
-  ...['健康', '体力', '眠り', '軽さ', '動くこと', '外に出ること', '自然'].map(w => ({ w, dir: 'body' })),
-  ...['学び', '作ること', '上達', '集中', '好奇心', '表現', '完成させること'].map(w => ({ w, dir: 'make' })),
-  ...['安心', '余裕', '蓄え', 'お金が分かっていること', '自立', '備え'].map(w => ({ w, dir: 'money' })),
-  ...['家族', '仲間', '感謝されること', '信頼', '会話', '役に立つこと', '居場所', '笑い'].map(w => ({ w, dir: 'people' })),
-  ...['理解', '考えること', '知ること', '説明できること', '判断力'].map(w => ({ w, dir: 'head' })),
-  ...['自由', '静けさ', '誠実', '挑戦', '安定', '楽しさ', '美しさ', '誇り', '感謝', '正直', '思いやり', '勇気', '遊び', '伝統', '静かな時間', 'ユーモア'].map(w => ({ w, dir: null })),
-];
-
 const WHO_CHIPS = ['家族', '客', '仲間', '自分', '未来の自分', '知らない誰か'];
 
 const PROMPTS = METHODS.filter(x => x.kind === 'write').flatMap(c => c.items.map(q => ({ ...q, methodId: c.id })));
-const ITEM_COUNT = METHODS.reduce((n, c) => n + (c.kind === 'pick' ? VALUES.length : c.items.length), 0);
+const ITEM_COUNT = METHODS.reduce((n, c) => n + (c.kind === 'pick' ? c.options.length : c.items.length), 0);
+const CHOICE_METHODS = METHODS.filter(c => c.kind !== 'write');
+const WRITE_METHODS = METHODS.filter(c => c.kind === 'write');
 const method = id => METHODS.find(x => x.id === id);
 function promptText(state, pid) { return PROMPTS.find(q => q.id === pid)?.text ?? aiCard(state)?.items.find(q => q.id === pid)?.text ?? pid; }
 function methodTitle(state, id) { return id === 'ai' ? (aiCard(state)?.title ?? 'AI からの問い') : (method(id)?.title ?? id); }
 
-// 材料: 自由記述は1行＝1項目。当てはまり度は上位（top 個・中央より上）を項目にする
+// 選ぶカードの状態。state.picks[cardId] = { step, picks: [[]...], custom: [] }（旧 state.values は values カードとして読む）
+function pickState(state, id) {
+  const c = method(id);
+  const raw = state?.picks?.[id] ?? (id === 'values' ? state?.values : null) ?? {};
+  const picks = c.steps.map((_, i) => [...(raw.picks?.[i] ?? [])]);
+  return { step: Math.min(raw.step ?? 0, c.steps.length - 1), picks, custom: [...(raw.custom ?? [])] };
+}
+function pickOptions(state, id) { const c = method(id); return [...c.options.map(o => o.w), ...pickState(state, id).custom]; }
+function pickFinal(state, id) { const ps = pickState(state, id); return ps.picks[method(id).steps.length - 1] ?? []; }
+function pickDir(id, w) { return method(id).options.find(o => o.w === w)?.dir ?? null; }
+
+// 当てはまり度カードの実際の項目: 本人が言い換えた文（state.rewrite[cardId][itemId]）と足した項目（state.customItems[cardId]=[{id,text}]）を反映
+function rateItems(card, state) {
+  const rw = state?.rewrite?.[card.id] ?? {};
+  const base = card.items.map(i => ({ ...i, text: rw[i.id]?.trim() || i.text, original: i.text }));
+  const extra = (state?.customItems?.[card.id] ?? []).map(x => ({ id: x.id, text: x.text, dir: null, custom: true }));
+  return [...base, ...extra];
+}
+
+// 材料: 自由記述は1行＝1項目。選ぶは最後の段の言葉。当てはまり度は上位（top 個・中央より上）を項目にする
 // state: { answers:{promptId:string}, rates:{methodId:{itemId:number}}, values:{picks:[[],[],[]]}, skipped:[] }
 function itemsFrom(state) {
   const out = [];
@@ -627,29 +668,33 @@ function itemsFrom(state) {
     if (!raw) continue;
     String(raw).split(/\r?\n/).map(s => s.trim()).filter(Boolean).forEach((text, i) => out.push({ id: `${q.id}#${i}`, pid: q.id, methodId: q.methodId, text }));
   }
+  for (const c of METHODS.filter(x => x.kind === 'pick')) {
+    if (state?.skipped?.includes(c.id)) continue;
+    for (const w of pickFinal(state, c.id)) out.push({ id: `${c.id}#${w}`, pid: c.id, methodId: c.id, text: w, dir: pickDir(c.id, w) });
+  }
   for (const c of METHODS.filter(x => x.kind === 'rate' && x.top > 0)) {
-    for (const it of rateTop(c, state?.rates?.[c.id])) out.push({ id: `${c.id}#${it.id}`, pid: c.id, methodId: c.id, text: it.text, dir: it.dir, score: it.score });
+    for (const it of rateTop(c, state?.rates?.[c.id], state)) out.push({ id: `${c.id}#${it.id}`, pid: c.id, methodId: c.id, text: it.text, dir: it.dir, score: it.score });
   }
   return out;
 }
 
-function rateTop(card, rates) {
+function rateTop(card, rates, state) {
   if (!rates) return [];
   const mid = (card.scale + 1) / 2;
-  return card.items.map(it => ({ ...it, score: rates[it.id] })).filter(it => it.score != null && it.score > mid)
+  return rateItems(card, state).map(it => ({ ...it, score: rates[it.id] })).filter(it => it.score != null && it.score > mid)
     .sort((a, b) => b.score - a.score || a.id.localeCompare(b.id)).slice(0, card.top);
 }
 
-function rateLow(card, rates) {
+function rateLow(card, rates, state) {
   if (!rates) return [];
-  return card.items.map(it => ({ ...it, score: rates[it.id] })).filter(it => it.score != null)
+  return rateItems(card, state).map(it => ({ ...it, score: rates[it.id] })).filter(it => it.score != null)
     .sort((a, b) => a.score - b.score || a.id.localeCompare(b.id)).slice(0, card.low ?? 0);
 }
 
 function methodStatus(card, state) {
   if (state?.skipped?.includes(card.id)) return { skipped: true, done: 0, total: 0 };
-  if (card.kind === 'pick') return { skipped: false, done: state?.values?.picks?.[2]?.length === 3 ? 1 : 0, total: 1 };
-  if (card.kind === 'rate') { const rt = state?.rates?.[card.id] ?? {}; return { skipped: false, done: card.items.filter(i => rt[i.id] != null).length, total: card.items.length }; }
+  if (card.kind === 'pick') return { skipped: false, done: pickFinal(state, card.id).length ? 1 : 0, total: 1 };
+  if (card.kind === 'rate') { const rt = state?.rates?.[card.id] ?? {}; const items = rateItems(card, state); return { skipped: false, done: items.filter(i => rt[i.id] != null).length, total: items.length }; }
   return { skipped: false, done: card.items.filter(q => (state?.answers?.[q.id] ?? '').trim()).length, total: card.items.length };
 }
 
@@ -667,10 +712,11 @@ function progress(state) {
 // 方向の推定: 大事な言葉の上位3 ＋ 生活の輪の低い領域 ＋ 意味の源の上位（タグの多数決。同数は DIRECTIONS 順）
 function directionHint(state) {
   const score = Object.fromEntries(DIRECTIONS.map(d => [d.id, 0]));
-  for (const w of state?.values?.picks?.[2] ?? []) { const v = VALUES.find(x => x.w === w); if (v?.dir) score[v.dir] += 2; }
-  for (const it of rateLow(method('wheel'), state?.rates?.wheel)) if (it.dir) score[it.dir] += 2;
-  for (const it of rateLow(method('perma'), state?.rates?.perma)) if (it.dir) score[it.dir] += 1;
-  for (const it of rateTop(method('meaning'), state?.rates?.meaning)) if (it.dir) score[it.dir] += 1;
+  for (const w of pickFinal(state, 'values')) { const d = pickDir('values', w); if (d) score[d] += 2; }
+  for (const w of pickFinal(state, 'growpick')) { const d = pickDir('growpick', w); if (d) score[d] += 2; }
+  for (const it of rateLow(method('wheel'), state?.rates?.wheel, state)) if (it.dir) score[it.dir] += 2;
+  for (const it of rateLow(method('perma'), state?.rates?.perma, state)) if (it.dir) score[it.dir] += 1;
+  for (const it of rateTop(method('meaning'), state?.rates?.meaning, state)) if (it.dir) score[it.dir] += 1;
   const best = DIRECTIONS.map(d => d.id).reduce((a, b) => (score[b] > score[a] ? b : a));
   return score[best] > 0 ? best : null;
 }
@@ -691,23 +737,23 @@ function chipsFor(state, stars) {
   const byPid = (...pids) => items.filter(i => pids.includes(i.pid)).map(i => i.text);
   const uniq = arr => [...new Set(arr.filter(Boolean))];
   return {
-    use: uniq([...starred, ...latestRound(state).candidates.flatMap(c => c.use ? [c.use] : []), ...byPid('via'), ...byPid('lk1', 'sk1', 'sk3', 'lk2', 'fk1')]).slice(0, 14),
-    grow: uniq([...(state?.values?.picks?.[2] ?? []), ...starred, ...latestRound(state).candidates.flatMap(c => c.grow ? [c.grow] : []), ...byPid('meaning'), ...byPid('schwartz'), ...byPid('eu4'), ...byPid('os2')]).slice(0, 14),
-    who: uniq([...byPid('re5', 'co2'), ...latestRound(state).candidates.flatMap(c => c.who ? [c.who] : []), ...WHO_CHIPS]).slice(0, 8),
+    use: uniq([...starred, ...latestRound(state).candidates.flatMap(c => c.use ? [c.use] : []), ...pickFinal(state, 'skillpick'), ...pickFinal(state, 'likepick'), ...byPid('via'), ...byPid('lk1', 'sk1', 'sk3', 'lk2', 'fk1')]).slice(0, 16),
+    grow: uniq([...pickFinal(state, 'growpick'), ...pickFinal(state, 'values'), ...starred, ...latestRound(state).candidates.flatMap(c => c.grow ? [c.grow] : []), ...byPid('meaning'), ...byPid('schwartz'), ...byPid('eu4'), ...byPid('os2')]).slice(0, 16),
+    who: uniq([...pickFinal(state, 'whopick'), ...byPid('re5', 'co2'), ...latestRound(state).candidates.flatMap(c => c.who ? [c.who] : []), ...WHO_CHIPS]).slice(0, 10),
   };
 }
 
 // 当てはまり度カードの要約（表示用。タイプ名は付けない）
-function rateSummary(card, rates) {
+function rateSummary(card, rates, state) {
   if (!rates || Object.keys(rates).length === 0) return null;
   if (card.id === 'ikigai9') { const vals = card.items.map(i => rates[i.id]).filter(v => v != null); return `合計 ${vals.reduce((a, b) => a + b, 0)} / ${card.items.length * card.scale}（答えた ${vals.length} 問）`; }
-  if (card.id === 'wheel' || card.id === 'perma') return `低め: ${rateLow(card, rates).map(i => `${i.text} ${i.score}`).join('・') || '—'}`;
+  if (card.id === 'wheel' || card.id === 'perma') return `低め: ${rateLow(card, rates, state).map(i => `${i.text} ${i.score}`).join('・') || '—'}`;
   if (card.id === 'tipi') {
     const rev = v => (v == null ? null : card.scale + 1 - v);
     const pair = (a, b, label) => { const x = rates[a], y = rev(rates[b]); if (x == null || y == null) return null; return `${label} ${((x + y) / 2).toFixed(1)}`; };
     return [pair('tp1', 'tp6', '外向'), pair('tp7', 'tp2', '協調'), pair('tp3', 'tp8', '勤勉'), pair('tp9', 'tp4', '安定'), pair('tp5', 'tp10', '開放')].filter(Boolean).join('／') + `（1〜${card.scale}）`;
   }
-  return `上位: ${rateTop(card, rates).map(i => i.text).join('・') || '—'}`;
+  return `上位: ${rateTop(card, rates, state).map(i => i.text).join('・') || '—'}`;
 }
 
 // ---------- AI ループ（設計書 §18-4）----------
@@ -738,7 +784,7 @@ function dumpForAI(state, { today = '', purpose = null } = {}) {
   const items = itemsFrom(state);
   const stars = (state?.stars ?? []).map(id => items.find(i => i.id === id)?.text).filter(Boolean);
   const fin = (state?.final ?? []).map(id => items.find(i => i.id === id)?.text).filter(Boolean);
-  const v3 = state?.values?.picks?.[2] ?? [];
+  const v3 = pickFinal(state, 'values');
   if (v3.length) L.push(`## 大事な言葉（本人が 49語→3 に絞った）: ${v3.join('・')}`);
   if (stars.length) L.push(`## 星（本人が「今も本当」と選んだ ${stars.length}）: ${stars.join(' ／ ')}`);
   if (fin.length) L.push(`## 残した3つ: ${fin.join(' ／ ')}`);
@@ -749,10 +795,14 @@ function dumpForAI(state, { today = '', purpose = null } = {}) {
       if (!rows.length) continue;
       L.push(`## [${c.title}]`);
       for (const [q, a] of rows) L.push(`- ${q.text}: ${a}`);
+    } else if (c.kind === 'pick') {
+      if (c.id === 'values') continue;
+      const f = pickFinal(state, c.id); if (!f.length) continue;
+      L.push(`## [${c.title}] 選んだ: ${f.join('・')}`);
     } else if (c.kind === 'rate') {
       const rt = state?.rates?.[c.id]; if (!rt || !Object.keys(rt).length) continue;
       const byScore = {};
-      for (const it of c.items) if (rt[it.id] != null) (byScore[rt[it.id]] ??= []).push(it.text);
+      for (const it of rateItems(c, state)) if (rt[it.id] != null) (byScore[rt[it.id]] ??= []).push(it.text + (it.custom ? '（本人が足した）' : it.original && it.original !== it.text ? `（言い換え: 元「${it.original}」）` : ''));
       L.push(`## [${c.title}]（1〜${c.scale}）` + Object.keys(byScore).sort((a, b) => b - a).map(k => ` ${k}: ${byScore[k].join('、')}`).join(' /'));
     }
   }
@@ -806,9 +856,9 @@ const num = v => (v == null ? null : Number(v));
 function rateNumbers(state) {
   const rt = state?.rates ?? {};
   const total = id => { const c = method(id); const vals = c.items.map(i => rt[id]?.[i.id]).filter(v => v != null); return vals.length ? { total: vals.reduce((a, b) => a + b, 0), n: vals.length, max: c.items.length * c.scale } : null; };
-  const per = id => { const c = method(id); const o = {}; for (const i of c.items) if (rt[id]?.[i.id] != null) o[i.text] = num(rt[id][i.id]); return Object.keys(o).length ? o : null; };
+  const per = id => { const c = method(id); const o = {}; for (const i of rateItems(c, state)) if (rt[id]?.[i.id] != null) o[i.text] = num(rt[id][i.id]); return Object.keys(o).length ? o : null; };
   const tipi = () => { const t = rt.tipi; if (!t) return null; const rev = v => (v == null ? null : 8 - v); const pair = (a, b) => (t[a] == null || t[b] == null ? null : Math.round(((t[a] + rev(t[b])) / 2) * 10) / 10); const o = { 外向: pair('tp1', 'tp6'), 協調: pair('tp7', 'tp2'), 勤勉: pair('tp3', 'tp8'), 安定: pair('tp9', 'tp4'), 開放: pair('tp5', 'tp10') }; return Object.values(o).some(v => v != null) ? o : null; };
-  return { ikigai9: total('ikigai9'), wheel: per('wheel'), perma: per('perma'), tipi: tipi(), via: rateTop(method('via'), rt.via).map(i => i.text), meaning: rateTop(method('meaning'), rt.meaning).map(i => i.text), schwartz: rateTop(method('schwartz'), rt.schwartz).map(i => i.text) };
+  return { ikigai9: total('ikigai9'), wheel: per('wheel'), perma: per('perma'), tipi: tipi(), via: rateTop(method('via'), rt.via, state).map(i => i.text), meaning: rateTop(method('meaning'), rt.meaning, state).map(i => i.text), schwartz: rateTop(method('schwartz'), rt.schwartz, state).map(i => i.text) };
 }
 
 function snapshot(state, { today, label = '', purpose = null } = {}) {
@@ -818,9 +868,9 @@ function snapshot(state, { today, label = '', purpose = null } = {}) {
   return {
     id: `snap_${today}_${Math.random().toString(36).slice(2, 6)}`, on: today, label,
     purpose: purpose ? { text: purpose.text, gain: purpose.gain ?? null, directionId: purpose.directionId ?? null } : null,
-    values: [...(state?.values?.picks?.[2] ?? [])], stars: (state?.stars ?? []).map(text).filter(Boolean), final: (state?.final ?? []).map(text).filter(Boolean),
+    values: [...pickFinal(state, 'values')], picks: Object.fromEntries(METHODS.filter(c => c.kind === 'pick' && c.id !== 'values').map(c => [c.title, pickFinal(state, c.id)]).filter(([, v]) => v.length)), stars: (state?.stars ?? []).map(text).filter(Boolean), final: (state?.final ?? []).map(text).filter(Boolean),
     context: ctx, numbers: rateNumbers(state),
-    answers: { ...(state?.answers ?? {}) }, rates: JSON.parse(JSON.stringify(state?.rates ?? {})), skipped: [...(state?.skipped ?? [])],
+    answers: { ...(state?.answers ?? {}) }, rates: JSON.parse(JSON.stringify(state?.rates ?? {})), pickState: JSON.parse(JSON.stringify(state?.picks ?? {})), rewrite: JSON.parse(JSON.stringify(state?.rewrite ?? {})), customItems: JSON.parse(JSON.stringify(state?.customItems ?? {})), skipped: [...(state?.skipped ?? [])],
     aiRounds: (state?.ai?.rounds ?? []).length, itemsCount: items.length, cardsDone: progress(state).cardsDone,
   };
 }
@@ -844,6 +894,7 @@ function diffSnapshots(prev, cur) {
     const ad = pb.filter(x => !pa.includes(x)), rm = pa.filter(x => !pb.includes(x));
     if (ad.length || rm.length) L.push(`${{ via: '強み上位', meaning: '意味の源上位', schwartz: '19の価値上位' }[key]}: ${ad.length ? '＋' + ad.join('・') : ''}${ad.length && rm.length ? ' ／ ' : ''}${rm.length ? '－' + rm.join('・') : ''}`);
   }
+  for (const k of Object.keys(cur.picks ?? {})) { const pa = prev.picks?.[k] ?? [], pb = cur.picks[k]; const ad = pb.filter(x => !pa.includes(x)), rm = pa.filter(x => !pb.includes(x)); if (pa.length && (ad.length || rm.length)) L.push(`${k}: ${ad.length ? '＋' + ad.join('・') : ''}${ad.length && rm.length ? ' ／ ' : ''}${rm.length ? '－' + rm.join('・') : ''}`); }
   const ca = prev.context ?? {}, cb = cur.context ?? {};
   const changed = Object.keys(cb).filter(k => ca[k] && ca[k] !== cb[k]);
   if (changed.length) L.push(`状況が変わった: ${changed.join('・')}`);
@@ -883,8 +934,8 @@ const REVIEW_DAYS = 90; // 仮の目的の書き直し（設計書 §18）
 
 // 棚卸し（§18 v2）。db とは別に保存: はじめる前からでも、途中で閉じても残る
 const M_KEY = 'tefuda.monshin';
-const M_INIT = () => ({ phase: 'home', answers: {}, rates: {}, skipped: [], ai: { rounds: [] }, history: [], cur: { methodId: null, idx: 0 }, values: { step: 0, picks: [[], [], []], custom: [] }, stars: [], final: [], slots: { who: '', use: '', grow: '' }, finalText: '', startedOn: null });
-let m = (() => { try { const x = JSON.parse(localStorage.getItem(M_KEY)); return x ? { ...M_INIT(), ...x, cur: { methodId: null, idx: 0 }, phase: 'home' } : M_INIT(); } catch { return M_INIT(); } })();
+const M_INIT = () => ({ phase: 'home', answers: {}, rates: {}, picks: {}, rewrite: {}, customItems: {}, skipped: [], ai: { rounds: [] }, history: [], cur: { methodId: null, idx: 0 }, values: { step: 0, picks: [[], [], []], custom: [] }, stars: [], final: [], slots: { who: '', use: '', grow: '' }, finalText: '', startedOn: null });
+let m = (() => { try { const x = JSON.parse(localStorage.getItem(M_KEY)); if (!x) return M_INIT(); const y = { ...M_INIT(), ...x, cur: { methodId: null, idx: 0 }, phase: 'home' }; if (x.values && !y.picks.values) y.picks.values = x.values; delete y.values; return y; } catch { return M_INIT(); } })();
 let inMonshin = false; // true の間は棚卸しの画面だけを出す
 function persistM() { try { localStorage.setItem(M_KEY, JSON.stringify(m)); } catch {} }
 function openMonshin(phase = 'home') { m.phase = phase; m.startedOn ??= today(); inMonshin = true; persistM(); render(); }
@@ -944,7 +995,7 @@ function onbIntro() {
 
 // ---------- 棚卸し（§18 v3: 手法カード）----------
 function viewMonshin() {
-  return { home: mHome, write: mWrite, values: mValues, rate: mRate, review: mReview, narrow: mNarrow, compose: mCompose, timeline: mTimeline }[m.phase]();
+  return { home: mHome, write: mWrite, pick: mPick, rate: mRate, review: mReview, narrow: mNarrow, compose: mCompose, timeline: mTimeline }[m.phase]();
 }
 const KIND_LABEL = { write: '書く', pick: '選ぶ', rate: '当てはまり度' };
 const cardOf = id => (id === 'ai' ? aiCard(m) : method(id));
@@ -955,7 +1006,7 @@ function mHome() {
     const x = pr.per[c.id];
     if (x.skipped) return `<div class="opt btn skipped"><b>${esc(c.title)}</b><span class="small">飛ばした ／ <a href="#" data-unskip="${c.id}">戻す</a></span></div>`;
     const done = x.done === x.total;
-    const sum = c.kind === 'rate' && x.done ? rateSummary(c, m.rates[c.id]) : null;
+    const sum = c.kind === 'rate' && x.done ? rateSummary(c, m.rates[c.id], m) : c.kind === 'pick' && x.done ? `選んだ: ${pickFinal(m, c.id).join('・')}` : null;
     return `<button class="opt btn ${done ? 'done' : ''}" data-method="${c.id}"><b>${esc(c.title)}</b><span class="small">${esc(c.source)}</span><span class="small">${KIND_LABEL[c.kind]}・約${c.minutes}分 ／ ${done ? '✔ 済' : x.done ? `${x.done} / ${x.total}` : 'まだ'}${sum ? ` ／ ${esc(sum)}` : ''}</span></button>`;
   };
   const ai = aiCard(m); const lr = latestRound(m); const rounds = m.ai.rounds.length;
@@ -990,7 +1041,13 @@ function mHome() {
       <h2>① 拡げる（手法カード ${METHODS.length} 枚・${ITEM_COUNT} 問）</h2>
       <p class="why">いろんな人のやり方を1枚ずつ。<b>好きな順で、やりたくないカードは飛ばしてよい</b>（飛ばしたカードは一覧で戻せる）。1日1〜2枚でよく、途中で閉じても残る。型は3つ: <b>書く</b>（1行に1つ、思いつくだけ）／<b>選ぶ</b>（言葉をタップして絞る）／<b>当てはまり度</b>（1〜5などで答える。性格テストと同じ形）。</p>
       <p class="small">済 ${pr.cardsDone} 枚・飛ばした ${pr.cardsSkipped} 枚・材料 ${pr.items} 個</p>
-      ${!rounds && ai ? aiRow : ''}${GROUPS.map(g => `<h3>${esc(g.title)}</h3>${METHODS.filter(c => c.group === g.id).map(row).join('')}`).join('')}
+      ${!rounds && ai ? aiRow : ''}
+      <h3>先にやる: 選択肢系（選ぶ・当てはまり度）${CHOICE_METHODS.length} 枚</h3>
+      <p class="why">タップだけで進む。<b>選択肢が微妙なら</b>、選ぶ型は「自分の言葉を足す」、当てはまり度は各項目の「✎」で言い換える／末尾で足す。</p>
+      ${GROUPS.filter(g => CHOICE_METHODS.some(c => c.group === g.id)).map(g => `<p class="small grp">${esc(g.title)}</p>${CHOICE_METHODS.filter(c => c.group === g.id).map(row).join('')}`).join('')}
+      <h3>あとで: 書く系 ${WRITE_METHODS.length} 枚</h3>
+      <p class="why">自由に書く型。あとでよい。気が向いた1枚だけでも材料になる。</p>
+      ${GROUPS.filter(g => WRITE_METHODS.some(c => c.group === g.id)).map(g => `<p class="small grp">${esc(g.title)}</p>${WRITE_METHODS.filter(c => c.group === g.id).map(row).join('')}`).join('')}
     </section>
     <section class="card">
       <h2>② 絞る → ③ 1文にする</h2>
@@ -1027,41 +1084,45 @@ function mWrite() {
     ${c.id === 'ai' ? '' : '<button class="ghost small" id="mSkipCard">このカードはやりたくない → 飛ばす（一覧で戻せる）</button>'}`;
 }
 
-function mValues() {
-  const c = method('values');
-  const step = m.values.step;
-  const limit = VALUE_STEPS[step];
-  const pool = step === 0 ? [...VALUES.map(v => v.w), ...m.values.custom] : m.values.picks[step - 1];
-  const picked = m.values.picks[step];
+function mPick() {
+  const c = cardOf(m.cur.methodId);
+  const ps = pickState(m, c.id);
+  const step = ps.step, last = c.steps.length - 1;
+  const limit = c.steps[step];
+  const pool = step === 0 ? pickOptions(m, c.id) : ps.picks[step - 1];
+  const picked = ps.picks[step];
   return `
     ${mHeader(c)}
     <section class="card">
-      <div class="small">${step + 1} / 3 ・ ${esc(c.why)}</div>
-      <h2>${step === 0 ? '大事だと思う言葉を、10個まで選ぶ' : step === 1 ? 'その中から 5つ' : 'その中から 3つ'}</h2>
-      <p class="why">${step === 0 ? '深く考えず、目に止まったものをタップ。無い言葉は下で足せる。' : '「これだけは」を残す。捨てた言葉も消えず、戻れる。'} いま ${picked.length} / ${limit}</p>
-      <div class="chips">${pool.map(w => `<button class="chip ${picked.includes(w) ? 'on' : ''}" data-val="${esc(w)}">${esc(w)}</button>`).join('')}</div>
-      ${step === 0 ? `<div class="row"><input id="mCustom" placeholder="自分の言葉を足す"><button id="mAddCustom">足す</button></div>` : ''}
+      <div class="small">${step + 1} / ${c.steps.length} ・ ${esc(c.why)}</div>
+      <h2>${step === 0 ? `近いものを、${limit}個まで選ぶ` : `その中から ${limit}つ`}</h2>
+      <p class="why">${step === 0 ? '深く考えず、目に止まったものをタップ。<b>ぴったりの言葉が無ければ、下で自分の言葉を足す</b>（足した言葉も選べる）。' : '「これだけは」を残す。捨てた言葉も消えず、戻れる。'} いま ${picked.length} / ${limit}</p>
+      <div class="chips">${pool.map(w => `<button class="chip ${picked.includes(w) ? 'on' : ''} ${ps.custom.includes(w) ? 'mine' : ''}" data-val="${esc(w)}">${esc(w)}</button>`).join('')}</div>
+      ${step === 0 ? `<div class="row"><input id="mCustom" placeholder="選択肢に無い → 自分の言葉を足す"><button id="mAddCustom">足す</button></div>` : ''}
     </section>
-    <button class="primary" id="mValNext" ${picked.length === 0 ? 'disabled' : ''}>${step === 2 ? '3つに決める' : '次へ'}</button>
+    <button class="primary" id="mValNext" ${picked.length === 0 ? 'disabled' : ''}>${step === last ? `${limit}つに決める` : '次へ'}</button>
     <div class="row">
       <button class="ghost choice" id="mValBack">${step === 0 ? '一覧へ' : '戻る'}</button>
     </div>
     <button class="ghost small" id="mSkipCard">このカードはやりたくない → 飛ばす（一覧で戻せる）</button>`;
 }
 
+
 function mRate() {
   const c = method(m.cur.methodId);
   const rt = m.rates[c.id] ?? {};
+  const items = rateItems(c, m);
   const scaleLabel = c.scale === 10 ? '1＝不満 … 10＝満足' : c.scale === 7 ? '1＝全く当てはまらない … 7＝とても当てはまる' : '1＝当てはまらない … 5＝よく当てはまる';
-  const answered = c.items.filter(i => rt[i.id] != null).length;
-  const sum = answered ? rateSummary(c, rt) : null;
+  const answered = items.filter(i => rt[i.id] != null).length;
+  const sum = answered ? rateSummary(c, rt, m) : null;
   return `
     ${mHeader(c)}
     <section class="card">
       <h2>${esc(c.why)}</h2>
-      <p class="why">${scaleLabel}。直感で。全部でなくてもよい。${c.id === 'tipi' ? '結果は5つの目盛りで出る（タイプ名は付けない）。' : ''}</p>
-      ${c.items.map(it => `<div class="rateRow"><div class="rateText">${esc(it.text)}</div><div class="rateBtns">${Array.from({ length: c.scale }, (_, k) => k + 1).map(n => `<button class="rb ${rt[it.id] === n ? 'on' : ''}" data-rate="${it.id}" data-n="${n}">${n}</button>`).join('')}</div></div>`).join('')}
-      <p class="small">答えた ${answered} / ${c.items.length}${sum ? `<br>${esc(sum)}` : ''}</p>
+      <p class="why">${scaleLabel}。直感で。全部でなくてもよい。<b>言葉が微妙なら「✎」で自分の言葉に言い換え</b>、無いものは末尾で足す。${c.id === 'tipi' ? '結果は5つの目盛りで出る（タイプ名は付けない）。' : ''}</p>
+      ${items.map(it => `<div class="rateRow"><div class="rateText">${esc(it.text)}${it.original && it.original !== it.text ? `<span class="small">（元: ${esc(it.original)}）</span>` : ''}${it.custom ? '<span class="small">（自分で足した）</span>' : ''} <button class="mini" data-rewrite="${it.id}" title="自分の言葉で言い換える">✎</button></div><div class="rateBtns">${Array.from({ length: c.scale }, (_, k) => k + 1).map(n => `<button class="rb ${rt[it.id] === n ? 'on' : ''}" data-rate="${it.id}" data-n="${n}">${n}</button>`).join('')}</div></div>`).join('')}
+      <div class="row"><input id="mRateCustom" placeholder="選択肢に無い → 自分の言葉で項目を足す"><button id="mRateAdd">足す</button></div>
+      <p class="small rateSum">答えた ${answered} / ${items.length}${sum ? `<br>${esc(sum)}` : ''}</p>
     </section>
     <button class="primary" id="mRateDone">このカードを終える</button>
     <div class="row"><button class="ghost choice" id="mHome">一覧へ（残る）</button></div>
@@ -1070,7 +1131,7 @@ function mRate() {
 
 function mReview() {
   const items = itemsFrom(m);
-  const top3 = m.values.picks[2];
+  const top3 = pickFinal(m, 'values');
   const label = i => i.methodId === i.pid ? `${method(i.methodId).title}（当てはまり度 ${i.score}）` : promptText(m, i.pid);
   return `
     <div class="progress">② 絞る 1 / 2</div>
@@ -1185,7 +1246,7 @@ function savePurpose({ text, directionId, gainIndex }) {
   const items = itemsFrom(m);
   const purpose = {
     text, directionId, gainIndex, gain: d.gains[gainIndex],
-    slots: { ...m.slots }, final: m.final.map(id => items.find(i => i.id === id)?.text).filter(Boolean), stars: m.stars.length, values: m.values.picks[2], itemsCount: items.length, cardsDone: progress(m).cardsDone, ikigai9: m.rates.ikigai9 ? rateSummary(method('ikigai9'), m.rates.ikigai9) : null,
+    slots: { ...m.slots }, final: m.final.map(id => items.find(i => i.id === id)?.text).filter(Boolean), stars: m.stars.length, values: pickFinal(m, 'values'), itemsCount: items.length, cardsDone: progress(m).cardsDone, ikigai9: m.rates.ikigai9 ? rateSummary(method('ikigai9'), m.rates.ikigai9, m) : null,
     decidedOn: today(), reviewOn: addDays(today(), REVIEW_DAYS),
     history: [...(prev?.history ?? []), ...(prev ? [{ text: prev.text, on: prev.decidedOn }] : [])],
   };
@@ -1368,12 +1429,12 @@ function viewSettings() {
 // ---------- 操作 ----------
 function bindMonshin() {
   const go = phase => { m.phase = phase; persistM(); render(); };
-  const openCard = id => { const c = cardOf(id); if (!c) return; m.cur = { methodId: id, idx: 0 }; if (c.kind === 'pick') go('values'); else if (c.kind === 'rate') go('rate'); else go('write'); };
+  const openCard = id => { const c = cardOf(id); if (!c) return; m.cur = { methodId: id, idx: 0 }; if (c.kind === 'pick') go('pick'); else if (c.kind === 'rate') go('rate'); else go('write'); };
   $('#mClose') && ($('#mClose').onclick = closeMonshin);
   $('#mHome') && ($('#mHome').onclick = () => { if ($('#mAns')) saveAns(); go('home'); });
   document.querySelectorAll('[data-method]').forEach(b => b.onclick = e => { e.preventDefault(); openCard(b.dataset.method); });
   document.querySelectorAll('[data-unskip]').forEach(a => a.onclick = e => { e.preventDefault(); m.skipped = m.skipped.filter(x => x !== a.dataset.unskip); persistM(); render(); });
-  $('#mSkipCard') && ($('#mSkipCard').onclick = () => { const id = m.phase === 'values' ? 'values' : m.cur.methodId; if (!m.skipped.includes(id)) m.skipped.push(id); flash = { text: `「${method(id).title}」を飛ばした（一覧で戻せる）`, kind: 'ok' }; go('home'); });
+  $('#mSkipCard') && ($('#mSkipCard').onclick = () => { const id = m.cur.methodId; if (!m.skipped.includes(id)) m.skipped.push(id); flash = { text: `「${method(id).title}」を飛ばした（一覧で戻せる）`, kind: 'ok' }; go('home'); });
   $('#mToReview') && ($('#mToReview').onclick = () => go('review'));
   $('#mTimeline') && ($('#mTimeline').onclick = () => go('timeline'));
   $('#mSnap') && ($('#mSnap').onclick = () => { const sn = snapshot(m, { today: today(), label: $('#mSnapLabel').value.trim(), purpose: db?.purpose ?? null }); m.history.push(sn); persistM(); flash = { text: `記録した（${m.history.length} 回目・${today()}）。`, kind: 'ok' }; go('timeline'); });
@@ -1417,27 +1478,38 @@ function bindMonshin() {
       if (m.rates[c.id][id] === undefined) delete m.rates[c.id][id];
       persistM();
       const row = b.parentElement; row.querySelectorAll('.rb').forEach(x => x.classList.toggle('on', x === b && m.rates[c.id][id] === n));
-      const answered = c.items.filter(i => m.rates[c.id][i.id] != null).length;
-      const p = row.parentElement.parentElement.querySelector('p.small'); const sum = answered ? rateSummary(c, m.rates[c.id]) : null;
-      p.innerHTML = `答えた ${answered} / ${c.items.length}${sum ? `<br>${esc(sum)}` : ''}`;
+      const answered = rateItems(c, m).filter(i => m.rates[c.id][i.id] != null).length;
+      const p = row.parentElement.parentElement.querySelector('p.small.rateSum'); const sum = answered ? rateSummary(c, m.rates[c.id], m) : null;
+      p.innerHTML = `答えた ${answered} / ${rateItems(c, m).length}${sum ? `<br>${esc(sum)}` : ''}`;
     });
+    document.querySelectorAll('[data-rewrite]').forEach(b => b.onclick = () => {
+      const id = b.dataset.rewrite; const cur = rateItems(c, m).find(i => i.id === id);
+      const t = prompt('自分の言葉で言い換える（空にすると元に戻す）', cur.text); if (t === null) return;
+      if (cur.custom) { const x = (m.customItems[c.id] ?? []).find(i => i.id === id); if (x) x.text = t.trim() || x.text; }
+      else { m.rewrite[c.id] ??= {}; if (t.trim()) m.rewrite[c.id][id] = t.trim(); else delete m.rewrite[c.id][id]; }
+      persistM(); render();
+    });
+    $('#mRateAdd').onclick = () => { const t = $('#mRateCustom').value.trim(); if (!t) return; m.customItems[c.id] ??= []; m.customItems[c.id].push({ id: 'c' + newId('x').slice(2, 8), text: t }); persistM(); render(); };
     $('#mRateDone').onclick = () => go('home');
   }
 
-  if (m.phase === 'values') {
-    const step = m.values.step; const limit = VALUE_STEPS[step]; const picked = m.values.picks[step];
-    document.querySelectorAll('[data-val]').forEach(c => c.onclick = () => {
-      const w = c.dataset.val; const i = picked.indexOf(w);
+  if (m.phase === 'pick') {
+    const c = cardOf(m.cur.methodId);
+    const ps = pickState(m, c.id); const step = ps.step; const limit = c.steps[step]; const last = c.steps.length - 1;
+    const save = () => { m.picks[c.id] = ps; persistM(); };
+    document.querySelectorAll('[data-val]').forEach(b => b.onclick = () => {
+      const w = b.dataset.val; const picked = ps.picks[step]; const i = picked.indexOf(w);
       if (i >= 0) picked.splice(i, 1); else if (picked.length < limit) picked.push(w); else { flash = { text: `${limit}個まで。外してから足す。`, kind: 'ng' }; }
-      persistM(); render();
+      save(); render();
     });
-    $('#mAddCustom') && ($('#mAddCustom').onclick = () => { const w = $('#mCustom').value.trim(); if (!w || m.values.custom.includes(w) || VALUES.some(v => v.w === w)) return; m.values.custom.push(w); persistM(); render(); });
+    $('#mAddCustom') && ($('#mAddCustom').onclick = () => { const w = $('#mCustom').value.trim(); if (!w || pickOptions(m, c.id).includes(w)) return; ps.custom.push(w); if (ps.picks[0].length < limit) ps.picks[0].push(w); save(); render(); });
     $('#mValNext').onclick = () => {
-      if (step < 2) { m.values.step = step + 1; m.values.picks[step + 1] = m.values.picks[step + 1].filter(w => picked.includes(w)); go('values'); }
-      else { m.values.step = 0; go('home'); }
+      if (step < last) { ps.step = step + 1; ps.picks[step + 1] = ps.picks[step + 1].filter(w => ps.picks[step].includes(w)); save(); go('pick'); }
+      else { ps.step = 0; save(); go('home'); }
     };
-    $('#mValBack').onclick = () => { if (step === 0) go('home'); else { m.values.step = step - 1; go('values'); } };
+    $('#mValBack').onclick = () => { if (step === 0) go('home'); else { ps.step = step - 1; save(); go('pick'); } };
   }
+
 
   if (m.phase === 'review') {
     document.querySelectorAll('[data-star]').forEach(b => b.onclick = () => {
