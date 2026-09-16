@@ -1,4 +1,4 @@
-// 手札 app.js — 自動生成（scripts/build-pwa.mjs）build 202609161115
+// 手札 app.js — 自動生成（scripts/build-pwa.mjs）build 202609162152
 (() => {
 "use strict";
 // ---- pwa/src/store.mjs
@@ -1041,6 +1041,15 @@ const Sync = {
     window.addEventListener('online', () => { if (this.enabled()) this.push(); });
   },
   enabled() { return !!this.cfg && (this.cfg.mode === 'macmini' ? !!this.cfg.url : !!(this.cfg.token && this.cfg.repo)); },
+  // 未設定なら Mac mini に届くか試し、届けば自動でつなぐ（タップ不要。tailnet の中でしか届かないので安全）
+  async autoConnect() {
+    if (this.cfg || this.autoTried) return false;
+    this.autoTried = true;
+    const saved = this.cfg; this.cfg = { mode: 'macmini', url: MACMINI_DEFAULT, device: this.deviceName(), lastAt: null, appliedReplies: [] };
+    try { const ctl = new AbortController(); const t = setTimeout(() => ctl.abort(), 4000); const r = await fetch(MACMINI_DEFAULT + '/api/health', { cache: 'no-store', signal: ctl.signal }); clearTimeout(t); if (!r.ok) throw new Error(); }
+    catch { this.cfg = saved; this.status('Mac mini に届かない（この端末の Tailscale がオフ？）', false); return false; }
+    this.save(); this.status('Mac mini と自動でつながった', true); return true;
+  },
   label() { return !this.cfg ? '' : this.cfg.mode === 'macmini' ? `Mac mini（${this.cfg.url.replace(/^https?:\/\//, '')}）` : `GitHub（${this.cfg.repo}）`; },
   save() { try { localStorage.setItem(SYNC_KEY, JSON.stringify(this.cfg)); } catch {} },
   deviceName() {
@@ -1583,6 +1592,7 @@ function viewToday() {
   const cands = cut ? candidates(s, db.cards, { shift }) : [];
   return `
   <header class="head">
+    <div class="syncline ${Sync.enabled() ? (Sync.last.ok ? 'ok' : 'ng') : 'ng'}">${Sync.enabled() ? `同期: ${esc(Sync.label())} ／ ${esc(Sync.cfg.lastAt ? Sync.cfg.lastAt.replace('T', ' ').slice(5, 16) : 'まだ')}${Sync.last.msg && !Sync.last.ok ? ` ／ ${esc(Sync.last.msg)}` : ''}` : `同期: 未接続${Sync.last.msg ? `（${esc(Sync.last.msg)}）` : '（Tailscale をオンにして開き直す）'}`}</div>
     ${db.purpose ? `<div class="purpose">仮の目的: ${esc(db.purpose.text)}</div>` : ''}
     <div class="gain">『${esc(s.direction.gain)}』のために <b>${s.totals.completions}</b> 回</div>
     <div class="sub">木の葉 ${leaves().length} 枚 ／ 戻ってきた回数 ${s.totals.returns}</div>
@@ -2040,9 +2050,10 @@ Sync.init({
     flash = { text: `Mac mini の AI から返事が届いた（${m.ai.rounds.length}回目）。棚卸しに「AI からの問い」が増えた。`, kind: 'ok' }; render();
     return true;
   },
-  onStatus: () => { if (tab === 'settings' && !inMonshin) render(); },
+  onStatus: () => { if ((tab === 'settings' || tab === 'today') && !inMonshin) render(); },
 });
 render();
+(async () => { if (!Sync.enabled() && await Sync.autoConnect()) { const r = await Sync.pull(); if (r && !r.took) Sync.schedulePush(); flash = { text: r?.took ? 'Mac mini にあった方が新しいので取り込んだ。' : 'Mac mini と自動でつながった。この端末の内容を送る。', kind: 'ok' }; render(); } })();
 if (Sync.enabled()) Sync.pull({ quiet: true }).then(async () => { try { const p = await Sync.readProfile(); if (p && !m.profiles.some(x => x.id === p.id)) { m.profiles.push({ id: p.id, on: p.on, profile: p.profile }); persistM(); } } catch {} });
 if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js').catch(() => {});
 
