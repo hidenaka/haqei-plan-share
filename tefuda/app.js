@@ -1,4 +1,4 @@
-// 手札 app.js — 自動生成（scripts/build-pwa.mjs）build 202609161004
+// 手札 app.js — 自動生成（scripts/build-pwa.mjs）build 202609161044
 (() => {
 "use strict";
 // ---- pwa/src/store.mjs
@@ -914,13 +914,14 @@ function snapshotLine(sn) {
 }
 
 // ---- pwa/src/sync.mjs
-// 端末間の同期（設計書 §14-3 順番③・v17.6）— GitHub の非公開リポ 1 ファイルを橋にする（タクシー日報と同じ作り）
-//   data/tefuda.json  : { tefuda:1, updatedAt, device, db, monshin }  新しい updatedAt が勝つ（1人で順番に使う前提）
-//   data/dump.txt     : 棚卸しの AI 読み取り用テキスト（Mac mini の Claude Code が読む）
-//   data/ai-reply.json: Mac mini が書く返事 { on, forDumpHash, round }。PWA が取り込んで「AI からの問い」に
-// 合言葉（fine-grained PAT）はこの端末の localStorage だけに置く。画面には出さない。
+// 端末間の同期（設計書 §14-3 順番③・v17.7）
+//   既定 = Mac mini（合言葉なし）: Tailscale の網の中だけで届く https://mac-mini.<tailnet>.ts.net の同期サーバー（bridge/macmini/tefuda-server.mjs）
+//   予備 = GitHub の非公開リポ（fine-grained PAT が要る。端末の localStorage だけに置く）
+//   置き場: tefuda.json（{tefuda:1, updatedAt, device, db, monshin}）は新しい updatedAt が勝つ（1人で順番に使う前提）
+//           dump.txt（棚卸しの AI 読み取り用）、ai-reply.json（Mac mini の Claude の返事 → 「AI からの問い」）
 const SYNC_KEY = 'tefuda.sync';
 const API = 'https://api.github.com/repos';
+const MACMINI_DEFAULT = 'https://mac-mini.tail15ea48.ts.net';
 
 const Sync = {
   cfg: null, timer: null, busy: false, last: { at: null, msg: '', ok: true },
@@ -929,41 +930,81 @@ const Sync = {
   init(hooks) {
     this.hooks = { ...this.hooks, ...hooks };
     try { this.cfg = JSON.parse(localStorage.getItem(SYNC_KEY)); } catch { this.cfg = null; }
+    if (this.cfg && !this.cfg.mode) this.cfg.mode = this.cfg.token ? 'github' : 'macmini';
     if (this.cfg && !this.cfg.device) { this.cfg.device = this.deviceName(); this.save(); }
     document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible' && this.enabled()) this.pull({ quiet: true }); });
     window.addEventListener('online', () => { if (this.enabled()) this.push(); });
   },
-  enabled() { return !!(this.cfg?.token && this.cfg?.repo); },
+  enabled() { return !!this.cfg && (this.cfg.mode === 'macmini' ? !!this.cfg.url : !!(this.cfg.token && this.cfg.repo)); },
+  label() { return !this.cfg ? '' : this.cfg.mode === 'macmini' ? `Mac mini（${this.cfg.url.replace(/^https?:\/\//, '')}）` : `GitHub（${this.cfg.repo}）`; },
   save() { try { localStorage.setItem(SYNC_KEY, JSON.stringify(this.cfg)); } catch {} },
   deviceName() {
     const ua = navigator.userAgent;
     const kind = /iPad/.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1) ? 'iPad' : /iPhone/.test(ua) ? 'iPhone' : /Macintosh/.test(ua) ? 'Mac' : '端末';
     return `${kind}-${Math.random().toString(36).slice(2, 6)}`;
   },
-  configure({ repo, token }) {
-    this.cfg = { repo: repo.trim(), token: token.trim(), device: this.cfg?.device ?? this.deviceName(), sha: null, lastAt: null, appliedReplies: this.cfg?.appliedReplies ?? [] };
+  configureMacMini({ url = MACMINI_DEFAULT } = {}) {
+    this.cfg = { mode: 'macmini', url: url.trim().replace(/\/+$/, ''), device: this.cfg?.device ?? this.deviceName(), lastAt: null, appliedReplies: this.cfg?.appliedReplies ?? [] };
+    this.save();
+  },
+  configureGitHub({ repo, token }) {
+    this.cfg = { mode: 'github', repo: repo.trim(), token: token.trim(), device: this.cfg?.device ?? this.deviceName(), sha: null, lastAt: null, appliedReplies: this.cfg?.appliedReplies ?? [] };
     this.save();
   },
   disconnect() { this.cfg = null; try { localStorage.removeItem(SYNC_KEY); } catch {} this.status('同期を外した', true); },
   status(msg, ok = true) { this.last = { at: new Date().toISOString(), msg, ok }; this.hooks.onStatus(this.last); },
 
-  headers() { return { Authorization: `Bearer ${this.cfg.token}`, Accept: 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28' }; },
-  async getFile(path) {
-    const r = await fetch(`${API}/${this.cfg.repo}/contents/${path}?ref=main&t=${Date.now()}`, { headers: this.headers(), cache: 'no-store' });
+  // ---- 経路 A: Mac mini ----
+  async mmFetch(path, opt = {}) {
+    const ctl = new AbortController(); const t = setTimeout(() => ctl.abort(), 12000);
+    try { return await fetch(this.cfg.url + path, { cache: 'no-store', signal: ctl.signal, ...opt }); }
+    catch (e) { throw new Error(e.name === 'AbortError' ? 'Mac mini に届かない（Tailscale がつながっているか。12秒待った）' : 'Mac mini に届かない（Tailscale がつながっているか）'); }
+    finally { clearTimeout(t); }
+  },
+  async health() { const r = await this.mmFetch('/api/health'); if (!r.ok) throw new Error(`Mac mini ${r.status}`); return r.json(); },
+
+  // ---- 経路 B: GitHub ----
+  ghHeaders() { return { Authorization: `Bearer ${this.cfg.token}`, Accept: 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28' }; },
+  async ghGet(path) {
+    const r = await fetch(`${API}/${this.cfg.repo}/contents/${path}?ref=main&t=${Date.now()}`, { headers: this.ghHeaders(), cache: 'no-store' });
     if (r.status === 404) return null;
     if (r.status === 401 || r.status === 403) throw new Error('合言葉（PAT）が通らない。期限切れか、権限（Contents 読み書き）か、リポ名を確認');
     if (!r.ok) throw new Error(`GitHub ${r.status}（${path}）`);
     const j = await r.json();
-    const text = j.content ? new TextDecoder().decode(Uint8Array.from(atob(j.content.replace(/\n/g, '')), c => c.charCodeAt(0))) : '';
-    return { sha: j.sha, text };
+    return { sha: j.sha, text: j.content ? new TextDecoder().decode(Uint8Array.from(atob(j.content.replace(/\n/g, '')), c => c.charCodeAt(0))) : '' };
   },
-  async putFile(path, text, sha, message) {
+  async ghPut(path, text, sha, message) {
     const content = btoa(String.fromCharCode(...new TextEncoder().encode(text)));
-    const r = await fetch(`${API}/${this.cfg.repo}/contents/${path}`, { method: 'PUT', headers: { ...this.headers(), 'Content-Type': 'application/json' }, body: JSON.stringify({ message, content, sha: sha ?? undefined, branch: 'main' }) });
+    const r = await fetch(`${API}/${this.cfg.repo}/contents/${path}`, { method: 'PUT', headers: { ...this.ghHeaders(), 'Content-Type': 'application/json' }, body: JSON.stringify({ message, content, sha: sha ?? undefined, branch: 'main' }) });
     if (r.status === 409 || r.status === 422) return { conflict: true };
     if (!r.ok) throw new Error(`GitHub ${r.status}（${path} 書き込み）`);
-    const j = await r.json();
-    return { sha: j.content.sha };
+    return { sha: (await r.json()).content.sha };
+  },
+
+  // ---- 共通の操作（経路で分岐）----
+  async readState() {
+    if (this.cfg.mode === 'macmini') { const r = await this.mmFetch('/api/state'); if (r.status === 404) return null; if (!r.ok) throw new Error(`Mac mini ${r.status}`); return { text: await r.text() }; }
+    const f = await this.ghGet('data/tefuda.json'); if (f) this.cfg.sha = f.sha; return f;
+  },
+  async writeState(body, local) {
+    if (this.cfg.mode === 'macmini') {
+      const r = await this.mmFetch('/api/state', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body });
+      if (r.status === 409) return { conflict: true, remote: (await r.json()).remote };
+      if (!r.ok) throw new Error(`Mac mini ${r.status}（書き込み）`);
+      return { ok: true };
+    }
+    let r = await this.ghPut('data/tefuda.json', body, this.cfg.sha, `sync from ${this.cfg.device} ${local.updatedAt}`);
+    if (r.conflict) { const f = await this.ghGet('data/tefuda.json'); return { conflict: true, remote: f ? JSON.parse(f.text) : null, sha: f?.sha ?? null }; }
+    this.cfg.sha = r.sha; return { ok: true };
+  },
+  async writeDump(dump) {
+    if (!dump) return;
+    if (this.cfg.mode === 'macmini') { await this.mmFetch('/api/dump', { method: 'PUT', headers: { 'Content-Type': 'text/plain; charset=utf-8' }, body: dump }); return; }
+    const d = await this.ghGet('data/dump.txt'); if (!d || d.text !== dump) await this.ghPut('data/dump.txt', dump, d?.sha ?? null, `dump from ${this.cfg.device}`);
+  },
+  async readReply() {
+    if (this.cfg.mode === 'macmini') { const r = await this.mmFetch('/api/ai-reply'); if (r.status === 404) return null; if (!r.ok) return null; return r.text(); }
+    const f = await this.ghGet('data/ai-reply.json'); return f?.text ?? null;
   },
 
   // 取り込み: 向こうが新しければ置き換える。AI の返事も見る
@@ -971,27 +1012,24 @@ const Sync = {
     if (!this.enabled() || this.busy) return null;
     this.busy = true;
     try {
-      const f = await this.getFile('data/tefuda.json');
-      let took = false;
+      const f = await this.readState();
+      let took = false, remote = null;
       if (f) {
-        const remote = JSON.parse(f.text);
-        this.cfg.sha = f.sha;
+        remote = JSON.parse(f.text);
         const local = this.hooks.getLocal();
-        if (remote.updatedAt && (!local.updatedAt || remote.updatedAt > local.updatedAt)) {
-          this.hooks.setLocal(remote); took = true;
-        }
+        if (remote.updatedAt && (!local.updatedAt || remote.updatedAt > local.updatedAt)) { this.hooks.setLocal(remote); took = true; }
       }
       const gotAI = await this.pullAIReply();
       this.cfg.lastAt = new Date().toISOString(); this.save();
-      if (!quiet || took || gotAI) this.status(took ? `他の端末（${f ? JSON.parse(f.text).device ?? '?' : ''}）の方が新しいので取り込んだ` : gotAI ? 'AI の返事を取り込んだ' : '取り込み: こちらが最新', true);
+      if (!quiet || took || gotAI) this.status(took ? `他の端末（${remote?.device ?? '?'}）の方が新しいので取り込んだ` : gotAI ? 'AI の返事を取り込んだ' : '取り込み: こちらが最新', true);
       return { took, gotAI };
     } catch (e) { this.status('取り込めない: ' + e.message, false); return null; }
     finally { this.busy = false; }
   },
   async pullAIReply() {
-    const f = await this.getFile('data/ai-reply.json');
-    if (!f) return false;
-    let reply; try { reply = JSON.parse(f.text); } catch { return false; }
+    const text = await this.readReply();
+    if (!text) return false;
+    let reply; try { reply = JSON.parse(text); } catch { return false; }
     const id = reply.id ?? `${reply.on}:${reply.forDumpHash}`;
     if (this.cfg.appliedReplies.includes(id)) return false;
     const ok = this.hooks.onAIReply(reply);
@@ -1006,18 +1044,15 @@ const Sync = {
     this.busy = true;
     try {
       const local = this.hooks.getLocal();
+      if (!local.updatedAt) { this.status('まだ送るものがない', true); return; }
       const body = JSON.stringify({ tefuda: 1, updatedAt: local.updatedAt, device: this.cfg.device, db: local.db, monshin: local.monshin });
-      let r = await this.putFile('data/tefuda.json', body, this.cfg.sha, `sync from ${this.cfg.device} ${local.updatedAt}`);
+      let r = await this.writeState(body, local);
       if (r.conflict) {
-        const f = await this.getFile('data/tefuda.json');
-        const remote = f ? JSON.parse(f.text) : null;
-        if (remote?.updatedAt && remote.updatedAt > local.updatedAt) { this.hooks.setLocal(remote); this.cfg.sha = f.sha; this.save(); this.status(`他の端末（${remote.device ?? '?'}）の方が新しいので取り込んだ`, true); return; }
-        r = await this.putFile('data/tefuda.json', body, f?.sha ?? null, `sync from ${this.cfg.device} ${local.updatedAt} (retry)`);
+        if (r.remote?.updatedAt && r.remote.updatedAt > local.updatedAt) { this.hooks.setLocal(r.remote); if (r.sha) this.cfg.sha = r.sha; this.save(); this.status(`他の端末（${r.remote.device ?? '?'}）の方が新しいので取り込んだ`, true); return; }
+        if (this.cfg.mode === 'github') { this.cfg.sha = r.sha; r = await this.writeState(body, local); }
         if (r.conflict) throw new Error('書き込みがぶつかった。もう一度「今すぐ同期」');
       }
-      this.cfg.sha = r.sha;
-      const dump = this.hooks.getDump();
-      if (dump) { const d = await this.getFile('data/dump.txt'); if (!d || d.text !== dump) await this.putFile('data/dump.txt', dump, d?.sha ?? null, `dump from ${this.cfg.device}`); }
+      await this.writeDump(this.hooks.getDump());
       this.cfg.lastAt = new Date().toISOString(); this.save();
       this.status('送った', true);
     } catch (e) { this.status('送れない: ' + e.message, false); }
@@ -1533,13 +1568,15 @@ function viewSettings() {
   </section>
   <section class="card">
     <h3>同期（端末をまたぐ）</h3>
-    <p class="why">GitHub の非公開の倉庫（<code>hidenaka/tefuda-data</code>）を橋にして、iPad・iPhone・Mac で同じデータにする。開いた時に取り込み、保存の3秒後に送る。<b>新しい方が勝つ</b>ので、1つの端末で操作してから別の端末を開く。合言葉（PAT）はこの端末の中だけに保存され、画面には出ない。Mac mini の AI も同じ倉庫を読むので、「AI に読ませる」のコピー＆貼りも自動になる。</p>
-    ${Sync.enabled() ? `<p>つながっている: <b>${esc(Sync.cfg.repo)}</b> ／ この端末の名前 ${esc(Sync.cfg.device)}<br><span class="small">最終同期 ${esc(Sync.cfg.lastAt ? Sync.cfg.lastAt.replace('T', ' ').slice(0, 16) : 'まだ')} ／ ${esc(Sync.last.msg || '—')}</span></p>
+    <p class="why">あなたの Mac mini を橋にして、iPad・iPhone・Mac で同じデータにする。<b>合言葉は要らない</b>（Tailscale の網の中＝あなたの端末からしか届かない）。開いた時に取り込み、保存の3秒後に送る。<b>新しい方が勝つ</b>ので、1つの端末で操作してから別の端末を開く。Mac mini の AI も同じ場所を読むので、「AI に読ませる」のコピー＆貼りは不要になる（最長30分で「AI からの問い」が届く）。</p>
+    ${Sync.enabled() ? `<p>つながっている: <b>${esc(Sync.label())}</b> ／ この端末の名前 ${esc(Sync.cfg.device)}<br><span class="small">最終同期 ${esc(Sync.cfg.lastAt ? Sync.cfg.lastAt.replace('T', ' ').slice(0, 16) : 'まだ')} ／ ${esc(Sync.last.msg || '—')}</span></p>
     <div class="row"><button id="syncNow">今すぐ同期</button><button class="ghost" id="syncOff">外す（この端末だけ）</button></div>` : `
+    <button class="primary" id="syncMacMini">Mac mini とつなぐ（合言葉なし）</button>
+    <p class="small">つながらない時: この端末で Tailscale アプリがオン（接続中）になっているか確認。</p>
+    <details><summary class="small">予備: GitHub の倉庫でつなぐ（合言葉が要る）</summary>
     <input id="syncRepo" placeholder="倉庫（owner/repo）" value="hidenaka/tefuda-data">
     <input id="syncToken" type="password" placeholder="合言葉（fine-grained PAT。tefuda-data だけ・Contents 読み書き）" autocomplete="off">
-    <button id="syncOn">つなぐ（試しに1回取り込む）</button>
-    <p class="small">合言葉の作り方: GitHub → Settings → Developer settings → Fine-grained tokens → Repository access を tefuda-data だけ → Permissions: Contents = Read and write。期限は1年でよい。</p>`}
+    <button id="syncOn">GitHub でつなぐ</button></details>`}
   </section>
   <section class="card">
     <h3>データ</h3>
@@ -1768,10 +1805,18 @@ function bind() {
   });
   $('#mitateSet') && ($('#mitateSet').onclick = () => { const r = setMitate(s, $('#mitateText').value.trim()); if (!r.ok) { flash = { text: r.reason, kind: 'ng' }; render(); return; } db.state = r.state; persist(); flash = { text: '見立てを置いた。', kind: 'ok' }; render(); });
   // 書き出しは 本体(db) と 棚卸し(m) をまとめて1つに。読み込みは新旧どちらの形も受ける
+  $('#syncMacMini') && ($('#syncMacMini').onclick = async () => {
+    Sync.configureMacMini();
+    try { await Sync.health(); } catch (e) { Sync.disconnect(); flash = { text: 'つなげない: ' + e.message, kind: 'ng' }; render(); return; }
+    const r = await Sync.pull();
+    if (r === null) { Sync.disconnect(); flash = { text: 'つなげない: ' + Sync.last.msg, kind: 'ng' }; render(); return; }
+    if (!r.took) Sync.schedulePush();
+    flash = { text: r.took ? 'Mac mini の方が新しかったので取り込んだ。' : 'Mac mini とつながった。この端末の内容を送る。', kind: 'ok' }; render();
+  });
   $('#syncOn') && ($('#syncOn').onclick = async () => {
     const repo = $('#syncRepo').value.trim(), token = $('#syncToken').value.trim();
     if (!/^[\w.-]+\/[\w.-]+$/.test(repo) || token.length < 20) { flash = { text: '倉庫名か合言葉が空・短い。', kind: 'ng' }; render(); return; }
-    Sync.configure({ repo, token });
+    Sync.configureGitHub({ repo, token });
     const r = await Sync.pull();
     if (r === null) { Sync.disconnect(); flash = { text: 'つなげない: ' + Sync.last.msg, kind: 'ng' }; render(); return; }
     if (!r.took) Sync.schedulePush();
