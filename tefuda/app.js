@@ -1,4 +1,4 @@
-// 手札 app.js — 自動生成（scripts/build-pwa.mjs）build 202609152151
+// 手札 app.js — 自動生成（scripts/build-pwa.mjs）build 202609160043
 (() => {
 "use strict";
 // ---- pwa/src/store.mjs
@@ -393,6 +393,7 @@ const GROUPS = [
   { id: 'people', title: 'まわりの人' },
   { id: 'self', title: '好き・得意・大事' },
   { id: 'whole', title: '全体を見る（当てはまり度）' },
+  { id: 'record', title: 'いまの状況（記録用）' },
 ];
 
 const w = (id, text, hint = '', max = 3) => ({ id, text, hint, max });
@@ -578,6 +579,18 @@ const METHODS = [
     why: '5つの柱に今の状態を1〜10で。低いところが「増やしたいもの」の候補。', items: [
       r('pm1', 'いい気分でいる時間がある', null), r('pm2', '夢中になれるものがある', 'make'), r('pm3', '支え合える人がいる', 'people'), r('pm4', '自分のしていることに意味を感じる', null), r('pm5', 'やり遂げている感覚がある', 'make'),
     ] },
+  { id: 'context', group: 'record', kind: 'write', title: 'いまの状況', source: '自分の年表のため（McAdams のライフストーリー＋Sone の追跡調査の考え方）', minutes: 5,
+    why: 'その時、何をしていて、何を考え、何を大事にしていたか。あとで年表にして変化を見る。', items: [
+      w('cx1', '仕事の状態', '例: 出番の売上、疲れ具合、続けるつもりか', 3),
+      w('cx2', '人間関係の状態', '家族・客・仲間・それ以外', 3),
+      w('cx3', '体の状態', '眠り・体重・痛み・動けているか', 3),
+      w('cx4', 'お金の状態', '書ける範囲で', 2),
+      w('cx5', '暮らし・住まいの状態', '', 2),
+      w('cx6', 'いま、時間を使っていること', '仕事以外で', 5),
+      w('cx7', 'いま、よく考えていること', '', 5),
+      w('cx8', 'いま、大事にしていること', '言葉で', 5),
+      w('cx9', 'この3か月で変わったこと', '無ければ「なし」', 3),
+    ] },
   { id: 'tipi', group: 'whole', kind: 'rate', scale: 7, top: 0, title: '性格の傾向', source: 'Gosling ほか「TIPI」（ビッグファイブ10項目）', minutes: 2,
     why: 'タイプ分けではなく、5つの目盛り。「合う手札」を選ぶ参考にする。', items: [
       r('tp1', '外向的で、社交的'), r('tp2', '批判的で、口論しがち'), r('tp3', '信頼でき、自分を律している'), r('tp4', '不安になりやすく、動揺しやすい'), r('tp5', '新しい経験に開かれていて、複雑なことも好き'),
@@ -749,6 +762,11 @@ function dumpForAI(state, { today = '', purpose = null } = {}) {
     for (const q of ai.items) L.push(`- (${q.round}回目) ${q.text}: ${compact(state?.answers?.[q.id]) || '（未回答）'}`);
   }
   if (state?.skipped?.length) L.push(`## 飛ばしたカード: ${state.skipped.map(id => method(id)?.title ?? id).join('・')}`);
+  const hist = state?.history ?? [];
+  if (hist.length) {
+    L.push(`## これまでの記録（${hist.length} 回。古い順）— 時系列の変化も見て、観察と問いに使う`);
+    hist.forEach((sn, i) => { L.push(`- ${snapshotLine(sn)}`); const d = diffSnapshots(hist[i - 1], sn); if (d.length) L.push(`  変化: ${d.join('；')}`); });
+  }
   L.push('');
   L.push('## 返事の形式（この JSON だけを ```json フェンスで。他の文は書かない）');
   L.push('{"observations":["本人の言葉を引用した観察を3行まで（評価・診断はしない）"],');
@@ -780,6 +798,70 @@ function parseAIReply(text) {
   return { ok: true, round };
 }
 
+// ---------- 記録（年表）（設計書 §18-5）----------
+// 本人指示（2026-09-16）「診断を何回かやって時系列ごとに変化や価値観を記録していく。その時の仕事や人間関係の状態、何を大事にしていて何をしていたか何を考えていたかも」
+// 記録＝その時点の材料を丸ごと凍結（答え・当てはまり度・大事な言葉・星・残した3つ・仮の目的・状況）。あとで答えを直しても記録は変わらない。
+
+const num = v => (v == null ? null : Number(v));
+function rateNumbers(state) {
+  const rt = state?.rates ?? {};
+  const total = id => { const c = method(id); const vals = c.items.map(i => rt[id]?.[i.id]).filter(v => v != null); return vals.length ? { total: vals.reduce((a, b) => a + b, 0), n: vals.length, max: c.items.length * c.scale } : null; };
+  const per = id => { const c = method(id); const o = {}; for (const i of c.items) if (rt[id]?.[i.id] != null) o[i.text] = num(rt[id][i.id]); return Object.keys(o).length ? o : null; };
+  const tipi = () => { const t = rt.tipi; if (!t) return null; const rev = v => (v == null ? null : 8 - v); const pair = (a, b) => (t[a] == null || t[b] == null ? null : Math.round(((t[a] + rev(t[b])) / 2) * 10) / 10); const o = { 外向: pair('tp1', 'tp6'), 協調: pair('tp7', 'tp2'), 勤勉: pair('tp3', 'tp8'), 安定: pair('tp9', 'tp4'), 開放: pair('tp5', 'tp10') }; return Object.values(o).some(v => v != null) ? o : null; };
+  return { ikigai9: total('ikigai9'), wheel: per('wheel'), perma: per('perma'), tipi: tipi(), via: rateTop(method('via'), rt.via).map(i => i.text), meaning: rateTop(method('meaning'), rt.meaning).map(i => i.text), schwartz: rateTop(method('schwartz'), rt.schwartz).map(i => i.text) };
+}
+
+function snapshot(state, { today, label = '', purpose = null } = {}) {
+  const items = itemsFrom(state);
+  const text = id => items.find(i => i.id === id)?.text;
+  const ctx = {}; for (const q of method('context').items) { const a = state?.answers?.[q.id]; if (a?.trim()) ctx[q.text] = a.trim(); }
+  return {
+    id: `snap_${today}_${Math.random().toString(36).slice(2, 6)}`, on: today, label,
+    purpose: purpose ? { text: purpose.text, gain: purpose.gain ?? null, directionId: purpose.directionId ?? null } : null,
+    values: [...(state?.values?.picks?.[2] ?? [])], stars: (state?.stars ?? []).map(text).filter(Boolean), final: (state?.final ?? []).map(text).filter(Boolean),
+    context: ctx, numbers: rateNumbers(state),
+    answers: { ...(state?.answers ?? {}) }, rates: JSON.parse(JSON.stringify(state?.rates ?? {})), skipped: [...(state?.skipped ?? [])],
+    aiRounds: (state?.ai?.rounds ?? []).length, itemsCount: items.length, cardsDone: progress(state).cardsDone,
+  };
+}
+
+// 前回との変化（増えた・減った・上下）。表示用の短い行にする
+function diffSnapshots(prev, cur) {
+  if (!prev) return [];
+  const L = [];
+  const added = cur.values.filter(w => !prev.values.includes(w)); const removed = prev.values.filter(w => !cur.values.includes(w));
+  if (added.length || removed.length) L.push(`大事な言葉: ${added.length ? '＋' + added.join('・') : ''}${added.length && removed.length ? ' ／ ' : ''}${removed.length ? '－' + removed.join('・') : ''}`);
+  if ((prev.purpose?.text ?? '') !== (cur.purpose?.text ?? '') && cur.purpose?.text) L.push(`仮の目的: 「${prev.purpose?.text ?? '（なし）'}」→「${cur.purpose.text}」`);
+  const a = prev.numbers?.ikigai9, b = cur.numbers?.ikigai9;
+  if (a && b) L.push(`生きがい9: ${a.total} → ${b.total}（${b.total - a.total >= 0 ? '＋' : ''}${b.total - a.total}）`);
+  for (const key of ['wheel', 'perma', 'tipi']) {
+    const pa = prev.numbers?.[key], pb = cur.numbers?.[key]; if (!pa || !pb) continue;
+    const d = Object.keys(pb).filter(k => pa[k] != null && pb[k] != null && pa[k] !== pb[k]).map(k => `${k} ${pa[k]}→${pb[k]}`);
+    if (d.length) L.push(`${{ wheel: '生活の輪', perma: '5つの柱', tipi: '性格の傾向' }[key]}: ${d.join('、')}`);
+  }
+  for (const key of ['via', 'meaning', 'schwartz']) {
+    const pa = prev.numbers?.[key] ?? [], pb = cur.numbers?.[key] ?? []; if (!pa.length || !pb.length) continue;
+    const ad = pb.filter(x => !pa.includes(x)), rm = pa.filter(x => !pb.includes(x));
+    if (ad.length || rm.length) L.push(`${{ via: '強み上位', meaning: '意味の源上位', schwartz: '19の価値上位' }[key]}: ${ad.length ? '＋' + ad.join('・') : ''}${ad.length && rm.length ? ' ／ ' : ''}${rm.length ? '－' + rm.join('・') : ''}`);
+  }
+  const ca = prev.context ?? {}, cb = cur.context ?? {};
+  const changed = Object.keys(cb).filter(k => ca[k] && ca[k] !== cb[k]);
+  if (changed.length) L.push(`状況が変わった: ${changed.join('・')}`);
+  return L;
+}
+
+// 記録の1行要約（年表・AI ダンプ用）
+function snapshotLine(sn) {
+  const parts = [`${sn.on}${sn.label ? '「' + sn.label + '」' : ''}`];
+  if (sn.purpose?.text) parts.push(`目的: ${sn.purpose.text}`);
+  if (sn.values.length) parts.push(`大事: ${sn.values.join('・')}`);
+  if (sn.numbers?.ikigai9) parts.push(`生きがい9 ${sn.numbers.ikigai9.total}/${sn.numbers.ikigai9.max}`);
+  if (sn.numbers?.wheel) parts.push(`輪 ${Object.entries(sn.numbers.wheel).map(([k, v]) => `${k}${v}`).join(' ')}`);
+  const cx = Object.entries(sn.context ?? {}).slice(0, 4).map(([k, v]) => `${k}=${v.replace(/\r?\n/g, ' / ').slice(0, 40)}`);
+  if (cx.length) parts.push(`状況: ${cx.join('；')}`);
+  return parts.join(' ／ ');
+}
+
 // ---- pwa/src/app.mjs
 // 手札 PWA — 画面と操作。ロジックは brain/lib と同じ関数（ビルドで1本にまとめる）
 
@@ -801,7 +883,7 @@ const REVIEW_DAYS = 90; // 仮の目的の書き直し（設計書 §18）
 
 // 棚卸し（§18 v2）。db とは別に保存: はじめる前からでも、途中で閉じても残る
 const M_KEY = 'tefuda.monshin';
-const M_INIT = () => ({ phase: 'home', answers: {}, rates: {}, skipped: [], ai: { rounds: [] }, cur: { methodId: null, idx: 0 }, values: { step: 0, picks: [[], [], []], custom: [] }, stars: [], final: [], slots: { who: '', use: '', grow: '' }, finalText: '', startedOn: null });
+const M_INIT = () => ({ phase: 'home', answers: {}, rates: {}, skipped: [], ai: { rounds: [] }, history: [], cur: { methodId: null, idx: 0 }, values: { step: 0, picks: [[], [], []], custom: [] }, stars: [], final: [], slots: { who: '', use: '', grow: '' }, finalText: '', startedOn: null });
 let m = (() => { try { const x = JSON.parse(localStorage.getItem(M_KEY)); return x ? { ...M_INIT(), ...x, cur: { methodId: null, idx: 0 }, phase: 'home' } : M_INIT(); } catch { return M_INIT(); } })();
 let inMonshin = false; // true の間は棚卸しの画面だけを出す
 function persistM() { try { localStorage.setItem(M_KEY, JSON.stringify(m)); } catch {} }
@@ -862,7 +944,7 @@ function onbIntro() {
 
 // ---------- 棚卸し（§18 v3: 手法カード）----------
 function viewMonshin() {
-  return { home: mHome, write: mWrite, values: mValues, rate: mRate, review: mReview, narrow: mNarrow, compose: mCompose }[m.phase]();
+  return { home: mHome, write: mWrite, values: mValues, rate: mRate, review: mReview, narrow: mNarrow, compose: mCompose, timeline: mTimeline }[m.phase]();
 }
 const KIND_LABEL = { write: '書く', pick: '選ぶ', rate: '当てはまり度' };
 const cardOf = id => (id === 'ai' ? aiCard(m) : method(id));
@@ -888,6 +970,13 @@ function mHome() {
       ${lr.nextCards.length ? `<p class="small">次にやるとよさそうなカード: ${lr.nextCards.map(id => `<a href="#" data-method="${id}">${esc(method(id).title)}</a>`).join('・')}</p>` : ''}
       ${aiRow}
     </section>` : ''}
+    <section class="card">
+      <h2>記録（自分の年表）${m.history.length ? `・${m.history.length} 回` : ''}</h2>
+      <p class="why">その時の材料（答え・当てはまり度・大事な言葉・星・仮の目的・いまの状況）を丸ごと凍結して残す。あとで答えを直しても、白紙からやり直しても、記録は変わらない。年表で「その時、何を大事にして、何をして、何を考えていたか」と前回からの変化が見える。仮の目的を決めた時は自動で1回記録される。3か月ごとにも1回。</p>
+      ${m.history.length ? `<p class="small">最新: ${esc(snapshotLine(m.history[m.history.length - 1]).slice(0, 120))}</p>` : ''}
+      <div class="row"><input id="mSnapLabel" placeholder="見出し（任意）例: 独立1年目"><button id="mSnap">いまを記録する</button></div>
+      <div class="row">${m.history.length ? `<button class="ghost choice" id="mTimeline">年表を見る</button>` : ''}<button class="ghost choice" id="mWipe">白紙からやり直す（記録は残る）</button></div>
+    </section>
     <section class="card">
       <h2>AI に読ませる</h2>
       <p class="why">ここまでの材料を1つの文章にまとめてコピーし、Claude（Claude Code のチャット。スマホからでも）に貼る → AI が「観察・仮の目的の候補・次の問い」を返す → その返事をここに貼り戻す。<b>様子を見て次を決めるのは AI、決めるのはあなた</b>。材料が少なくてもよい（少ないなりの問いが返る）。</p>
@@ -1011,6 +1100,25 @@ function mNarrow() {
     <div class="row"><button class="ghost choice" id="mBackReview">星に戻る</button></div>`;
 }
 
+function mTimeline() {
+  const H = [...m.history].reverse();
+  const nums = sn => { const n = sn.numbers ?? {}; const L = []; if (n.ikigai9) L.push(`生きがい9 ${n.ikigai9.total}/${n.ikigai9.max}`); if (n.wheel) L.push(`生活の輪 ${Object.entries(n.wheel).map(([k, v]) => `${k}${v}`).join(' ')}`); if (n.perma) L.push(`5つの柱 ${Object.entries(n.perma).map(([k, v]) => `${k.slice(0, 6)}${v}`).join(' ')}`); if (n.tipi) L.push(`性格の傾向 ${Object.entries(n.tipi).filter(([, v]) => v != null).map(([k, v]) => `${k}${v}`).join(' ')}`); if (n.via?.length) L.push(`強み上位 ${n.via.join('・')}`); if (n.meaning?.length) L.push(`意味の源上位 ${n.meaning.join('・')}`); return L; };
+  return `
+    <div class="progress">年表（${m.history.length} 回・新しい順）</div>
+    ${H.map((sn, k) => { const prev = m.history[m.history.length - 2 - k]; const d = diffSnapshots(prev, sn); return `
+    <section class="card snap">
+      <h2>${esc(sn.on)}${sn.label ? ` 「${esc(sn.label)}」` : ''}</h2>
+      ${sn.purpose?.text ? `<p><b>仮の目的</b> ${esc(sn.purpose.text)}</p>` : '<p class="small">仮の目的: まだ</p>'}
+      ${sn.values.length ? `<p><b>大事な言葉</b> ${sn.values.map(esc).join('・')}</p>` : ''}
+      ${sn.final.length ? `<p><b>残した3つ</b> ${sn.final.map(esc).join('・')}</p>` : ''}
+      ${nums(sn).map(x => `<p class="small">${esc(x)}</p>`).join('')}
+      ${Object.keys(sn.context).length ? `<h3>その時の状況</h3>${Object.entries(sn.context).map(([k, v]) => `<p class="small"><b>${esc(k)}</b> ${esc(v).replace(/\n/g, ' / ')}</p>`).join('')}` : '<p class="small">状況: 未記入（「いまの状況」カード）</p>'}
+      ${d.length ? `<h3>前回からの変化</h3>${d.map(x => `<p class="small">・${esc(x)}</p>`).join('')}` : (prev ? '<p class="small">前回から変化なし</p>' : '<p class="small">最初の記録</p>')}
+      <p class="small">材料 ${sn.itemsCount} 個・済 ${sn.cardsDone} 枚・AI ${sn.aiRounds} 回</p>
+    </section>`; }).join('')}
+    <div class="row"><button class="ghost choice" id="mHome">一覧へ</button></div>`;
+}
+
 function mCompose() {
   const chips = chipsFor(m, m.final.length ? m.final : m.stars);
   const computed = buildPurpose(m.slots);
@@ -1081,6 +1189,7 @@ function savePurpose({ text, directionId, gainIndex }) {
     decidedOn: today(), reviewOn: addDays(today(), REVIEW_DAYS),
     history: [...(prev?.history ?? []), ...(prev ? [{ text: prev.text, on: prev.decidedOn }] : [])],
   };
+  m.history.push(snapshot(m, { today: today(), label: prev ? '仮の目的を書き直した' : '仮の目的を決めた', purpose })); persistM();
   if (!db) { startApp({ directionId, gainIndex, ownWord: null, purpose }); return; }
   db.purpose = purpose;
   if (db.state.direction.id !== directionId || db.state.direction.gain !== purpose.gain) db.state = changeDirection(db.state, { directionId, gainIndex, ownWord: null });
@@ -1117,7 +1226,7 @@ function viewToday() {
     <label class="switch"><input type="checkbox" id="shiftToggle" ${shift ? 'checked' : ''}> 今日は出番（1分の札だけ・通知なし・サボり扱いなし）</label>
   </header>
   ${db.ui?.welcomeBack ? `<div class="okaeri">おかえり。続きから。</div>` : ''}
-  ${db.purpose && db.purpose.reviewOn <= today() ? `<section class="card q"><b>3か月たった。仮の目的、書き直す？</b><p class="why">目的は動きながら見つかるもの。棚卸しの材料を見返して星をつけ直すと、文も変わる。いまの文のままでもよい。</p><div class="row"><button id="purposeReview">見返して書き直す</button><button class="ghost" id="purposeKeep">このままでいい（また3か月後）</button></div></section>` : ''}
+  ${db.purpose && db.purpose.reviewOn <= today() ? `<section class="card q"><b>3か月たった。いまを記録して、仮の目的を見直す？</b><p class="why">棚卸しの「いまの状況」カードを更新して「いまを記録する」と、年表に1行増える。材料を見返して星をつけ直すと、文も変わる。いまの文のままでもよい。</p><div class="row"><button id="purposeReview">見返して書き直す</button><button class="ghost" id="purposeKeep">このままでいい（また3か月後）</button></div></section>` : ''}
   ${!db.purpose ? (() => { const pr = progress(m); return `<section class="card q"><b>仮の目的は、まだ無い</b><p class="why">「何のために」が無いと実験は続きにくい。棚卸し（材料を出す → 絞る → 1文）は、1日1〜2枚でよい。いま カード ${pr.cardsDone} / ${pr.cardsTotal} 枚・材料 ${pr.items} 個。</p><button id="openMonshin">${m.startedOn ? '棚卸しの続き' : '棚卸しをはじめる'}</button></section>`; })() : ''}
   <section class="card exp">
     <div class="tag">今回の実験 ${s.experiment.completions}/${CUTOFF_N} <button class="mini" id="helpBtn">使い方？</button></div>
@@ -1227,6 +1336,7 @@ function viewSettings() {
     <p class="why">棚卸し（材料を出す → 絞る → 1文）で作った文。当たっている必要はない。3か月ごとに書き直しを聞く。材料は残っているので、いつでも見返せる。</p>
     ${db.purpose ? `<p>いま: ${esc(db.purpose.text)}<br><span class="small">決めた日 ${esc(db.purpose.decidedOn)} ／ 次の見直し ${esc(db.purpose.reviewOn)}${db.purpose.history?.length ? ` ／ 書き直し ${db.purpose.history.length} 回` : ''}${db.purpose.final?.length ? `<br>残した3つ: ${db.purpose.final.map(esc).join('・')}` : ''}${db.purpose.values?.length ? `<br>大事な言葉: ${db.purpose.values.map(esc).join('・')}` : ''}</span></p>` : '<p class="small">まだ決めていない。</p>'}
     <button id="openMonshin">${db.purpose ? '棚卸しを開く（材料を見返す・書き直す）' : (m.startedOn ? '棚卸しの続き' : '棚卸しをはじめる')}</button>
+    ${m.history.length ? `<button class="ghost" id="openTimeline">年表を見る（記録 ${m.history.length} 回）</button>` : ''}
     <input id="purposeText" placeholder="文だけ直すなら、ここに" value="${esc(db.purpose?.text ?? '')}">
     <button class="ghost" id="purposeSet">文だけ直す（次の見直しは3か月後）</button>
   </section>
@@ -1265,6 +1375,13 @@ function bindMonshin() {
   document.querySelectorAll('[data-unskip]').forEach(a => a.onclick = e => { e.preventDefault(); m.skipped = m.skipped.filter(x => x !== a.dataset.unskip); persistM(); render(); });
   $('#mSkipCard') && ($('#mSkipCard').onclick = () => { const id = m.phase === 'values' ? 'values' : m.cur.methodId; if (!m.skipped.includes(id)) m.skipped.push(id); flash = { text: `「${method(id).title}」を飛ばした（一覧で戻せる）`, kind: 'ok' }; go('home'); });
   $('#mToReview') && ($('#mToReview').onclick = () => go('review'));
+  $('#mTimeline') && ($('#mTimeline').onclick = () => go('timeline'));
+  $('#mSnap') && ($('#mSnap').onclick = () => { const sn = snapshot(m, { today: today(), label: $('#mSnapLabel').value.trim(), purpose: db?.purpose ?? null }); m.history.push(sn); persistM(); flash = { text: `記録した（${m.history.length} 回目・${today()}）。`, kind: 'ok' }; go('timeline'); });
+  $('#mWipe') && ($('#mWipe').onclick = () => {
+    if (!confirm('答え・当てはまり度・大事な言葉・星・AI の問いを白紙にします。記録（年表）と飛ばしたカードは残ります。先に「いまを記録する」を押しましたか？')) return;
+    const keep = { history: m.history, skipped: m.skipped, startedOn: m.startedOn };
+    m = { ...M_INIT(), ...keep }; persistM(); flash = { text: '白紙にした。記録は年表に残っている。', kind: 'ok' }; go('home');
+  });
   if ($('#mCopyDump')) {
     const dump = () => dumpForAI(m, { today: today(), purpose: db?.purpose ?? null });
     $('#mShowDump').onclick = () => { $('#mDumpBox').value = dump(); $('#mDumpBox').hidden = false; $('#mDumpBox').select(); };
@@ -1443,6 +1560,7 @@ function bind() {
   $('#helpBtn2') && ($('#helpBtn2').onclick = () => { tab = 'help'; render(); });
   $('#purposeReview') && ($('#purposeReview').onclick = () => openMonshin(itemsFrom(m).length ? 'review' : 'home'));
   $('#openMonshin') && ($('#openMonshin').onclick = () => openMonshin('home'));
+  $('#openTimeline') && ($('#openTimeline').onclick = () => openMonshin('timeline'));
   $('#purposeKeep') && ($('#purposeKeep').onclick = () => { db.purpose.reviewOn = addDays(today(), REVIEW_DAYS); persist(); flash = { text: 'このまま。次は3か月後。', kind: 'ok' }; render(); });
   $('#purposeSet') && ($('#purposeSet').onclick = () => {
     const text = $('#purposeText').value.trim(); if (!text) return;
