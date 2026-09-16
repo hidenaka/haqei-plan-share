@@ -1,4 +1,4 @@
-// 手札 app.js — 自動生成（scripts/build-pwa.mjs）build 202609161044
+// 手札 app.js — 自動生成（scripts/build-pwa.mjs）build 202609161052
 (() => {
 "use strict";
 // ---- pwa/src/store.mjs
@@ -961,7 +961,7 @@ const Sync = {
     catch (e) { throw new Error(e.name === 'AbortError' ? 'Mac mini に届かない（Tailscale がつながっているか。12秒待った）' : 'Mac mini に届かない（Tailscale がつながっているか）'); }
     finally { clearTimeout(t); }
   },
-  async health() { const r = await this.mmFetch('/api/health'); if (!r.ok) throw new Error(`Mac mini ${r.status}`); return r.json(); },
+  async health() { const r = await this.mmFetch('/api/health'); if (!r.ok) throw new Error(`Mac mini ${r.status}`); const j = await r.json(); this.ai = j.ai ?? null; return j; },
 
   // ---- 経路 B: GitHub ----
   ghHeaders() { return { Authorization: `Bearer ${this.cfg.token}`, Accept: 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28' }; },
@@ -1012,6 +1012,7 @@ const Sync = {
     if (!this.enabled() || this.busy) return null;
     this.busy = true;
     try {
+      if (this.cfg.mode === 'macmini') { try { await this.health(); } catch {} }
       const f = await this.readState();
       let took = false, remote = null;
       if (f) {
@@ -1570,6 +1571,7 @@ function viewSettings() {
     <h3>同期（端末をまたぐ）</h3>
     <p class="why">あなたの Mac mini を橋にして、iPad・iPhone・Mac で同じデータにする。<b>合言葉は要らない</b>（Tailscale の網の中＝あなたの端末からしか届かない）。開いた時に取り込み、保存の3秒後に送る。<b>新しい方が勝つ</b>ので、1つの端末で操作してから別の端末を開く。Mac mini の AI も同じ場所を読むので、「AI に読ませる」のコピー＆貼りは不要になる（最長30分で「AI からの問い」が届く）。</p>
     ${Sync.enabled() ? `<p>つながっている: <b>${esc(Sync.label())}</b> ／ この端末の名前 ${esc(Sync.cfg.device)}<br><span class="small">最終同期 ${esc(Sync.cfg.lastAt ? Sync.cfg.lastAt.replace('T', ' ').slice(0, 16) : 'まだ')} ／ ${esc(Sync.last.msg || '—')}</span></p>
+    ${Sync.ai ? `<p class="${Sync.ai.ok ? 'small' : 'why'}">AI 橋: ${Sync.ai.ok ? '正常' : '<b>止まっている</b>'} ／ ${esc(Sync.ai.msg)}<span class="small">（${esc(Sync.ai.at.replace('T', ' ').slice(0, 16))}・${esc(Sync.ai.auth)}）</span></p>` : ''}
     <div class="row"><button id="syncNow">今すぐ同期</button><button class="ghost" id="syncOff">外す（この端末だけ）</button></div>` : `
     <button class="primary" id="syncMacMini">Mac mini とつなぐ（合言葉なし）</button>
     <p class="small">つながらない時: この端末で Tailscale アプリがオン（接続中）になっているか確認。</p>
