@@ -1,4 +1,4 @@
-// 手札 app.js — 自動生成（scripts/build-pwa.mjs）build 202609170207
+// 手札 app.js — 自動生成（scripts/build-pwa.mjs）build 202609170208
 (() => {
 "use strict";
 // ---- pwa/src/store.mjs
@@ -1171,6 +1171,8 @@ const Sync = {
         if (remoteHas && (!local.hasContent || (remote.updatedAt && (!local.updatedAt || remote.updatedAt > local.updatedAt)))) { this.hooks.setLocal(remote); took = true; }
       }
       const gotAI = await this.pullAIReply();
+      // 向こうが無い・古い・空で、こちらに中身があれば送る（開いただけで揃う）
+      { const local = this.hooks.getLocal(); const remoteHas = !!(remote?.db?.state && remote?.db?.cards) || hasMonshinContent(remote?.monshin); if (!took && local.hasContent && (!remote || !remoteHas || (local.updatedAt && (!remote.updatedAt || remote.updatedAt < local.updatedAt)))) this.schedulePush(); }
       this.cfg.lastAt = new Date().toISOString(); this.save();
       if (!quiet || took || gotAI) this.status(took ? `他の端末（${remote?.device ?? '?'}）の方が新しいので取り込んだ` : gotAI ? 'AI の返事を取り込んだ' : '取り込み: こちらが最新', true);
       return { took, gotAI };
