@@ -1,4 +1,4 @@
-// 手札 app.js — 自動生成（scripts/build-pwa.mjs）build 202609170208
+// 手札 app.js — 自動生成（scripts/build-pwa.mjs）build 202609170802
 (() => {
 "use strict";
 // ---- pwa/src/store.mjs
@@ -1030,6 +1030,17 @@ function monshinHasContent(m) {
   return false;
 }
 function stateHasContent(remote) { return !!(remote?.db?.state && remote?.db?.cards) || monshinHasContent(remote?.monshin); }
+// 中身の量（多い方を守る）: 本体があれば +10、答えの行・当てはまり度の項目・選んだ言葉・記録・プロファイル・星を数える。AI の返事は本人の材料ではないので数えない
+function contentRichness(remote) {
+  const m = remote?.monshin ?? {};
+  let n = 0;
+  if (remote?.db?.state && remote?.db?.cards) n += 10 + (remote.db.log?.entries?.length ?? 0);
+  for (const v of Object.values(m.answers ?? {})) n += String(v ?? '').split(/\r?\n/).filter(x => x.trim()).length;
+  for (const r of Object.values(m.rates ?? {})) n += Object.keys(r ?? {}).length;
+  for (const p of Object.values(m.picks ?? {})) n += (p?.picks ?? []).reduce((a, b) => a + b.length, 0);
+  n += (m.history?.length ?? 0) * 5 + (m.profiles?.length ?? 0) * 5 + (m.stars?.length ?? 0);
+  return n;
+}
 // 内容の署名: 画面の位置（phase/cur/ui）は含めない。これが変わった時だけ「更新」とみなす
 function contentSignature(db, m) {
   const { phase, cur, ui, ...rest } = m ?? {};
@@ -1047,6 +1058,7 @@ function contentSignature(db, m) {
 const SYNC_KEY = 'tefuda.sync';
 const API = 'https://api.github.com/repos';
 const MACMINI_DEFAULT = 'https://mac-mini.tail15ea48.ts.net';
+const richness = st => { const m = st?.monshin ?? {}; let n = 0; if (st?.db?.state && st?.db?.cards) n += 10 + (st.db.log?.entries?.length ?? 0); for (const v of Object.values(m.answers ?? {})) n += String(v ?? '').split(/\r?\n/).filter(x => x.trim()).length; for (const r of Object.values(m.rates ?? {})) n += Object.keys(r ?? {}).length; for (const p of Object.values(m.picks ?? {})) n += (p?.picks ?? []).reduce((a, b) => a + b.length, 0); n += (m.history?.length ?? 0) * 5 + (m.profiles?.length ?? 0) * 5 + (m.stars?.length ?? 0); return n; };
 const hasMonshinContent = m => !!m && (Object.values(m.answers ?? {}).some(v => String(v ?? '').trim()) || Object.values(m.rates ?? {}).some(r => r && Object.keys(r).length) || Object.values(m.picks ?? {}).some(p => (p?.picks ?? []).some(a => a.length)) || (m.history ?? []).length > 0 || (m.profiles ?? []).length > 0 || (m.ai?.rounds ?? []).length > 0);
 
 const Sync = {
@@ -1167,8 +1179,10 @@ const Sync = {
         remote = JSON.parse(f.text);
         const local = this.hooks.getLocal();
         const remoteHas = !!(remote.db?.state && remote.db?.cards) || hasMonshinContent(remote.monshin);
-        // 中身のある方を優先。両方あれば新しい方。向こうが空なら取り込まない
-        if (remoteHas && (!local.hasContent || (remote.updatedAt && (!local.updatedAt || remote.updatedAt > local.updatedAt)))) { this.hooks.setLocal(remote); took = true; }
+        const rr = richness(remote), lr = richness({ db: local.db, monshin: local.monshin });
+        // 中身の量が多い方を守る: 向こうが半分未満なら取り込まない（時刻が新しくても）。同程度なら新しい方
+        if (remoteHas && rr >= lr * 0.5 && (!local.hasContent || (remote.updatedAt && (!local.updatedAt || remote.updatedAt > local.updatedAt)))) { this.hooks.setLocal(remote); took = true; }
+        else if (remoteHas && rr < lr * 0.5) this.status(`向こう（${remote.device ?? '?'}）の中身が少ないので取り込まなかった（${rr} < ${lr}）`, true);
       }
       const gotAI = await this.pullAIReply();
       // 向こうが無い・古い・空で、こちらに中身があれば送る（開いただけで揃う）
@@ -1201,7 +1215,7 @@ const Sync = {
       const body = JSON.stringify({ tefuda: 1, updatedAt: local.updatedAt, device: this.cfg.device, db: local.db, monshin: local.monshin });
       let r = await this.writeState(body, local);
       if (r.conflict) {
-        if (r.remote && (r.reason === 'remote has content' || (r.remote.updatedAt && r.remote.updatedAt > local.updatedAt))) { this.hooks.setLocal(r.remote); if (r.sha) this.cfg.sha = r.sha; this.save(); this.status(`他の端末（${r.remote.device ?? '?'}）の方が新しいので取り込んだ`, true); return; }
+        if (r.remote && (r.reason === 'remote has content' || r.reason === 'remote richer' || (r.remote.updatedAt && r.remote.updatedAt > local.updatedAt))) { this.hooks.setLocal(r.remote); if (r.sha) this.cfg.sha = r.sha; this.save(); this.status(`他の端末（${r.remote.device ?? '?'}）の方が新しいので取り込んだ`, true); return; }
         if (this.cfg.mode === 'github') { this.cfg.sha = r.sha; r = await this.writeState(body, local); }
         if (r.conflict) throw new Error('書き込みがぶつかった。もう一度「今すぐ同期」');
       }
