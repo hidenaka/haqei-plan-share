@@ -1,0 +1,68 @@
+<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex">
+<title>4号 列移動 — 私の認識</title>
+<style>
+body{font-family:-apple-system,"Hiragino Sans",sans-serif;background:#f6f7f9;color:#1f2a36;margin:0;padding:20px 14px 60px;line-height:1.7}
+main{max-width:900px;margin:0 auto}
+h1{font-size:24px;margin:0 0 4px}.lede{color:#4b5966;margin-bottom:18px}
+section{background:#fff;border-radius:14px;padding:16px 18px;margin-bottom:16px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+h2{font-size:18px;margin:0 0 8px}p,li{font-size:16px;margin:6px 0}
+img{width:100%;border-radius:8px;border:1px solid #ddd;display:block}
+.cap{font-size:13px;color:#6b7785;margin-top:4px}
+.q{background:#fff7e6;border-left:4px solid #e0a020;padding:8px 12px;border-radius:6px}
+.ok{color:#1a7f3c}.ng{color:#b9484a}
+table{border-collapse:collapse;width:100%;font-size:15px}td,th{border-bottom:1px solid #e3e7eb;padding:6px 8px;text-align:left}
+svg{width:100%;height:auto}
+</style></head><body><main>
+<h1>4号の列移動 — 私の認識（2026-09-18）</h1>
+<p class="lede">あなたが決めた定義と、Mac mini の画像で私が追った結果。合っていない所を指摘してください。</p>
+
+<section><h2>① 定義（記録から。ここは変えない）</h2>
+<ul>
+<li><b>列移動＝横スライド</b>。列1・2が空いたら残りの塊が横に2列（1列のことも）スライド。前進ではない。</li>
+<li><b>1回の数え方＝「前方列が出る(fall) → 6分以内に埋まる(rise)」の対</b>。入庫だけの rise は数えない。</li>
+<li><b>4号は奥カメラ(real002)の後列で測る</b>（6/05 あなたの指示）。後列＝起点コーンから右へ8レーン幅。計測箱＝起点コーンのレーン、奥行き t370-450（8/21 確定）。</li>
+</ul>
+<svg viewBox="0 0 900 150"><rect x="0" y="0" width="900" height="150" fill="#f4f8fd"/>
+<text x="20" y="30" font-size="16">計測箱の明るさ（車がいる＝暗い）</text>
+<polyline points="20,110 150,110 160,60 320,60 330,110 470,110 480,60 700,60 710,110 880,110" fill="none" stroke="#2f6fd0" stroke-width="3"/>
+<text x="155" y="130" font-size="14" fill="#b9484a">fall(出た)</text><text x="300" y="50" font-size="14" fill="#1a7f3c">rise(埋まった)＝対で1回</text>
+<text x="480" y="130" font-size="14" fill="#b9484a">fall</text><text x="690" y="50" font-size="14" fill="#1a7f3c">rise＝1回</text></svg>
+</section>
+
+<section><h2>② 設定を画像に重ねると</h2>
+<img src="images/01-config.jpg" alt="">
+<p class="cap">青＝設定上の4号後列（起点コーンから右へ8レーン、列1〜8）。赤＝計測箱（列1・t370-450）。上：9/17 15時。下：9/13 15時（列がコーンまで伸びた日）。</p>
+<p>見えること：<span class="ng">ふだん、塊は箱より奥（画面の上）に座っていて、箱の位置まで来ない</span>。9/13 のように長い日だけ箱に車が入る。昼の時間帯で箱に車がいるのは 1〜2割（明るさの分布から）。</p>
+</section>
+
+<section><h2>③ 20分の流れ（14:00→14:20、4分おき）</h2>
+<img src="images/02-trace.jpg" alt="">
+<p class="cap">塊の前縁（カメラに近い側）は t150〜200 あたりで、箱（t370-450）には届かない。</p>
+</section>
+
+<section><h2>④ 1分おきで追う（14:16→14:25）</h2>
+<img src="images/03-fine.jpg" alt="">
+<p>私に見えたこと：</p>
+<ul>
+<li>14:19:44 に <b>1台が塊の前縁・左寄りから出て</b>、左下（出口側）へ走っていく。</li>
+<li>出た後、前縁の並びはほぼそのまま（4台）。<b>塊全体が横に動いた（横スライド）とは、この10分では見分けられなかった</b>。</li>
+<li>塊の形が変わるのは主に <b>奥（右上）からの入庫</b>。</li>
+</ul>
+<div class="q"><b>ここが私の未解決点</b>：この画像で「列1」がどの列で、横スライドがどう見えるのかを、まだ自分で特定できていません。設定の8レーン線（青）と、実際に車が並んでいる列の向きが合っているようにも見えないので、<b>レーンの向き（消失点）自体を疑っています</b>。</div>
+</section>
+
+<section><h2>⑤ 日ごとの箱の状態</h2>
+<img src="images/04-days.jpg" alt="">
+<table><tr><th>日</th><th>3号 列移動(記録)</th><th>4号 列移動(記録)</th></tr>
+<tr><td>9/9〜9/16</td><td>24〜40 /日</td><td>6〜23 /日</td></tr><tr><td>9/17</td><td>18</td><td>3</td></tr></table>
+<p class="cap">4号は本来いちばん動きが多い乗り場（8/27監査：旧カメラ期 63回/日）。</p>
+</section>
+
+<section><h2>⑥ 次に私がやること（あなたの承認なしで動かさない）</h2>
+<ul>
+<li>まず<b>レーンの向きを画像から取り直す</b>（車の並びの向き＝列方向を、昼の複数フレームで測る）。</li>
+<li>そのうえで <b>1日分の画像を通しで追い、「列1が空く→塊が横にずれる」が実際にどこで起きているか</b>を画像で示す。</li>
+<li>それが分かってから、箱の置き場所を提案する（数を増やす目的では動かさない）。</li>
+</ul>
+</section>
+</main></body></html>
