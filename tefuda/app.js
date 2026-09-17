@@ -1,4 +1,4 @@
-// 手札 app.js — 自動生成（scripts/build-pwa.mjs）build 202609162152
+// 手札 app.js — 自動生成（scripts/build-pwa.mjs）build 202609170207
 (() => {
 "use strict";
 // ---- pwa/src/store.mjs
@@ -1018,6 +1018,26 @@ function profileReplyFormat() {
   ];
 }
 
+// ---------- 同期の安全（v17.9）----------
+// 本人の iPad の材料が、開いただけの iPhone の「空」に上書きされた事故（2026-09-17）への対策。
+// 「中身」= 本体 db がある、または 棚卸しの材料（答え・当てはまり度・選んだ言葉・記録・プロファイル）が1つでもある
+function monshinHasContent(m) {
+  if (!m) return false;
+  if (Object.values(m.answers ?? {}).some(v => String(v ?? '').trim())) return true;
+  if (Object.values(m.rates ?? {}).some(r => r && Object.keys(r).length)) return true;
+  if (Object.values(m.picks ?? {}).some(p => (p?.picks ?? []).some(a => a.length))) return true;
+  if ((m.history ?? []).length || (m.profiles ?? []).length || (m.ai?.rounds ?? []).length || (m.stars ?? []).length) return true;
+  return false;
+}
+function stateHasContent(remote) { return !!(remote?.db?.state && remote?.db?.cards) || monshinHasContent(remote?.monshin); }
+// 内容の署名: 画面の位置（phase/cur/ui）は含めない。これが変わった時だけ「更新」とみなす
+function contentSignature(db, m) {
+  const { phase, cur, ui, ...rest } = m ?? {};
+  const s = JSON.stringify([db ?? null, rest]);
+  let h = 0; for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) | 0;
+  return `${s.length}:${h}`;
+}
+
 // ---- pwa/src/sync.mjs
 // 端末間の同期（設計書 §14-3 順番③・v17.7）
 //   既定 = Mac mini（合言葉なし）: Tailscale の網の中だけで届く https://mac-mini.<tailnet>.ts.net の同期サーバー（bridge/macmini/tefuda-server.mjs）
@@ -1027,6 +1047,7 @@ function profileReplyFormat() {
 const SYNC_KEY = 'tefuda.sync';
 const API = 'https://api.github.com/repos';
 const MACMINI_DEFAULT = 'https://mac-mini.tail15ea48.ts.net';
+const hasMonshinContent = m => !!m && (Object.values(m.answers ?? {}).some(v => String(v ?? '').trim()) || Object.values(m.rates ?? {}).some(r => r && Object.keys(r).length) || Object.values(m.picks ?? {}).some(p => (p?.picks ?? []).some(a => a.length)) || (m.history ?? []).length > 0 || (m.profiles ?? []).length > 0 || (m.ai?.rounds ?? []).length > 0);
 
 const Sync = {
   cfg: null, timer: null, busy: false, last: { at: null, msg: '', ok: true },
@@ -1103,7 +1124,7 @@ const Sync = {
   async writeState(body, local) {
     if (this.cfg.mode === 'macmini') {
       const r = await this.mmFetch('/api/state', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body });
-      if (r.status === 409) return { conflict: true, remote: (await r.json()).remote };
+      if (r.status === 409) { const j = await r.json(); return { conflict: true, remote: j.remote, reason: j.error }; }
       if (!r.ok) throw new Error(`Mac mini ${r.status}（書き込み）`);
       return { ok: true };
     }
@@ -1145,7 +1166,9 @@ const Sync = {
       if (f) {
         remote = JSON.parse(f.text);
         const local = this.hooks.getLocal();
-        if (remote.updatedAt && (!local.updatedAt || remote.updatedAt > local.updatedAt)) { this.hooks.setLocal(remote); took = true; }
+        const remoteHas = !!(remote.db?.state && remote.db?.cards) || hasMonshinContent(remote.monshin);
+        // 中身のある方を優先。両方あれば新しい方。向こうが空なら取り込まない
+        if (remoteHas && (!local.hasContent || (remote.updatedAt && (!local.updatedAt || remote.updatedAt > local.updatedAt)))) { this.hooks.setLocal(remote); took = true; }
       }
       const gotAI = await this.pullAIReply();
       this.cfg.lastAt = new Date().toISOString(); this.save();
@@ -1172,11 +1195,11 @@ const Sync = {
     this.busy = true;
     try {
       const local = this.hooks.getLocal();
-      if (!local.updatedAt) { this.status('まだ送るものがない', true); return; }
+      if (!local.updatedAt || !local.hasContent) { this.status('この端末にはまだ中身が無いので送らない', true); return; }
       const body = JSON.stringify({ tefuda: 1, updatedAt: local.updatedAt, device: this.cfg.device, db: local.db, monshin: local.monshin });
       let r = await this.writeState(body, local);
       if (r.conflict) {
-        if (r.remote?.updatedAt && r.remote.updatedAt > local.updatedAt) { this.hooks.setLocal(r.remote); if (r.sha) this.cfg.sha = r.sha; this.save(); this.status(`他の端末（${r.remote.device ?? '?'}）の方が新しいので取り込んだ`, true); return; }
+        if (r.remote && (r.reason === 'remote has content' || (r.remote.updatedAt && r.remote.updatedAt > local.updatedAt))) { this.hooks.setLocal(r.remote); if (r.sha) this.cfg.sha = r.sha; this.save(); this.status(`他の端末（${r.remote.device ?? '?'}）の方が新しいので取り込んだ`, true); return; }
         if (this.cfg.mode === 'github') { this.cfg.sha = r.sha; r = await this.writeState(body, local); }
         if (r.conflict) throw new Error('書き込みがぶつかった。もう一度「今すぐ同期」');
       }
@@ -1214,7 +1237,15 @@ let m = (() => { try { const x = JSON.parse(localStorage.getItem(M_KEY)); if (!x
 let inMonshin = false; // true の間は棚卸しの画面だけを出す
 const META_KEY = 'tefuda.meta';
 let meta = (() => { try { return JSON.parse(localStorage.getItem(META_KEY)) ?? {}; } catch { return {}; } })();
-function touch() { meta.updatedAt = new Date().toISOString(); try { localStorage.setItem(META_KEY, JSON.stringify(meta)); } catch {} Sync.schedulePush(); }
+queueMicrotask(() => { if (!meta.sig) { meta.sig = contentSignature(db, m); try { localStorage.setItem(META_KEY, JSON.stringify(meta)); } catch {} } });
+function touch() {
+  // 内容が変わった時だけ更新時刻を進める（画面を開いただけでは進めない＝空の端末が「新しい」にならない）
+  const sig = contentSignature(db, m);
+  if (meta.sig === sig) return;
+  meta.sig = sig; meta.updatedAt = new Date().toISOString();
+  try { localStorage.setItem(META_KEY, JSON.stringify(meta)); } catch {}
+  Sync.schedulePush();
+}
 function persistM() { try { localStorage.setItem(M_KEY, JSON.stringify(m)); } catch {} touch(); }
 function openMonshin(phase = 'home') { m.phase = phase; m.startedOn ??= today(); inMonshin = true; persistM(); render(); }
 function closeMonshin() { inMonshin = false; persistM(); render(); }
@@ -2035,11 +2066,11 @@ function bind() {
 }
 
 Sync.init({
-  getLocal: () => ({ updatedAt: meta.updatedAt ?? null, db, monshin: m }),
+  getLocal: () => ({ updatedAt: meta.updatedAt ?? null, db, monshin: m, hasContent: !!db || monshinHasContent(m) }),
   setLocal: remote => {
     if (remote.db?.state && remote.db?.cards) { db = remote.db; saveDb(db); }
     if (remote.monshin) { m = { ...M_INIT(), ...remote.monshin, cur: { methodId: null, idx: 0 }, phase: 'home' }; try { localStorage.setItem(M_KEY, JSON.stringify(m)); } catch {} }
-    meta.updatedAt = remote.updatedAt; try { localStorage.setItem(META_KEY, JSON.stringify(meta)); } catch {}
+    meta.updatedAt = remote.updatedAt; meta.sig = contentSignature(db, m); try { localStorage.setItem(META_KEY, JSON.stringify(meta)); } catch {}
     inMonshin = false; render();
   },
   getDump: () => (progress(m).items || m.ai.rounds.length ? dumpForAI(m, { today: today(), purpose: db?.purpose ?? null }) : ''),
