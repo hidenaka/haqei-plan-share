@@ -1,0 +1,61 @@
+<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex">
+<title>到着便と列移動の関係</title>
+<style>
+body{font-family:-apple-system,"Hiragino Sans",sans-serif;background:#f6f7f9;color:#1f2a36;margin:0;padding:20px 14px 60px;line-height:1.7}
+main{max-width:900px;margin:0 auto}h1{font-size:24px;margin:0 0 4px}.lede{color:#4b5966;margin-bottom:18px}
+section{background:#fff;border-radius:14px;padding:16px 18px;margin-bottom:16px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+h2{font-size:18px;margin:0 0 8px}p,li{font-size:16px;margin:6px 0}.cap{font-size:13px;color:#6b7785}
+table{border-collapse:collapse;width:100%;font-size:15px}td,th{border-bottom:1px solid #e3e7eb;padding:6px 8px;text-align:right}th:first-child,td:first-child{text-align:left}
+.big{font-size:20px;font-weight:700}.ng{color:#b9484a}.ok{color:#1a7f3c}svg{width:100%;height:auto}
+</style></head><body><main>
+<h1>到着便（便数・座席数）と列移動の関係（2026-09-18）</h1>
+<p class="lede">9/13〜9/17 の5日。到着便＝羽田公式の実着時刻・機材の座席数・出口の号。列移動＝今日入れ替えた画像計測（1〜4号）。</p>
+
+<section><h2>① 1日の中の形は似ている（でもそれは「昼は飛行機も客も多い」だけ）</h2>
+<svg viewBox="0 0 900 300">
+<rect width="900" height="300" fill="#fff"/>
+<text x="20" y="22" font-size="14">時間帯ごと（5日平均・全乗り場合計）。棒＝到着便の座席数、線＝列移動の回数</text>
+<g id="bars"></g>
+<script type="text/plain" id="d">
+seats=[33,0,0,0,120,1007,526,356,6473,6937,6769,6289,6735,6814,6810,7138,6849,7912,8845,7656,6640,7795,7216,2086]
+moves=[4.2,2.2,2.6,1.0,0.4,2.2,1.2,2.2,2.0,3.4,4.0,4.6,5.6,8.6,9.4,10.4,10.6,7.8,8.6,11.0,12.8,16.4,11.2,11.2]
+</script>
+<!-- 静的に描く -->
+<rect x="41" y="259" width="30" height="1" fill="#cfe0f5"/><rect x="77" y="260" width="30" height="0" fill="#cfe0f5"/><rect x="113" y="260" width="30" height="0" fill="#cfe0f5"/><rect x="149" y="260" width="30" height="0" fill="#cfe0f5"/><rect x="185" y="257" width="30" height="3" fill="#cfe0f5"/><rect x="221" y="237" width="30" height="23" fill="#cfe0f5"/><rect x="257" y="248" width="30" height="12" fill="#cfe0f5"/><rect x="293" y="252" width="30" height="8" fill="#cfe0f5"/><rect x="329" y="114" width="30" height="146" fill="#cfe0f5"/><rect x="365" y="103" width="30" height="157" fill="#cfe0f5"/><rect x="401" y="107" width="30" height="153" fill="#cfe0f5"/><rect x="437" y="118" width="30" height="142" fill="#cfe0f5"/><rect x="473" y="108" width="30" height="152" fill="#cfe0f5"/><rect x="509" y="106" width="30" height="154" fill="#cfe0f5"/><rect x="545" y="106" width="30" height="154" fill="#cfe0f5"/><rect x="581" y="99" width="30" height="161" fill="#cfe0f5"/><rect x="617" y="105" width="30" height="155" fill="#cfe0f5"/><rect x="653" y="81" width="30" height="179" fill="#cfe0f5"/><rect x="689" y="60" width="30" height="200" fill="#cfe0f5"/><rect x="725" y="87" width="30" height="173" fill="#cfe0f5"/><rect x="761" y="110" width="30" height="150" fill="#cfe0f5"/><rect x="797" y="84" width="30" height="176" fill="#cfe0f5"/><rect x="833" y="97" width="30" height="163" fill="#cfe0f5"/><rect x="869" y="213" width="30" height="47" fill="#cfe0f5"/>
+<polyline fill="none" stroke="#b9484a" stroke-width="3" points="56,209 92,233 128,228 164,248 200,255 236,233 272,245 308,233 344,236 380,219 416,211 452,204 488,192 524,155 560,145 596,133 632,131 668,165 704,155 740,126 776,104 812,60 848,124 884,124"/>
+<g font-size="12" fill="#333"><text x="50" y="280">0時</text><text x="266" y="280">6時</text><text x="482" y="280">12時</text><text x="698" y="280">18時</text><text x="866" y="280">23時</text></g>
+<text x="700" y="45" font-size="13" fill="#b9484a">列移動は 21時が最多</text><text x="600" y="75" font-size="13" fill="#4b6fa5">座席数は 18時が最多</text>
+</svg>
+<p>朝〜昼は飛行機が多いのに列移動は少なく、夜は飛行機が減っても列移動が最多。<b>山の位置が3時間ずれている</b>＝プール（溜め池）が間に入っている。</p>
+</section>
+
+<section><h2>② 「昼夜の形」を取り除くと、つながりはほぼゼロ</h2>
+<p>同じ時間帯どうしで比べて「いつもより飛行機が多い時間に、いつもより列移動が多いか」を見た（座席数→その後の列移動、ずらし0〜6時間）。</p>
+<table><tr><th>ずらし</th><th>1号</th><th>2号</th><th>3号</th><th>4号</th><th>全部</th></tr>
+<tr><td>同じ時間</td><td>0.10</td><td>0.08</td><td>-0.11</td><td>0.07</td><td>0.05</td></tr>
+<tr><td>1時間後</td><td>0.04</td><td>-0.03</td><td>0.24</td><td>-0.15</td><td>0.10</td></tr>
+<tr><td>2時間後</td><td>-0.10</td><td>-0.08</td><td>0.04</td><td>0.23</td><td>-0.06</td></tr>
+<tr><td>3時間後</td><td>-0.04</td><td>-0.06</td><td>0.04</td><td>-0.14</td><td>-0.09</td></tr>
+<tr><td>4〜6時間後</td><td colspan="5">どれも -0.26〜0.16 でばらつくだけ</td></tr></table>
+<p class="cap">1に近いほど「連動」、0は「無関係」。目安：0.3を超えて初めて意味がある。便数で見ても同じ。</p>
+<p class="big ng">結論：飛行機の便数・座席数から、その日その時間の列移動は読めない。</p>
+</section>
+
+<section><h2>③ 日ごとの差も飛行機では説明できない</h2>
+<table><tr><th>日</th><th>3号 到着便</th><th>3号 座席数</th><th>3号 列移動</th><th>4号 到着便</th><th>4号 座席数</th><th>4号 列移動</th></tr>
+<tr><td>9/13(日)</td><td>218</td><td>46,176</td><td>73</td><td>76</td><td>19,021</td><td>28</td></tr>
+<tr><td>9/14(月)</td><td>217</td><td>46,052</td><td>66</td><td>75</td><td>18,813</td><td>39</td></tr>
+<tr><td>9/15(火)</td><td>218</td><td>45,022</td><td>63</td><td>75</td><td>18,691</td><td>33</td></tr>
+<tr><td>9/16(水)</td><td>214</td><td>44,835</td><td>67</td><td>81</td><td>19,965</td><td>43</td></tr>
+<tr><td>9/17(木)</td><td>216</td><td>44,981</td><td>53</td><td>77</td><td>18,924</td><td>41</td></tr></table>
+<p>飛行機は毎日ほぼ同じ（差2〜3%）なのに、列移動は 53〜73 / 28〜43 と 3〜5割ぶれる。ぶれの元は飛行機以外（客がタクシーを選ぶ割合、天気、曜日、電車の状況など）。</p>
+</section>
+
+<section><h2>④ どう受け止めるか</h2>
+<ul>
+<li>8/27にも同じ結論だったが、その時は列移動の数え方が悪かった。<b>今回は数え方を直した上で同じ結論</b>＝計測のせいではなく、プールの性質。</li>
+<li>5日ぶんなので「日ごと」の判定は弱い。飛行機の量が大きく変わる日（欠航・台風・連休）が入って初めて、日単位の関係が見える。</li>
+<li>使えるのは「時間帯・曜日のリズム」と「いまの現況」。到着便は「これから来る量」の目安としては残す価値があるが、列移動の予測には入れない。</li>
+</ul>
+</section>
+</main></body></html>
