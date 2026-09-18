@@ -1,0 +1,42 @@
+<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex">
+<title>1〜3号の列移動は測れているか</title>
+<style>
+body{font-family:-apple-system,"Hiragino Sans",sans-serif;background:#f6f7f9;color:#1f2a36;margin:0;padding:20px 14px 60px;line-height:1.7}
+main{max-width:900px;margin:0 auto}h1{font-size:24px;margin:0 0 4px}.lede{color:#4b5966;margin-bottom:18px}
+section{background:#fff;border-radius:14px;padding:16px 18px;margin-bottom:16px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+h2{font-size:18px;margin:0 0 8px}p,li{font-size:16px;margin:6px 0}img{width:100%;border-radius:8px;border:1px solid #ddd;display:block}
+.cap{font-size:13px;color:#6b7785;margin-top:4px}.ng{color:#b9484a}.opt{border-left:4px solid #2f6fd0;padding:8px 12px;margin:10px 0;background:#f4f8fd;border-radius:6px}.rec{border-left-color:#1a7f3c;background:#f1faf3}
+table{border-collapse:collapse;width:100%;font-size:15px}td,th{border-bottom:1px solid #e3e7eb;padding:6px 8px;text-align:left}
+</style></head><body><main>
+<h1>1〜3号の列移動は測れているか（2026-09-18）</h1>
+<p class="lede">結論：<b class="ng">4号と同じ弱点を持ったまま</b>。「帯の途中に置いた小箱」で数えているので、列1（出口側の端）を見ていない。</p>
+
+<section><h2>① 今の測り方（手前カメラ real001）</h2>
+<img src="images/01-lapse.jpg" alt="">
+<p class="cap">14:00〜14:40、5分おき。赤枠＝今の計測箱（stall1・stall2・stall3・stall4手前）。</p>
+<ul>
+<li>3号の箱（縦長）は塊の<b>右端＝入口側</b>にある。出口は左端（記録どおり）。14:10〜14:15 は塊があるのに箱は空＝この間の動きは数えられない。</li>
+<li>1号・2号の箱（小さい・遠い）は帯の<b>左寄り</b>にある。出口は右端。塊が箱まで伸びている時しか反応しない。</li>
+<li>箱を車が通り抜ける時の「出る→入る」を1回と数えるので、<b>2列まとめて進んでも1回</b>になる（4号で見つけたのと同じ）。</li>
+</ul>
+</section>
+
+<section><h2>② 3号の帯を拡大</h2>
+<img src="images/02-zoom3.jpg" alt="">
+<p class="cap">緑＝2号/3号の境、紫＝3号/4号の境（設定）。3号の車は左下を向いて止まり、列1は帯の<b>左端の縦一列</b>。塊は左へ進む。赤枠（右寄り）は列1ではなく、塊の後ろ側。</p>
+</section>
+
+<section><h2>③ 記録の数字で見ても</h2>
+<table><tr><th>号</th><th>今の記録（9/9〜9/17）</th><th>8/27監査（旧カメラ期の実測）</th></tr>
+<tr><td>1号</td><td>5〜14回/日</td><td>37回/日</td></tr><tr><td>2号</td><td>6〜16回/日</td><td>46回/日</td></tr>
+<tr><td>3号</td><td>18〜40回/日</td><td>51回/日</td></tr><tr><td>4号（直した後）</td><td>23〜31回/日</td><td>63回/日</td></tr></table>
+<p class="cap">※旧カメラ期の数字は測り方が違うので同じ物差しではないが、1号・2号の少なさは目立つ。</p>
+</section>
+
+<section><h2>④ 直すには</h2>
+<p>4号と同じ作り（列1の端の位置を追い、出た→進んだ を列数つきで数える）を、1〜3号の帯それぞれに作る。ただし手前カメラは斜めから見ているので、帯の端（出口側）に柵・コーン・隣の帯が重なり、4号より手間がかかる（試しに端を追う線を引いたが、端の固定物に引っかかって今は使えない）。1日分の研究＋目視20件を、4号と同じ手順でやる。</p>
+<div class="opt rec"><b>A（おすすめ）</b>：1〜3号も同じ手順で研究→目視→実装（まず3号、次に2号・1号の順。1号は遠く小さいので精度が落ちる見込み）。</div>
+<div class="opt"><b>B</b>：3号だけ先にやる。</div>
+<div class="opt"><b>C</b>：据置。</div>
+</section>
+</main></body></html>
