@@ -1,0 +1,40 @@
+<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex">
+<title>1号の列移動をどう測るか</title>
+<style>
+body{font-family:-apple-system,"Hiragino Sans",sans-serif;background:#f6f7f9;color:#1f2a36;margin:0;padding:20px 14px 60px;line-height:1.7}
+main{max-width:960px;margin:0 auto}h1{font-size:24px;margin:0 0 4px}.lede{color:#4b5966;margin-bottom:18px}
+section{background:#fff;border-radius:14px;padding:16px 18px;margin-bottom:16px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+h2{font-size:18px;margin:0 0 8px}p,li{font-size:16px;margin:6px 0}.cap{font-size:13px;color:#6b7785}img{width:100%;border-radius:8px;border:1px solid #ddd;display:block}
+table{border-collapse:collapse;width:100%;font-size:15px}td,th{border-bottom:1px solid #e3e7eb;padding:6px 8px;text-align:left;vertical-align:top}
+.opt{border-left:4px solid #2f6fd0;padding:8px 12px;margin:10px 0;background:#f4f8fd;border-radius:6px}.rec{border-left-color:#1a7f3c;background:#f1faf3}.ng{color:#b9484a}.ok{color:#1a7f3c}
+</style></head><body><main>
+<h1>1号の列移動をどう測るか（カメラは今のまま・2026-09-18）</h1>
+<p class="lede">前提：1号のカメラ（Real001, 768×384）は変えられない。1号は画面のいちばん奥、帯の高さ 29px、車1台 19px。今夜試した3案の結果と、残りの案を並べる。</p>
+
+<section><h2>0. 何が難しいか（絵で）</h2>
+<img src="images/01-band.jpg" alt="">
+<p class="cap">黄＝1号の上端、水色＝1号/2号の境、緑＝2号/3号の境。1号は黄と水色の間の <b>細い一段</b>（8列が奥行きに重なって1本の帯に見える）。右端（出口側 x≈700〜780）の先は出口道路と生け垣、左端は影と植え込み。</p>
+<ul><li>列移動＝帯全体が右へ19px ずれる。黒い車が並ぶと、ずれても絵がほぼ同じ。</li><li>端（頭・尾）の位置は、明るさでもエッジでも生け垣・影・道路の車と混ざって安定して取れない（今夜2方式で失敗）。</li></ul>
+</section>
+
+<section><h2>1. 今夜試した3案</h2>
+<table><tr><th>案</th><th>やり方</th><th>結果（9/17）</th></tr>
+<tr><td>A 帯の変化の広さ（今の方式、しきい値緩和）</td><td>1本の明るさプロファイルの前後差が帯の何割か</td><td class="ng">17→27回/日。9〜12時・17〜18時は依然0（小さなずれを拾えない）</td></tr>
+<tr><td>B 端の位置を追う（4号式）</td><td>明るさで占有→頭（右端）/尾（左端）の位置→跳びを数える</td><td class="ng">頭は生け垣・道路、尾は影で位置が張り付き、不成立</td></tr>
+<tr><td>C 2次元の「動いた列」を数える</td><td>帯を2次元パッチで前後比較し、動いた画素が4個以上ある列(x)の本数。静止時のノイズ床（最大50列）より上＝90列以上・連続40列以上・画面全体の変化なし</td><td>75回/日、8〜12時も2〜3回/h 拾う。目視6件：<b>塊のずれ 3件、1台の出入り 3件</b>（下の図）＝感度は上がるが「1台の出入り」を混ぜる</td></tr></table>
+<img src="images/02-motion.jpg" alt="">
+<p class="cap">案Cの検出例。14:29 は帯全体がずれた本物。16:30・18:38 は右端に1台入っただけ。</p>
+</section>
+
+<section><h2>2. 残りの案（有望順）</h2>
+<div class="opt rec"><b>D 案C＋「ずれの向きと量」で選別（おすすめ）</b><br>動いた列が多い瞬間だけ、帯の2次元パッチを前後で重ね合わせ（位相相関）て <b>右向きに 12〜40px ずれた</b> ものだけを列移動とする。1台の出入りは「ずれ」にならない（局所の変化）ので落ちる。黒い車の周期問題は、パッチに両端（尾・頭付近）を含めることで解ける見込み。計算は軽い。<br><span class="cap">検証：9/17 の75候補を全部この選別にかけ、通ったものを目視20件。</span></div>
+<div class="opt"><b>E 夜は行灯の点を追う</b><br>夜は各車の行灯が明点になり1台ずつ分かる。点の集合が右へ一斉に19pxずれた瞬間＝列移動（2列なら38px）。夜（18〜翌2時＝1号の山）だけでも列数付きで正確に取れる。昼は案D。</div>
+<div class="opt"><b>F 出口道路を通る車を数える</b><br>1号の頭の先（x 800〜950）の出口道路を通過する車を数え、8台で1列と換算。ただし2号の出庫車も同じ道路を通る可能性があり、分離できるか要確認（2号の出口位置の目視から）。</div>
+<div class="opt"><b>G 時間を伸ばして「量」で測る</b><br>15分ごとに帯の中身がどれだけ入れ替わったか（前後15分のパッチ相関の低さ）を「動き量」として出し、回数ではなく <b>指数</b> で扱う。回数は出ないが、他の号との比較・時間帯の傾向には十分。</div>
+<div class="opt"><b>H 1号＝2号の比で推定</b><br>1号と2号は同じ出口側（右端）で、旧カメラ期の監査では 37:46。2号は取れているので、比で1号を補う（最後の手段・実測ではない）。</div>
+</section>
+
+<section><h2>3. あなたが決めること</h2>
+<p><b>D（昼）＋E（夜）</b> を作って、9/17 全時間の目視（今日のシート）と突き合わせる、でよいか。1〜2日かかる。</p>
+</section>
+</main></body></html>
