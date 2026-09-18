@@ -1,0 +1,88 @@
+<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex">
+<title>4号 列移動 24時間の研究</title>
+<style>
+body{font-family:-apple-system,"Hiragino Sans",sans-serif;background:#f6f7f9;color:#1f2a36;margin:0;padding:20px 14px 60px;line-height:1.7}
+main{max-width:900px;margin:0 auto}h1{font-size:24px;margin:0 0 4px}.lede{color:#4b5966;margin-bottom:18px}
+section{background:#fff;border-radius:14px;padding:16px 18px;margin-bottom:16px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+h2{font-size:18px;margin:0 0 8px}p,li{font-size:16px;margin:6px 0}img{width:100%;border-radius:8px;border:1px solid #ddd;display:block}
+.cap{font-size:13px;color:#6b7785;margin-top:4px}.big{font-size:20px;font-weight:700}
+table{border-collapse:collapse;width:100%;font-size:15px}td,th{border-bottom:1px solid #e3e7eb;padding:6px 8px;text-align:right}th:first-child,td:first-child{text-align:left}
+.opt{border-left:4px solid #2f6fd0;padding:8px 12px;margin:10px 0;background:#f4f8fd;border-radius:6px}.rec{border-left-color:#1a7f3c;background:#f1faf3}
+.ng{color:#b9484a}.ok{color:#1a7f3c}svg{width:100%;height:auto}
+</style></head><body><main>
+<h1>4号 列移動を24時間×8日で研究した（2026-09-18）</h1>
+<p class="lede">9/10〜9/17 の奥カメラ画像（1分おき・約1.1万枚）で、列1（前の横一列）の前縁を追い、「いつ・何列ぶん」動くかを見た。</p>
+
+<section><h2>① 1列移動と2列移動は、確かに両方ある</h2>
+<img src="images/01-12rows.jpg" alt="">
+<p class="cap">上：昼の1列移動（前縁が1台ぶん前へ）。下：深夜の2列移動（前縁が2台ぶん前へ、コーンの手前線まで）。赤線＝動く前の前縁、緑線＝動いた後の前縁。</p>
+</section>
+
+<section><h2>② 何列ぶん動いたか（8日・前進279回）</h2>
+<img src="images/02-dist.jpg" alt="">
+<p><b>1列 ≈ 133回、2列 ≈ 23回、3列以上 ≈ 10回</b>。列の長さは「奥行きの見え方（遠いほど縮む）」を直してから測っている。</p>
+<p class="ng">左端の「0.25〜0.5列」（79回）は要注意。中身を見ると（④）、本物の前進を小さく測ってしまったものと、車1台の出入りだけのノイズが混ざっている。</p>
+</section>
+
+<section><h2>③ いつ動くか（8日平均・時間帯別）</h2>
+<img src="images/03-byhour.jpg" alt="">
+<ul>
+<li><b>夕方17〜19時が最多</b>（1時間に約3.4列ぶん）。</li>
+<li><b>深夜2時・朝6〜7時は「2列移動」が多い</b>（濃い青と薄い青の差が大きい）＝前列が2列まとめて出てから塊が2列ぶん進む。</li>
+<li>8時台は塊がほぼ無い（ゼロ）。</li>
+</ul>
+<table><tr><th>日</th><th>前進回数</th><th>列ぶん合計</th><th>1列</th><th>2列</th><th>3列+</th><th>前列が出た回数</th></tr>
+<tr><td>9/10(昼〜)</td><td>33</td><td>36</td><td>30</td><td>3</td><td>0</td><td>42</td></tr>
+<tr><td>9/11</td><td>35</td><td>43</td><td>30</td><td>3</td><td>2</td><td>45</td></tr>
+<tr><td>9/12</td><td>34</td><td>42</td><td>29</td><td>3</td><td>2</td><td>48</td></tr>
+<tr><td>9/13</td><td>31</td><td>38</td><td>27</td><td>2</td><td>2</td><td>43</td></tr>
+<tr><td>9/14</td><td>38</td><td>43</td><td>35</td><td>2</td><td>1</td><td>45</td></tr>
+<tr><td>9/15</td><td>29</td><td>34</td><td>25</td><td>3</td><td>1</td><td>27</td></tr>
+<tr><td>9/16</td><td>46</td><td>55</td><td>40</td><td>3</td><td>3</td><td>46</td></tr>
+<tr><td>9/17</td><td>33</td><td>41</td><td>27</td><td>4</td><td>2</td><td>48</td></tr></table>
+<p class="cap">※「1列」には②の小さい山（0.25〜0.5）も1として含む。今の箱の記録は同じ期間で1日3〜23回。</p>
+</section>
+
+<section><h2>④ 今の追い方の弱点（小さく測ってしまう例）</h2>
+<img src="images/04-half.jpg" alt="">
+<p class="cap">「0.5列以下」と出た6件。1段目・3段目・6段目は本当は1列進んでいる（前列が半分出た状態から測り始めたため小さく出た）。2段目・4段目は車1台の動きだけ（ノイズ）。5段目は前列に横から入った車。</p>
+<p><b>原因</b>：「いちばん前の車の位置」だけを見ているので、前列が途中まで出ている瞬間や、車1台の出入りに引きずられる。</p>
+</section>
+
+<section><h2>⑤ 夜も追える（ただし要注意）</h2>
+<img src="images/05-night.jpg" alt="">
+<p class="cap">深夜〜朝の大きな前進4件と夕方1件。行灯とヘッドライトで輪郭は取れる。2段目（03:35）は塊が奥から一気に前へ。4段目（07:07）は4台だけの小さな塊＝線が少ししか当たらず測り方が不安定。</p>
+</section>
+
+<section><h2>⑥ 正しく測るには（提案）</h2>
+<svg viewBox="0 0 900 260"><rect width="900" height="260" fill="#f4f8fd"/>
+<text x="20" y="30" font-size="16" font-weight="700">塊ぜんぶの「奥行きの並び」を前後の写真で重ね合わせ、何列ぶんずれたかを測る</text>
+<g font-size="14">
+<rect x="60" y="60" width="340" height="60" fill="#fff" stroke="#999"/><text x="70" y="80">前の写真の並び</text>
+<rect x="120" y="90" width="30" height="20" fill="#2f6fd0"/><rect x="160" y="90" width="30" height="20" fill="#2f6fd0"/><rect x="200" y="90" width="30" height="20" fill="#2f6fd0"/><rect x="240" y="90" width="30" height="20" fill="#2f6fd0"/>
+<rect x="60" y="150" width="340" height="60" fill="#fff" stroke="#999"/><text x="70" y="170">後の写真の並び</text>
+<rect x="80" y="180" width="30" height="20" fill="#1a7f3c"/><rect x="120" y="180" width="30" height="20" fill="#1a7f3c"/><rect x="160" y="180" width="30" height="20" fill="#1a7f3c"/><rect x="200" y="180" width="30" height="20" fill="#1a7f3c"/>
+<path d="M135,115 L95,175" stroke="#e0a020" stroke-width="3" fill="none"/><text x="140" y="140" fill="#e0a020">1列ぶん ずれた</text>
+<text x="440" y="90">・前の車1台だけでなく、塊ぜんぶで合わせるので</text>
+<text x="460" y="112">前列が途中まで出ていても、1台の出入りでもぶれない</text>
+<text x="440" y="145">・「遠いほど縮む」を直した目盛り（1列＝一定）で測る</text>
+<text x="460" y="167">ので 1列 / 2列 / 3列 がそのまま数字で出る</text>
+<text x="440" y="200">・ずれが2分以上そのまま続いたら確定（一過性を除く）</text>
+<text x="440" y="222">・「前列が出た（前縁が下がる）」は別の合図として残す</text>
+</g></svg>
+<ul>
+<li><b>目盛り</b>：奥行きは「1÷(画面の高さ+200)」で地面の距離に直す。1列＝0.0004（昼の1列移動で較正済み）。</li>
+<li><b>ずれ量</b>：塊の並び（7本の奥行き線を合わせたもの）を前後の写真で重ね合わせ（ずらして一番合う位置）、列ぶんで出す。</li>
+<li><b>数え方</b>：3分以内に合計0.75列以上ずれたら「列移動」。列数は四捨五入（1/2/3）。2分続いたら確定。</li>
+<li><b>前列が出た合図</b>：前縁が奥へ下がった時。あなたの定義「出る→進む」の対はこれで組む。</li>
+<li><b>夜</b>：同じ方式で動く見込み。ヘッドライトの一過性は「2分続く」条件で落とす。</li>
+<li><b>静止物</b>：側溝の格子・コーン・白線は1日の最小エッジで消す（今は右端2本の線で消し切れていない→直す）。</li>
+</ul>
+</section>
+
+<section><h2>⑦ あなたが決めること</h2>
+<div class="opt rec"><b>A（おすすめ）</b>：⑥の方式を Mac mini で試作し、同じ8日分で「前縁方式」と突き合わせ、目視20件で確かめてから、4号の列移動の元に切り替える。</div>
+<div class="opt"><b>B</b>：まず「前縁方式」のまま（②③の数字）で4号を出し、⑥は後で。</div>
+<div class="opt"><b>C</b>：据置。</div>
+</section>
+</main></body></html>
