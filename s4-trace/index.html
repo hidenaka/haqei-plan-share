@@ -1,0 +1,52 @@
+<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex">
+<title>4号 列移動を画像で追った結果</title>
+<style>
+body{font-family:-apple-system,"Hiragino Sans",sans-serif;background:#f6f7f9;color:#1f2a36;margin:0;padding:20px 14px 60px;line-height:1.7}
+main{max-width:900px;margin:0 auto}h1{font-size:24px;margin:0 0 4px}.lede{color:#4b5966;margin-bottom:18px}
+section{background:#fff;border-radius:14px;padding:16px 18px;margin-bottom:16px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+h2{font-size:18px;margin:0 0 8px}p,li{font-size:16px;margin:6px 0}img{width:100%;border-radius:8px;border:1px solid #ddd;display:block}
+.cap{font-size:13px;color:#6b7785;margin-top:4px}.big{font-size:20px;font-weight:700}
+table{border-collapse:collapse;width:100%;font-size:15px}td,th{border-bottom:1px solid #e3e7eb;padding:6px 8px;text-align:right}th:first-child,td:first-child{text-align:left}
+.opt{border-left:4px solid #2f6fd0;padding:8px 12px;margin:10px 0;background:#f4f8fd;border-radius:6px}.rec{border-left-color:#1a7f3c;background:#f1faf3}
+</style></head><body><main>
+<h1>4号の列移動を画像で追った結果（2026-09-18）</h1>
+<p class="lede">定義＝「列（横一列）が前へ進む」。Mac mini の画像 3日分（各12時間）を1分おきに追い、列1の前縁の位置から「進んだ回数」を数えた。</p>
+
+<section><h2>① 実際に起きていること（9/17 11:54→11:55）</h2>
+<img src="images/01-move.jpg" alt="">
+<p class="cap">上4枚：11:53〜11:55。<b>11:54→11:55 の1分で塊ごと前へ進む</b>＝列移動。下4枚：12:12→12:13、前列（2台）が出て前縁が奥へ下がる。</p>
+</section>
+
+<section><h2>② 1日の動き（9/17 9〜21時）</h2>
+<img src="images/02-chart.jpg" alt="">
+<p class="cap">列1の前縁の位置。下＝前（カメラ側）。<span style="color:#b9484a">●赤</span>＝前列が出て下がる、<span style="color:#1a7f3c">●緑</span>＝塊が前へ進む。きれいな階段になっている。</p>
+<p class="big">緑（進んだ）＝ 9/17: 19回、9/16: 21回、9/13: 20回（いずれも9〜21時）</p>
+</section>
+
+<section><h2>③ 目で確かめた</h2>
+<img src="images/03-verify.jpg" alt="">
+<p class="cap">検出した「進む」4件（14:42 / 16:02 / 18:48 / 19:34）の1分前と1分後。4件とも塊が前へ進んでいる。①の2件と合わせて <b>6/6</b>。</p>
+</section>
+
+<section><h2>④ 今の記録との比べ</h2>
+<table><tr><th>日</th><th>今の記録（コーンの箱）</th><th>画像で追った「進んだ」回数(9-21時)</th></tr>
+<tr><td>9/13</td><td>23</td><td>20</td></tr><tr><td>9/16</td><td>9</td><td>21</td></tr><tr><td>9/17</td><td>3</td><td>19</td></tr></table>
+<p>今の箱は、塊がコーンまで伸びた日（9/13）だけ当たり、ふつうの日は列1が箱まで来ないので数えられない。追い方を「箱1つ」から「列1の前縁の位置」に変えると、日によらず数えられる。</p>
+</section>
+
+<section><h2>⑤ どう測ったか（1枚で）</h2>
+<img src="images/00-rows.jpg" alt="">
+<ul>
+<li>車の向きに沿った奥行き線を7本引き、各線で「前から見て最初に車がある位置」を取る → その中央値＝列1の前縁。</li>
+<li>前縁が奥から前へ 一気に（3分以内に）動いたら「進んだ」1回。5分以内の二重検出は1回にまとめる。</li>
+<li>側溝の格子・コーン・白線など動かないものは、1日の最小エッジを引いて無視。</li>
+</ul>
+<p class="cap">まだ確かめていないこと：深夜（21時〜朝）。18〜20時は2件目視OK。手前カメラの先頭4台は6/05の指示どおり使わない。</p>
+</section>
+
+<section><h2>⑥ あなたが決めること</h2>
+<div class="opt rec"><b>A（おすすめ）</b>：4号の「列移動」の元をこの追い方に切り替える（Mac mini の movement-shift-tick に列1前縁の追跡を足し、advance-count の 4号をそこから出す）。切替前に1週間ぶんの画像で回して深夜も目視する。</div>
+<div class="opt"><b>B</b>：まず並走だけ（今の箱は残し、新しい追い方を別ログに1週間貯めて比べてから決める）。</div>
+<div class="opt"><b>C</b>：やらない（今のまま）。</div>
+</section>
+</main></body></html>
