@@ -1,0 +1,43 @@
+<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex">
+<title>列移動は何と関係があるか</title>
+<style>
+body{font-family:-apple-system,"Hiragino Sans",sans-serif;background:#f6f7f9;color:#1f2a36;margin:0;padding:20px 14px 60px;line-height:1.7}
+main{max-width:960px;margin:0 auto}h1{font-size:24px;margin:0 0 4px}.lede{color:#4b5966;margin-bottom:18px}
+section{background:#fff;border-radius:14px;padding:16px 18px;margin-bottom:16px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+h2{font-size:18px;margin:0 0 8px}p,li{font-size:16px;margin:6px 0}.cap{font-size:13px;color:#6b7785}img{width:100%;border-radius:8px;border:1px solid #ddd;display:block}
+table{border-collapse:collapse;width:100%;font-size:15px}td,th{border-bottom:1px solid #e3e7eb;padding:6px 8px;text-align:right}th:first-child,td:first-child{text-align:left}
+.big{font-size:20px;font-weight:700}.ng{color:#b9484a}.ok{color:#1a7f3c}
+</style></head><body><main>
+<h1>列移動は何と関係があるか — 多面的に調べた（2026-09-18）</h1>
+<p class="lede">8/31〜9/17 の18日（新しい数え方）。到着便の測り方を変え、客の種類、遅延、在台（プールの車の数）、曜日、雨、乗り場どうし、前の時間との関係を一通り見た。</p>
+
+<section><h2>答えの一覧（強い順）</h2>
+<table><tr><th>要因</th><th>効き方</th><th>強さ</th></tr>
+<tr><td class="ok"><b>曜日（週末）</b></td><td>土日は平日より <b>+25〜45%</b>（1〜3号）。4号は変わらない</td><td>日ごとの差の <b>61%</b> を説明</td></tr>
+<tr><td class="ok"><b>雨</b></td><td>雨の時間は同じ時間帯の平常より <b>+19%</b>（全体）。日単位でも雨の日ほど多い（r=0.45）</td><td>週末に足すと 70% まで上がる</td></tr>
+<tr><td class="ok"><b>在台（プールの車の数）</b></td><td>いつもより車が多い時間は列移動も多い（2号 r=0.28、3号 0.23）。車が無ければ動けない＝供給側</td><td>弱〜中</td></tr>
+<tr><td class="ok"><b>前の1時間の勢い</b></td><td>忙しい時間は次の1時間も忙しい（1号 0.30、3号 0.27）</td><td>弱</td></tr>
+<tr><td class="ng"><b>到着便</b></td><td>着いた時刻でもロビーに出る時刻でも、座席数でも便数でも推定タクシー客でも、国際/国内でも、遅延でも、ずらし0〜3時間どれでも <b>r≦0.15</b></td><td>無し</td></tr>
+<tr><td>乗り場どうし</td><td>2号と3号は少しだけ同時に忙しい（0.20）。3号と4号は無関係（0.00）</td><td>ほぼ無し</td></tr></table>
+</section>
+
+<section><h2>① 曜日</h2><img src="images/01-dow.jpg" alt="">
+<p>土（196）・日（191）は平日（141〜166）より多い。増えるのは <b>1〜3号</b>（3号 平日58→週末84）。4号は平日36・週末35で同じ。</p></section>
+
+<section><h2>② 雨</h2><img src="images/02-rain.jpg" alt="">
+<p class="cap">羽田の1時間雨量（Open-Meteo 実績）で 0.5mm以上の時間（109時間）。</p>
+<p>雨の時間は全体で +19%。1号 +15%、4号 +10%、3号だけ変わらず。雨の日が多かった期間（9/3〜9/12 はほぼ毎日）なので、日単位は週末と混ざって見える点に注意。</p></section>
+
+<section><h2>③ 在台（プールにいる車の数）</h2><img src="images/03-occ.jpg" alt="">
+<p>同じ時間帯どうしで「いつもより車が多い時に、列移動もいつもより多いか」。2号・3号で正の関係。車が多いほど1列ぶんが動く回数が増える（供給があるから出られる）。4号は無関係。</p></section>
+
+<section><h2>④ 日ごと（週末・雨・国内線）</h2><img src="images/04-daily.jpg" alt="">
+<p>週末（赤）は上に、雨の日（大きい●）も上寄り。国内線の座席数は平日と週末でほぼ同じ（100,385 vs 101,244）なので、座席数との相関 0.48 は「便が多い日」ではなく週末・雨の効果を拾っている。<br>日単位の当てはめ：<b>列移動 ≈ 平日の水準 ＋ 週末 36回 ＋ 雨 0.3回/mm</b>（説明力 70%）。</p></section>
+
+<section><h2>⑤ 使い方</h2>
+<ul>
+<li>列移動（＝出庫の速さ）の予測は <b>「時間帯 × 曜日（週末か）」を土台に、雨で上乗せ、直近1時間の勢いと在台で微調整</b>。到着便は入れない。</li>
+<li>4号は曜日にも雨にも在台にも反応が薄い＝別の仕組み（深夜運用・国際線の客層）。4号だけは今後も別扱い。</li>
+<li>18日は短い。連休・台風・欠航の日が入ると「到着便」の判定が変わる可能性は残る（現状の毎日ほぼ同じ便数では判定できない）。</li>
+</ul></section>
+</main></body></html>
