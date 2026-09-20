@@ -1,4 +1,4 @@
-// 手札 app.js — 自動生成（scripts/build-pwa.mjs）build 202609170802
+// 手札 app.js — 自動生成（scripts/build-pwa.mjs）build 202609202251
 (() => {
 "use strict";
 // ---- pwa/src/store.mjs
@@ -394,6 +394,7 @@ const GROUPS = [
   { id: 'self', title: '好き・得意・大事' },
   { id: 'whole', title: '全体を見る（当てはまり度）' },
   { id: 'record', title: 'いまの状況（記録用）' },
+  { id: 'belief', title: '信念（当たり前だと思っていること）' },
 ];
 
 const w = (id, text, hint = '', max = 3) => ({ id, text, hint, max });
@@ -621,6 +622,79 @@ const METHODS = [
       w('cx8', 'いま、大事にしていること', '言葉で', 5),
       w('cx9', 'この3か月で変わったこと', '無ければ「なし」', 3),
     ] },
+  // ---- 信念（2026-09-21 本人「内向的だから、設問と自由記述で信念を見つけたい」。docs/research/2026-09-21-信念を1人で見つける手法.md）----
+  { id: 'change', group: 'belief', kind: 'rate', scale: 5, top: 0, title: '人は変われるか', source: 'Dweck「Kind of Person」暗黙の理論（言い換え版）', minutes: 2,
+    why: '「人の性質は変えられる／変えられない」をどれくらい信じているか。点は目盛り。正解はない。', items: [
+      r('ch1', '人の基本的な性質は、努力で大きく変えられる'), r('ch2', '自分の性格は、もうだいたい決まっている'), r('ch3', '年を取ってからでも、人は新しいやり方を身につけられる'), r('ch4', 'どんな人にも、変えられない芯がある'),
+      r('ch5', '苦手なことは、やり方次第で得意になりうる'), r('ch6', '人は結局、生まれ持ったものの範囲でしか動けない'), r('ch7', '自分は3年前より、ものの見方が変わった'), r('ch8', '「人は変わらない」と思うと、少し楽になる'),
+    ] },
+  { id: 'control', group: 'belief', kind: 'rate', scale: 5, top: 0, title: '結果は自分で決まるか', source: 'Rotter「統制の所在」（言い換え版）', minutes: 2,
+    why: '「結果は努力で決まる」と「運や他人で決まる」のどちらに寄っているか。点は目盛り。', items: [
+      r('lc1', 'うまくいくかどうかは、だいたい自分の準備で決まる'), r('lc2', '人生は運の要素が大きい'), r('lc3', '計画を立てても、結局は周りの都合で変わる'), r('lc4', '自分の稼ぎは、自分の工夫で増やせる'),
+      r('lc5', '偉い人や会社の都合には逆らえない'), r('lc6', '嫌なことが起きた時、まず自分の何が悪かったか考える'), r('lc7', '健康は、自分の毎日の選択の結果だ'), r('lc8', '人間関係は、相手次第でどうにもならないことが多い'),
+    ] },
+  { id: 'musts', group: 'belief', kind: 'rate', scale: 5, top: 5, title: 'べき・ねば の棚卸し', source: 'Ellis の非合理的信念（要求・破局視・耐性・自己卑下 × 達成・所属・快適）SGABS の構造（言い換え版）', minutes: 3,
+    why: '自分を縛っている「〜すべき」「〜でなければ」を見つける。上位が「ルール信念」の候補。', items: [
+      r('mu1', '仕事で失敗してはいけない'), r('mu2', '人に嫌われてはいけない'), r('mu3', '不快なことは、できるだけ避けるべきだ'),
+      r('mu4', '失敗したら、取り返しがつかない'), r('mu5', '人に拒まれるのは、耐えられないほどつらい'), r('mu6', '面倒なことを我慢するのは、無理だ'),
+      r('mu7', 'うまくできない自分は、価値が低い'), r('mu8', '人に受け入れられない自分は、ダメな人間だと感じる'), r('mu9', '楽ができないなら、やる意味がない'),
+      r('mu10', '一度決めたことは、やり抜かねばならない'), r('mu11', '頼まれたら、断ってはいけない'), r('mu12', '休むのは、さぼりだ'),
+    ] },
+  { id: 'selfother', group: 'belief', kind: 'rate', scale: 5, top: 0, title: '自分と他人の見方', source: 'Brief Core Schema Scales（自分＋／自分−／他人＋／他人−）の構造（言い換え版）', minutes: 2,
+    why: '「自分はこういう者だ」「人はこういう者だ」の4つの面を目盛りで。', items: [
+      r('so1', '自分は、役に立つ人間だ'), r('so2', '自分は、面白いところがある'), r('so3', '自分は、信頼できる'),
+      r('so4', '自分は、弱い'), r('so5', '自分は、人より劣っている'), r('so6', '自分は、失敗しがちだ'),
+      r('so7', '人は、だいたい親切だ'), r('so8', '人は、信用できる'), r('so9', '人は、自分を受け入れてくれる'),
+      r('so10', '人は、利用してくる'), r('so11', '人は、冷たい'), r('so12', '人は、自分を見下している'),
+    ] },
+  { id: 'arrow', group: 'belief', kind: 'write', title: '下向き矢印', source: 'Beck／Burns「下向き矢印法」（認知行動療法）', minutes: 6,
+    why: '最近ざわついた考えを1つ選び、「それが本当だとしたら、自分について何を意味する？」を5回。最後の1行が「核の信念」の候補。つらくなったら止めてよい。', items: [
+      w('ar0', '最近、心がざわついた場面と、その時に頭に浮かんだ考え', '例: 客に無視された→「自分は軽く見られている」', 2),
+      w('ar1', 'それが本当だとしたら、自分について何を意味する？（1回目）', '', 1),
+      w('ar2', 'それが本当だとしたら、何を意味する？（2回目）', '', 1),
+      w('ar3', 'それが本当だとしたら、何を意味する？（3回目）', '', 1),
+      w('ar4', 'それが本当だとしたら、何を意味する？（4回目）', '', 1),
+      w('ar5', 'それが本当だとしたら、何を意味する？（5回目・ここが候補）', '「私は…」の形で', 1),
+    ] },
+  { id: 'ladder', group: 'belief', kind: 'write', title: 'ラダリング（何が大事？）', source: 'Hinkle 1965／Reynolds & Gutman「ラダリング」（自己記入式）', minutes: 5,
+    why: '好きな物・行動から「それの何が大事？」を4回のぼると、上のほうにある価値が出る。', items: [
+      w('la0', '好きな物・よくやること を1つ', '例: 釣り', 1),
+      w('la1', 'それの、何が大事？（1回目）', '例: 一人で静かにいられる', 1),
+      w('la2', 'それが大事なのは、何が大事だから？（2回目）', '', 1),
+      w('la3', 'それが大事なのは、何が大事だから？（3回目）', '', 1),
+      w('la4', 'それが大事なのは、何が大事だから？（4回目・ここが候補）', '1語〜1文で', 1),
+    ] },
+  { id: 'triad', group: 'belief', kind: 'write', title: '三つ組法（自分の物差し）', source: 'Kelly「レパートリーグリッド」の三つ組法', minutes: 6,
+    why: '身近な3人を並べ「2人が似ていて1人が違う点」を言葉の対で書く。出てきた対が、自分が世界を切る物差し（構成概念）。', items: [
+      w('tr0', '身近な人を3人（名前でなくてよい）', '例: 父／常連の客A／昔の友人', 3),
+      w('tr1', '2人が似ていて1人が違う点（1組目）', '例: 落ち着いている ↔ せわしい', 1),
+      w('tr2', '別の3人（または同じ3人）で、もう1組', '', 1),
+      w('tr3', 'もう1組', '', 1),
+      w('tr4', 'もう1組', '', 1),
+      w('tr5', '出てきた対の中で、自分はどちら側にいることが多い？', '', 3),
+    ] },
+  { id: 'sentence', group: 'belief', kind: 'write', title: '文の続き（私は・人は・世界は）', source: 'Beck の認知の三徴／センテンス・コンプリーション', minutes: 5,
+    why: '頭で考えず、手が動くままに続きを書く。思いつくだけ。', items: [
+      w('sc1', '私は…', '思いつくだけ', 10), w('sc2', '人というのは…', '', 10), w('sc3', '世の中は…', '', 10),
+      w('sc4', 'もし〜なら、〜だ（自分のルール）', '例: もし頼まれたら、断ってはいけない', 10), w('sc5', '本当は…', '', 5),
+    ] },
+  { id: 'affirm', group: 'belief', kind: 'write', title: '価値の作文', source: 'Cohen & Sherman「values affirmation」', minutes: 8,
+    why: '「大事な言葉」から2〜3選び、それが大事だった場面を書く。効果が数か月続くという研究がある。', items: [
+      w('af1', '大事な言葉から2〜3つ', '「大事な言葉」カードの3つでよい', 3),
+      w('af2', 'その言葉が大事だった、具体的な場面', 'いつ・どこで・何が', 3),
+      w('af3', 'その場面で、自分は何をしたか', '', 3),
+      w('af4', 'この価値が、これからの1週間のどこに出てくるか', '', 3),
+    ] },
+  { id: 'evidence', group: 'belief', kind: 'write', title: '反証さがし', source: '認知行動療法「証拠の検討」', minutes: 5,
+    why: '候補の信念1つに、支える事実・反する事実・別の見方を並べる。確信の度合いが少し動けば十分。', items: [
+      w('vd0', '検討する信念（下向き矢印や文の続きから1つ）', '例: 私は軽く見られている', 1),
+      w('vd1', 'それを支える事実', '', 5), w('vd2', 'それに反する事実', '', 5), w('vd3', '親友なら、どう言うか', '', 2),
+      w('vd4', '確信の度合い（0〜100）: 前 → 後', '例: 80 → 60', 1),
+    ] },
+  { id: 'expressive', group: 'belief', kind: 'write', title: '4日間の書き出し', source: 'Pennebaker「表現的ライティング」（200本超の研究）', minutes: 20,
+    why: '引っかかっている出来事1つについて、1日15〜20分×4日、事実と感情の両方を、直さずに書き続ける。人に見せない前提。つらくなったら止めてよい（相談窓口: よりそいホットライン 0120-279-338）。', items: [
+      w('ex1', '1日目', '20分。止めずに書く', 1), w('ex2', '2日目', '同じ出来事を、別の角度から', 1), w('ex3', '3日目', '', 1), w('ex4', '4日目', 'この出来事が、いまの自分にどうつながるか', 1),
+    ] },
   { id: 'tipi', group: 'whole', kind: 'rate', scale: 7, top: 0, title: '性格の傾向', source: 'Gosling ほか「TIPI」（ビッグファイブ10項目）', minutes: 2,
     why: 'タイプ分けではなく、5つの目盛り。「合う手札」を選ぶ参考にする。', items: [
       r('tp1', '外向的で、社交的'), r('tp2', '批判的で、口論しがち'), r('tp3', '信頼でき、自分を律している'), r('tp4', '不安になりやすく、動揺しやすい'), r('tp5', '新しい経験に開かれていて、複雑なことも好き'),
@@ -748,6 +822,16 @@ function rateSummary(card, rates, state) {
   if (!rates || Object.keys(rates).length === 0) return null;
   if (card.id === 'ikigai9') { const vals = card.items.map(i => rates[i.id]).filter(v => v != null); return `合計 ${vals.reduce((a, b) => a + b, 0)} / ${card.items.length * card.scale}（答えた ${vals.length} 問）`; }
   if (card.id === 'wheel' || card.id === 'perma') return `低め: ${rateLow(card, rates, state).map(i => `${i.text} ${i.score}`).join('・') || '—'}`;
+  if (card.id === 'change' || card.id === 'control') {
+    const pos = card.id === 'change' ? ['ch1', 'ch3', 'ch5', 'ch7'] : ['lc1', 'lc4', 'lc6', 'lc7'];
+    const vals = card.items.map(i => (rates[i.id] == null ? null : pos.includes(i.id) ? rates[i.id] : card.scale + 1 - rates[i.id])).filter(v => v != null);
+    if (!vals.length) return null;
+    return `${card.id === 'change' ? '「変われる」寄り' : '「自分で決まる」寄り'} ${(vals.reduce((a, b) => a + b, 0) / vals.length).toFixed(1)} / ${card.scale}（答えた ${vals.length}）`;
+  }
+  if (card.id === 'selfother') {
+    const g = { '自分＋': ['so1', 'so2', 'so3'], '自分−': ['so4', 'so5', 'so6'], '他人＋': ['so7', 'so8', 'so9'], '他人−': ['so10', 'so11', 'so12'] };
+    return Object.entries(g).map(([k, ids]) => { const v = ids.map(i => rates[i]).filter(x => x != null); return v.length ? `${k} ${(v.reduce((a, b) => a + b, 0) / v.length).toFixed(1)}` : null; }).filter(Boolean).join('／') + `（1〜${card.scale}）`;
+  }
   if (card.id === 'tipi') {
     const rev = v => (v == null ? null : card.scale + 1 - v);
     const pair = (a, b, label) => { const x = rates[a], y = rev(rates[b]); if (x == null || y == null) return null; return `${label} ${((x + y) / 2).toFixed(1)}`; };
@@ -928,6 +1012,7 @@ const FACETS = [
   { id: 'avoid', name: '避けたい未来', hint: 'なりたくない生き方・80歳の後悔' },
   { id: 'now', name: 'いまの状況の読み', hint: '仕事・人間関係・体・お金・考えていること' },
   { id: 'traits', name: '性格の傾向（数字のまま）', hint: 'TIPI の5つの目盛り・生活の輪・生きがい9' },
+  { id: 'beliefs', name: '信念（当たり前だと思っていること）', hint: '下向き矢印・文の続き・べき・ねば・変われるか・自分で決まるか・自分と他人の見方。「私は／人は／世界は」の候補文を本人の言葉で。反証さがしを活かし方に' },
   { id: 'mitate', name: '見立て（占い調・外れてよい）', hint: '1行の言い切り。§16 の「見立て」と同じ扱い' },
 ];
 const POSSIBILITY_MIN = 3, POSSIBILITY_MAX = 6;
@@ -970,6 +1055,7 @@ function localProfile(state) {
   const who = [...pickFinal(state, 'whopick'), ...by('re5')]; if (who.length) out.push({ id: 'who', name: '誰のために', text: [...new Set(who)].slice(0, 5).join('・') });
   const tr = []; if (n.tipi) tr.push('性格の傾向 ' + Object.entries(n.tipi).filter(([, v]) => v != null).map(([k, v]) => `${k}${v}`).join(' ')); if (n.wheel) tr.push('生活の輪 ' + Object.entries(n.wheel).map(([k, v]) => `${k}${v}`).join(' ')); if (n.ikigai9) tr.push(`生きがい9 ${n.ikigai9.total}/${n.ikigai9.max}`); if (tr.length) out.push({ id: 'traits', name: '性格の傾向（数字のまま）', text: tr.join('／') });
   const av = [...pickFinal(state, 'regretpick'), ...by('an1')]; if (av.length) out.push({ id: 'avoid', name: '避けたい未来', text: [...new Set(av)].slice(0, 5).join('・') });
+  const bl = []; for (const id of ['change', 'control', 'selfother']) { const c = method(id); const r = state?.rates?.[id]; if (r && Object.keys(r).length) bl.push(rateSummary(c, r, state)); } const mu = rateTop(method('musts'), state?.rates?.musts, state).map(i => i.text); if (mu.length) bl.push('べき・ねば上位: ' + mu.join('・')); const sc = by('ar5').concat(by('sc1').slice(0, 3)); if (sc.length) bl.push('候補文: ' + sc.join('／')); if (bl.length) out.push({ id: 'beliefs', name: '信念（当たり前だと思っていること）', text: bl.join('／') });
   const dirId = directionHint(state); if (dirId) { const d = DIRECTIONS.find(x => x.id === dirId); out.push({ id: 'direction', name: '実験の方向（数字から）', text: `${d.trouble} → 『${d.gains[0]}』／『${d.gains[1]}』` }); }
   return out;
 }
@@ -1047,6 +1133,52 @@ function contentSignature(db, m) {
   const s = JSON.stringify([db ?? null, rest]);
   let h = 0; for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) | 0;
   return `${s.length}:${h}`;
+}
+
+// ---------- 復元: AI 読み取り用の文章（dumpForAI）から棚卸しの状態を組み立て直す（2026-09-17 の事故対応） ----------
+// 文章は「1行1項目」を " / " でつないでいるので戻せる。星・残した3つ・記録の中身・本体 db は文章に無いので戻らない。
+function stateFromDump(text) {
+  const st = { answers: {}, rates: {}, picks: {}, rewrite: {}, customItems: {}, skipped: [], history: [], recovered: true };
+  const byTitle = t => METHODS.find(c => c.title === t);
+  let cur = null;
+  const putPick = (id, words) => { const c = method(id); st.picks[id] = { step: 0, picks: c.steps.map(() => [...words]), custom: words.filter(w => !c.options.some(o => o.w === w)) }; };
+  const lines = String(text ?? '').split(/\r?\n/);
+  for (const raw of lines) {
+    const line = raw.trimEnd();
+    if (/^## 返事の形式|^# 依頼/.test(line)) break;
+    let m;
+    if ((m = line.match(/^## 大事な言葉[^:]*: (.+)$/))) { putPick('values', m[1].split('・').map(x => x.trim()).filter(Boolean)); cur = null; continue; }
+    if ((m = line.match(/^## 飛ばしたカード: (.+)$/))) { st.skipped = m[1].split('・').map(t => METHODS.find(c => c.title === t.trim())?.id).filter(Boolean); cur = null; continue; }
+    if ((m = line.match(/^## \[(.+?)\] 選んだ: (.+)$/))) { const c = byTitle(m[1]); if (c?.kind === 'pick') putPick(c.id, m[2].split('・').map(x => x.trim()).filter(Boolean)); cur = null; continue; }
+    if ((m = line.match(/^## \[(.+?)\]（1〜(\d+)）(.*)$/))) {
+      const c = byTitle(m[1]); cur = null; if (c?.kind !== 'rate') continue;
+      const known = [...c.items].sort((a, b) => b.text.length - a.text.length);
+      st.rates[c.id] = {};
+      for (const grp of m[3].split(' /')) {
+        const g = grp.trim().match(/^(\d+): (.+)$/); if (!g) continue;
+        const score = Number(g[1]); let rest = g[2];
+        while (rest.length) {
+          rest = rest.replace(/^[、\s]+/, ''); if (!rest) break;
+          let hit = null;
+          const rw = rest.match(/^(.+?)（言い換え: 元「(.+?)」）/); const cu = rest.match(/^(.+?)（本人が足した）/);
+          if (rw && !known.some(k => rest.startsWith(k.text + '、') || rest === k.text)) { const orig = known.find(k => k.text === rw[2]); if (orig) { st.rewrite[c.id] ??= {}; st.rewrite[c.id][orig.id] = rw[1]; st.rates[c.id][orig.id] = score; } rest = rest.slice(rw[0].length); continue; }
+          if (cu && !known.some(k => rest.startsWith(k.text))) { st.customItems[c.id] ??= []; const id = 'c' + Math.random().toString(36).slice(2, 8); st.customItems[c.id].push({ id, text: cu[1] }); st.rates[c.id][id] = score; rest = rest.slice(cu[0].length); continue; }
+          for (const k of known) if (rest.startsWith(k.text)) { hit = k; break; }
+          if (!hit) { const cut = rest.indexOf('、'); rest = cut >= 0 ? rest.slice(cut + 1) : ''; continue; }
+          st.rates[c.id][hit.id] = score; rest = rest.slice(hit.text.length);
+        }
+      }
+      continue;
+    }
+    if ((m = line.match(/^## \[(.+?)\]$/))) { const c = byTitle(m[1]); cur = c?.kind === 'write' ? c : null; continue; }
+    if ((m = line.match(/^## これまでの記録/))) { cur = 'history'; continue; }
+    if (cur === 'history' && (m = line.match(/^- (\d{4}-\d{2}-\d{2})(?:「(.*?)」)?/))) { st.history.push({ on: m[1], label: m[2] ?? '' }); continue; }
+    if (cur && cur !== 'history' && (m = line.match(/^- (.+?): (.*)$/))) { const q = cur.items.find(x => x.text === m[1]); if (q) st.answers[q.id] = m[2].split(' / ').map(x => x.trim()).filter(Boolean).join('\n'); continue; }
+    if (/^## /.test(line)) cur = null;
+  }
+  // 記録は見出しだけ残っていたものを、復元した材料で作り直す（中身はその時点のものではない旨を label に）
+  st.history = st.history.map(h => ({ ...snapshot(st, { today: h.on, label: `${h.label}（復元: 材料は最新のもの）` }) }));
+  return st;
 }
 
 // ---- pwa/src/sync.mjs
