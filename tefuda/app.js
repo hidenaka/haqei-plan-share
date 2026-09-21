@@ -1,4 +1,4 @@
-// 手札 app.js — 自動生成（scripts/build-pwa.mjs）build 202609202303
+// 手札 app.js — 自動生成（scripts/build-pwa.mjs）build 202609210409
 (() => {
 "use strict";
 // ---- pwa/src/store.mjs
@@ -395,6 +395,7 @@ const GROUPS = [
   { id: 'whole', title: '全体を見る（当てはまり度）' },
   { id: 'record', title: 'いまの状況（記録用）' },
   { id: 'belief', title: '信念（当たり前だと思っていること）' },
+  { id: 'temper', title: '内向型の資質（INFP と言われる人の素材）' },
 ];
 
 const w = (id, text, hint = '', max = 3) => ({ id, text, hint, max });
@@ -786,6 +787,59 @@ const METHODS = [
     why: '引っかかっている出来事1つについて、1日15〜20分×4日、事実と感情の両方を、直さずに書き続ける。人に見せない前提。つらくなったら止めてよい（相談窓口: よりそいホットライン 0120-279-338）。', items: [
       w('ex1', '1日目', '20分。止めずに書く', 1), w('ex2', '2日目', '同じ出来事を、別の角度から', 1), w('ex3', '3日目', '', 1), w('ex4', '4日目', 'この出来事が、いまの自分にどうつながるか', 1),
     ] },
+  // ---- 内向型の資質（2026-09-21 本人「INFP タイプの資質を見つける方法を調べろ」。docs/research/2026-09-21-内向型INFPの資質を見つける.md。INFP かどうかは判定しない）----
+  { id: 'introv', group: 'temper', kind: 'rate', scale: 5, top: 0, axis: { name: '内向（一人で充電）', pos: ['iv2', 'iv4', 'iv6', 'iv8', 'iv10'] }, title: '内向の2側面', source: 'Big Five Aspect Scales（DeYoung）外向の「熱意」「主張」の言い換え', minutes: 2,
+    why: '外向は「人といて楽しい（熱意）」と「前に出る（主張）」の2つ。どちらが低い／高いかで、内向の形が分かる。', items: [
+      r('iv1', '人と一緒にいると元気が出る'), r('iv2', '人と会ったあとは、一人の時間で充電したい'), r('iv3', '初対面でも話しかけるほうだ'), r('iv4', '話すより、聞いているほうが多い'), r('iv5', '会議や集まりで、自分から意見を言う'),
+      r('iv6', '前に出るより、裏で支えるほうが性に合う'), r('iv7', 'にぎやかな場所が好きだ'), r('iv8', '静かな場所のほうが頭が働く'), r('iv9', '主導権を取るのは苦にならない'), r('iv10', '深い話ができる少人数のほうがいい'),
+    ] },
+  { id: 'openn', group: 'temper', kind: 'rate', scale: 5, top: 0, axis: { name: '開放性（想像・審美）', pos: ['op1', 'op2', 'op3', 'op4', 'op5', 'op6', 'op7', 'op8'] }, title: '開放性の2側面', source: 'Big Five Aspect Scales「審美・想像（Openness）」「知性（Intellect）」の言い換え', minutes: 2,
+    why: '「美しいもの・想像」と「考えること・抽象」のどちらに開いているか。INFP の説明で「直観」と呼ばれる部分。', items: [
+      r('op1', '空想にふけることが多い'), r('op2', '音楽や景色に、心を動かされる'), r('op3', '物語や比喩で考えるのが好きだ'), r('op4', '「意味」を見つけると、動ける'),
+      r('op5', '難しい問題を考えるのが楽しい'), r('op6', '仕組みや理屈を知りたくなる'), r('op7', '新しい考え方に出会うとわくわくする'), r('op8', '言葉をひねるのが好きだ'),
+      r('op9', '決まったやり方のほうが安心する'), r('op10', '抽象的な話は苦手だ'),
+    ] },
+  { id: 'sensit', group: 'temper', kind: 'rate', scale: 5, top: 0, axis: { name: '感受性（刺激に深く反応）', pos: ['se1', 'se2', 'se3', 'se4', 'se5', 'se6', 'se7', 'se8', 'se9', 'se10', 'se11', 'se12'], allPositive: true }, title: '感受性の3つ', source: 'Aron「感覚処理感受性（HSP）」3因子: 興奮しやすさ・審美的感受性・低い感覚閾値（言い換え）', minutes: 2,
+    why: '刺激を深く処理する性質。3つに分かれる（疲れやすさ／美しさへの反応／音や光への敏感さ）。人口の15〜20%が高め。', items: [
+      r('se1', '短時間にやることが多いと、混乱する'), r('se2', '人の気分に影響される'), r('se3', '見られていると、いつも通りにできない'), r('se4', '忙しい日のあとは、暗い部屋で休みたい'),
+      r('se5', '細かな違いや変化によく気づく'), r('se6', '芸術や音楽に深く心を動かされる'), r('se7', '豊かで複雑な内面があると思う'), r('se8', '人がどうすれば心地よいか、すぐ分かる'),
+      r('se9', '大きな音や強い光が苦手だ'), r('se10', 'カフェインや薬の効きが強い'), r('se11', 'ざらざらした布や強いにおいが気になる'), r('se12', '痛みに敏感なほうだ'),
+    ] },
+  { id: 'valued', group: 'temper', kind: 'rate', scale: 5, top: 0, axis: { name: '価値主導（自分の物差しで決める）', pos: ['vd1', 'vd2', 'vd3', 'vd4', 'vd5', 'vd6', 'vd7', 'vd8'] }, title: '価値主導と本物らしさ', source: 'Schwartz「自己志向」・authenticity 尺度・内向的感情（Fi）の記述（言い換え）', minutes: 2,
+    why: '決めるとき「自分の内側の物差し」と「周りの基準」のどちらを使うか。INFP の説明で「内向的感情」と呼ばれる部分。', items: [
+      r('vd1', '人がどう言おうと、自分が納得しないと動けない'), r('vd2', '自分の価値観に反する仕事は、給料が良くても続かない'), r('vd3', '本音と違うことを言うと、あとで疲れる'), r('vd4', '正しさより「自分にとって本当か」を優先する'),
+      r('vd5', '嘘をつけない・演じるのが苦手だ'), r('vd6', '人の評価より、自分の基準で満足を決める'), r('vd7', '「何のために」が無いと、手が止まる'), r('vd8', '自分らしくいられる場所と、そうでない場所がはっきりある'),
+      r('vd9', '周りに合わせるほうが楽だ'), r('vd10', '多数派の意見に乗るほうが安心する'),
+    ] },
+  { id: 'projects', group: 'temper', kind: 'write', title: '私的プロジェクトの評価', source: 'Brian Little「Personal Projects Analysis」（列挙→評価。核のプロジェクト＝自分らしさ×楽しさ）', minutes: 12,
+    why: '今、時間と気持ちを使っている「プロジェクト」を10個出し、6つの目盛りで採点する。「自分らしさ」と「楽しさ」の高いものが核のプロジェクト＝資質が現れている場所。', items: [
+      w('pp1', '今やっていること・気にかけていること（小さくてよい）', '1行1つ。10個まで', 10),
+      w('pp2', 'それぞれの「重要さ」「楽しさ」「自分らしさ」「進み」「難しさ」「自分で決められる度合い」を 1〜5 で', '例: 釣り 3,5,5,4,2,5', 10),
+      w('pp3', '「自分らしさ」と「楽しさ」が両方高いもの（＝核のプロジェクト）', '', 3),
+      w('pp4', '重要だが楽しくないもの（やらされ）', '', 3),
+      w('pp5', '核のプロジェクトのために、普段の自分と違う振る舞いをした場面', 'Little の「free trait」', 3),
+    ] },
+  { id: 'niche', group: 'temper', kind: 'write', title: '回復の場所', source: 'Cain『Quiet』restorative niche・Little の free trait の代償', minutes: 4,
+    why: '内向型は、外向的に振る舞ったあと「回復の場所」が要る。どこで・何をすると戻るかを言葉にする。', items: [
+      w('rn1', '疲れた時、確実に回復できる場所・時間', '例: 車の中で20分／風呂', 5),
+      w('rn2', '1週間の中で、回復の場所が確保できている時間', '', 3),
+      w('rn3', '回復を邪魔しているもの', '', 3),
+      w('rn4', '外向的に振る舞わなければならない場面と、そのあとの自分', '', 3),
+    ] },
+  { id: 'solo', group: 'temper', kind: 'write', title: '一人でやる創造の記録', source: 'Cain「一人でやる創造」・Csikszentmihalyi のフロー・Pennebaker', minutes: 5,
+    why: '一人で作った・書いた・考えたものを並べる。人に見せていないものほど、資質が出ている。', items: [
+      w('sl1', '一人で作った・書いた・調べた・組んだもの（人に見せていないものも）', '10まで', 10),
+      w('sl2', '上の中で、時間を忘れたもの', '', 3),
+      w('sl3', '上の中で、人に見せたら反応があったもの', '', 3),
+      w('sl4', '「もし時間が無限にあったら作りたいもの」', '', 3),
+    ] },
+  { id: 'ideal', group: 'temper', kind: 'write', title: '理想と現実の差', source: 'INFP の記述（理想主義・完璧主義・先延ばし）／Higgins「自己不一致理論」', minutes: 5,
+    why: '「こうありたい自分」と「今の自分」の差は、資質の方向を教える。差そのものは悪くない。', items: [
+      w('id1', 'こうありたい自分（3行で）', '', 3),
+      w('id2', '今の自分と、いちばん差があるところ', '', 3),
+      w('id3', 'その差のせいで、先延ばしにしていること', '', 3),
+      w('id4', '差を「半分」埋めるなら、最初の2分は？', '', 1),
+    ] },
   { id: 'tipi', group: 'whole', kind: 'rate', scale: 7, top: 0, title: '性格の傾向', source: 'Gosling ほか「TIPI」（ビッグファイブ10項目）', minutes: 2,
     why: 'タイプ分けではなく、5つの目盛り。「合う手札」を選ぶ参考にする。', items: [
       r('tp1', '外向的で、社交的'), r('tp2', '批判的で、口論しがち'), r('tp3', '信頼でき、自分を律している'), r('tp4', '不安になりやすく、動揺しやすい'), r('tp5', '新しい経験に開かれていて、複雑なことも好き'),
@@ -902,7 +956,7 @@ function chipsFor(state, stars) {
   const byPid = (...pids) => items.filter(i => pids.includes(i.pid)).map(i => i.text);
   const uniq = arr => [...new Set(arr.filter(Boolean))];
   return {
-    use: uniq([...starred, ...latestRound(state).candidates.flatMap(c => c.use ? [c.use] : []), ...pickFinal(state, 'skillpick'), ...pickFinal(state, 'likepick'), ...byPid('via'), ...byPid('lk1', 'sk1', 'sk3', 'lk2', 'fk1')]).slice(0, 16),
+    use: uniq([...starred, ...latestRound(state).candidates.flatMap(c => c.use ? [c.use] : []), ...byPid('pp3'), ...pickFinal(state, 'skillpick'), ...pickFinal(state, 'likepick'), ...byPid('via'), ...byPid('lk1', 'sk1', 'sk3', 'lk2', 'fk1')]).slice(0, 16),
     grow: uniq([...pickFinal(state, 'growpick'), ...pickFinal(state, 'values'), ...starred, ...latestRound(state).candidates.flatMap(c => c.grow ? [c.grow] : []), ...byPid('meaning'), ...byPid('schwartz'), ...byPid('eu4'), ...byPid('os2')]).slice(0, 16),
     who: uniq([...pickFinal(state, 'whopick'), ...byPid('re5', 'co2'), ...latestRound(state).candidates.flatMap(c => c.who ? [c.who] : []), ...WHO_CHIPS]).slice(0, 10),
   };
@@ -930,11 +984,26 @@ function beliefOutline(state) {
   return { axes, selfOther: so, tops, candidates: [...new Set(candidates)], done, total: cards.length };
 }
 
+// 内向型の資質の輪郭: 4軸＋感受性の3つ＋核のプロジェクト（本人が書いた pp3）
+function temperOutline(state) {
+  const rt = state?.rates ?? {};
+  const axes = METHODS.filter(c => c.group === 'temper' && c.kind === 'rate' && c.axis).map(c => axisScore(c, rt[c.id])).filter(Boolean);
+  const se = rt.sensit;
+  const sub = se ? [['興奮しやすさ', ['se1', 'se2', 'se3', 'se4']], ['審美的感受性', ['se5', 'se6', 'se7', 'se8']], ['感覚の敏感さ', ['se9', 'se10', 'se11', 'se12']]].map(([name, ids]) => { const v = ids.map(i => se[i]).filter(x => x != null); return v.length ? { name, value: v.reduce((a, b) => a + b, 0) / v.length, n: v.length, total: 4, max: 5 } : null; }).filter(Boolean) : [];
+  const items = itemsFrom(state);
+  const by = pid => items.filter(i => i.pid === pid).map(i => i.text);
+  const core = by('pp3'); const niches = by('rn1'); const solo = [...by('sl2'), ...by('sl4')];
+  const cards = METHODS.filter(c => c.group === 'temper');
+  const done = cards.filter(c => { const st = methodStatus(c, state); return !st.skipped && st.done === st.total; }).length;
+  return { axes, sensitivity: sub, core, niches, solo, done, total: cards.length };
+}
+
 // 当てはまり度カードの要約（表示用。タイプ名は付けない）
 function rateSummary(card, rates, state) {
   if (!rates || Object.keys(rates).length === 0) return null;
   if (card.id === 'ikigai9') { const vals = card.items.map(i => rates[i.id]).filter(v => v != null); return `合計 ${vals.reduce((a, b) => a + b, 0)} / ${card.items.length * card.scale}（答えた ${vals.length} 問）`; }
   if (card.id === 'wheel' || card.id === 'perma') return `低め: ${rateLow(card, rates, state).map(i => `${i.text} ${i.score}`).join('・') || '—'}`;
+  if (card.id === 'sensit') { const t = temperOutline({ rates: { sensit: rates } }); return [...t.axes.map(a => `全体 ${a.value.toFixed(1)}`), ...t.sensitivity.map(a => `${a.name} ${a.value.toFixed(1)}`)].join('／') + `（1〜${card.scale}）`; }
   if (card.axis) {
     const a = axisScore(card, rates); if (!a) return null;
     return `「${card.axis.name}」寄り ${a.value.toFixed(1)} / ${card.scale}（答えた ${a.n}）`;
@@ -1008,6 +1077,7 @@ function dumpForAI(state, { today = '', purpose = null, task = 'questions' } = {
   }
   if (state?.skipped?.length) L.push(`## 飛ばしたカード: ${state.skipped.map(id => method(id)?.title ?? id).join('・')}`);
   { const o = beliefOutline(state); if (o.axes.length || o.candidates.length) { L.push(`## 信念の輪郭（端末が数えた目盛り。カード ${o.done}/${o.total} 枚）`); for (const a of o.axes) L.push(`- ${a.name}: ${a.value.toFixed(1)}/${a.max}`); if (o.selfOther.length) L.push(`- 自分と他人: ${o.selfOther.map(a => `${a.name} ${a.value.toFixed(1)}`).join('、')}`); for (const t of o.tops) L.push(`- ${t.title}の上位: ${t.items.join('、')}`); if (o.candidates.length) L.push(`- 本人が書いた候補文: ${o.candidates.join(' ／ ')}`); } }
+  { const t = temperOutline(state); if (t.axes.length || t.core.length) { L.push(`## 内向型の資質（端末が数えた目盛り。INFP かどうかは判定しない。カード ${t.done}/${t.total} 枚）`); for (const a of t.axes) L.push(`- ${a.name}: ${a.value.toFixed(1)}/${a.max}`); if (t.sensitivity.length) L.push(`- 感受性の内訳: ${t.sensitivity.map(a => `${a.name} ${a.value.toFixed(1)}`).join('、')}`); if (t.core.length) L.push(`- 核のプロジェクト（自分らしさ×楽しさ）: ${t.core.join('、')}`); if (t.niches.length) L.push(`- 回復の場所: ${t.niches.join('、')}`); if (t.solo.length) L.push(`- 一人でやる創造: ${t.solo.join('、')}`); } }
   const hist = state?.history ?? [];
   if (hist.length) {
     L.push(`## これまでの記録（${hist.length} 回。古い順）— 時系列の変化も見て、観察と問いに使う`);
@@ -1161,8 +1231,8 @@ function localProfile(state) {
   const by = pid => items.filter(i => i.pid === pid).map(i => i.text);
   const out = [];
   const val = pickFinal(state, 'values'); if (val.length) out.push({ id: 'values', name: '大事にしているもの', text: `大事な言葉: ${val.join('・')}${n.meaning?.length ? `／意味の源の上位: ${n.meaning.join('・')}` : ''}` });
-  const st = [...pickFinal(state, 'skillpick'), ...(n.via ?? [])]; if (st.length) out.push({ id: 'strength', name: '強み（本人の評価）', text: [...new Set(st)].slice(0, 8).join('・') });
-  const en = [...pickFinal(state, 'likepick'), ...by('gtj3'), ...by('fl1')]; if (en.length) out.push({ id: 'energy', name: '元気の源', text: [...new Set(en)].slice(0, 8).join('・') });
+  const st = [...pickFinal(state, 'skillpick'), ...(n.via ?? []), ...by('pp3')]; if (st.length) out.push({ id: 'strength', name: '強み（本人の評価）', text: [...new Set(st)].slice(0, 8).join('・') });
+  const en = [...pickFinal(state, 'likepick'), ...by('gtj3'), ...by('fl1'), ...by('sl2')]; if (en.length) out.push({ id: 'energy', name: '元気の源', text: [...new Set(en)].slice(0, 8).join('・') });
   const dr = [...by('gtj4'), ...by('en4')]; if (dr.length) out.push({ id: 'drain', name: '消耗の源', text: [...new Set(dr)].slice(0, 6).join('・') });
   const who = [...pickFinal(state, 'whopick'), ...by('re5')]; if (who.length) out.push({ id: 'who', name: '誰のために', text: [...new Set(who)].slice(0, 5).join('・') });
   const tr = []; if (n.tipi) tr.push('性格の傾向 ' + Object.entries(n.tipi).filter(([, v]) => v != null).map(([k, v]) => `${k}${v}`).join(' ')); if (n.wheel) tr.push('生活の輪 ' + Object.entries(n.wheel).map(([k, v]) => `${k}${v}`).join(' ')); if (n.ikigai9) tr.push(`生きがい9 ${n.ikigai9.total}/${n.ikigai9.max}`); if (tr.length) out.push({ id: 'traits', name: '性格の傾向（数字のまま）', text: tr.join('／') });
@@ -1591,8 +1661,8 @@ function mHome() {
       ${aiRow}
     </section>` : ''}
     ${(() => { const o = beliefOutline(m); return `<section class="card">
-      <h2>信念の輪郭 <span class="small">（信念カード ${o.done} / ${o.total} 枚）</span></h2>
-      <p class="why">群「信念」のカードを全部やると、12本の目盛り（人は変われる／結果は自分で決まる／世界は公平で安全／人に頼れる／感情と体は味方／未来は開けている／失敗は糧になる／意味は自分で作る…）と、自分・他人の4面、「べき・ねば」「お金と仕事」「値打ちの置き場」の上位、そして自分で書いた候補文（私は／人は／世界は）が1枚に並ぶ。それが輪郭。数字は目盛りで、良い悪いはない。</p>
+      <h2>信念と資質の輪郭 <span class="small">（信念 ${o.done}/${o.total}・資質 ${temperOutline(m).done}/${temperOutline(m).total} 枚）</span></h2>
+      <p class="why">群「信念」のカードを全部やると、12本の目盛り（人は変われる／結果は自分で決まる／世界は公平で安全／人に頼れる／感情と体は味方／未来は開けている／失敗は糧になる／意味は自分で作る…）と、自分・他人の4面、「べき・ねば」「お金と仕事」「値打ちの置き場」の上位、そして自分で書いた候補文（私は／人は／世界は）が1枚に並ぶ。群「内向型の資質」を足すと、内向・開放性・感受性・価値主導の目盛りと「核のプロジェクト」も並ぶ（INFP かどうかは判定しない）。数字は目盛りで、良い悪いはない。</p>
       <button class="${o.done ? '' : 'ghost'}" id="mOutline">輪郭を見る${o.axes.length ? `（軸 ${o.axes.length}・候補文 ${o.candidates.length}）` : ''}</button>
     </section>`; })()}
     <section class="card">
@@ -1770,14 +1840,17 @@ function mProfile() {
 
 function mOutline() {
   const o = beliefOutline(m);
+  const t = temperOutline(m);
+  const tOpp = { '内向（一人で充電）': ['人といて充電', '一人で充電'], '開放性（想像・審美）': ['決まった道', '想像・審美'], '感受性（刺激に深く反応）': ['さらっと流す', '深く反応'], '価値主導（自分の物差しで決める）': ['周りの基準', '自分の物差し'] };
   const bar = (a, lo, hi) => `<div class="axis"><div class="axisHead"><span class="small">${esc(lo)}</span><b>${esc(a.name)}</b><span class="small">${esc(hi)}</span></div><div class="axisBar"><div class="axisFill" style="left:${((a.value - 1) / (a.max - 1) * 100).toFixed(0)}%"></div></div><div class="small">${a.value.toFixed(1)} / ${a.max}（${a.n}/${a.total} 問）</div></div>`;
   const opp = { '人は変われる': ['変わらない', '変われる'], '結果は自分で決まる': ['運・他人', '自分'], '世界は公平で安全': ['理不尽・危険', '公平・安全'], '人に頼れる': ['自分でやる', '頼れる'], '感情と体は味方': ['邪魔', '味方'], '未来は開けている': ['手遅れ', '開けている'], '失敗は糧になる': ['損なう', '糧になる'], '意味は自分で作る': ['与えられる', '自分で作る'] };
-  const cards = METHODS.filter(c => c.group === 'belief');
+  const cards = METHODS.filter(c => c.group === 'belief' || c.group === 'temper');
   const todo = cards.filter(c => { const st = pr_status(c); return !st.skipped && st.done < st.total; });
   function pr_status(c) { return progress(m).per[c.id]; }
   return `
     <div class="progress">信念の輪郭 <span class="small">カード ${o.done} / ${o.total}</span></div>
-    ${o.axes.length ? `<section class="card"><h2>目盛り（左右どちらが良いということはない）</h2>${o.axes.map(a => bar(a, ...(opp[a.name] ?? ['', '']))).join('')}</section>` : ''}
+    ${t.axes.length || t.core.length ? `<section class="card"><h2>内向型の資質 <span class="small">（カード ${t.done} / ${t.total}）</span></h2><p class="why">INFP かどうかは判定しない。INFP と言われる人が持ちやすい「素材」を、あなたの目盛りと言葉で出す。</p>${t.axes.map(a => bar(a, ...(tOpp[a.name] ?? ['', '']))).join('')}${t.sensitivity.length ? `<div class="chips">${t.sensitivity.map(a => `<span class="chip">${esc(a.name)} ${a.value.toFixed(1)}</span>`).join('')}</div>` : ''}${t.core.length ? `<p><b>核のプロジェクト</b>（自分らしさ×楽しさ）<br><span class="small">${t.core.map(esc).join('／')}</span></p>` : ''}${t.niches.length ? `<p><b>回復の場所</b><br><span class="small">${t.niches.map(esc).join('／')}</span></p>` : ''}${t.solo.length ? `<p><b>一人でやる創造</b><br><span class="small">${t.solo.map(esc).join('／')}</span></p>` : ''}</section>` : ''}
+    ${o.axes.length ? `<section class="card"><h2>信念の目盛り（左右どちらが良いということはない）</h2>${o.axes.map(a => bar(a, ...(opp[a.name] ?? ['', '']))).join('')}</section>` : ''}
     ${o.selfOther.length ? `<section class="card"><h2>自分と他人の見方</h2><div class="chips">${o.selfOther.map(a => `<span class="chip">${esc(a.name)} ${a.value.toFixed(1)}</span>`).join('')}</div></section>` : ''}
     ${o.tops.length ? `<section class="card"><h2>強く持っている前提（上位）</h2>${o.tops.map(t => `<p><b>${esc(t.title)}</b><br><span class="small">${t.items.map(esc).join('／')}</span></p>`).join('')}</section>` : ''}
     ${o.candidates.length ? `<section class="card"><h2>自分で書いた候補文</h2><p class="why">下向き矢印・ラダリング・文の続き・一線・決断・口ぐせ・日記から。これが「輪郭」の言葉の部分。反証さがしで確信を動かせる。</p>${o.candidates.map(c => `<p>・${esc(c)}</p>`).join('')}</section>` : ''}
