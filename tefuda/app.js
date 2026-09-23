@@ -1,4 +1,4 @@
-// 手札 app.js — 自動生成（scripts/build-pwa.mjs）build 202609210409
+// 手札 app.js — 自動生成（scripts/build-pwa.mjs）build 202609230742
 (() => {
 "use strict";
 // ---- pwa/src/store.mjs
@@ -391,6 +391,7 @@ const GROUPS = [
   { id: 'past', title: '昔のこと' },
   { id: 'future', title: 'これからのこと' },
   { id: 'people', title: 'まわりの人' },
+  { id: 'who', title: '誰のためか（輪郭）' },
   { id: 'self', title: '好き・得意・大事' },
   { id: 'whole', title: '全体を見る（当てはまり度）' },
   { id: 'record', title: 'いまの状況（記録用）' },
@@ -545,6 +546,54 @@ const METHODS = [
     why: '「人より楽にできる」を選ぶ。すごい必要はない。10 → 5。', items: [], options: pk('運転 道を覚える 段取り 早起き 続ける 手を動かす 直す 片づける 数字に強い 計算 記憶 観察 聞く 話す なだめる 場を和ませる 説明 教える まとめる 決める 待つ 我慢 体力 力仕事 細かい作業 料理 掃除 交渉 探す 調べる 先読み 危険を避ける 冷静 顔を覚える 気配り 笑わせる 文章 写真 機械 電気 パソコン') },
   { id: 'whopick', group: 'people', kind: 'pick', steps: [5, 3], title: '誰のために（選ぶ）', source: 'Damon「自分を超えた誰か」（選択肢版）', minutes: 2,
     why: '動くと疲れにくい相手を選ぶ。5 → 3。', items: [], options: pk('家族 妻・夫 子 親 兄弟 常連の客 一見の客 同業の仲間 昔の友人 近所の人 知らない人 未来の自分 過去の自分 若い人 年配の人 困っている人 動物 地域 自分自身') },
+  // ---- 誰のためか（輪郭）: 直接は聞かない。痕跡・怒り・境界・体の反応から三角測量する（本人指示 2026-09-23）----
+  { id: 'anger', group: 'who', kind: 'write', title: '見ていられない場面', source: 'Haidt『社会はなぜ左と右にわかれるのか』（道徳基盤）／Schwartz「価値の理論」', minutes: 4,
+    why: '腹が立つ場面には、自分がどちら側に立っているかが出る。怒りは価値の裏返し。', items: [
+      w('ag1', '最近、人の話やニュースで腹が立った場面', '小さいことでよい', 5),
+      w('ag2', 'その時、割を食っていたのは誰か', '例: 断れない人／知らずに損している人', 3),
+      w('ag3', '「見ていられない」と感じるのは、どんな人が、どうなっている時か', '', 3),
+      w('ag4', 'つい口を出してしまったこと', '', 3),
+    ] },
+  { id: 'trace', group: 'who', kind: 'write', title: 'すでに払った時間', source: 'Burnett & Evans『スタンフォード式 人生デザイン講座』／Damon「自分を超えた誰か」', minutes: 4,
+    why: 'やりたいことではなく、もう実際にやってしまったことを見る。痕跡は嘘をつかない。', items: [
+      w('tc1', '頼まれていないのに、説明した・手を出したこと', '', 5),
+      w('tc2', 'お金をもらわずに、いちばん時間を使った相手', '', 3),
+      w('tc3', '「またやって」と言われたこと', '', 3),
+      w('tc4', '自分の時間を削ってでも直したくなるもの', '', 3),
+    ] },
+  { id: 'pastme', group: 'who', kind: 'write', title: '何年前の自分か', source: 'Kross『Chatter』自己距離化／McAdams「救済の物語」', minutes: 4,
+    why: '「過去の自分」で止めない。何年前の、どの場面かまで降ろすと、相手が具体になる。', items: [
+      w('pm1', 'いま戻れるなら、何年前の自分のところへ行くか', '年と、その時の場面を一言', 3),
+      w('pm2', 'その時の自分が、いちばん欲しかったもの', '言葉・物・お金・人のどれでも', 3),
+      w('pm3', '誰が何を言ってくれたら、あの時は楽になったか', '', 3),
+      w('pm4', 'その自分に、いまなら渡せるもの', '', 3),
+    ] },
+  { id: 'notwho', group: 'who', kind: 'write', title: '動けない相手', source: 'Kelly「レパートリー・グリッド」（対比で輪郭を出す）', minutes: 3,
+    why: '「誰のためでないか」を決めると、輪郭は一気に締まる。正直でよい。', items: [
+      w('nw1', '正直、助けたいと思えない人', '', 3),
+      w('nw2', '関わると消耗する相手の共通点', '', 3),
+      w('nw3', '「この人のためには動けない」と思った場面', '', 3),
+    ] },
+  { id: 'reach', group: 'who', kind: 'write', title: '話が通じる相手', source: 'Little「私的プロジェクト」／Cain『内向型人間の時代』', minutes: 3,
+    why: '届く範囲は、すでに同じ景色が見えている人のところにある。', items: [
+      w('rc1', '説明していて、いちばん話が通じやすい相手', '', 3),
+      w('rc2', '自分の失敗を話せるのは、どういう人か', '', 3),
+      w('rc3', '「同じものが見えている」と感じた瞬間', '', 3),
+    ] },
+  { id: 'paid', group: 'who', kind: 'write', title: '金を払ってでも助けてほしかった', source: 'Christensen「ジョブ理論」／八木仁平『やりたいことの見つけ方』', minutes: 4,
+    why: '自分が当事者だった困りごとは、いちばん強い入口になる。', items: [
+      w('pd1', 'お金を払ってでも、誰かに助けてほしかった場面', '', 5),
+      w('pd2', 'その時、いてほしかったのに、いなかった人', '', 3),
+      w('pd3', 'いま同じ場所にいる人は、どこにいるか', '例: 同じ職場／同じ年ごろ／同じ状況', 3),
+    ] },
+  { id: 'whopick2', group: 'who', kind: 'pick', steps: [10, 5, 3], title: '具体的な相手（選ぶ）', source: '既存「誰のために（選ぶ）」を生活の言葉に置き換えた版（Damon）', minutes: 3,
+    why: '「人」「世の中」のような空っぽの言葉を選べなくする。10 → 5 → 3 に絞る。', items: [], options: pk('3年前の自分 10年前の自分 20歳の自分 お金の不安で眠れない人 辞めたいのに動けない人 始めたばかりの新人 一人で抱えている人 夜に働く人 体を壊した人 眠れていない人 家族を養っている人 家族を失った人 力があるのに出せない人 選択肢が無いと思っている人 だまされた人 借金がある人 独りで暮らす年配の人 子どもを育てている人 同じ職場の後輩 同じ仕事の同業者 常連の客 初めて乗る客 親 きょうだい 昔の友人 近所の人 自分の子ども 病気の人 引きこもっている人 才能を腐らせている人') },
+  { id: 'bodywho', group: 'who', kind: 'rate', scale: 5, top: 5, title: '思い浮かべた時の体', source: 'Gendlin『フォーカシング』（felt sense）／Loehr & Schwartz「エネルギー管理」', minutes: 3,
+    why: '頭で答えさせない。その人のために動くと想像したとき、体が軽くなる=5／重くなる=1。頭の答えとズレたら、そのズレ自体が材料になる。', items: [
+      r('bw1', '昔の自分と同じ状況にいる人'), r('bw2', '家族'), r('bw3', '同じ仕事をしている仲間'), r('bw4', '目の前の客'),
+      r('bw5', '知らない人・不特定多数'), r('bw6', '年下・始めたばかりの人'), r('bw7', '年上・世話になった人'), r('bw8', '困っていると自分から言える人'),
+      r('bw9', '困っていても言えない人'), r('bw10', '自分ひとり'), r('bw11', 'まだ会っていない人'), r('bw12', '会社・組織'),
+    ] },
   { id: 'kidpick', group: 'past', kind: 'pick', steps: [10, 5], title: '12歳の自分（選ぶ）', source: 'Damon／McAdams（選択肢版）', minutes: 3,
     why: '子どものころ放っておくとやっていたことを選ぶ。10 → 5。', items: [], options: pk('外で遊ぶ 自転車 虫・魚 川・海 山 秘密基地 野球 サッカー 走る 泳ぐ ゲーム 漫画 アニメ 図鑑 読書 絵 工作 プラモ 機械いじり ラジオ 音楽 歌 楽器 料理 家の手伝い 動物 植物 集める 友だちの家 一人で空想 テレビ 映画 地図 電車・車 星 釣り') },
   { id: 'regretpick', group: 'future', kind: 'pick', steps: [10, 3], title: '80歳の後悔（選ぶ）', source: 'Gilovich「やらなかった後悔」（選択肢版）', minutes: 3,
@@ -958,7 +1007,7 @@ function chipsFor(state, stars) {
   return {
     use: uniq([...starred, ...latestRound(state).candidates.flatMap(c => c.use ? [c.use] : []), ...byPid('pp3'), ...pickFinal(state, 'skillpick'), ...pickFinal(state, 'likepick'), ...byPid('via'), ...byPid('lk1', 'sk1', 'sk3', 'lk2', 'fk1')]).slice(0, 16),
     grow: uniq([...pickFinal(state, 'growpick'), ...pickFinal(state, 'values'), ...starred, ...latestRound(state).candidates.flatMap(c => c.grow ? [c.grow] : []), ...byPid('meaning'), ...byPid('schwartz'), ...byPid('eu4'), ...byPid('os2')]).slice(0, 16),
-    who: uniq([...pickFinal(state, 'whopick'), ...byPid('re5', 'co2'), ...latestRound(state).candidates.flatMap(c => c.who ? [c.who] : []), ...WHO_CHIPS]).slice(0, 10),
+    who: uniq([...pickFinal(state, 'whopick2'), ...pickFinal(state, 'whopick'), ...byPid('ag2', 'ag3', 'tc2', 'pm1', 'pm3', 'pd2', 'pd3', 'rc1'), ...byPid('re5', 'co2'), ...latestRound(state).candidates.flatMap(c => c.who ? [c.who] : []), ...WHO_CHIPS]).slice(0, 10),
   };
 }
 
@@ -1110,6 +1159,10 @@ function parseAIReply(text) {
   };
   if (!round.observations.length && !round.candidates.length && !round.questions.length) return { ok: false, error: '観察・候補・問いのどれも無い' };
   const banned = ['診断', '病', '怠け', 'ダメ', '型です', 'タイプです'];
+  // ［誰］に空っぽの言葉を入れさせない（2026-09-23 本人指示。抽象語は輪郭を消す）
+  const EMPTY_WHO = ['人', '人々', '世の中', 'みんな', '社会', '誰か', '他人', '周り', '世界', '国', '皆'];
+  const emptyWho = round.candidates.find(c => EMPTY_WHO.includes(c.who.replace(/[のための\s]+$/u, '').trim()));
+  if (emptyWho) return { ok: false, error: `［誰］が空っぽの言葉「${emptyWho.who}」。本人が実際に書いた場面・人にする` };
   const all = JSON.stringify(round);
   const hit = banned.find(b => all.includes(b));
   if (hit) return { ok: false, error: `禁止語「${hit}」が入っている` };
