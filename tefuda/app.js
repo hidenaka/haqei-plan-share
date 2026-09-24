@@ -1,4 +1,4 @@
-// 手札 app.js — 自動生成（scripts/build-pwa.mjs）build 202609230742
+// 手札 app.js — 自動生成（scripts/build-pwa.mjs）build 202609242336
 (() => {
 "use strict";
 // ---- pwa/src/store.mjs
@@ -896,7 +896,8 @@ const METHODS = [
     ] },
 ];
 
-const WHO_CHIPS = ['家族', '客', '仲間', '自分', '未来の自分', '知らない誰か'];
+const EMPTY_WHO = ['人', '人々', '世の中', 'みんな', '社会', '誰か', '他人', '周り', '世界', '国', '皆', '自分', '自分自身', '過去の自分', '未来の自分', '今の自分', '知らない誰か'];
+const WHO_CHIPS = ['家族', '客', '仲間', '同じ仕事の人', '始めたばかりの人']; // 「自分」「過去の自分」等は輪郭が出ないので置かない（2026-09-25 本人指示）
 
 const PROMPTS = METHODS.filter(x => x.kind === 'write').flatMap(c => c.items.map(q => ({ ...q, methodId: c.id })));
 const ITEM_COUNT = METHODS.reduce((n, c) => n + (c.kind === 'pick' ? c.options.length : c.items.length), 0);
@@ -990,12 +991,31 @@ function directionHint(state) {
 }
 
 // 型に流し込む。空のスロットは省く
-function buildPurpose({ who, use, grow }) {
+// 型（2026-09-25 本人指示で変更）: ［何をする］とき、［誰］に向けて、［使うもの］を使って、［増やすもの］を増やす人
+// 「誰のために」を単独で選ばせない。どの場面の話かが無いと相手は選べない、という本人の指摘による。
+function buildPurpose({ when, who, use, grow }) {
   const parts = [];
-  if (who?.trim()) parts.push(`${who.trim()}のために`);
+  if (when?.trim()) parts.push(`${when.trim()}とき`);
+  if (who?.trim()) parts.push(`${who.trim()}に向けて`);
   if (use?.trim()) parts.push(`${use.trim()}を使って`);
   if (grow?.trim()) parts.push(`${grow.trim()}を増やす人`);
   return parts.join('、');
+}
+
+// まとめ書き（空白・読点・中黒で並べた答え）を1つずつに割る。長い文はそのまま残す
+function splitActs(text) {
+  const t = String(text ?? '').trim();
+  if (!t) return [];
+  const parts = t.split(/[\s　、,・]+/u).map(x => x.trim()).filter(Boolean);
+  if (parts.length < 2) return [t];
+  // 割ったどれかが長すぎる（説明文だった）なら、元の1行も残す
+  return parts.filter(x => x.length <= 24);
+}
+// 絞り込みが途中でも、いま選ばれているものを拾う（最後の非空ステップ）
+function pickedAny(state, id) {
+  const ps = pickState(state, id);
+  for (let i = ps.picks.length - 1; i >= 0; i--) if (ps.picks[i]?.length) return ps.picks[i];
+  return [];
 }
 
 // 組み立て画面に出す候補の言葉（本人の材料だけ。順は 残した3つ → 星 → 各手法の上位）
@@ -1007,7 +1027,10 @@ function chipsFor(state, stars) {
   return {
     use: uniq([...starred, ...latestRound(state).candidates.flatMap(c => c.use ? [c.use] : []), ...byPid('pp3'), ...pickFinal(state, 'skillpick'), ...pickFinal(state, 'likepick'), ...byPid('via'), ...byPid('lk1', 'sk1', 'sk3', 'lk2', 'fk1')]).slice(0, 16),
     grow: uniq([...pickFinal(state, 'growpick'), ...pickFinal(state, 'values'), ...starred, ...latestRound(state).candidates.flatMap(c => c.grow ? [c.grow] : []), ...byPid('meaning'), ...byPid('schwartz'), ...byPid('eu4'), ...byPid('os2')]).slice(0, 16),
-    who: uniq([...pickFinal(state, 'whopick2'), ...pickFinal(state, 'whopick'), ...byPid('ag2', 'ag3', 'tc2', 'pm1', 'pm3', 'pd2', 'pd3', 'rc1'), ...byPid('re5', 'co2'), ...latestRound(state).candidates.flatMap(c => c.who ? [c.who] : []), ...WHO_CHIPS]).slice(0, 10),
+    // 場面（何をするとき）: すでにやった行為が書かれている答えから。
+    // 1行にまとめ書きされた答え（「youtube 昼寝　unext」）は、そのままでは選べないので割る
+    when: uniq([...byPid('tc1', 'tc3', 'tc4', 'ag4', 'gtj1', 'gtj3', 'gtj5', 'fl1', 'fl2', 'fl4', 'fl5', 'lk1', 'sk1').flatMap(splitActs), ...latestRound(state).candidates.flatMap(c => c.when ? [c.when] : [])]).slice(0, 14),
+    who: uniq([...pickedAny(state, 'whopick2'), ...pickedAny(state, 'whopick'), ...byPid('ag2', 'ag3', 'tc2', 'pm1', 'pm3', 'pd2', 'pd3', 'rc1'), ...byPid('re5', 'co2'), ...latestRound(state).candidates.flatMap(c => c.who ? [c.who] : []), ...WHO_CHIPS].filter(x => !EMPTY_WHO.includes(String(x).trim()))).slice(0, 10),
   };
 }
 
@@ -1137,7 +1160,7 @@ function dumpForAI(state, { today = '', purpose = null, task = 'questions' } = {
   if (task === 'profile') { L.push('# 依頼: プロファイル（多面）と「可能性」を作る'); L.push(...profileReplyFormat()); return L.join('\n'); }
   L.push('## 返事の形式（この JSON だけを ```json フェンスで。他の文は書かない）');
   L.push('{"observations":["本人の言葉を引用した観察を3行まで（評価・診断はしない）"],');
-  L.push(' "candidates":[{"text":"［誰］のために、［使うもの］を使って、［増やすもの］を増やす人","who":"","use":"","grow":"","basis":["引用1","引用2"]}],  // 3つまで');
+  L.push(' "candidates":[{"text":"［何をする］とき、［誰］に向けて、［使うもの］を使って、［増やすもの］を増やす人","when":"","who":"","use":"","grow":"","basis":["引用1","引用2"]}],  // 3つまで。when は必須（本人が実際にやった行為）。who に「人/世の中/自分自身/過去の自分」等の輪郭の無い言葉は入れない');
   L.push(` "questions":[{"text":"次に聞きたい問い","hint":"答え方の例"}],  // ${AI_QUESTION_MAX}つまで。「なぜ」は聞かない`);
   L.push(' "nextCards":["まだやっていないカードの id を2つまで"], "note":"本人への一言（1行）"}');
   L.push(`カード id: ${METHODS.map(c => `${c.id}=${c.title}`).join(', ')}`);
@@ -1152,7 +1175,7 @@ function parseAIReply(text) {
   const str = x => (typeof x === 'string' ? x.trim() : '');
   const round = {
     observations: (Array.isArray(obj.observations) ? obj.observations : []).map(str).filter(Boolean).slice(0, 3),
-    candidates: (Array.isArray(obj.candidates) ? obj.candidates : []).map(c => ({ text: str(c?.text), who: str(c?.who), use: str(c?.use), grow: str(c?.grow), basis: (Array.isArray(c?.basis) ? c.basis : []).map(str).filter(Boolean).slice(0, 3) })).filter(c => c.text).slice(0, 3),
+    candidates: (Array.isArray(obj.candidates) ? obj.candidates : []).map(c => ({ text: str(c?.text), when: str(c?.when), who: str(c?.who), use: str(c?.use), grow: str(c?.grow), basis: (Array.isArray(c?.basis) ? c.basis : []).map(str).filter(Boolean).slice(0, 3) })).filter(c => c.text).slice(0, 3),
     questions: (Array.isArray(obj.questions) ? obj.questions : []).map(q => ({ text: str(q?.text), hint: str(q?.hint), max: 3 })).filter(q => q.text && !q.text.includes('なぜ')).slice(0, AI_QUESTION_MAX),
     nextCards: (Array.isArray(obj.nextCards) ? obj.nextCards : []).map(str).filter(id => method(id)).slice(0, 2),
     note: str(obj.note).slice(0, 120),
@@ -1160,9 +1183,11 @@ function parseAIReply(text) {
   if (!round.observations.length && !round.candidates.length && !round.questions.length) return { ok: false, error: '観察・候補・問いのどれも無い' };
   const banned = ['診断', '病', '怠け', 'ダメ', '型です', 'タイプです'];
   // ［誰］に空っぽの言葉を入れさせない（2026-09-23 本人指示。抽象語は輪郭を消す）
-  const EMPTY_WHO = ['人', '人々', '世の中', 'みんな', '社会', '誰か', '他人', '周り', '世界', '国', '皆'];
   const emptyWho = round.candidates.find(c => EMPTY_WHO.includes(c.who.replace(/[のための\s]+$/u, '').trim()));
-  if (emptyWho) return { ok: false, error: `［誰］が空っぽの言葉「${emptyWho.who}」。本人が実際に書いた場面・人にする` };
+  if (emptyWho) return { ok: false, error: `［誰］が輪郭の無い言葉「${emptyWho.who}」。本人が実際に書いた場面・人にする（「過去の自分」なら何年前のどの場面かまで）` };
+  // 場面（何をするとき）が無い候補は選べない（2026-09-25 本人指示）
+  const noWhen = round.candidates.find(c => !c.when);
+  if (noWhen) return { ok: false, error: '候補に［何をするとき］が無い。どの場面の話かが無いと相手を選べない' };
   const all = JSON.stringify(round);
   const hit = banned.find(b => all.includes(b));
   if (hit) return { ok: false, error: `禁止語「${hit}」が入っている` };
@@ -1615,7 +1640,7 @@ const REVIEW_DAYS = 90; // 仮の目的の書き直し（設計書 §18）
 
 // 棚卸し（§18 v2）。db とは別に保存: はじめる前からでも、途中で閉じても残る
 const M_KEY = 'tefuda.monshin';
-const M_INIT = () => ({ phase: 'home', answers: {}, rates: {}, picks: {}, rewrite: {}, customItems: {}, skipped: [], ai: { rounds: [] }, profiles: [], votes: {}, history: [], cur: { methodId: null, idx: 0 }, values: { step: 0, picks: [[], [], []], custom: [] }, stars: [], final: [], slots: { who: '', use: '', grow: '' }, finalText: '', startedOn: null });
+const M_INIT = () => ({ phase: 'home', answers: {}, rates: {}, picks: {}, rewrite: {}, customItems: {}, skipped: [], ai: { rounds: [] }, profiles: [], votes: {}, history: [], cur: { methodId: null, idx: 0 }, values: { step: 0, picks: [[], [], []], custom: [] }, stars: [], final: [], slots: { when: '', who: '', use: '', grow: '' }, finalText: '', startedOn: null });
 let m = (() => { try { const x = JSON.parse(localStorage.getItem(M_KEY)); if (!x) return M_INIT(); const y = { ...M_INIT(), ...x, cur: { methodId: null, idx: 0 }, phase: 'home' }; if (x.values && !y.picks.values) y.picks.values = x.values; delete y.values; return y; } catch { return M_INIT(); } })();
 let inMonshin = false; // true の間は棚卸しの画面だけを出す
 const META_KEY = 'tefuda.meta';
@@ -1677,7 +1702,7 @@ function onbIntro() {
       <p class="why">「何のために」が無いと、2分の実験も続きません。でも目的は、考えて当てるものではなく、<b>材料をたくさん出して、絞って、残ったものを1文にする</b>と出てきます。<br>
       ① <b>拡げる</b>: いろんな人のやり方の「手法カード」${METHODS.length}枚（${ITEM_COUNT}問）から好きなものを。やりたくないカードは飛ばしてよい。1日1〜2枚でよく、途中で閉じても残る<br>
       ② <b>絞る</b>: 自分の答えを見返して「今も本当だ」と思うものに星 → 3つに<br>
-      ③ <b>組み立てる</b>: 残った自分の言葉で「誰のために、何を使って、何を増やす人」の1文にする<br>
+      ③ <b>組み立てる</b>: 残った自分の言葉で「何をするとき、誰に向けて、何を使って、何を増やす人」の1文にする<br>
       できた文は「今日」の画面の上に出て、実験の方向を決めます。3か月たったら書き直します。</p>
       <button class="primary" id="monshinStart">${m.startedOn ? '棚卸しの続きから' : '棚卸しをはじめる'}</button>
       <button class="ghost" id="monshinSkip">先に方向だけ選んで始める（棚卸しはあとで）</button>
@@ -1946,13 +1971,14 @@ function mCompose() {
     <div class="progress">③ 1文にする</div>
     <section class="card">
       <h2>残った言葉で、仮の目的を1文にする</h2>
-      <p class="why">型は「［誰］のために、［使うもの］を使って、［増やすもの］を増やす人」。下の言葉は全部あなたの材料から。タップで入る。空のところは省かれる。当たっている必要はなく、3か月後に書き直します。</p>
+      <p class="why">型は「［何をする］とき、［誰］に向けて、［使うもの］を使って、［増やすもの］を増やす人」。<b>先に場面を1つ選ぶ</b>と、相手が選べるようになります（同じ人でも、何をするときかで変わるため）。下の言葉は全部あなたの材料から。タップで入る。空のところは省かれる。3か月後に書き直します。</p>
       ${latestRound(m).candidates.length ? `<h3>AI が材料から組んだ候補（タップで入る。直してよい）</h3>${latestRound(m).candidates.map((c, i) => `<button class="opt btn cand" data-cand="${i}"><b>${esc(c.text)}</b>${c.basis.length ? `<span class="small">根拠（あなたの言葉）: ${c.basis.map(esc).join('／')}</span>` : ''}</button>`).join('')}` : ''}
-      ${slot('who', '誰のために', '自分でもよい。「自分を超えた誰か」が入ると続きやすい。', chips.who)}
-      ${slot('use', '使うもの（好き・得意・強み）', '残した3つ、好き・得意、強みの上位から。', chips.use)}
-      ${slot('grow', '増やすもの', '大事な言葉、残した3つ、意味の源の上位から。', chips.grow)}
+      ${slot('when', '① 何をするとき', 'あなたが実際にやったこと・続いていることから。ここが決まらないと、相手は選べません。', chips.when)}
+      ${m.slots.when ? slot('who', `② 「${esc(m.slots.when)}」とき、誰に向けてか`, 'その場面で、顔が浮かぶ相手。自分でもよい。', chips.who) : '<h3>② 誰に向けてか</h3><p class="why">先に①の場面を選んでください。場面が決まると、相手が選べるようになります。</p>'}
+      ${slot('use', '③ 使うもの（好き・得意・強み）', '残した3つ、好き・得意、強みの上位から。', chips.use)}
+      ${slot('grow', '④ 増やすもの', '大事な言葉、残した3つ、意味の源の上位から。', chips.grow)}
       <h3>できた文（直してよい）</h3>
-      <input id="mFinalText" value="${esc(text)}" placeholder="例: 家族のために、体を動かすことを使って、眠れる夜を増やす人">
+      <input id="mFinalText" value="${esc(text)}" placeholder="例: 作ったものを人に渡すとき、始めたばかりの新人に向けて、先読みを使って、役に立った感を増やす人">
     </section>
     <section class="card">
       <h3>実験の方向</h3>
@@ -2326,7 +2352,7 @@ function bindMonshin() {
 
   if (m.phase === 'compose') {
     const readSlots = () => { document.querySelectorAll('[data-slotin]').forEach(i => { m.slots[i.dataset.slotin] = i.value.trim(); }); m.finalText = $('#mFinalText').value.trim(); m.slots.dir = $('#mDir').value; m.slots.gain = Number($('#mGain').value); };
-    document.querySelectorAll('[data-cand]').forEach(b => b.onclick = () => { readSlots(); const c = latestRound(m).candidates[Number(b.dataset.cand)]; m.slots.who = c.who; m.slots.use = c.use; m.slots.grow = c.grow; m.finalText = c.text; persistM(); render(); });
+    document.querySelectorAll('[data-cand]').forEach(b => b.onclick = () => { readSlots(); const c = latestRound(m).candidates[Number(b.dataset.cand)]; m.slots.when = c.when ?? ''; m.slots.who = c.who; m.slots.use = c.use; m.slots.grow = c.grow; m.finalText = c.text; persistM(); render(); });
     document.querySelectorAll('[data-slot]').forEach(c => c.onclick = () => { readSlots(); m.slots[c.dataset.slot] = m.slots[c.dataset.slot] === c.dataset.word ? '' : c.dataset.word; m.finalText = ''; persistM(); render(); });
     document.querySelectorAll('[data-slotin]').forEach(i => i.onchange = () => { readSlots(); m.finalText = ''; persistM(); render(); });
     $('#mDir').onchange = () => { readSlots(); m.slots.gain = 0; persistM(); render(); };
