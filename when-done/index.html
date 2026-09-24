@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>場面から選べるようにしました</title>
+<style>
+  :root{--bg:#f7f5ee;--card:#fffdf6;--line:#d8d2bf;--ink:#1a1a1a;--dim:#5a5a5a;
+        --ac:#e0862f;--soft:#f8e6d3;--ok:#2e8b57;--ng:#c83a2c}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);line-height:1.8;
+    font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans JP",sans-serif;
+    -webkit-text-size-adjust:100%}
+  .wrap{max-width:820px;margin:0 auto;padding:44px 18px 100px}
+  h1{font-size:clamp(28px,6.4vw,44px);line-height:1.32}
+  .lede{font-size:clamp(17px,4vw,21px);color:var(--dim);margin-top:10px}
+  h2{font-size:clamp(23px,5vw,31px);margin:64px 0 14px}
+  p{font-size:clamp(16px,3.7vw,19px);margin:10px 0}
+  .big{font-size:clamp(18px,4.2vw,23px);font-weight:700;line-height:1.65}
+  .fig{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:20px;margin:26px 0 8px}
+  .fig svg{display:block;width:100%;height:auto}
+  .cap{color:var(--dim);font-size:14.5px;margin-top:8px}
+  .ba{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:22px 0}
+  @media(max-width:540px){.ba{grid-template-columns:1fr}}
+  .ba>div{border-radius:18px;padding:18px 20px}
+  .ba .x{background:#fdf0ee;border:2px solid var(--ng)}
+  .ba .o{background:#fffdf6;border:2px solid var(--ok)}
+  .ba .t{font-size:12.5px;font-weight:800;letter-spacing:.08em}
+  .ba .x .t{color:var(--ng)} .ba .o .t{color:var(--ok)}
+  .ba .s{font-size:clamp(15.5px,3.6vw,17.5px);margin-top:6px;line-height:1.6}
+  .steps{display:grid;gap:9px;margin:20px 0}
+  .step{display:grid;grid-template-columns:34px 1fr;gap:12px;align-items:start;
+    background:var(--card);border:1px solid var(--line);border-radius:14px;padding:13px 15px}
+  .step .n{font-size:15px;font-weight:800;color:var(--ac);text-align:center}
+  .step b{display:block;font-size:clamp(16px,3.7vw,18.5px)}
+  .step span{color:var(--dim);font-size:14.5px}
+  .bug{background:#fdf0ee;border:2px solid var(--ng);border-radius:20px;padding:22px;margin:22px 0}
+  .bug b{font-size:clamp(18px,4.2vw,22px);display:block;margin-bottom:6px;color:var(--ng)}
+  .bug .mono{font-family:ui-monospace,Menlo,monospace;background:#fff;border:1px solid var(--line);
+    border-radius:10px;padding:10px 12px;margin:8px 0;font-size:15px}
+  .todo{background:#fff3ea;border:2px solid var(--ac);border-radius:20px;padding:22px;margin:22px 0}
+  .todo b{font-size:clamp(18px,4.2vw,21px);display:block;margin-bottom:6px}
+  .todo code{background:#fff;border:1px solid var(--line);border-radius:8px;padding:3px 9px;
+    font-family:ui-monospace,Menlo,monospace;font-size:14.5px;display:inline-block;margin-top:6px}
+  .check{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px 22px;margin:20px 0}
+  .check div{font-size:clamp(16px,3.7vw,18px);padding:6px 0 6px 30px;position:relative}
+  .check div::before{content:"✓";position:absolute;left:0;color:var(--ok);font-weight:800;font-size:19px}
+  .end{background:var(--card);border-left:5px solid var(--ac);border-radius:14px;padding:22px;margin-top:44px}
+  .end div{font-size:clamp(17px,4vw,21px);font-weight:700;margin:6px 0}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<h1>場面を先に。<br>そうしないと選べない</h1>
+<p class="lede">おっしゃる通りでした。相手だけ並べても決められません。</p>
+
+<div class="ba">
+  <div class="x"><div class="t">これまで</div>
+    <div class="s">「自分自身のために、運転と先読みを使って、収入の柱を増やす人」<br><br>
+    <b>何をするときの話か、どこにも書いていない</b>。だから相手も選べない。</div></div>
+  <div class="o"><div class="t">これから</div>
+    <div class="s">「<b>作ったものを人に渡すとき</b>、始めたばかりの新人に向けて、先読みを使って、役に立った感を増やす人」<br><br>
+    場面が決まると、相手は自然に決まる。</div></div>
+</div>
+
+<h2>画面の順番</h2>
+<div class="steps">
+  <div class="step"><div class="n">①</div><div><b>何をするとき</b><span>あなたが実際にやったこと・続いていることから選ぶ</span></div></div>
+  <div class="step"><div class="n">②</div><div><b>その場面で、誰に向けてか</b><span>①を選ぶまで、この欄は開きません</span></div></div>
+  <div class="step"><div class="n">③</div><div><b>使うもの</b><span>好き・得意・強みから</span></div></div>
+  <div class="step"><div class="n">④</div><div><b>増やすもの</b><span>大事な言葉から</span></div></div>
+</div>
+
+<h2>候補も直しました</h2>
+<div class="fig">
+<svg viewBox="0 0 860 210" role="img" aria-label="候補の直し">
+  <rect x="16" y="24" width="390" height="70" rx="14" fill="#fdf0ee" stroke="#c83a2c" stroke-width="2"/>
+  <text x="34" y="52" font-size="15" fill="#5a5a5a">これまでの場面候補</text>
+  <text x="34" y="78" font-size="16" font-weight="700" fill="#1a1a1a">「youtube 昼寝　unext」</text>
+  <text x="430" y="70" font-size="26" fill="#5a5a5a">→</text>
+  <rect x="466" y="24" width="378" height="70" rx="14" fill="#fffdf6" stroke="#2e8b57" stroke-width="2.5"/>
+  <text x="484" y="52" font-size="15" fill="#5a5a5a">いま</text>
+  <text x="484" y="78" font-size="16" font-weight="700" fill="#1a1a1a">「youtube」「昼寝」「unext」に分割</text>
+
+  <rect x="16" y="118" width="390" height="70" rx="14" fill="#fdf0ee" stroke="#c83a2c" stroke-width="2"/>
+  <text x="34" y="146" font-size="15" fill="#5a5a5a">これまでの相手候補</text>
+  <text x="34" y="172" font-size="16" font-weight="700" fill="#1a1a1a">自分自身／過去の自分／知らない誰か</text>
+  <text x="430" y="164" font-size="26" fill="#5a5a5a">→</text>
+  <rect x="466" y="118" width="378" height="70" rx="14" fill="#fffdf6" stroke="#2e8b57" stroke-width="2.5"/>
+  <text x="484" y="146" font-size="15" fill="#5a5a5a">いま（あなたが選んだ4人が先頭）</text>
+  <text x="484" y="172" font-size="16" font-weight="700" fill="#1a1a1a">始めたばかりの新人／10年前の自分…</text>
+</svg>
+</div>
+<p class="cap">輪郭の出ない言葉（自分／過去の自分／知らない誰か）は、候補から外しました。AIも入れられません。</p>
+
+<h2>ついでに、こわれ物を見つけました</h2>
+<div class="bug">
+  <b>同期のときに、日本語が壊れていました</b>
+  <p>あなたが選んだ「同じ職場の後輩」が、保存されたデータでは<b>最後の1文字が壊れて</b>いました。</p>
+  <div class="mono">同じ職場の後輩　→　同じ職場の後␦␦␦</div>
+  <p>原因は、iPhone から送られたデータを Mac mini が受け取るとき、<b>データを小分けにして受け取る境目で日本語が真っ二つに割れる</b>作りだったことです。長い文章ほど起きます。直して、同じ壊し方を再現するテストも入れました。</p>
+</div>
+
+<div class="todo">
+  <b>ただし、この直しはまだ Mac mini に入っていません</b>
+  <p>私のいるパソコンから Mac mini へ入る許可（鍵）がまだありません。あなたが一度これを実行して「yes」と答えてくれれば、私が入れられます。</p>
+  <code>ssh mac-mini.tail15ea48.ts.net</code>
+  <p style="margin-top:10px">それまでは、日本語が壊れる可能性が残ります（毎回ではなく、境目に当たった時だけ）。</p>
+</div>
+
+<h2>確かめたこと</h2>
+<div class="check">
+  <div>場面を選ぶまで、相手の欄が開かない</div>
+  <div>あなたの実データで、場面が1つずつ選べる形になった</div>
+  <div>あなたが選んだ4人が、相手候補の先頭に出る</div>
+  <div>AIは場面の無い案を出せない（検査で弾く）</div>
+  <div>文字化けを再現→修正→再現しないことを確認</div>
+  <div>アプリ全体のテスト52件が通っている</div>
+</div>
+
+<div class="end">
+  <div>アプリを開くと、①場面 → ②相手 の順になっています</div>
+  <div>「同じ職場の後輩」は壊れているので、選び直してください</div>
+  <div>Mac mini への反映だけ、鍵の許可をください</div>
+</div>
+
+</div>
+</body>
+</html>
