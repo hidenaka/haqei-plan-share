@@ -1,4 +1,4 @@
-// 手札 app.js — 自動生成（scripts/build-pwa.mjs）build 202609242336
+// 手札 app.js — 自動生成（scripts/build-pwa.mjs）build 202610100356
 (() => {
 "use strict";
 // ---- pwa/src/store.mjs
@@ -87,8 +87,75 @@ const SEED_CARDS = [
   c('w05', '1人に元気？（車内）', '短い一言でつながりは保てる', '客待ちで1人に「元気？」だけ送る', '中', '人とつながる', '研究者', 'Rogers, Milkman & Volpp の要約', '研究あり', ['回数系'], true, '送れた？', ['送った', '迷った', '送らなかった']),
 ];
 
+// 思想の10原則（v17.13・ガバラボ全327本の要約から組み直した体系）。札は principle でこのどれかに属する（無い札は「行動の工夫」）
+const PRINCIPLES = [
+  { id: 'A', text: '出来事と、それに自分が貼った言葉を分ける' },
+  { id: 'B', text: '自分の判断も思い込みで動いていると知っておく' },
+  { id: 'C', text: '欲しいものが、誰の真似なのかを問い直す' },
+  { id: 'D', text: '「人にどう見えるか」でなく「自分はどうしたいか」を先に問う' },
+  { id: 'E', text: '選ぶことは、他を捨てることだと引き受ける' },
+  { id: 'F', text: 'やりたいことは、小さく試して育てる' },
+  { id: 'G', text: '人に決められた成長からは降りて、休む' },
+  { id: 'H', text: '今を、未来のための手段にしない' },
+  { id: 'I', text: 'いつか死ぬこと、決まった意味がないことを、縛りをほどく材料にする' },
+  { id: 'J', text: '見返りを求めず、先に相手へ与える' },
+];
+const OTHER_PRINCIPLE = { id: '工夫', text: '行動の工夫（どの原則にも入れていない札）' };
+const principleOf = card => card?.principle ?? OTHER_PRINCIPLE.id;
+
+// ガバラボの動画で勧められていたやり方から作った札（出典は動画の要約。video は YouTube の id）
+const g = (id, principle, name, claim, how, type, category, sourceType, person, video, shift, qText, qOpts) => ({
+  ...c(id, name, claim, how, type, category, sourceType, `${person}（ガバラボの動画の要約）`,
+    sourceType === '思想' ? '伝統' : sourceType === '研究者' ? '研究あり' : '経験談', ALL, shift, qText, qOpts),
+  principle, video,
+});
+
+const GABALABO_CARDS = [
+  g('gA1', 'A', '事実と解釈を分ける', '苦しみは起きた事実より、自分が足した解釈から来る', '今日引っかかったことを、起きた事実と自分が足した解釈に1行ずつ分ける', '後', '自分を見る', '思想', 'ティク・ナット・ハン', 'mF3T8M-WzRQ', false, '解釈を足していた？', ['足していた', '事実だけ', '思い出せない']),
+  g('gA2', 'A', 'ラベルを1つ外す', '良い悪いを決める前に、起きたことだけを見る', '「〇〇は悪い」と浮かんだら、良い悪いを外して起きたことだけを1行にする', '中', '自分を見る', '思想', '維摩', 'YhqktDZ3MZM', false, '外せた？', ['外せた', '途中まで', '浮かばなかった']),
+  g('gA3', 'A', 'その人の中では', '人の評価は、その人がそう思っただけ', '言われて引っかかった一言に「その人の中では」と付けて読み直す', '後', '自分を見る', '思想', 'ジャン＝ポール・サルトル', '2Bf30EycVcE', true, '軽くなった？', ['なった', '少し', 'ならない']),
+  g('gB1', 'B', '確信したら逆を探す', '確信しているときほど見落としがある', '今日「絶対そう」と思ったことを1つ選び、逆の証拠を1つだけ探す', '後', '自分を見る', '研究者', 'ダニエル・カーネマン', '2Tlpv0qAK8U', false, '逆の証拠は？', ['見つかった', 'なかった', '探さなかった']),
+  g('gB2', 'B', '原因を3つ挙げる', '原因を1つに決めつけると判断を誤る', 'うまくいかなかったことの原因を、1つに決めずに3つ挙げる', '後', '自分を見る', '研究者', 'アン・ウーキョン', 'jhVa_YUOHo8', false, '一番大きかったのは？', ['自分', '状況', '分からない']),
+  g('gC1', 'C', 'それ誰の真似？', '欲しいものの多くは、誰かの真似から来ている', '今欲しい物を1つ思い浮かべ、誰を見て欲しくなったかを1行書く', '後', '自分を見る', '思想', 'ルネ・ジラール', 'ZkYvaTQhgXw', false, '自分の欲だった？', ['自分の', '誰かの真似', '分からない']),
+  g('gC2', 'C', '思ったら2分やる', '本当の欲は、やってみて初めて分かる', '「やってみたい」と浮かんだ小さなことを、2分だけ実際にやる', '中', '少し変える', '経験談', '桐谷明', '0PEFGNoqtJo', false, '続けたい？', ['続けたい', 'もういい', 'まだ分からない']),
+  g('gD1', 'D', '自分はどうしたい？', '正解探しをやめ、自分の望みを先に問う', '迷っていることを1つ選び、自分はどうしたいかを1行（世間的に変でもいい）', '後', '自分を見る', '研究者', 'カール・ロジャーズ', 'ZQN8VRL-q84', false, '答えは出た？', ['出た', 'ぼんやり', '出なかった']),
+  g('gD2', 'D', 'みんながやってる点検', '「みんながやっているから」は理由にならないことが多い', '「みんながやってるから」続けていることを1つ選び、自分に要るか○×をつける', '後', '自分を見る', '思想', 'ヴァーツラフ・ハヴェル', 'hFjriRk7UVA', false, '要る？', ['要る', '要らない', '分からない']),
+  g('gE1', 'E', '1つ選んで他を手放す', '選択肢を残すほど不安は消えない', '迷っている候補から1つ選び、選ばなかった方を1行書いて手放す', '後', '少し変える', '思想', 'セーレン・キルケゴール', 'FnsEGZNg7eo', false, '選べた？', ['選んだ', '保留', '迷った']),
+  g('gE2', 'E', '譲れない条件は1つ', '条件を絞ると早く決められ、満足も上がる', '次に何か選ぶときの「譲れない条件」を1つだけ決めて書く', '前', '整える', '研究者', 'バリー・シュワルツ', 'XdiP-llXmH0', false, '1つに絞れた？', ['絞れた', '2つになった', '決めなかった']),
+  g('gF1', 'F', '興味の種に2分', 'やりたいことは探すものではなく育てるもの', '前から少し気になっていることに、今日2分だけ触れる（調べる・見る・やる）', '中', '少し変える', '経験談', 'ジョン・ストレレキー', 'rcSbVnmQKa0', false, '何をした？', ['調べた', '見た', 'やった']),
+  g('gF2', 'F', '近い別のものに触れる', '好きは、詳しくなった後から育つ', 'すでに好きなものに近い、まだ知らないものを1つだけ見る・聴く・読む', '中', '少し変える', '経験談', 'トム・ヴァンダービルト', 'rjPODwIG2pU', false, '気になった？', ['なった', '普通', '合わない']),
+  g('gF3', 'F', '合わなければやめる', '戻れると思えば小さく踏み出せる', '始める前に「合わなければやめる」と決めてから、2分やる', '前', '少し変える', '経験談', '『生きるのがめんどくさい人』の著者', '4YKl32V_wEg', false, 'どうした？', ['続けた', 'やめた', '途中まで']),
+  g('gG1', 'G', '意味を問わず没頭', '役に立たないことに使う時間が、人を道具から戻す', '好きなだけで役に立たないことを、意味を考えずに2分続ける', '中', '味わう', '思想', 'ジョルジュ・バタイユ', 'rpKUTNvzxDk', false, '途中で意味を考えた？', ['考えなかった', '少し', '考えた']),
+  g('gG2', 'G', '遠くを20秒眺める', '疲れは寝るだけでは取れない。目も頭も休める', '始める前に、6mほど先を20秒眺める', '前', '整える', '経験談', 'サンドラ・ダルトン＝スミス', '1Psrl0RIUlw', true, '眺めた？', ['眺めた', '少し', '忘れた']),
+  g('gG3', 'G', 'SNSの前に1つ決める', '受け身で刺激を浴び続けると疲れる', 'SNSを開く前に、何を知りたいかを1つ決めてから開く', '前', '整える', '思想', 'ビョンチョル・ハン', 'RbF6uzTcJh0', true, '決めてから開いた？', ['開いた', '決めずに開いた', '開かなかった']),
+  g('gH1', 'H', '手段になってない？', '楽しいことも、手段にした途端に苦しくなる', '今日つらかったことを1つ選び、何かの手段にしていなかったか1行', '後', '自分を見る', '思想', 'イマヌエル・カント', 'hys2F3VT9T0', false, '手段にしてた？', ['してた', 'してない', '分からない']),
+  g('gH2', 'H', '動かせる所だけ見る', '動かせないことは前提にして、動かせることに力を使う', '今の悩みを1つ、自分で動かせる部分と動かせない部分に分けて書く', '後', '自分を見る', '思想', 'ストア派（エピクテトス、セネカ、アウレリウス）', 'IIsZ_eX-QDc', false, '動かせる所はあった？', ['あった', '少し', 'なかった']),
+  g('gH3', 'H', '気をつけるより仕組み', '気をつけるより、環境を変える方が効く', 'くり返す失敗を1つ選び、気をつける代わりに置き場所か手順を1つ変える', '前', '整える', '思想', 'ストア派（エピクテトス、セネカ、アウレリウス）', 'IIsZ_eX-QDc', false, '変えたのは？', ['置き場所', '手順', '変えなかった']),
+  g('gI1', 'I', '余命1年なら？', 'いつか終わると思うと、時間の使い道が見える', '今の予定を1つ選び、余命1年でも続けるか○×をつける', '後', '自分を見る', '思想', 'セネカ', '-C6jHYDEGZw', true, '続ける？', ['続ける', 'やめる', '変える']),
+  g('gI2', 'I', '選んだ時間に印', '時間が短いのではなく、選ばずに使っているだけ', '昨日の時間の使い方を振り返り、自分で選んだ時間に印を1つつける', '後', '自分を見る', '思想', 'セネカ', '-C6jHYDEGZw', false, '自分で選んだ時間は？', ['多かった', '少なかった', 'なかった']),
+  g('gJ1', 'J', '先に1つ渡す', '相手が価値を感じるものを先に贈ると、関係が育つ', '誰か1人に、相手が喜びそうな情報・手伝い・一言を先に1つ渡す', '中', '人とつながる', '研究者', 'マルセル・モース', 'AEx-heT8t8c', true, '渡せた？', ['渡した', '迷った', '渡さなかった']),
+  g('gJ2', 'J', 'すごいを1つ伝える', '相手の自尊心を先に満たすと、それが返ってくる', '今日すごいと思った人に、それを短く1回伝える', '中', '人とつながる', '経験談', 'レス・ギブリン', 'KwiMX1Qh2Q8', true, '伝えた？', ['伝えた', '迷った', '伝えなかった']),
+];
+
+// 既存の札が属する原則（v17.13 本人承認「A」: 今の札は残して原則の下に並べ直す）
+const SEED_PRINCIPLE = {
+  s04: 'H', s05: 'D', s06: 'F', s07: 'A', s08: 'A', s10: 'F', s11: 'H', s12: 'H',
+  w01: 'H', w02: 'A', w03: 'H', w05: 'J', b_adler_kadai: 'D',
+};
+for (const card of SEED_CARDS) if (SEED_PRINCIPLE[card.id]) card.principle = SEED_PRINCIPLE[card.id];
+SEED_CARDS.push(...GABALABO_CARDS);
+
+// 保存済みの札（以前の版で始めた人）を今の版にそろえる。何度呼んでも同じ結果。記録・本人の札は消さない
+function upgradeCards(cards) {
+  const out = (cards ?? []).map(card => (!card.principle && SEED_PRINCIPLE[card.id]) ? { ...card, principle: SEED_PRINCIPLE[card.id] } : card);
+  const have = new Set(out.map(card => card.id));
+  for (const card of SEED_CARDS) if (!have.has(card.id)) out.push(card);
+  return out;
+}
+
 function validateCard(card) {
   const errors = [];
+  if (card.principle !== undefined && !PRINCIPLES.some(p => p.id === card.principle)) errors.push(`principle は ${PRINCIPLES.map(p => p.id).join('/')} のどれか（無しでもよい）`);
   const req = ['id', 'name', 'claim', 'how', 'type', 'category', 'sourceType', 'source', 'evidence', 'applies', 'question'];
   for (const k of req) if (card[k] === undefined || card[k] === null || card[k] === '') errors.push(`${k} が空`);
   if (typeof card.name === 'string' && [...card.name].length > 12) errors.push('name は12字以内');
@@ -161,16 +228,25 @@ function candidates(state, cards, { shift = false }) {
   const action = findAction(state.experiment.actionId);
   const tried = new Set([...state.triedCards, state.experiment.cardId]);
   const triedCats = new Map();
+  const triedPrin = new Map();
   for (const id of tried) {
     const c = cards.find(x => x.id === id);
-    if (c) triedCats.set(c.category, (triedCats.get(c.category) ?? 0) + 1);
+    if (!c) continue;
+    triedCats.set(c.category, (triedCats.get(c.category) ?? 0) + 1);
+    triedPrin.set(principleOf(c), (triedPrin.get(principleOf(c)) ?? 0) + 1);
   }
-  return cards
+  // v17.13: まだ試していない原則を先に。3枚はなるべく別々の原則から（同じ考え方ばかり続けない）
+  const sorted = cards
     .filter(c => !tried.has(c.id))
     .filter(c => c.applies.includes(action.kind))
     .filter(c => !shift || c.shift)
-    .sort((a, b) => (triedCats.get(a.category) ?? 0) - (triedCats.get(b.category) ?? 0) || a.id.localeCompare(b.id))
-    .slice(0, 3);
+    .sort((a, b) => (triedPrin.get(principleOf(a)) ?? 0) - (triedPrin.get(principleOf(b)) ?? 0)
+      || (triedCats.get(a.category) ?? 0) - (triedCats.get(b.category) ?? 0) || a.id.localeCompare(b.id));
+  const picked = [];
+  const seen = new Set();
+  for (const c of sorted) if (picked.length < 3 && !seen.has(principleOf(c))) { picked.push(c); seen.add(principleOf(c)); }
+  for (const c of sorted) if (picked.length < 3 && !picked.includes(c)) picked.push(c);
+  return picked;
 }
 
 function nextActionId(state) {
@@ -244,6 +320,19 @@ function tally(state, cards, log, model) {
     row.n += 1;
     row.evidence.push(key);
   }
+  // v17.13: 原則ごとの「また使う／もういい」（判定だけを数える。3件未満の原則は出さない）
+  const byPrin = new Map([...PRINCIPLES, OTHER_PRINCIPLE].map(p => [p.id, { principle: p.id, text: p.text, matauka: 0, mouii: 0, n: 0, evidence: [] }]));
+  for (const v of state.verdicts ?? []) {
+    const key = `v:${v.cardId}`;
+    const card = cards.find(c => c.id === v.cardId);
+    if (denied.has(key) || !card) continue;
+    const row = byPrin.get(principleOf(card));
+    if (!row) continue;
+    if (v.verdict === 'また使う') row.matauka += 1; else row.mouii += 1;
+    row.n += 1;
+    row.evidence.push(key);
+  }
+  const principles = [...byPrin.values()].filter(r => r.n >= ROW_MIN).sort((a, b) => b.matauka - a.matauka || a.principle.localeCompare(b.principle));
   const rows = [...byCat.values()].filter(r => r.n >= ROW_MIN);
   const hiddenCategories = [...byCat.values()].filter(r => r.n < ROW_MIN).map(r => r.category);
   let favorite = null;
@@ -251,7 +340,7 @@ function tally(state, cards, log, model) {
     const best = rows.filter(r => r.matauka >= FAVORITE_MIN_MATAUKA).sort((a, b) => b.matauka - a.matauka)[0];
     if (best) favorite = { category: best.category };
   }
-  return { rows, favorite, hiddenCategories };
+  return { rows, favorite, hiddenCategories, principles };
 }
 
 function denyEvidence(model, id) {
@@ -270,6 +359,10 @@ function renderModel(t, state, model) {
     lines.push(`  ${r.category}: また使う ${r.matauka} ／ もういい ${r.mouii} ／ 👍${r.up} 👎${r.down} （n=${r.n}） 根拠: ${r.evidence.join(', ')}`);
   }
   if (t.favorite) lines.push(`  → 好きなタイプ: ${t.favorite.category}（試した札 ${state.triedCards.length} 枚・「また使う」3枚以上）`);
+  lines.push('');
+  lines.push('■ 合っている原則（ガバラボの10原則。判定3件未満の原則は出さない）');
+  if (!t.principles?.length) lines.push('  まだ数字はない（同じ原則で3件たまると出る）');
+  for (const p of t.principles ?? []) lines.push(`  ${p.principle} ${p.text}: また使う ${p.matauka} ／ もういい ${p.mouii} （n=${p.n}） 根拠: ${p.evidence.join(', ')}`);
   lines.push('');
   lines.push('■ 本人の言葉');
   if (!model.words?.length) lines.push('  （まだ無い）');
@@ -1632,7 +1725,9 @@ const $ = sel => document.querySelector(sel);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const today = () => logicalDate(new Date());
 
-let db = loadDb();
+// v17.13: 以前の版で始めたデータに、新しい札（ガバラボの10原則）と原則の印を補う。記録は消さない
+const upgradeDb = d => (d?.cards ? { ...d, cards: upgradeCards(d.cards) } : d);
+let db = upgradeDb(loadDb());
 let tab = 'today';
 let flash = null; // { text, kind }
 let onb = { phase: 'intro' }; // はじめる前の画面: intro | direction
@@ -2072,7 +2167,7 @@ function viewToday() {
     <div class="lbl">やること（2分）</div>
     <div class="act">${esc(action.name)}</div>
     <div class="lbl">重ねる考え方（手札）</div>
-    <div class="lens"><b>${esc(card.name)}</b><span class="how">${esc(card.how)}</span><span class="src">出典: ${esc(card.source)}（${esc(card.evidence)}）</span></div>
+    <div class="lens"><b>${esc(card.name)}</b><span class="how">${esc(card.how)}</span><span class="src">出典: ${esc(card.source)}（${esc(card.evidence)}）</span>${card.principle ? `<span class="src">原則 ${esc(card.principle)}: ${esc(PRINCIPLES.find(p => p.id === card.principle)?.text ?? '')}</span>` : ''}</div>
     ${cut ? '' : `<p class="why">やることを2分やって、その前後にこの考え方を1つ試す。終わったら下を押す。</p><button class="primary big" id="doneBtn">できた</button>`}
   </section>
   ${cut ? `
@@ -2115,13 +2210,14 @@ function viewDeck() {
   const tried = new Set(s.triedCards);
   const verdictOf = id => s.verdicts.filter(v => v.cardId === id).at(-1)?.verdict;
   const untried = db.cards.filter(c => !tried.has(c.id) && c.id !== s.experiment.cardId).length;
-  const groups = CATEGORIES.map(cat => ({ cat, cards: db.cards.filter(c => c.category === cat) }));
+  // v17.13: ガバラボの10原則ごとに並べる（どの原則にも入れていない札は最後に「行動の工夫」）
+  const groups = [...PRINCIPLES, OTHER_PRINCIPLE].map(p => ({ p, cards: db.cards.filter(c => principleOf(c) === p.id) })).filter(g => g.cards.length);
   return `
-  <section class="card"><b>図鑑</b> ${db.cards.length} 枚のうち試した ${tried.size} 枚<span class="small">（試していない ${untried} 枚）</span><p class="why">手札＝いろんな人の「考え方」。研究者も、本の著者も、占いも、同じ棚。色つき＝また使う、灰色＝もういい、点線＝まだ。</p></section>
-  ${groups.map(g => `<section class="card"><h3>${esc(g.cat)}</h3><div class="grid">${g.cards.map(c => {
+  <section class="card"><b>図鑑</b> ${db.cards.length} 枚のうち試した ${tried.size} 枚<span class="small">（試していない ${untried} 枚）</span><p class="why">手札＝いろんな人の「考え方」。ガバラボの全327本から組み立てた10個の原則ごとに並べています。色つき＝また使う、灰色＝もういい、点線＝まだ。</p></section>
+  ${groups.map(g => `<section class="card"><h3>${g.p.id === OTHER_PRINCIPLE.id ? '' : esc(g.p.id) + ' '}${esc(g.p.text)}</h3><div class="grid">${g.cards.map(c => {
     const v = verdictOf(c.id);
     const cls = c.id === s.experiment.cardId ? 'now' : v === 'また使う' ? 'yes' : v === 'もういい' ? 'no' : tried.has(c.id) ? 'tried' : 'un';
-    return `<div class="tile ${cls}"><b>${esc(c.name)}</b><span>${esc(c.type)}・${esc(c.evidence)}${c.fromBook ? '・本' : ''}</span></div>`;
+    return `<div class="tile ${cls}"><b>${esc(c.name)}</b><span>${esc(c.category)}・${esc(c.type)}・${esc(c.evidence)}${c.fromBook ? '・本' : ''}${c.video ? '・ガバラボ' : ''}</span></div>`;
   }).join('')}</div></section>`).join('')}
   <section class="card">
     <h3>手札を足す（本の一節から・自分で）</h3>
@@ -2134,6 +2230,7 @@ function viewDeck() {
       <select id="c_cat">${CATEGORIES.map(t => `<option>${t}</option>`).join('')}</select>
       <select id="c_stype">${SOURCE_TYPES.map(t => `<option>${t}</option>`).join('')}</select>
       <select id="c_ev">${EVIDENCE.map(t => `<option>${t}</option>`).join('')}</select>
+      <select id="c_prin"><option value="">原則: なし</option>${PRINCIPLES.map(p => `<option value="${p.id}">原則 ${p.id}</option>`).join('')}</select>
     </div>
     <input id="c_source" placeholder="出典（著者・書名）">
     <input id="c_q" placeholder="完了後の1問">
@@ -2156,6 +2253,13 @@ function viewModel() {
     ${t.rows.map(r => `<div class="tallyrow"><b>${esc(r.category)}</b> また使う ${r.matauka} ／ もういい ${r.mouii} ／ 👍${r.up} 👎${r.down} <span class="small">n=${r.n}</span>
       <div class="ev">${r.evidence.map(e => `<button class="mini" data-deny="${esc(e)}">${esc(e)} ✕</button>`).join(' ')}</div></div>`).join('')}
     ${t.favorite ? `<p class="fav">→ 好きなタイプ: <b>${esc(t.favorite.category)}</b></p>` : ''}
+  </section>
+  <section class="card">
+    <h3>合っている原則 <span class="small">（ガバラボの10原則。同じ原則で3件たまると出る）</span></h3>
+    <p class="why">「また使う／もういい」を、札が属する原則ごとに数えたもの。また使うが多い原則ほど上に出る。</p>
+    ${t.principles.length === 0 ? '<p class="note">まだ数字はない</p>' : ''}
+    ${t.principles.map(r => `<div class="tallyrow"><b>${r.principle === OTHER_PRINCIPLE.id ? '' : esc(r.principle) + ' '}${esc(r.text)}</b><br>また使う ${r.matauka} ／ もういい ${r.mouii} <span class="small">n=${r.n}</span>
+      <div class="ev">${r.evidence.map(e => `<button class="mini" data-deny="${esc(e)}">${esc(e)} ✕</button>`).join(' ')}</div></div>`).join('')}
   </section>
   <section class="card">
     <h3>本人の言葉</h3>
@@ -2434,7 +2538,7 @@ function bind() {
   $('#laterBtn') && ($('#laterBtn').onclick = () => { tab = 'tree'; render(); });
 
   $('#addCard') && ($('#addCard').onclick = () => {
-    const card = { id: 'b_' + newId('c').slice(2), name: $('#c_name').value.trim(), claim: $('#c_claim').value.trim(), how: $('#c_how').value.trim(), type: $('#c_type').value, category: $('#c_cat').value, sourceType: $('#c_stype').value, source: $('#c_source').value.trim(), evidence: $('#c_ev').value, applies: ['回数系', '1行系', '現物系'], shift: $('#c_shift').checked, fromBook: true, question: { text: $('#c_q').value.trim(), options: [$('#c_o1').value.trim(), $('#c_o2').value.trim(), $('#c_o3').value.trim()] } };
+    const card = { id: 'b_' + newId('c').slice(2), name: $('#c_name').value.trim(), claim: $('#c_claim').value.trim(), how: $('#c_how').value.trim(), type: $('#c_type').value, category: $('#c_cat').value, sourceType: $('#c_stype').value, source: $('#c_source').value.trim(), evidence: $('#c_ev').value, applies: ['回数系', '1行系', '現物系'], shift: $('#c_shift').checked, fromBook: true, ...($('#c_prin')?.value ? { principle: $('#c_prin').value } : {}), question: { text: $('#c_q').value.trim(), options: [$('#c_o1').value.trim(), $('#c_o2').value.trim(), $('#c_o3').value.trim()] } };
     const v = validateCard(card);
     if (!v.ok) { flash = { text: '登録できない: ' + v.errors.join(' / '), kind: 'ng' }; render(); return; }
     if (db.cards.some(c => c.name === card.name)) { flash = { text: '同じ名前の札がある', kind: 'ng' }; render(); return; }
@@ -2493,7 +2597,7 @@ function bind() {
       const newDb = d.tefuda ? d.db : d;
       if (!newDb?.state || !newDb?.cards) throw new Error();
       if (!confirm('この端末のデータを、貼った内容で置き換えます（木・図鑑・棚卸し・年表も）。よいですか？')) return;
-      db = newDb; persist();
+      db = upgradeDb(newDb); persist();
       if (d.tefuda && d.monshin) { m = { ...M_INIT(), ...d.monshin, cur: { methodId: null, idx: 0 }, phase: 'home' }; persistM(); }
       flash = { text: `読み込んだ（${d.exportedOn ? d.exportedOn + ' の書き出し' : '旧形式'}）。`, kind: 'ok' }; render();
     } catch { flash = { text: '読み込めない JSON', kind: 'ng' }; render(); }
@@ -2504,7 +2608,7 @@ function bind() {
 Sync.init({
   getLocal: () => ({ updatedAt: meta.updatedAt ?? null, db, monshin: m, hasContent: !!db || monshinHasContent(m) }),
   setLocal: remote => {
-    if (remote.db?.state && remote.db?.cards) { db = remote.db; saveDb(db); }
+    if (remote.db?.state && remote.db?.cards) { db = upgradeDb(remote.db); saveDb(db); }
     if (remote.monshin) { m = { ...M_INIT(), ...remote.monshin, cur: { methodId: null, idx: 0 }, phase: 'home' }; try { localStorage.setItem(M_KEY, JSON.stringify(m)); } catch {} }
     meta.updatedAt = remote.updatedAt; meta.sig = contentSignature(db, m); try { localStorage.setItem(META_KEY, JSON.stringify(meta)); } catch {}
     inMonshin = false; render();
