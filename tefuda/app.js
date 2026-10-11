@@ -1,4 +1,4 @@
-// 手札 app.js — 自動生成（scripts/build-pwa.mjs）build 202610100356
+// 手札 app.js — 自動生成（scripts/build-pwa.mjs）build 202610112303
 (() => {
 "use strict";
 // ---- pwa/src/store.mjs
@@ -1563,9 +1563,11 @@ const Sync = {
   async autoConnect() {
     if (this.cfg || this.autoTried) return false;
     this.autoTried = true;
-    const saved = this.cfg; this.cfg = { mode: 'macmini', url: MACMINI_DEFAULT, device: this.deviceName(), lastAt: null, appliedReplies: [] };
+    // 届くと分かるまで this.cfg に入れない（入れると待っている4秒の間に取り込みが走り、失敗時に null へ戻されて落ちる）
     try { const ctl = new AbortController(); const t = setTimeout(() => ctl.abort(), 4000); const r = await fetch(MACMINI_DEFAULT + '/api/health', { cache: 'no-store', signal: ctl.signal }); clearTimeout(t); if (!r.ok) throw new Error(); }
-    catch { this.cfg = saved; this.status('Mac mini に届かない（この端末の Tailscale がオフ？）', false); return false; }
+    catch { this.status('Mac mini に届かない。この端末の Tailscale がオフかもしれない', false); return false; }
+    if (this.cfg) return false;
+    this.cfg = { mode: 'macmini', url: MACMINI_DEFAULT, device: this.deviceName(), lastAt: null, appliedReplies: [] };
     this.save(); this.status('Mac mini と自動でつながった', true); return true;
   },
   label() { return !this.cfg ? '' : this.cfg.mode === 'macmini' ? `Mac mini（${this.cfg.url.replace(/^https?:\/\//, '')}）` : `GitHub（${this.cfg.repo}）`; },
